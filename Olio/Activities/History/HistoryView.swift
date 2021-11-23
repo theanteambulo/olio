@@ -11,6 +11,8 @@ struct HistoryView: View {
     let workouts: FetchRequest<Workout>
     let showCompletedWorkouts: Bool
 
+    static let tag: String? = "History"
+
     init(showCompletedWorkouts: Bool) {
         self.showCompletedWorkouts = showCompletedWorkouts
 

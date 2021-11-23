@@ -10,6 +10,8 @@ import SwiftUI
 struct ExercisesView: View {
     let exercises: FetchRequest<Exercise>
 
+    static let tag: String? = "Exercises"
+
     init() {
         exercises = FetchRequest<Exercise>(
             entity: Exercise.entity(),
