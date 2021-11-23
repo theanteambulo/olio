@@ -22,7 +22,7 @@ struct ContentView: View {
                     Text("History")
                 }
 
-            ExerciseView()
+            ExercisesView()
                 .tabItem {
                     Image(systemName: "books.vertical")
                     Text("Exercises")

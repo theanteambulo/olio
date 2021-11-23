@@ -54,7 +54,7 @@ class DataController: ObservableObject {
 
             for exerciseCount in 1...5 {
                 let exercise = Exercise(context: viewContext)
-                exercise.name = "Exercise \(exerciseCount)"
+                exercise.name = "Exercise \(exerciseCount) - \(workout.workoutName)"
                 exercise.bodyweight = Bool.random()
                 exercise.muscleGroup = Int16(exerciseCount)
                 exercise.reps = 10

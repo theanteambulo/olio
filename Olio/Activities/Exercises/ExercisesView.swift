@@ -1,5 +1,5 @@
 //
-//  ExerciseView.swift
+//  ExercisesView.swift
 //  Olio
 //
 //  Created by Jake King on 23/11/2021.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ExerciseView: View {
+struct ExercisesView: View {
     let exercises: FetchRequest<Exercise>
 
     init() {
@@ -30,11 +30,11 @@ struct ExerciseView: View {
     }
 }
 
-struct ExerciseView_Previews: PreviewProvider {
+struct ExercisesView_Previews: PreviewProvider {
     static var dataController = DataController.preview
 
     static var previews: some View {
-        ExerciseView()
+        ExercisesView()
             .environment(\.managedObjectContext, dataController.container.viewContext)
             .environmentObject(dataController)
     }
