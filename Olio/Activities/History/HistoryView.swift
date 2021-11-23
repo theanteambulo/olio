@@ -29,7 +29,7 @@ struct HistoryView: View {
             List {
                 ForEach(workouts.wrappedValue) { workout in
                     Section(header: Text(workout.formattedWorkoutDateCompleted)) {
-                        NavigationLink(destination: Text("Exercises user completed.")) {
+                        NavigationLink(destination: WorkoutView(workout: workout)) {
                             Text(workout.workoutName)
                         }
                     }
