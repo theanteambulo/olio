@@ -1,0 +1,477 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		230BAC58274C49EF0013E4AF /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 230BAC57274C49EF0013E4AF /* CloudKit.framework */; };
+		23AB0642274B7CF300BCBD28 /* OlioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AB0641274B7CF300BCBD28 /* OlioApp.swift */; };
+		23AB0644274B7CF300BCBD28 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AB0643274B7CF300BCBD28 /* ContentView.swift */; };
+		23AB0646274B7CF400BCBD28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23AB0645274B7CF400BCBD28 /* Assets.xcassets */; };
+		23AB0649274B7CF400BCBD28 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23AB0648274B7CF400BCBD28 /* Preview Assets.xcassets */; };
+		23AB0651274B7FCE00BCBD28 /* Main.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23AB064F274B7FCE00BCBD28 /* Main.xcdatamodeld */; };
+		23AB0655274B87A600BCBD28 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AB0654274B87A600BCBD28 /* DataController.swift */; };
+		23D55F1A274CD691002B0105 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D55F19274CD691002B0105 /* HomeView.swift */; };
+		23D55F1C274CD7D7002B0105 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D55F1B274CD7D7002B0105 /* HistoryView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		230BAC54274C49C30013E4AF /* Olio.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Olio.entitlements; sourceTree = "<group>"; };
+		230BAC55274C49D00013E4AF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		230BAC57274C49EF0013E4AF /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		23AB063E274B7CF300BCBD28 /* Olio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Olio.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		23AB0641274B7CF300BCBD28 /* OlioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioApp.swift; sourceTree = "<group>"; };
+		23AB0643274B7CF300BCBD28 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		23AB0645274B7CF400BCBD28 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		23AB0648274B7CF400BCBD28 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		23AB0650274B7FCE00BCBD28 /* Main.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Main.xcdatamodel; sourceTree = "<group>"; };
+		23AB0654274B87A600BCBD28 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		23D55F19274CD691002B0105 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		23D55F1B274CD7D7002B0105 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		23AB063B274B7CF300BCBD28 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				230BAC58274C49EF0013E4AF /* CloudKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		230BAC56274C49EF0013E4AF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				230BAC57274C49EF0013E4AF /* CloudKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		23AB0635274B7CF300BCBD28 = {
+			isa = PBXGroup;
+			children = (
+				23AB0640274B7CF300BCBD28 /* Olio */,
+				23AB063F274B7CF300BCBD28 /* Products */,
+				230BAC56274C49EF0013E4AF /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		23AB063F274B7CF300BCBD28 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				23AB063E274B7CF300BCBD28 /* Olio.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		23AB0640274B7CF300BCBD28 /* Olio */ = {
+			isa = PBXGroup;
+			children = (
+				23D55F1E274CD83F002B0105 /* Activities */,
+				23D55F23274CD8B5002B0105 /* Localization */,
+				23D55F22274CD8A6002B0105 /* Extensions */,
+				23D55F1D274CD7F1002B0105 /* Configuration */,
+				23AB0641274B7CF300BCBD28 /* OlioApp.swift */,
+				23AB0643274B7CF300BCBD28 /* ContentView.swift */,
+				23AB0654274B87A600BCBD28 /* DataController.swift */,
+				23AB0645274B7CF400BCBD28 /* Assets.xcassets */,
+				23AB0647274B7CF400BCBD28 /* Preview Content */,
+			);
+			path = Olio;
+			sourceTree = "<group>";
+		};
+		23AB0647274B7CF400BCBD28 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				23AB0648274B7CF400BCBD28 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		23D55F1D274CD7F1002B0105 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				230BAC55274C49D00013E4AF /* Info.plist */,
+				23AB064F274B7FCE00BCBD28 /* Main.xcdatamodeld */,
+				230BAC54274C49C30013E4AF /* Olio.entitlements */,
+			);
+			path = Configuration;
+			sourceTree = "<group>";
+		};
+		23D55F1E274CD83F002B0105 /* Activities */ = {
+			isa = PBXGroup;
+			children = (
+				23D55F1F274CD84B002B0105 /* Home */,
+				23D55F20274CD853002B0105 /* History */,
+				23D55F21274CD85C002B0105 /* Exercises */,
+			);
+			path = Activities;
+			sourceTree = "<group>";
+		};
+		23D55F1F274CD84B002B0105 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				23D55F19274CD691002B0105 /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		23D55F20274CD853002B0105 /* History */ = {
+			isa = PBXGroup;
+			children = (
+				23D55F1B274CD7D7002B0105 /* HistoryView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		23D55F21274CD85C002B0105 /* Exercises */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Exercises;
+			sourceTree = "<group>";
+		};
+		23D55F22274CD8A6002B0105 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		23D55F23274CD8B5002B0105 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		23AB063D274B7CF300BCBD28 /* Olio */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 23AB064C274B7CF400BCBD28 /* Build configuration list for PBXNativeTarget "Olio" */;
+			buildPhases = (
+				230BAC59274C4EFC0013E4AF /* SwiftLint */,
+				23AB063A274B7CF300BCBD28 /* Sources */,
+				23AB063B274B7CF300BCBD28 /* Frameworks */,
+				23AB063C274B7CF300BCBD28 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Olio;
+			productName = Olio;
+			productReference = 23AB063E274B7CF300BCBD28 /* Olio.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		23AB0636274B7CF300BCBD28 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1310;
+				LastUpgradeCheck = 1310;
+				TargetAttributes = {
+					23AB063D274B7CF300BCBD28 = {
+						CreatedOnToolsVersion = 13.1;
+					};
+				};
+			};
+			buildConfigurationList = 23AB0639274B7CF300BCBD28 /* Build configuration list for PBXProject "Olio" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 23AB0635274B7CF300BCBD28;
+			productRefGroup = 23AB063F274B7CF300BCBD28 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				23AB063D274B7CF300BCBD28 /* Olio */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		23AB063C274B7CF300BCBD28 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23AB0649274B7CF400BCBD28 /* Preview Assets.xcassets in Resources */,
+				23AB0646274B7CF400BCBD28 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		230BAC59274C4EFC0013E4AF /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		23AB063A274B7CF300BCBD28 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23AB0651274B7FCE00BCBD28 /* Main.xcdatamodeld in Sources */,
+				23D55F1C274CD7D7002B0105 /* HistoryView.swift in Sources */,
+				23AB0655274B87A600BCBD28 /* DataController.swift in Sources */,
+				23AB0644274B7CF300BCBD28 /* ContentView.swift in Sources */,
+				23D55F1A274CD691002B0105 /* HomeView.swift in Sources */,
+				23AB0642274B7CF300BCBD28 /* OlioApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		23AB064A274B7CF400BCBD28 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		23AB064B274B7CF400BCBD28 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		23AB064D274B7CF400BCBD28 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Olio/Configuration/Olio.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Olio/Preview Content\"";
+				DEVELOPMENT_TEAM = 52R27K29BJ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Olio/Configuration/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.theanteambulo.Olio;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		23AB064E274B7CF400BCBD28 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Olio/Configuration/Olio.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"Olio/Preview Content\"";
+				DEVELOPMENT_TEAM = 52R27K29BJ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Olio/Configuration/Info.plist;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.theanteambulo.Olio;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		23AB0639274B7CF300BCBD28 /* Build configuration list for PBXProject "Olio" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				23AB064A274B7CF400BCBD28 /* Debug */,
+				23AB064B274B7CF400BCBD28 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		23AB064C274B7CF400BCBD28 /* Build configuration list for PBXNativeTarget "Olio" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				23AB064D274B7CF400BCBD28 /* Debug */,
+				23AB064E274B7CF400BCBD28 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		23AB064F274B7FCE00BCBD28 /* Main.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				23AB0650274B7FCE00BCBD28 /* Main.xcdatamodel */,
+			);
+			currentVersion = 23AB0650274B7FCE00BCBD28 /* Main.xcdatamodel */;
+			path = Main.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
+	};
+	rootObject = 23AB0636274B7CF300BCBD28 /* Project object */;
+}
