@@ -16,12 +16,24 @@ extension Workout {
         dateScheduled ?? Date()
     }
 
+    var formattedWorkoutDateScheduled: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: workoutDateScheduled)
+    }
+
     var workoutDateCompleted: Date {
         dateCompleted ?? Date()
     }
 
+    var formattedWorkoutDateCompleted: String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        return formatter.string(from: workoutDateScheduled)
+    }
+
     var workoutExercises: [Exercise] {
-        let exercisesArray = exercises?.allObjects.first as? [Exercise] ?? []
+        let exercisesArray = exercises?.allObjects as? [Exercise] ?? []
         return exercisesArray
     }
 

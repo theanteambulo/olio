@@ -26,9 +26,9 @@ struct HistoryView: View {
         NavigationView {
             List {
                 ForEach(workouts.wrappedValue) { workout in
-                    Section(header: Text(workout.name ?? "")) {
-                        ForEach(workout.exercises?.allObjects as? [Exercise] ?? []) { exercise in
-                            Text(exercise.name ?? "")
+                    Section(header: Text(workout.formattedWorkoutDateCompleted)) {
+                        NavigationLink(destination: Text("Exercises user completed.")) {
+                            Text(workout.workoutName)
                         }
                     }
                 }
