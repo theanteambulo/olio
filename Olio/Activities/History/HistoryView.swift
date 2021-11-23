@@ -34,7 +34,7 @@ struct HistoryView: View {
                 }
             }
             .listStyle(InsetGroupedListStyle())
-            .navigationTitle("Workout History")
+            .navigationTitle("History")
         }
     }
 }
