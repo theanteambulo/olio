@@ -45,7 +45,7 @@ class DataController: ObservableObject {
         // Create 5 sample workouts, each with 5 sample exercises.
         for workoutCount in 1...5 {
             let workout = Workout(context: viewContext)
-            workout.name = "Example \(workoutCount)"
+            workout.name = "Workout \(workoutCount)"
             workout.template = Bool.random()
             workout.dateScheduled = Date()
             workout.dateCompleted = Date()
@@ -54,7 +54,7 @@ class DataController: ObservableObject {
 
             for exerciseCount in 1...5 {
                 let exercise = Exercise(context: viewContext)
-                exercise.name = "Example \(exerciseCount)"
+                exercise.name = "Exercise \(exerciseCount)"
                 exercise.bodyweight = Bool.random()
                 exercise.muscleGroup = Int16(exerciseCount)
                 exercise.reps = 10
