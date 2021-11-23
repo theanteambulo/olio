@@ -13,7 +13,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             VStack {
-                Button("Add Data") {
+                Button("Add data") {
                     dataController.deleteAll()
                     try? dataController.createSampleData()
                 }
