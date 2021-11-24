@@ -20,6 +20,7 @@
 		23AB0655274B87A600BCBD28 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AB0654274B87A600BCBD28 /* DataController.swift */; };
 		23C97E2E274E251F005611A3 /* EditExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E2D274E251F005611A3 /* EditExerciseView.swift */; };
 		23C97E30274E3C25005611A3 /* ExerciseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E2F274E3C25005611A3 /* ExerciseRowView.swift */; };
+		23C97E32274E548A005611A3 /* BindingExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E31274E548A005611A3 /* BindingExtension.swift */; };
 		23D55F1A274CD691002B0105 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D55F19274CD691002B0105 /* HomeView.swift */; };
 		23D55F1C274CD7D7002B0105 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D55F1B274CD7D7002B0105 /* HistoryView.swift */; };
 /* End PBXBuildFile section */
@@ -41,6 +42,7 @@
 		23AB0654274B87A600BCBD28 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		23C97E2D274E251F005611A3 /* EditExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditExerciseView.swift; sourceTree = "<group>"; };
 		23C97E2F274E3C25005611A3 /* ExerciseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRowView.swift; sourceTree = "<group>"; };
+		23C97E31274E548A005611A3 /* BindingExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingExtension.swift; sourceTree = "<group>"; };
 		23D55F19274CD691002B0105 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		23D55F1B274CD7D7002B0105 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -158,6 +160,7 @@
 			children = (
 				230E70F2274D62DD007F6232 /* WorkoutExtension.swift */,
 				230E70F0274D62C6007F6232 /* ExerciseExtension.swift */,
+				23C97E31274E548A005611A3 /* BindingExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 				23AB0655274B87A600BCBD28 /* DataController.swift in Sources */,
 				23AB0644274B7CF300BCBD28 /* ContentView.swift in Sources */,
 				23D55F1A274CD691002B0105 /* HomeView.swift in Sources */,
+				23C97E32274E548A005611A3 /* BindingExtension.swift in Sources */,
 				23AB0642274B7CF300BCBD28 /* OlioApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

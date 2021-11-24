@@ -33,9 +33,9 @@ struct EditExerciseView: View {
     var body: some View {
         Form {
             Section(header: Text("Basic Settings")) {
-                TextField("Exercise name", text: $name)
+                TextField("Exercise name", text: $name.onChange(update))
 
-                Picker("Muscle Group", selection: $muscleGroup) {
+                Picker("Muscle Group", selection: $muscleGroup.onChange(update)) {
                     Text("Chest").tag(1)
                     Text("Back").tag(2)
                     Text("Shoulders").tag(3)
@@ -45,7 +45,7 @@ struct EditExerciseView: View {
                     Text("Abs").tag(7)
                 }
 
-                Toggle("Bodyweight exercise", isOn: $bodyweight)
+                Toggle("Bodyweight exercise", isOn: $bodyweight.onChange(update))
             }
 
             Section(header: Text("Exercise details")) {
@@ -54,21 +54,21 @@ struct EditExerciseView: View {
 //                    .keyboardType(.decimalPad)
                 Stepper(
                     "Reps: \(reps)",
-                    value: $reps,
+                    value: $reps.onChange(update),
                     in: 1...100,
                     step: 1
                 )
 
                 Stepper(
                     "Sets: \(sets)",
-                    value: $sets,
+                    value: $sets.onChange(update),
                     in: 1...15,
                     step: 1
                 )
             }
         }
         .navigationTitle("Edit Exercise")
-        .onDisappear(perform: update)
+        .onDisappear(perform: dataController.save)
     }
 
     func update() {
