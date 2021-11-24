@@ -19,6 +19,7 @@ extension ExerciseSet {
         let exerciseSet = ExerciseSet(context: viewContext)
         exerciseSet.reps = 10
         exerciseSet.weight = 0
+        exerciseSet.completed = Bool.random()
 
         return exerciseSet
     }

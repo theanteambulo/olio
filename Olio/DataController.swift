@@ -51,6 +51,7 @@ class DataController: ObservableObject {
             workout.dateCompleted = Date()
             workout.completed = Bool.random()
             workout.exercises = []
+            workout.sets = []
 
             for exerciseCount in 1...5 {
                 let exercise = Exercise(context: viewContext)
@@ -59,12 +60,15 @@ class DataController: ObservableObject {
                 exercise.muscleGroup = Int16(Int.random(in: 1...7))
                 exercise.reps = 10
                 exercise.workouts = [workout]
+                exercise.sets = []
 
                 for _ in 1...3 {
                     let exerciseSet = ExerciseSet(context: viewContext)
-                    exerciseSet.reps = 10
+                    exerciseSet.reps = Int16(Int.random(in: 1...100))
                     exerciseSet.weight = 0
+                    exerciseSet.completed = Bool.random()
                     exerciseSet.exercise = exercise
+                    exerciseSet.workout = workout
                 }
             }
         }
