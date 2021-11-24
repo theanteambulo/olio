@@ -31,6 +31,11 @@ extension Exercise {
         }
     }
 
+    var exerciseSets: [ExerciseSet] {
+        let exerciseSetsArray = sets?.allObjects as? [ExerciseSet] ?? []
+        return exerciseSetsArray
+    }
+
     static var example: Exercise {
         let dataController = DataController(inMemory: true)
         let viewContext = dataController.container.viewContext
@@ -40,7 +45,7 @@ extension Exercise {
         exercise.bodyweight = Bool.random()
         exercise.muscleGroup = Int16.random(in: 1...7)
         exercise.reps = 10
-        exercise.sets = 3
+        exercise.sets = [ExerciseSet.example]
 
         return exercise
     }

@@ -16,7 +16,6 @@ struct EditExerciseView: View {
     @State private var bodyweight: Bool
     @State private var muscleGroup: Int
     @State private var reps: Int
-    @State private var sets: Int
     @State private var weight: Double
 
     init(exercise: Exercise) {
@@ -26,7 +25,6 @@ struct EditExerciseView: View {
         _bodyweight = State(wrappedValue: exercise.bodyweight)
         _muscleGroup = State(wrappedValue: Int(exercise.muscleGroup))
         _reps = State(wrappedValue: Int(exercise.reps))
-        _sets = State(wrappedValue: Int(exercise.sets))
         _weight = State(wrappedValue: exercise.weight)
     }
 
@@ -46,25 +44,6 @@ struct EditExerciseView: View {
                 }
 
                 Toggle("Bodyweight exercise", isOn: $bodyweight.onChange(update))
-            }
-
-            Section(header: Text("Exercise details")) {
-//                // convert into native Int/Double fields so no casting necessary?
-//                TextField("Weight", text: $weight)
-//                    .keyboardType(.decimalPad)
-                Stepper(
-                    "Reps: \(reps)",
-                    value: $reps.onChange(update),
-                    in: 1...100,
-                    step: 1
-                )
-
-                Stepper(
-                    "Sets: \(sets)",
-                    value: $sets.onChange(update),
-                    in: 1...15,
-                    step: 1
-                )
             }
         }
         .navigationTitle("Edit Exercise")

@@ -14,7 +14,11 @@ struct WorkoutView: View {
         NavigationView {
             List {
                 ForEach(workout.workoutExercises) { exercise in
-                    Text(exercise.exerciseName)
+                    Section(header: Text(exercise.exerciseName)) {
+                        ForEach(exercise.exerciseSets) { exerciseSet in
+                            Text("\(exerciseSet.exerciseSetReps)")
+                        }
+                    }
                 }
             }
             .listStyle(InsetGroupedListStyle())

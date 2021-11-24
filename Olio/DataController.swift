@@ -58,8 +58,14 @@ class DataController: ObservableObject {
                 exercise.bodyweight = Bool.random()
                 exercise.muscleGroup = Int16(Int.random(in: 1...7))
                 exercise.reps = 10
-                exercise.sets = 3
                 exercise.workouts = [workout]
+
+                for _ in 1...3 {
+                    let exerciseSet = ExerciseSet(context: viewContext)
+                    exerciseSet.reps = 10
+                    exerciseSet.weight = 0
+                    exerciseSet.exercise = exercise
+                }
             }
         }
 
@@ -96,7 +102,7 @@ class DataController: ObservableObject {
         container.viewContext.delete(object)
     }
 
-    /// Batch deletes all workouts and exercises from the Core Data context.
+    /// Batch deletes all workouts, exercises and sets from the Core Data context.
     func deleteAll() {
         let workoutFetchRequest: NSFetchRequest<NSFetchRequestResult> = Workout.fetchRequest()
         let workoutBatchDeleteRequest = NSBatchDeleteRequest(fetchRequest: workoutFetchRequest)
@@ -105,5 +111,9 @@ class DataController: ObservableObject {
         let exerciseFetchRequest: NSFetchRequest<NSFetchRequestResult> = Exercise.fetchRequest()
         let exerciseBatchDeleteRequest = NSBatchDeleteRequest(fetchRequest: exerciseFetchRequest)
         _ = try? container.viewContext.execute(exerciseBatchDeleteRequest)
+
+        let exerciseSetFetchRequest: NSFetchRequest<NSFetchRequestResult> = ExerciseSet.fetchRequest()
+        let exerciseSetBatchDeleteRequest = NSBatchDeleteRequest(fetchRequest: exerciseSetFetchRequest)
+        _ = try? container.viewContext.execute(exerciseSetBatchDeleteRequest)
     }
 }
