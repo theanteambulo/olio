@@ -19,11 +19,26 @@ struct ExercisesView: View {
         )
     }
 
+    enum MuscleGroup: String, CaseIterable {
+        case chest = "Chest"
+        case back = "Back"
+        case shoulders = "Shoulders"
+        case biceps = "Biceps"
+        case triceps = "Triceps"
+        case legs = "Legs"
+        case abs = "Abs"
+    }
+
     var body: some View {
         NavigationView {
             List {
-                ForEach(exercises.wrappedValue) { exercise in
-                    Text(exercise.exerciseName)
+                ForEach(MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
+                    Section(header: Text(muscleGroup.rawValue)) {
+                        // swiftlint:disable:next line_length
+                        ForEach(exercises.wrappedValue.filter {$0.exerciseMuscleGroup == muscleGroup.rawValue}) { exercise in
+                            ExerciseRowView(exercise: exercise)
+                        }
+                    }
                 }
             }
             .listStyle(InsetGroupedListStyle())

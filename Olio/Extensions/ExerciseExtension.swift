@@ -12,6 +12,25 @@ extension Exercise {
         name ?? ""
     }
 
+    var exerciseMuscleGroup: String {
+        switch muscleGroup {
+        case Int16(1):
+            return "Chest"
+        case Int16(2):
+            return "Back"
+        case Int16(3):
+            return "Shoulders"
+        case Int16(4):
+            return "Biceps"
+        case Int16(5):
+            return "Triceps"
+        case Int16(6):
+            return "Legs"
+        default:
+            return "Abs"
+        }
+    }
+
     static var example: Exercise {
         let dataController = DataController(inMemory: true)
         let viewContext = dataController.container.viewContext
