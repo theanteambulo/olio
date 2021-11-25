@@ -19,12 +19,12 @@ struct HistoryView: View {
 
         let request: NSFetchRequest<Workout> = Workout.fetchRequest()
         let templatePredicate = NSPredicate(format: "template =  false")
-        let completedPredicate = NSPredicate(format: "completed = false")
+        let completedPredicate = NSPredicate(format: "completed = true")
         request.predicate = NSCompoundPredicate(type: .and,
                                                 subpredicates: [templatePredicate, completedPredicate])
 
         request.sortDescriptors = [NSSortDescriptor(keyPath: \Workout.dateCompleted,
-                                                    ascending: false)]
+                                                    ascending: true)]
 
         workoutsCompleted = FetchRequest(fetchRequest: request)
     }

@@ -10,6 +10,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var dataController: DataController
+    @Environment(\.managedObjectContext) var managedObjectContext
 
     static let tag: String? = "Home"
 
@@ -38,12 +39,28 @@ struct HomeView: View {
     }
 
     var addSampleDataToolbarItem: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
+        ToolbarItem(placement: .navigationBarLeading) {
             Button("Add Data") {
                 withAnimation {
                     dataController.deleteAll()
                     try? dataController.createSampleData()
                 }
+            }
+        }
+    }
+
+    var addWorkoutToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button {
+                withAnimation {
+                    let workout = Workout(context: managedObjectContext)
+                    workout.completed = false
+                    workout.template = false
+                    workout.dateScheduled = Date()
+                    dataController.save()
+                }
+            } label: {
+                Label("Add Workout", systemImage: "plus")
             }
         }
     }
@@ -62,11 +79,13 @@ struct HomeView: View {
                         scheduledWorkouts: scheduledWorkouts.wrappedValue)
                 }
             }
+            .padding(.bottom)
             .background(Color.systemGroupedBackground.ignoresSafeArea())
             .navigationTitle("Home")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 addSampleDataToolbarItem
+                addWorkoutToolbarItem
             }
         }
     }

@@ -13,7 +13,6 @@
 		230E70F7274D779A007F6232 /* ExercisesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230E70F6274D779A007F6232 /* ExercisesView.swift */; };
 		2321AF15274EC3E30023F099 /* ExerciseSetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2321AF14274EC3E30023F099 /* ExerciseSetExtension.swift */; };
 		2321AF18274ECF710023F099 /* EditWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2321AF17274ECF710023F099 /* EditWorkoutView.swift */; };
-		23506700274D7A4F00D403B2 /* WorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235066FF274D7A4F00D403B2 /* WorkoutView.swift */; };
 		23A1BA71274F742400AA5123 /* WorkoutRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1BA70274F742400AA5123 /* WorkoutRowView.swift */; };
 		23A1BA73274F7A3C00AA5123 /* ColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1BA72274F7A3C00AA5123 /* ColorExtensions.swift */; };
 		23A1BA77274F825C00AA5123 /* ScheduledWorkoutsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1BA76274F825C00AA5123 /* ScheduledWorkoutsView.swift */; };
@@ -42,7 +41,6 @@
 		230E70F6274D779A007F6232 /* ExercisesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisesView.swift; sourceTree = "<group>"; };
 		2321AF14274EC3E30023F099 /* ExerciseSetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSetExtension.swift; sourceTree = "<group>"; };
 		2321AF17274ECF710023F099 /* EditWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutView.swift; sourceTree = "<group>"; };
-		235066FF274D7A4F00D403B2 /* WorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutView.swift; sourceTree = "<group>"; };
 		23A1BA70274F742400AA5123 /* WorkoutRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutRowView.swift; sourceTree = "<group>"; };
 		23A1BA72274F7A3C00AA5123 /* ColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtensions.swift; sourceTree = "<group>"; };
 		23A1BA76274F825C00AA5123 /* ScheduledWorkoutsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduledWorkoutsView.swift; sourceTree = "<group>"; };
@@ -87,7 +85,6 @@
 			isa = PBXGroup;
 			children = (
 				23D55F1B274CD7D7002B0105 /* HistoryView.swift */,
-				235066FF274D7A4F00D403B2 /* WorkoutView.swift */,
 				2321AF17274ECF710023F099 /* EditWorkoutView.swift */,
 				23A1BA70274F742400AA5123 /* WorkoutRowView.swift */,
 			);
@@ -297,7 +294,6 @@
 				2321AF18274ECF710023F099 /* EditWorkoutView.swift in Sources */,
 				23A1BA7B274F913800AA5123 /* TemplateWorkoutsView.swift in Sources */,
 				230E70F1274D62C6007F6232 /* ExerciseExtension.swift in Sources */,
-				23506700274D7A4F00D403B2 /* WorkoutView.swift in Sources */,
 				23A1BA77274F825C00AA5123 /* ScheduledWorkoutsView.swift in Sources */,
 				23D55F1C274CD7D7002B0105 /* HistoryView.swift in Sources */,
 				23AB0655274B87A600BCBD28 /* DataController.swift in Sources */,
