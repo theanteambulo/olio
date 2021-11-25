@@ -12,11 +12,11 @@ struct EditWorkoutView: View {
 
     @EnvironmentObject var dataController: DataController
     @Environment(\.presentationMode) var presentationMode
-    @Environment(\.dismiss) var dismiss
 
     @State private var name: String
     @State private var dateScheduled: Date
     @State private var dateCompleted: Date
+    @State private var completed: Bool
     @State private var showingDeleteConfirmation = false
 
     init(workout: Workout) {
@@ -25,6 +25,7 @@ struct EditWorkoutView: View {
         _name = State(wrappedValue: workout.workoutName)
         _dateScheduled = State(wrappedValue: workout.workoutDateScheduled)
         _dateCompleted = State(wrappedValue: workout.workoutDateCompleted)
+        _completed = State(wrappedValue: workout.completed)
     }
 
     var body: some View {
@@ -66,10 +67,7 @@ struct EditWorkoutView: View {
                 }
 
                 Section(header: Text("Complete a workout when you've finished every set for all exercises.")) {
-                    Button(workout.completed ? "Mark workout incomplete" : "Complete workout") {
-                        workout.completed.toggle()
-                        update()
-                    }
+                    Toggle("Complete workout", isOn: $completed.onChange(update))
                 }
 
                 Section(header: Text("Deleting a workout cannot be undone.")) {
@@ -80,9 +78,7 @@ struct EditWorkoutView: View {
                 }
             }
             .navigationTitle("Edit Workout")
-            .navigationBarItems(trailing: Button("Save") {
-                dismiss()
-            })
+            .navigationBarTitleDisplayMode(.inline)
         }
         .onDisappear(perform: dataController.save)
         .alert(isPresented: $showingDeleteConfirmation) {
@@ -96,9 +92,12 @@ struct EditWorkoutView: View {
     }
 
     func update() {
+        workout.objectWillChange.send()
+
         workout.name = name
         workout.dateScheduled = dateScheduled
         workout.dateCompleted = dateCompleted
+        workout.completed = completed
     }
 
     func delete() {
