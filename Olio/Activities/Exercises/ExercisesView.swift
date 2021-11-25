@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ExercisesView: View {
     let exercises: FetchRequest<Exercise>
+    
+    @EnvironmentObject var dataController: DataController
 
     static let tag: String? = "Exercises"
 
@@ -37,6 +39,16 @@ struct ExercisesView: View {
                         // swiftlint:disable:next line_length
                         ForEach(exercises.wrappedValue.filter {$0.exerciseMuscleGroup == muscleGroup.rawValue}) { exercise in
                             ExerciseRowView(exercise: exercise)
+                        }
+                        .onDelete { offsets in
+                            let allExercises = exercises.wrappedValue
+
+                            for offset in offsets {
+                                let exercise = allExercises[offset]
+                                dataController.delete(exercise)
+                            }
+
+                            dataController.save()
                         }
                     }
                 }
