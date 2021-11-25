@@ -20,7 +20,7 @@ struct ExercisesView: View {
     init() {
         exercises = FetchRequest<Exercise>(
             entity: Exercise.entity(),
-            sortDescriptors: [NSSortDescriptor(keyPath: \Exercise.muscleGroup, ascending: true)]
+            sortDescriptors: [NSSortDescriptor(keyPath: \Exercise.name, ascending: true)]
         )
     }
 
