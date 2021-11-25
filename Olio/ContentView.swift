@@ -18,6 +18,7 @@ struct ContentView: View {
                     Text("Home")
                 }
                 .tag(HomeView.tag)
+                .phoneOnlyStackNavigationView()
 
             HistoryView(showCompletedWorkouts: true)
                 .tabItem {
@@ -25,6 +26,7 @@ struct ContentView: View {
                     Text("History")
                 }
                 .tag(HistoryView.tag)
+                .phoneOnlyStackNavigationView()
 
             ExercisesView()
                 .tabItem {
@@ -32,6 +34,7 @@ struct ContentView: View {
                     Text("Exercises")
                 }
                 .tag(ExercisesView.tag)
+                .phoneOnlyStackNavigationView()
         }
     }
 }

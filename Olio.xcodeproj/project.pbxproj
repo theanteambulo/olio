@@ -19,8 +19,8 @@
 		23A1BA7B274F913800AA5123 /* TemplateWorkoutsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1BA7A274F913800AA5123 /* TemplateWorkoutsView.swift */; };
 		23A1BA7D274F930A00AA5123 /* TemplateWorkoutCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1BA7C274F930A00AA5123 /* TemplateWorkoutCardView.swift */; };
 		23AA141D275022B400AC637D /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AA141C275022B400AC637D /* AddExerciseView.swift */; };
-		23AA142127502E1B00AC637D /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AA142027502E1B00AC637D /* ViewExtension.swift */; };
 		23AA142327502E3A00AC637D /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AA142227502E3A00AC637D /* ColorExtension.swift */; };
+		23AA142527502ED000AC637D /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AA142427502ED000AC637D /* ViewExtension.swift */; };
 		23AB0642274B7CF300BCBD28 /* OlioApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AB0641274B7CF300BCBD28 /* OlioApp.swift */; };
 		23AB0644274B7CF300BCBD28 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AB0643274B7CF300BCBD28 /* ContentView.swift */; };
 		23AB0646274B7CF400BCBD28 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23AB0645274B7CF400BCBD28 /* Assets.xcassets */; };
@@ -49,8 +49,8 @@
 		23A1BA7A274F913800AA5123 /* TemplateWorkoutsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateWorkoutsView.swift; sourceTree = "<group>"; };
 		23A1BA7C274F930A00AA5123 /* TemplateWorkoutCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateWorkoutCardView.swift; sourceTree = "<group>"; };
 		23AA141C275022B400AC637D /* AddExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseView.swift; sourceTree = "<group>"; };
-		23AA142027502E1B00AC637D /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		23AA142227502E3A00AC637D /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		23AA142427502ED000AC637D /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
 		23AB063E274B7CF300BCBD28 /* Olio.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Olio.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		23AB0641274B7CF300BCBD28 /* OlioApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioApp.swift; sourceTree = "<group>"; };
 		23AB0643274B7CF300BCBD28 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -186,8 +186,8 @@
 				230E70F0274D62C6007F6232 /* ExerciseExtension.swift */,
 				23C97E31274E548A005611A3 /* BindingExtension.swift */,
 				2321AF14274EC3E30023F099 /* ExerciseSetExtension.swift */,
-				23AA142027502E1B00AC637D /* ViewExtension.swift */,
 				23AA142227502E3A00AC637D /* ColorExtension.swift */,
+				23AA142427502ED000AC637D /* ViewExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -297,7 +297,7 @@
 				23C97E30274E3C25005611A3 /* ExerciseRowView.swift in Sources */,
 				230E70F3274D62DD007F6232 /* WorkoutExtension.swift in Sources */,
 				23A1BA7D274F930A00AA5123 /* TemplateWorkoutCardView.swift in Sources */,
-				23AA142127502E1B00AC637D /* ViewExtension.swift in Sources */,
+				23AA142527502ED000AC637D /* ViewExtension.swift in Sources */,
 				2321AF18274ECF710023F099 /* EditWorkoutView.swift in Sources */,
 				23A1BA7B274F913800AA5123 /* TemplateWorkoutsView.swift in Sources */,
 				23AA142327502E3A00AC637D /* ColorExtension.swift in Sources */,
