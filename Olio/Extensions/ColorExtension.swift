@@ -1,5 +1,5 @@
 //
-//  ColorExtensions.swift
+//  ColorExtension.swift
 //  Olio
 //
 //  Created by Jake King on 25/11/2021.
