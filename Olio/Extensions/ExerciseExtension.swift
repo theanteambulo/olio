@@ -44,7 +44,6 @@ extension Exercise {
         exercise.name = "Example Exercise"
         exercise.bodyweight = Bool.random()
         exercise.muscleGroup = Int16.random(in: 1...7)
-        exercise.reps = 10
         exercise.sets = [ExerciseSet.example]
 
         return exercise

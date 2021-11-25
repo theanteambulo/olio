@@ -11,8 +11,11 @@ struct ExercisesView: View {
     let exercises: FetchRequest<Exercise>
 
     @EnvironmentObject var dataController: DataController
+    @Environment(\.managedObjectContext) var managedObjectContext
 
     static let tag: String? = "Exercises"
+
+    @State private var showingAddExerciseSheet = false
 
     init() {
         exercises = FetchRequest<Exercise>(
@@ -29,6 +32,20 @@ struct ExercisesView: View {
         case triceps = "Triceps"
         case legs = "Legs"
         case abs = "Abs"
+    }
+
+    var addExerciseToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button {
+                showingAddExerciseSheet.toggle()
+                print(showingAddExerciseSheet)
+            } label: {
+                Label("", systemImage: "plus")
+            }
+            .sheet(isPresented: $showingAddExerciseSheet) {
+                EmptyView()
+            }
+        }
     }
 
     var body: some View {
@@ -56,6 +73,9 @@ struct ExercisesView: View {
             .listStyle(InsetGroupedListStyle())
             .navigationTitle("Exercises")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                addExerciseToolbarItem
+            }
         }
     }
 }

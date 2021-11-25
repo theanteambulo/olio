@@ -15,7 +15,6 @@ struct EditExerciseView: View {
     @State private var name: String
     @State private var bodyweight: Bool
     @State private var muscleGroup: Int
-    @State private var reps: Int
     @State private var weight: Double
 
     init(exercise: Exercise) {
@@ -24,7 +23,6 @@ struct EditExerciseView: View {
         _name = State(wrappedValue: exercise.exerciseName)
         _bodyweight = State(wrappedValue: exercise.bodyweight)
         _muscleGroup = State(wrappedValue: Int(exercise.muscleGroup))
-        _reps = State(wrappedValue: Int(exercise.reps))
         _weight = State(wrappedValue: exercise.weight)
     }
 

@@ -58,7 +58,6 @@ class DataController: ObservableObject {
                 exercise.name = "Exercise \(exerciseCount) - \(workout.workoutName)"
                 exercise.bodyweight = Bool.random()
                 exercise.muscleGroup = Int16(Int.random(in: 1...7))
-                exercise.reps = 10
                 exercise.workouts = [workout]
                 exercise.sets = []
 
