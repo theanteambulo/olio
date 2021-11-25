@@ -12,7 +12,11 @@ struct WorkoutRowView: View {
 
     var body: some View {
         NavigationLink(destination: EditWorkoutView(workout: workout)) {
-            Text(workout.workoutName)
+            HStack {
+                Image(systemName: "tortoise.fill")
+                    .foregroundColor(workout.completed ? .clear : .primary)
+                Text(workout.workoutName)
+            }
         }
     }
 }
