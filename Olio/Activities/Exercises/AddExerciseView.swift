@@ -8,6 +8,12 @@
 import SwiftUI
 
 struct AddExerciseView: View {
+    @EnvironmentObject var dataController: DataController
+
+    @State private var name = ""
+    @State private var bodyweight = true
+    @State private var muscleGroup = 1
+
     var body: some View {
         NavigationView {
             Form {
