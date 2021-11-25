@@ -37,6 +37,17 @@ struct HomeView: View {
         scheduledWorkouts = FetchRequest(fetchRequest: request)
     }
 
+    var addSampleDataToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button("Add Data") {
+                withAnimation {
+                    dataController.deleteAll()
+                    try? dataController.createSampleData()
+                }
+            }
+        }
+    }
+
     var body: some View {
         NavigationView {
             ScrollView {
@@ -49,16 +60,14 @@ struct HomeView: View {
                     ScheduledWorkoutsView(
                         title: "Scheduled Workouts",
                         scheduledWorkouts: scheduledWorkouts.wrappedValue)
-
-                    Button("Add data") {
-                        dataController.deleteAll()
-                        try? dataController.createSampleData()
-                    }
                 }
             }
             .background(Color.systemGroupedBackground.ignoresSafeArea())
             .navigationTitle("Home")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                addSampleDataToolbarItem
+            }
         }
     }
 }
