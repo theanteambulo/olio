@@ -46,7 +46,7 @@ class DataController: ObservableObject {
         for workoutCount in 1...5 {
             let workout = Workout(context: viewContext)
             workout.name = "Workout \(workoutCount)"
-            workout.template = Bool.random()
+            workout.template = workoutCount.isMultiple(of: 5) ? true : false
             workout.dateScheduled = Date()
             workout.dateCompleted = Date()
             workout.completed = Bool.random()
