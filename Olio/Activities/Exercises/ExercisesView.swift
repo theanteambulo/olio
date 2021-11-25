@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ExercisesView: View {
     let exercises: FetchRequest<Exercise>
-    
+
     @EnvironmentObject var dataController: DataController
 
     static let tag: String? = "Exercises"
