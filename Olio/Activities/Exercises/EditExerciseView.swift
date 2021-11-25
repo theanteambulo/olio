@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct EditExerciseView: View {
-    @EnvironmentObject var dataController: DataController
-
     let exercise: Exercise
+
+    @EnvironmentObject var dataController: DataController
 
     @State private var name: String
     @State private var bodyweight: Bool
@@ -47,6 +47,7 @@ struct EditExerciseView: View {
             }
         }
         .navigationTitle("Edit Exercise")
+        .navigationBarTitleDisplayMode(.inline)
         .onDisappear(perform: dataController.save)
     }
 
