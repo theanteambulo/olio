@@ -32,8 +32,7 @@ extension Exercise {
     }
 
     var exerciseSets: [ExerciseSet] {
-        let exerciseSetsArray = sets?.allObjects as? [ExerciseSet] ?? []
-        return exerciseSetsArray
+        sets?.allObjects as? [ExerciseSet] ?? []
     }
 
     static var example: Exercise {

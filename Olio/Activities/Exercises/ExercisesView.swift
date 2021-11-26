@@ -20,7 +20,8 @@ struct ExercisesView: View {
     init() {
         exercises = FetchRequest<Exercise>(
             entity: Exercise.entity(),
-            sortDescriptors: [NSSortDescriptor(keyPath: \Exercise.name, ascending: true)]
+            sortDescriptors: [NSSortDescriptor(keyPath: \Exercise.muscleGroup, ascending: true),
+                              NSSortDescriptor(keyPath: \Exercise.name, ascending: true)]
         )
     }
 
@@ -32,6 +33,18 @@ struct ExercisesView: View {
         case triceps = "Triceps"
         case legs = "Legs"
         case abs = "Abs"
+    }
+
+    var sortedExercises: [Exercise] {
+        return exercises.wrappedValue.sorted { first, second in
+            if first.muscleGroup < second.muscleGroup {
+                return true
+            } else if first.muscleGroup > second.muscleGroup {
+                return false
+            }
+
+            return first.exerciseName < second.exerciseName
+        }
     }
 
     var addExerciseToolbarItem: some ToolbarContent {
@@ -53,15 +66,16 @@ struct ExercisesView: View {
             List {
                 ForEach(MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
                     Section(header: Text(muscleGroup.rawValue)) {
-                        // swiftlint:disable:next line_length
-                        ForEach(exercises.wrappedValue.filter {$0.exerciseMuscleGroup == muscleGroup.rawValue}) { exercise in
+                        ForEach(filterExercisesToMuscleGroup(muscleGroup.rawValue,
+                                                             exercises: sortedExercises)) { exercise in
                             ExerciseRowView(exercise: exercise)
                         }
                         .onDelete { offsets in
-                            let allExercises = exercises.wrappedValue
+                            let muscleGroupExercises = filterExercisesToMuscleGroup(muscleGroup.rawValue,
+                                                                                    exercises: sortedExercises)
 
                             for offset in offsets {
-                                let exercise = allExercises[offset]
+                                let exercise = muscleGroupExercises[offset]
                                 dataController.delete(exercise)
                             }
 
@@ -77,6 +91,11 @@ struct ExercisesView: View {
                 addExerciseToolbarItem
             }
         }
+    }
+
+    func filterExercisesToMuscleGroup(_ muscleGroup: MuscleGroup.RawValue,
+                                      exercises: [Exercise]) -> [Exercise] {
+        return exercises.filter {$0.exerciseMuscleGroup == muscleGroup}
     }
 }
 

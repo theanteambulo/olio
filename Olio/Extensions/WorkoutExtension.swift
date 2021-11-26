@@ -34,8 +34,7 @@ extension Workout {
     }
 
     var workoutExercises: [Exercise] {
-        let exercisesArray = exercises?.allObjects as? [Exercise] ?? []
-        return exercisesArray
+        exercises?.allObjects as? [Exercise] ?? []
     }
 
     static var example: Workout {
