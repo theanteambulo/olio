@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EditWorkoutView: View {
-    let workout: Workout
+    @ObservedObject var workout: Workout
 
     @EnvironmentObject var dataController: DataController
     @Environment(\.presentationMode) var presentationMode

@@ -14,8 +14,14 @@ struct WorkoutRowView: View {
         NavigationLink(destination: EditWorkoutView(workout: workout)) {
             HStack {
                 Image(systemName: "tortoise.fill")
-                    .foregroundColor(workout.completed ? .clear : .primary)
-                Text(workout.workoutName)
+                    .foregroundColor(workout.completed ? .primary : .clear)
+
+                VStack(alignment: .leading) {
+                    Text(workout.workoutName)
+                    Text("\(workout.workoutExercises.count) exercises")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
             }
         }
     }

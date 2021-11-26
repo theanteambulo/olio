@@ -20,36 +20,22 @@ struct HomeView: View {
         predicate: NSPredicate(format: "template = true")
     ) var workoutTemplates: FetchedResults<Workout>
 
-    let unscheduledWorkouts: FetchRequest<Workout>
     let scheduledWorkouts: FetchRequest<Workout>
 
+    @State private var showingAddConfirmationDialog = false
+
     init() {
-        // Predicates that will be used in multiple fetch request compound predicates.
+        // Fetch next 10 workouts.
+        let scheduledRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
         let templatePredicate = NSPredicate(format: "template = false")
         let completedPredicate = NSPredicate(format: "completed = false")
-
-        // Fetch all unscheduled workouts.
-        let unscheduledRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
-        let unscheduledPredicate = NSPredicate(format: "dateScheduled = nil")
-        unscheduledRequest.predicate = NSCompoundPredicate(type: .and,
-                                                           subpredicates: [templatePredicate,
-                                                                           completedPredicate,
-                                                                           unscheduledPredicate])
-        unscheduledRequest.sortDescriptors = [
-            NSSortDescriptor(keyPath: \Workout.name, ascending: true)
-        ]
-
-        unscheduledWorkouts = FetchRequest(fetchRequest: unscheduledRequest)
-
-        // Fetch next 10 scheduled workouts.
-        let scheduledRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
-        let scheduledPredicate = NSPredicate(format: "dateScheduled != nil")
         scheduledRequest.predicate = NSCompoundPredicate(type: .and,
                                                          subpredicates: [templatePredicate,
-                                                                         completedPredicate,
-                                                                         scheduledPredicate])
+                                                                         completedPredicate])
         scheduledRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \Workout.dateScheduled,
+                             ascending: true),
+            NSSortDescriptor(keyPath: \Workout.name,
                              ascending: true)
         ]
         scheduledRequest.fetchLimit = 10
@@ -71,38 +57,61 @@ struct HomeView: View {
     var addWorkoutToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
-                withAnimation {
-                    let workout = Workout(context: managedObjectContext)
-                    workout.completed = false
-                    workout.template = false
-                    dataController.save()
-                }
+                showingAddConfirmationDialog = true
             } label: {
-                Label("Add Workout", systemImage: "plus")
+                Label("Add", systemImage: "plus")
+            }
+            .confirmationDialog(
+                Text("Select an option"),
+                isPresented: $showingAddConfirmationDialog
+            ) {
+                Button("New workout") {
+                    withAnimation {
+                        let workout = Workout(context: managedObjectContext)
+                        workout.completed = false
+                        workout.template = false
+                        workout.name = ""
+                        dataController.save()
+                    }
+                }
+
+                Button("New workout template") {
+                    withAnimation {
+                        let workout = Workout(context: managedObjectContext)
+                        workout.completed = false
+                        workout.template = true
+                        workout.name = ""
+                        dataController.save()
+                    }
+                }
+
+                Button("Cancel", role: .cancel) {
+                    showingAddConfirmationDialog = false
+                }
             }
         }
     }
 
     var body: some View {
         NavigationView {
-            ScrollView {
+            VStack {
                 VStack(alignment: .leading) {
                     Section(header: Text("Templates").font(.headline)) {
                         TemplateWorkoutsView(templateWorkouts: workoutTemplates)
                     }
                     .padding(.top)
 
-                    ScheduledWorkoutsView(
-                        title: "Unscheduled Workouts",
-                        scheduledWorkouts: unscheduledWorkouts.wrappedValue
-                    )
-
-                    ScheduledWorkoutsView(
-                        title: "Scheduled Workouts",
-                        scheduledWorkouts: scheduledWorkouts.wrappedValue)
+                    Text("Scheduled Workouts")
+                        .font(.headline)
                 }
+
+                List {
+                    WorkoutList(workouts: scheduledWorkouts,
+                    showingScheduledWorkouts: true)
+                }
+                .listStyle(InsetGroupedListStyle())
             }
-            .padding([.bottom, .horizontal])
+            .padding([.bottom])
             .navigationTitle("Home")
             .toolbar {
                 addSampleDataToolbarItem

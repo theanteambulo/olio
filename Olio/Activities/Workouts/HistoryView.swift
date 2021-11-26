@@ -32,11 +32,8 @@ struct HistoryView: View {
     var body: some View {
         NavigationView {
             List {
-                ForEach(workoutsCompleted.wrappedValue) { workout in
-                    Section(header: Text(workout.formattedWorkoutDateCompleted)) {
-                        WorkoutRowView(workout: workout)
-                    }
-                }
+                WorkoutList(workouts: workoutsCompleted,
+                            showingScheduledWorkouts: false)
             }
             .listStyle(InsetGroupedListStyle())
             .navigationTitle("History")

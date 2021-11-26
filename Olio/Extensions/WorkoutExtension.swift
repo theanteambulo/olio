@@ -30,7 +30,7 @@ extension Workout {
     var formattedWorkoutDateCompleted: String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
-        return formatter.string(from: workoutDateScheduled)
+        return formatter.string(from: workoutDateCompleted)
     }
 
     var workoutExercises: [Exercise] {
