@@ -43,7 +43,6 @@ struct EditExerciseView: View {
             }
         }
         .navigationTitle("Edit Exercise")
-        .navigationBarTitleDisplayMode(.inline)
         .onDisappear(perform: dataController.save)
     }
 

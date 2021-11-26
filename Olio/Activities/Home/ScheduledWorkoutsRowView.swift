@@ -12,6 +12,10 @@ struct ScheduledWorkoutsRowView: View {
 
     var body: some View {
         VStack(alignment: .leading) {
+            Text("\(workout.workoutExercises.count) exercises")
+                .font(.caption)
+                .foregroundColor(.secondary)
+
             Text(workout.workoutName)
                 .font(.title3)
                 .foregroundColor(.primary)

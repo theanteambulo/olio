@@ -86,7 +86,6 @@ struct ExercisesView: View {
             }
             .listStyle(InsetGroupedListStyle())
             .navigationTitle("Exercises")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 addExerciseToolbarItem
             }

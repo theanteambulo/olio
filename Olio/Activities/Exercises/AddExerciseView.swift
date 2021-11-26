@@ -55,7 +55,6 @@ struct AddExerciseView: View {
                 }
             }
             .navigationTitle("Add Exercise")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 saveToolbarItem
                 dismissNoSaveToolbarItem

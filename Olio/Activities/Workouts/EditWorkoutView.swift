@@ -78,7 +78,6 @@ struct EditWorkoutView: View {
                 }
             }
             .navigationTitle("Edit Workout")
-            .navigationBarTitleDisplayMode(.inline)
         }
         .onDisappear(perform: dataController.save)
         .alert(isPresented: $showingDeleteConfirmation) {

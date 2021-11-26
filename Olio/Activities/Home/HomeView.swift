@@ -20,22 +20,41 @@ struct HomeView: View {
         predicate: NSPredicate(format: "template = true")
     ) var workoutTemplates: FetchedResults<Workout>
 
+    let unscheduledWorkouts: FetchRequest<Workout>
     let scheduledWorkouts: FetchRequest<Workout>
 
     init() {
-        let request: NSFetchRequest<Workout> = Workout.fetchRequest()
+        // Predicates that will be used in multiple fetch request compound predicates.
         let templatePredicate = NSPredicate(format: "template = false")
         let completedPredicate = NSPredicate(format: "completed = false")
-        request.predicate = NSCompoundPredicate(type: .and,
-                                                subpredicates: [templatePredicate,
-                                                                completedPredicate])
-        request.sortDescriptors = [
+
+        // Fetch all unscheduled workouts.
+        let unscheduledRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
+        let unscheduledPredicate = NSPredicate(format: "dateScheduled = nil")
+        unscheduledRequest.predicate = NSCompoundPredicate(type: .and,
+                                                           subpredicates: [templatePredicate,
+                                                                           completedPredicate,
+                                                                           unscheduledPredicate])
+        unscheduledRequest.sortDescriptors = [
+            NSSortDescriptor(keyPath: \Workout.name, ascending: true)
+        ]
+
+        unscheduledWorkouts = FetchRequest(fetchRequest: unscheduledRequest)
+
+        // Fetch next 10 scheduled workouts.
+        let scheduledRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
+        let scheduledPredicate = NSPredicate(format: "dateScheduled != nil")
+        scheduledRequest.predicate = NSCompoundPredicate(type: .and,
+                                                         subpredicates: [templatePredicate,
+                                                                         completedPredicate,
+                                                                         scheduledPredicate])
+        scheduledRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \Workout.dateScheduled,
                              ascending: true)
         ]
-        request.fetchLimit = 10
+        scheduledRequest.fetchLimit = 10
 
-        scheduledWorkouts = FetchRequest(fetchRequest: request)
+        scheduledWorkouts = FetchRequest(fetchRequest: scheduledRequest)
     }
 
     var addSampleDataToolbarItem: some ToolbarContent {
@@ -56,7 +75,6 @@ struct HomeView: View {
                     let workout = Workout(context: managedObjectContext)
                     workout.completed = false
                     workout.template = false
-                    workout.dateScheduled = Date()
                     dataController.save()
                 }
             } label: {
@@ -75,14 +93,17 @@ struct HomeView: View {
                     .padding(.top)
 
                     ScheduledWorkoutsView(
+                        title: "Unscheduled Workouts",
+                        scheduledWorkouts: unscheduledWorkouts.wrappedValue
+                    )
+
+                    ScheduledWorkoutsView(
                         title: "Scheduled Workouts",
                         scheduledWorkouts: scheduledWorkouts.wrappedValue)
                 }
             }
-            .padding(.bottom)
-            .background(Color.systemGroupedBackground.ignoresSafeArea())
+            .padding([.bottom, .horizontal])
             .navigationTitle("Home")
-            .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 addSampleDataToolbarItem
                 addWorkoutToolbarItem

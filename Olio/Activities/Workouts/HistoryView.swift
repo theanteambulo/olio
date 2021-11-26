@@ -40,7 +40,6 @@ struct HistoryView: View {
             }
             .listStyle(InsetGroupedListStyle())
             .navigationTitle("History")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
