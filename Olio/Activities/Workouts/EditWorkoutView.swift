@@ -29,56 +29,54 @@ struct EditWorkoutView: View {
     }
 
     var body: some View {
-        NavigationView {
-            Form {
-                Section(header: Text("Basic Settings")) {
-                    TextField("Workout name",
-                              text: $name.onChange(update))
+        Form {
+            Section(header: Text("Basic Settings")) {
+                TextField("Workout name",
+                          text: $name.onChange(update))
 
-                    DatePicker("Date scheduled",
-                               selection: $dateScheduled.onChange(update),
-                               displayedComponents: .date)
+                DatePicker("Date scheduled",
+                           selection: $dateScheduled.onChange(update),
+                           displayedComponents: .date)
 
-                    DatePicker("Date completed",
-                               selection: $dateCompleted.onChange(update),
-                               displayedComponents: .date)
-                }
+                DatePicker("Date completed",
+                           selection: $dateCompleted.onChange(update),
+                           displayedComponents: .date)
+            }
 
-                List {
-                    ForEach(workout.workoutExercises) { exercise in
-                        Section(header: Text(exercise.exerciseName)) {
-                            ForEach(exercise.exerciseSets) { exerciseSet in
-                                HStack {
-                                    Text("\(exerciseSet.exerciseSetReps) reps")
+            List {
+                ForEach(workout.workoutExercises) { exercise in
+                    Section(header: Text(exercise.exerciseName)) {
+                        ForEach(exercise.exerciseSets) { exerciseSet in
+                            HStack {
+                                Text("\(exerciseSet.exerciseSetReps) reps")
 
-                                    Spacer()
+                                Spacer()
 
-                                    if exerciseSet.completed {
-                                        Image(systemName: "checkmark.circle")
-                                            .foregroundColor(.green)
-                                    } else {
-                                        Image(systemName: "xmark.circle")
-                                            .foregroundColor(.red)
-                                    }
+                                if exerciseSet.completed {
+                                    Image(systemName: "checkmark.circle")
+                                        .foregroundColor(.green)
+                                } else {
+                                    Image(systemName: "xmark.circle")
+                                        .foregroundColor(.red)
                                 }
                             }
                         }
                     }
                 }
-
-                Section(header: Text("Complete a workout when you've finished every set for all exercises.")) {
-                    Toggle("Complete workout", isOn: $completed.onChange(update))
-                }
-
-                Section(header: Text("Deleting a workout cannot be undone.")) {
-                    Button("Delete workout") {
-                        showingDeleteConfirmation.toggle()
-                    }
-                    .tint(.red)
-                }
             }
-            .navigationTitle("Edit Workout")
+
+            Section(header: Text("Complete a workout when you've finished every set for all exercises.")) {
+                Toggle("Complete workout", isOn: $completed.onChange(update))
+            }
+
+            Section(header: Text("Deleting a workout cannot be undone.")) {
+                Button("Delete workout") {
+                    showingDeleteConfirmation.toggle()
+                }
+                .tint(.red)
+            }
         }
+        .navigationTitle("Edit Workout")
         .onDisappear(perform: dataController.save)
         .alert(isPresented: $showingDeleteConfirmation) {
             Alert(title: Text("Are you sure?"),
