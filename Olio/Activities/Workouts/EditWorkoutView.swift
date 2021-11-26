@@ -30,17 +30,19 @@ struct EditWorkoutView: View {
 
     var body: some View {
         Form {
-            Section(header: Text("Basic Settings")) {
+            Section(header: Text(workout.template ? "Template Name" : "Basic Settings")) {
                 TextField("Workout name",
                           text: $name.onChange(update))
 
-                DatePicker("Date scheduled",
-                           selection: $dateScheduled.onChange(update),
-                           displayedComponents: .date)
+                if !workout.template {
+                    DatePicker("Date scheduled",
+                               selection: $dateScheduled.onChange(update),
+                               displayedComponents: .date)
 
-                DatePicker("Date completed",
-                           selection: $dateCompleted.onChange(update),
-                           displayedComponents: .date)
+                    DatePicker("Date completed",
+                               selection: $dateCompleted.onChange(update),
+                               displayedComponents: .date)
+                }
             }
 
             List {
@@ -65,18 +67,20 @@ struct EditWorkoutView: View {
                 }
             }
 
-            Section(header: Text("Complete a workout when you've finished every set for all exercises.")) {
-                Toggle("Complete workout", isOn: $completed.onChange(update))
+            if !workout.template {
+                Section(header: Text("Complete a workout when you've finished every set for all exercises.")) {
+                    Toggle("Complete workout", isOn: $completed.onChange(update))
+                }
             }
 
-            Section(header: Text("Deleting a workout cannot be undone.")) {
-                Button("Delete workout") {
+            Section(header: Text("Deleting a \(workout.template ? "template" : "workout") cannot be undone.")) {
+                Button(workout.template ? "Delete template" : "Delete workout") {
                     showingDeleteConfirmation.toggle()
                 }
                 .tint(.red)
             }
         }
-        .navigationTitle("Edit Workout")
+        .navigationTitle(workout.template ? "Edit Template" : "Edit Workout")
         .onDisappear(perform: dataController.save)
         .alert(isPresented: $showingDeleteConfirmation) {
             Alert(title: Text("Are you sure?"),

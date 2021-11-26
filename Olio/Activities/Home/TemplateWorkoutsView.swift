@@ -18,18 +18,7 @@ struct TemplateWorkoutsView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHGrid(rows: workoutRows) {
                 ForEach(templateWorkouts) { workout in
-                    VStack(alignment: .leading) {
-                        Text("\(workout.workoutExercises.count) exercises")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-
-                        Text(workout.workoutName)
-                            .font(.title3)
-                    }
-                    .padding()
-                    .background(Color.secondarySystemGroupedBackground)
-                    .cornerRadius(10)
-                    .shadow(color: Color.black.opacity(0.2), radius: 5)
+                    TemplateWorkoutCardView(workout: workout)
                 }
             }
         }
