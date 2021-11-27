@@ -2,6 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="19461" systemVersion="21A559" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="Exercise" representedClassName="Exercise" syncable="YES" codeGenerationType="class">
         <attribute name="bodyweight" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="muscleGroup" optional="YES" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExerciseSet" inverseName="exercise" inverseEntity="ExerciseSet"/>
@@ -19,14 +20,15 @@
         <attribute name="completed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="dateCompleted" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="dateScheduled" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="template" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="workouts" inverseEntity="Exercise"/>
         <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExerciseSet" inverseName="workout" inverseEntity="ExerciseSet"/>
     </entity>
     <elements>
-        <element name="Exercise" positionX="-63" positionY="-18" width="128" height="104"/>
+        <element name="Exercise" positionX="-63" positionY="-18" width="128" height="119"/>
         <element name="ExerciseSet" positionX="-45" positionY="63" width="128" height="119"/>
-        <element name="Workout" positionX="-54" positionY="-9" width="128" height="134"/>
+        <element name="Workout" positionX="-54" positionY="-9" width="128" height="149"/>
     </elements>
 </model>

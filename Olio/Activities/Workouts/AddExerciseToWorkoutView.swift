@@ -77,8 +77,8 @@ struct AddExerciseToWorkoutView: View {
 
         workout.setValue(newExercises, forKey: "exercises")
 
-        print("Workout exercises: \(workout.workoutExercises.count)")
-        print("Exercise workouts: \(exercise.exerciseWorkouts.count)")
+        print("Workout exercises: \(workout.workoutExercises)")
+        print("Exercise workouts: \(exercise.exerciseWorkouts)")
     }
 }
 

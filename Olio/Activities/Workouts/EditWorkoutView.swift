@@ -47,7 +47,7 @@ struct EditWorkoutView: View {
             }
 
             List {
-                ForEach(workout.workoutExercises) { exercise in
+                ForEach(workout.workoutExercises, id: \.self) { exercise in
                     Section(header: Text(exercise.exerciseName)) {
                         ForEach(exercise.exerciseSets, id: \.self) { exerciseSet in
                             ExerciseSetView(exerciseSet: exerciseSet)
@@ -84,6 +84,7 @@ struct EditWorkoutView: View {
             }
         }
         .navigationTitle(workout.template ? "Edit Template" : "Edit Workout")
+        .onAppear { print(workout, workout.workoutExercises) }
         .onDisappear(perform: dataController.save)
         .alert(isPresented: $showingDeleteConfirmation) {
             Alert(title: Text("Are you sure?"),

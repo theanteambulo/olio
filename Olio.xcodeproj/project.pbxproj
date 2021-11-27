@@ -96,7 +96,6 @@
 			children = (
 				23D55F1B274CD7D7002B0105 /* HistoryView.swift */,
 				2321AF17274ECF710023F099 /* EditWorkoutView.swift */,
-				23A1BA70274F742400AA5123 /* WorkoutRowView.swift */,
 				236E4A2627523A780012C4B2 /* AddExerciseToWorkoutView.swift */,
 			);
 			path = Workouts;
@@ -170,6 +169,9 @@
 				23A1BA7A274F913800AA5123 /* TemplateWorkoutsView.swift */,
 				23A1BA7C274F930A00AA5123 /* TemplateWorkoutCardView.swift */,
 				23A8BC19275177BD00661A3C /* WorkoutList.swift */,
+				23A1BA70274F742400AA5123 /* WorkoutRowView.swift */,
+				236E4A2827524D6D0012C4B2 /* ExerciseSetView.swift */,
+				236E4A2A2752553F0012C4B2 /* ExerciseSetIconView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -181,8 +183,6 @@
 				23C97E2D274E251F005611A3 /* EditExerciseView.swift */,
 				23C97E2F274E3C25005611A3 /* ExerciseRowView.swift */,
 				23AA141C275022B400AC637D /* AddExerciseView.swift */,
-				236E4A2827524D6D0012C4B2 /* ExerciseSetView.swift */,
-				236E4A2A2752553F0012C4B2 /* ExerciseSetIconView.swift */,
 			);
 			path = Exercises;
 			sourceTree = "<group>";

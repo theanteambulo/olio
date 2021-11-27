@@ -70,7 +70,7 @@ struct HomeView: View {
                         let workout = Workout(context: managedObjectContext)
                         workout.completed = false
                         workout.template = false
-                        workout.name = ""
+                        workout.name = "New Workout"
                         dataController.save()
                     }
                 }
@@ -80,7 +80,7 @@ struct HomeView: View {
                         let workout = Workout(context: managedObjectContext)
                         workout.completed = false
                         workout.template = true
-                        workout.name = ""
+                        workout.name = "New Template"
                         dataController.save()
                     }
                 }
