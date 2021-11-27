@@ -12,6 +12,10 @@ extension ExerciseSet {
         Int(reps)
     }
 
+    var exerciseSetCreationDate: Date {
+        creationDate ?? Date()
+    }
+
     static var example: ExerciseSet {
         let dataController = DataController(inMemory: true)
         let viewContext = dataController.container.viewContext

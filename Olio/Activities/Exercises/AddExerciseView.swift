@@ -64,6 +64,7 @@ struct AddExerciseView: View {
 
     func save() {
         let exercise = Exercise(context: managedObjectContext)
+        exercise.id = UUID()
         exercise.name = name
         exercise.muscleGroup = Int16(muscleGroup)
         exercise.bodyweight = bodyweight

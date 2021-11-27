@@ -14,12 +14,6 @@ struct HomeView: View {
 
     static let tag: String? = "Home"
 
-    @FetchRequest(
-        entity: Workout.entity(),
-        sortDescriptors: [NSSortDescriptor(keyPath: \Workout.name, ascending: true)],
-        predicate: NSPredicate(format: "template = true")
-    ) var workoutTemplates: FetchedResults<Workout>
-
     let scheduledWorkouts: FetchRequest<Workout>
 
     @State private var showingAddConfirmationDialog = false
@@ -27,11 +21,9 @@ struct HomeView: View {
     init() {
         // Fetch next 10 workouts.
         let scheduledRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
-        let templatePredicate = NSPredicate(format: "template = false")
         let completedPredicate = NSPredicate(format: "completed = false")
         scheduledRequest.predicate = NSCompoundPredicate(type: .and,
-                                                         subpredicates: [templatePredicate,
-                                                                         completedPredicate])
+                                                         subpredicates: [completedPredicate])
         scheduledRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \Workout.dateScheduled,
                              ascending: true),
@@ -68,19 +60,9 @@ struct HomeView: View {
                 Button("New workout") {
                     withAnimation {
                         let workout = Workout(context: managedObjectContext)
+                        workout.id = UUID()
                         workout.completed = false
-                        workout.template = false
                         workout.name = "New Workout"
-                        dataController.save()
-                    }
-                }
-
-                Button("New workout template") {
-                    withAnimation {
-                        let workout = Workout(context: managedObjectContext)
-                        workout.completed = false
-                        workout.template = true
-                        workout.name = "New Template"
                         dataController.save()
                     }
                 }
@@ -94,25 +76,13 @@ struct HomeView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                VStack(alignment: .leading) {
-                    Section(header: Text("Templates").font(.headline)) {
-                        TemplateWorkoutsView(templateWorkouts: workoutTemplates)
-                    }
-                    .padding(.top)
-
-                    Text("Scheduled Workouts")
-                        .font(.headline)
-                }
-
-                List {
-                    WorkoutList(workouts: scheduledWorkouts,
-                    showingScheduledWorkouts: true)
-                }
-                .listStyle(InsetGroupedListStyle())
+            List {
+                WorkoutList(workouts: scheduledWorkouts,
+                showingScheduledWorkouts: true)
             }
+            .listStyle(InsetGroupedListStyle())
             .padding([.bottom])
-            .navigationTitle("Home")
+            .navigationTitle("Scheduled")
             .toolbar {
                 addSampleDataToolbarItem
                 addWorkoutToolbarItem

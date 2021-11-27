@@ -31,26 +31,38 @@ struct EditWorkoutView: View {
 
     var body: some View {
         Form {
-            Section(header: Text(workout.template ? "Template Name" : "Basic Settings")) {
+            Section(header: Text("Workout ID")) {
+                Text(workout.workoutId)
+            }
+
+            Section(header: Text("Basic Settings")) {
                 TextField("Workout name",
                           text: $name.onChange(update))
 
-                if !workout.template {
-                    DatePicker("Date scheduled",
-                               selection: $dateScheduled.onChange(update),
-                               displayedComponents: .date)
+                DatePicker("Date scheduled",
+                           selection: $dateScheduled.onChange(update),
+                           displayedComponents: .date)
 
-                    DatePicker("Date completed",
-                               selection: $dateCompleted.onChange(update),
-                               displayedComponents: .date)
-                }
+                DatePicker("Date completed",
+                           selection: $dateCompleted.onChange(update),
+                           displayedComponents: .date)
             }
 
             List {
                 ForEach(workout.workoutExercises, id: \.self) { exercise in
                     Section(header: Text(exercise.exerciseName)) {
-                        ForEach(exercise.exerciseSets, id: \.self) { exerciseSet in
+                        ForEach(filterExerciseSets(exercise.exerciseSets), id: \.self) { exerciseSet in
                             ExerciseSetView(exerciseSet: exerciseSet)
+                        }
+                        .onDelete { offsets in
+                            let allSets = filterExerciseSets(exercise.exerciseSets)
+
+                            for offset in offsets {
+                                let exerciseSet = allSets[offset]
+                                dataController.delete(exerciseSet)
+                            }
+
+                            dataController.save()
                         }
 
                         Button("Add Set") {
@@ -70,20 +82,18 @@ struct EditWorkoutView: View {
                 }
             }
 
-            if !workout.template {
-                Section(header: Text("Complete a workout when you've finished every set for all exercises.")) {
-                    Toggle("Complete workout", isOn: $completed.onChange(update))
-                }
+            Section(header: Text("Complete a workout when you've finished every set for all exercises.")) {
+                Toggle("Complete workout", isOn: $completed.onChange(update))
             }
 
-            Section(header: Text("Deleting a \(workout.template ? "template" : "workout") cannot be undone.")) {
-                Button(workout.template ? "Delete template" : "Delete workout") {
+            Section(header: Text("Deleting a workout cannot be undone.")) {
+                Button("Delete workout") {
                     showingDeleteConfirmation.toggle()
                 }
                 .tint(.red)
             }
         }
-        .navigationTitle(workout.template ? "Edit Template" : "Edit Workout")
+        .navigationTitle("Edit Workout")
         .onAppear { print(workout, workout.workoutExercises) }
         .onDisappear(perform: dataController.save)
         .alert(isPresented: $showingDeleteConfirmation) {
@@ -108,14 +118,20 @@ struct EditWorkoutView: View {
     func addSet(toExercise exercise: Exercise,
                 toWorkout workout: Workout) {
         let set = ExerciseSet(context: dataController.container.viewContext)
+        set.id = UUID()
         set.workout = workout
         set.exercise = exercise
+        set.creationDate = Date()
         dataController.save()
     }
 
     func delete() {
         dataController.delete(workout)
         presentationMode.wrappedValue.dismiss()
+    }
+
+    func filterExerciseSets(_ exerciseSets: [ExerciseSet]) -> [ExerciseSet] {
+        exerciseSets.filter { $0.workout == workout }.sorted(by: \ExerciseSet.exerciseSetCreationDate)
     }
 }
 

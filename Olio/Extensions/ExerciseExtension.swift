@@ -8,6 +8,10 @@
 import Foundation
 
 extension Exercise {
+    var exerciseId: String {
+        id?.uuidString ?? ""
+    }
+
     var exerciseName: String {
         name ?? ""
     }

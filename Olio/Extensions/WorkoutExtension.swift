@@ -8,6 +8,10 @@
 import Foundation
 
 extension Workout {
+    var workoutId: String {
+        id?.uuidString ?? ""
+    }
+
     var workoutName: String {
         name ?? ""
     }
@@ -47,7 +51,6 @@ extension Workout {
 
         let workout = Workout(context: viewContext)
         workout.name = "Example Workout"
-        workout.template = Bool.random()
         workout.dateScheduled = Date()
         workout.dateCompleted = Date()
         workout.completed = true

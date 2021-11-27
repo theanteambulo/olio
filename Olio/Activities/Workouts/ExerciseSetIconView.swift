@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct ExerciseSetIconView: View {
-    let completed: Binding<Bool>
+    let completed: Bool
 
     var body: some View {
         Image(systemName: "tortoise.fill")
-            .foregroundColor(completed.wrappedValue ? .green : .red)
+            .foregroundColor(completed ? .green : .red)
     }
 }
