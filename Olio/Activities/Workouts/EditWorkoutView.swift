@@ -49,19 +49,14 @@ struct EditWorkoutView: View {
             List {
                 ForEach(workout.workoutExercises) { exercise in
                     Section(header: Text(exercise.exerciseName)) {
-                        ForEach(exercise.exerciseSets) { exerciseSet in
-                            HStack {
-                                Text("\(exerciseSet.exerciseSetReps) reps")
+                        ForEach(exercise.exerciseSets, id: \.self) { exerciseSet in
+                            ExerciseSetView(exerciseSet: exerciseSet)
+                        }
 
-                                Spacer()
-
-                                if exerciseSet.completed {
-                                    Image(systemName: "checkmark.circle")
-                                        .foregroundColor(.green)
-                                } else {
-                                    Image(systemName: "xmark.circle")
-                                        .foregroundColor(.red)
-                                }
+                        Button("Add Set") {
+                            withAnimation {
+                                addSet(toExercise: exercise, toWorkout: workout)
+                                print("A set was added to the exercise.")
                             }
                         }
                     }
@@ -107,6 +102,14 @@ struct EditWorkoutView: View {
         workout.dateScheduled = dateScheduled
         workout.dateCompleted = dateCompleted
         workout.completed = completed
+    }
+
+    func addSet(toExercise exercise: Exercise,
+                toWorkout workout: Workout) {
+        let set = ExerciseSet(context: dataController.container.viewContext)
+        set.workout = workout
+        set.exercise = exercise
+        dataController.save()
     }
 
     func delete() {

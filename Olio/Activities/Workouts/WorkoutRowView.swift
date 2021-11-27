@@ -18,7 +18,7 @@ struct WorkoutRowView: View {
 
                 VStack(alignment: .leading) {
                     Text(workout.workoutName)
-                    Text("\(workout.workoutExercises.count) exercises")
+                    Text("\(workout.workoutExercises.count) exercises, \(workout.workoutExerciseSets.count) sets")
                         .font(.caption)
                         .foregroundColor(.secondary)
                 }

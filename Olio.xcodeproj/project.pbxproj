@@ -14,6 +14,8 @@
 		2321AF15274EC3E30023F099 /* ExerciseSetExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2321AF14274EC3E30023F099 /* ExerciseSetExtension.swift */; };
 		2321AF18274ECF710023F099 /* EditWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2321AF17274ECF710023F099 /* EditWorkoutView.swift */; };
 		236E4A2727523A780012C4B2 /* AddExerciseToWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236E4A2627523A780012C4B2 /* AddExerciseToWorkoutView.swift */; };
+		236E4A2927524D6D0012C4B2 /* ExerciseSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236E4A2827524D6D0012C4B2 /* ExerciseSetView.swift */; };
+		236E4A2B2752553F0012C4B2 /* ExerciseSetIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236E4A2A2752553F0012C4B2 /* ExerciseSetIconView.swift */; };
 		23A1BA71274F742400AA5123 /* WorkoutRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1BA70274F742400AA5123 /* WorkoutRowView.swift */; };
 		23A1BA7B274F913800AA5123 /* TemplateWorkoutsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1BA7A274F913800AA5123 /* TemplateWorkoutsView.swift */; };
 		23A1BA7D274F930A00AA5123 /* TemplateWorkoutCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1BA7C274F930A00AA5123 /* TemplateWorkoutCardView.swift */; };
@@ -45,6 +47,8 @@
 		2321AF14274EC3E30023F099 /* ExerciseSetExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSetExtension.swift; sourceTree = "<group>"; };
 		2321AF17274ECF710023F099 /* EditWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutView.swift; sourceTree = "<group>"; };
 		236E4A2627523A780012C4B2 /* AddExerciseToWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseToWorkoutView.swift; sourceTree = "<group>"; };
+		236E4A2827524D6D0012C4B2 /* ExerciseSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSetView.swift; sourceTree = "<group>"; };
+		236E4A2A2752553F0012C4B2 /* ExerciseSetIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSetIconView.swift; sourceTree = "<group>"; };
 		23A1BA70274F742400AA5123 /* WorkoutRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutRowView.swift; sourceTree = "<group>"; };
 		23A1BA7A274F913800AA5123 /* TemplateWorkoutsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateWorkoutsView.swift; sourceTree = "<group>"; };
 		23A1BA7C274F930A00AA5123 /* TemplateWorkoutCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateWorkoutCardView.swift; sourceTree = "<group>"; };
@@ -177,6 +181,8 @@
 				23C97E2D274E251F005611A3 /* EditExerciseView.swift */,
 				23C97E2F274E3C25005611A3 /* ExerciseRowView.swift */,
 				23AA141C275022B400AC637D /* AddExerciseView.swift */,
+				236E4A2827524D6D0012C4B2 /* ExerciseSetView.swift */,
+				236E4A2A2752553F0012C4B2 /* ExerciseSetIconView.swift */,
 			);
 			path = Exercises;
 			sourceTree = "<group>";
@@ -301,6 +307,7 @@
 				23C97E30274E3C25005611A3 /* ExerciseRowView.swift in Sources */,
 				230E70F3274D62DD007F6232 /* WorkoutExtension.swift in Sources */,
 				23A1BA7D274F930A00AA5123 /* TemplateWorkoutCardView.swift in Sources */,
+				236E4A2B2752553F0012C4B2 /* ExerciseSetIconView.swift in Sources */,
 				23AA142527502ED000AC637D /* ViewExtension.swift in Sources */,
 				2321AF18274ECF710023F099 /* EditWorkoutView.swift in Sources */,
 				236E4A2727523A780012C4B2 /* AddExerciseToWorkoutView.swift in Sources */,
@@ -309,6 +316,7 @@
 				230E70F1274D62C6007F6232 /* ExerciseExtension.swift in Sources */,
 				23AA141D275022B400AC637D /* AddExerciseView.swift in Sources */,
 				23D55F1C274CD7D7002B0105 /* HistoryView.swift in Sources */,
+				236E4A2927524D6D0012C4B2 /* ExerciseSetView.swift in Sources */,
 				23AB0655274B87A600BCBD28 /* DataController.swift in Sources */,
 				23AB0644274B7CF300BCBD28 /* ContentView.swift in Sources */,
 				23D55F1A274CD691002B0105 /* HomeView.swift in Sources */,

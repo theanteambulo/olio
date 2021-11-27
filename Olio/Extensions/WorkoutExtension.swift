@@ -37,6 +37,10 @@ extension Workout {
         exercises?.allObjects as? [Exercise] ?? []
     }
 
+    var workoutExerciseSets: [ExerciseSet] {
+        sets?.allObjects as? [ExerciseSet] ?? []
+    }
+
     static var example: Workout {
         let dataController = DataController(inMemory: true)
         let viewContext = dataController.container.viewContext
