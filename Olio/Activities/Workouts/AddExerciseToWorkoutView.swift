@@ -1,27 +1,29 @@
 //
-//  ExercisesView.swift
+//  AddExerciseToWorkoutView.swift
 //  Olio
 //
-//  Created by Jake King on 23/11/2021.
+//  Created by Jake King on 27/11/2021.
 //
 
 import SwiftUI
 
-struct ExercisesView: View {
+struct AddExerciseToWorkoutView: View {
+    @ObservedObject var workout: Workout
     let exercises: FetchRequest<Exercise>
 
     @EnvironmentObject var dataController: DataController
     @Environment(\.managedObjectContext) var managedObjectContext
+    @Environment(\.dismiss) var dismiss
 
-    static let tag: String? = "Exercises"
+    init(workout: Workout) {
+        self.workout = workout
 
-    @State private var showingAddExerciseSheet = false
-
-    init() {
         exercises = FetchRequest<Exercise>(
             entity: Exercise.entity(),
-            sortDescriptors: [NSSortDescriptor(keyPath: \Exercise.muscleGroup, ascending: true),
-                              NSSortDescriptor(keyPath: \Exercise.name, ascending: true)]
+            sortDescriptors: [NSSortDescriptor(keyPath: \Exercise.muscleGroup,
+                                               ascending: true),
+                              NSSortDescriptor(keyPath: \Exercise.name,
+                                               ascending: true)]
         )
     }
 
@@ -37,19 +39,6 @@ struct ExercisesView: View {
         }
     }
 
-    var addExerciseToolbarItem: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            Button {
-                showingAddExerciseSheet.toggle()
-            } label: {
-                Label("", systemImage: "plus")
-            }
-            .sheet(isPresented: $showingAddExerciseSheet) {
-                AddExerciseView()
-            }
-        }
-    }
-
     var body: some View {
         NavigationView {
             List {
@@ -57,27 +46,22 @@ struct ExercisesView: View {
                     Section(header: Text(muscleGroup.rawValue)) {
                         ForEach(filterExercisesToMuscleGroup(muscleGroup.rawValue,
                                                              exercises: sortedExercises)) { exercise in
-                            ExerciseRowView(exercise: exercise)
-                        }
-                        .onDelete { offsets in
-                            let muscleGroupExercises = filterExercisesToMuscleGroup(muscleGroup.rawValue,
-                                                                                    exercises: sortedExercises)
-
-                            for offset in offsets {
-                                let exercise = muscleGroupExercises[offset]
-                                dataController.delete(exercise)
+                            Button {
+                                addExerciseToWorkout(exercise)
+                                dismiss()
+                            } label: {
+                                HStack {
+                                    Image(systemName: exercise.bodyweight ? "figure.wave" : "wrench.fill")
+                                    Text(exercise.exerciseName)
+                                }
+                                .foregroundColor(.primary)
                             }
-
-                            dataController.save()
                         }
                     }
                 }
             }
-            .listStyle(InsetGroupedListStyle())
-            .navigationTitle("Exercises")
-            .toolbar {
-                addExerciseToolbarItem
-            }
+            .navigationTitle("Add Exercise")
+            .onDisappear(perform: dataController.save)
         }
     }
 
@@ -85,13 +69,24 @@ struct ExercisesView: View {
                                       exercises: [Exercise]) -> [Exercise] {
         return exercises.filter {$0.exerciseMuscleGroup == muscleGroup}
     }
+
+    func addExerciseToWorkout(_ exercise: Exercise) {
+        var existingExercises = workout.workoutExercises
+        existingExercises.append(exercise)
+        let newExercises = NSSet(array: existingExercises)
+
+        workout.setValue(newExercises, forKey: "exercises")
+
+        print("Workout exercises: \(workout.workoutExercises.count)")
+        print("Exercise workouts: \(exercise.exerciseWorkouts.count)")
+    }
 }
 
-struct ExercisesView_Previews: PreviewProvider {
+struct AddExerciseToWorkoutView_Previews: PreviewProvider {
     static var dataController = DataController.preview
 
     static var previews: some View {
-        ExercisesView()
+        AddExerciseToWorkoutView(workout: Workout.example)
             .environment(\.managedObjectContext, dataController.container.viewContext)
             .environmentObject(dataController)
     }

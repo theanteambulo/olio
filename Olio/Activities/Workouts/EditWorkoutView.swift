@@ -18,6 +18,7 @@ struct EditWorkoutView: View {
     @State private var dateCompleted: Date
     @State private var completed: Bool
     @State private var showingDeleteConfirmation = false
+    @State private var showingAddExerciseSheet = false
 
     init(workout: Workout) {
         self.workout = workout
@@ -64,6 +65,13 @@ struct EditWorkoutView: View {
                             }
                         }
                     }
+                }
+
+                Button("Add Exercise") {
+                    showingAddExerciseSheet = true
+                }
+                .sheet(isPresented: $showingAddExerciseSheet) {
+                    AddExerciseToWorkoutView(workout: workout)
                 }
             }
 

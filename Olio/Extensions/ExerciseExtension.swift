@@ -31,8 +31,22 @@ extension Exercise {
         }
     }
 
+    enum MuscleGroup: String, CaseIterable {
+        case chest = "Chest"
+        case back = "Back"
+        case shoulders = "Shoulders"
+        case biceps = "Biceps"
+        case triceps = "Triceps"
+        case legs = "Legs"
+        case abs = "Abs"
+    }
+
     var exerciseSets: [ExerciseSet] {
         sets?.allObjects as? [ExerciseSet] ?? []
+    }
+
+    var exerciseWorkouts: [Workout] {
+        workouts?.allObjects as? [Workout] ?? []
     }
 
     static var example: Exercise {
