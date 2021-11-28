@@ -84,7 +84,7 @@ struct HomeView: View {
             .padding([.bottom])
             .navigationTitle("Scheduled")
             .toolbar {
-                addSampleDataToolbarItem
+//                addSampleDataToolbarItem
                 addWorkoutToolbarItem
             }
         }

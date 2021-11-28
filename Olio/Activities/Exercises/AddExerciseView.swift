@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AddExerciseView: View {
+    let exercises: FetchRequest<Exercise>
+
     @EnvironmentObject var dataController: DataController
     @Environment(\.managedObjectContext) var managedObjectContext
     @Environment(\.dismiss) var dismiss
@@ -15,12 +17,24 @@ struct AddExerciseView: View {
     @State private var name = ""
     @State private var bodyweight = true
     @State private var muscleGroup = 1
+    @State private var showingExerciseAlreadyExistsAlert = false
+
+    init() {
+        exercises = FetchRequest(
+            entity: Exercise.entity(),
+            sortDescriptors: [NSSortDescriptor(keyPath: \Exercise.name,
+                                               ascending: true)])
+    }
 
     var saveToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button("Save") {
-                save()
-                dismiss()
+                if exerciseNameValid {
+                    save()
+                    dismiss()
+                } else {
+                    showingExerciseAlreadyExistsAlert = true
+                }
             }
         }
     }
@@ -32,6 +46,18 @@ struct AddExerciseView: View {
             } label: {
                 Label("Dismiss", systemImage: "xmark")
             }
+        }
+    }
+
+    var exerciseNameValid: Bool {
+        let trimmedName = name
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .trimmingCharacters(in: CharacterSet(charactersIn: "."))
+
+        if trimmedName != "" && exercises.wrappedValue.filter({ $0.exerciseName == trimmedName }).isEmpty {
+            return true
+        } else {
+            return false
         }
     }
 
@@ -59,13 +85,24 @@ struct AddExerciseView: View {
                 saveToolbarItem
                 dismissNoSaveToolbarItem
             }
+            .alert(isPresented: $showingExerciseAlreadyExistsAlert) {
+                Alert(
+                    title: Text("Oops!"),
+                    message: Text("Looks like this exercise already exists. Try changing the name to proceed."),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
         }
     }
 
     func save() {
+        let trimmedName = name
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .trimmingCharacters(in: CharacterSet(charactersIn: "."))
+
         let exercise = Exercise(context: managedObjectContext)
         exercise.id = UUID()
-        exercise.name = name
+        exercise.name = trimmedName
         exercise.muscleGroup = Int16(muscleGroup)
         exercise.bodyweight = bodyweight
 
