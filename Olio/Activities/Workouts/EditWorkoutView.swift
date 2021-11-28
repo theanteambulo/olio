@@ -17,11 +17,11 @@ struct EditWorkoutView: View {
     @State private var dateScheduled: Date
     @State private var dateCompleted: Date
     @State private var completed: Bool
-    
+
     @State private var showingDeleteConfirmation = false
     @State private var showingAddExerciseSheet = false
     @State private var showingCompleteConfirmation = false
-    
+
     @State private var completeConfirmationTitle = ""
     @State private var completeConfirmationMessage = ""
 
@@ -56,6 +56,11 @@ struct EditWorkoutView: View {
             List {
                 ForEach(workout.workoutExercises, id: \.self) { exercise in
                     Section(header: Text(exercise.exerciseName)) {
+                        HStack {
+                            Text("\(Int(exerciseCompletionAmount(exercise) * 100))%")
+                            ProgressView(value: exerciseCompletionAmount(exercise))
+                        }
+
                         ForEach(filterExerciseSets(exercise.exerciseSets), id: \.self) { exerciseSet in
                             ExerciseSetView(exerciseSet: exerciseSet)
                         }
@@ -165,6 +170,15 @@ struct EditWorkoutView: View {
 
     func filterExerciseSets(_ exerciseSets: [ExerciseSet]) -> [ExerciseSet] {
         exerciseSets.filter { $0.workout == workout }.sorted(by: \ExerciseSet.exerciseSetCreationDate)
+    }
+
+    func exerciseCompletionAmount(_ exercise: Exercise) -> Double {
+        let allSets = exercise.exerciseSets.filter { $0.workout == workout }
+        guard allSets.isEmpty == false else { return 0 }
+
+        let completedSets = allSets.filter { $0.completed == true }
+
+        return Double(completedSets.count) / Double(allSets.count)
     }
 }
 

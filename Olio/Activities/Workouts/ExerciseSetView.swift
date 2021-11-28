@@ -11,20 +11,23 @@ struct ExerciseSetView: View {
     @ObservedObject var exerciseSet: ExerciseSet
 
     @State private var exerciseSetReps: Int
+    @State private var exerciseSetCompleted: Bool
 
     init(exerciseSet: ExerciseSet) {
         self.exerciseSet = exerciseSet
 
         _exerciseSetReps = State(wrappedValue: exerciseSet.exerciseSetReps)
+        _exerciseSetCompleted = State(wrappedValue: exerciseSet.completed)
     }
 
     var body: some View {
         HStack {
-            ExerciseSetIconView(completed: exerciseSet.completed)
+            Image(systemName: "tortoise.fill")
+                .foregroundColor(exerciseSet.completed ? .green : .red)
                 .onTapGesture {
-                    exerciseSet.completed.toggle()
+                    exerciseSetCompleted.toggle()
                     update()
-                    print("Exercise completed: \(exerciseSet.completed)")
+                    print("Exercise completed: \(exerciseSetCompleted)")
                 }
 
             Stepper(
@@ -41,6 +44,7 @@ struct ExerciseSetView: View {
         exerciseSet.objectWillChange.send()
 
         exerciseSet.reps = Int16(exerciseSetReps)
+        exerciseSet.completed = exerciseSetCompleted
     }
 }
 
