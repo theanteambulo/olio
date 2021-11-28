@@ -17,8 +17,13 @@ struct EditWorkoutView: View {
     @State private var dateScheduled: Date
     @State private var dateCompleted: Date
     @State private var completed: Bool
+    
     @State private var showingDeleteConfirmation = false
     @State private var showingAddExerciseSheet = false
+    @State private var showingCompleteConfirmation = false
+    
+    @State private var completeConfirmationTitle = ""
+    @State private var completeConfirmationMessage = ""
 
     init(workout: Workout) {
         self.workout = workout
@@ -83,12 +88,15 @@ struct EditWorkoutView: View {
             }
 
             Section(header: Text("Complete a workout when you've finished every set for all exercises.")) {
-                Toggle("Complete workout", isOn: $completed.onChange(update))
+                Toggle("Complete workout", isOn: $completed.onChange {
+                    showingCompleteConfirmation = true
+                    getConfirmationAlertTitleAndMessage()
+                })
             }
 
             Section(header: Text("Deleting a workout cannot be undone.")) {
                 Button("Delete workout") {
-                    showingDeleteConfirmation.toggle()
+                    showingDeleteConfirmation = true
                 }
                 .tint(.red)
             }
@@ -97,11 +105,21 @@ struct EditWorkoutView: View {
         .onAppear { print(workout, workout.workoutExercises) }
         .onDisappear(perform: dataController.save)
         .alert(isPresented: $showingDeleteConfirmation) {
-            Alert(title: Text("Are you sure?"),
-                  message: Text("Deleting a workout cannot be undone."),
-                  primaryButton: .destructive(Text("Delete"),
+            Alert(
+                title: Text("Are you sure?"),
+                message: Text("Deleting a workout cannot be undone."),
+                primaryButton: .destructive(Text("Delete"),
                                               action: delete),
-                  secondaryButton: .cancel()
+                secondaryButton: .cancel()
+            )
+        }
+        .alert(isPresented: $showingCompleteConfirmation) {
+            Alert(
+                title: Text(completeConfirmationTitle),
+                message: Text(completeConfirmationMessage),
+                dismissButton: .default(Text("OK")) {
+                    update()
+                }
             )
         }
     }
@@ -111,8 +129,23 @@ struct EditWorkoutView: View {
 
         workout.name = name
         workout.dateScheduled = dateScheduled
-        workout.dateCompleted = dateCompleted
         workout.completed = completed
+
+        if workout.completed && workout.dateCompleted == nil {
+            workout.dateCompleted = Date()
+        } else {
+            workout.dateCompleted = dateCompleted
+        }
+    }
+
+    func getConfirmationAlertTitleAndMessage() {
+        if workout.completed {
+            completeConfirmationTitle = "Workout Scheduled"
+            completeConfirmationMessage = "This workout will now move to your scheduled workouts. Get after it!"
+        } else {
+            completeConfirmationTitle = "Workout Complete"
+            completeConfirmationMessage = "Smashed it! This workout will now move to your workout history."
+        }
     }
 
     func addSet(toExercise exercise: Exercise,
