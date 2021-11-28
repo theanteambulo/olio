@@ -8,6 +8,10 @@
 import Foundation
 
 extension ExerciseSet {
+    var exerciseSetId: String {
+        id?.uuidString ?? ""
+    }
+
     var exerciseSetReps: Int {
         Int(reps)
     }

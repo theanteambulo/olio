@@ -22,21 +22,19 @@ struct ExerciseSetView: View {
 
     var body: some View {
         HStack {
-            Image(systemName: "tortoise.fill")
+            Image(systemName: exerciseSet.completed ? "checkmark" : "xmark")
                 .foregroundColor(exerciseSet.completed ? .green : .red)
-                .onTapGesture {
-                    exerciseSetCompleted.toggle()
-                    update()
-                    print("Exercise completed: \(exerciseSetCompleted)")
-                    print("Exercise completed: \(exerciseSet.completed)")
+
+            VStack {
+                Stepper(
+                    value: $exerciseSetReps.onChange(update),
+                    in: 1...100,
+                    step: 1
+                ) {
+                    Text("Reps: \(exerciseSetReps)")
                 }
 
-            Stepper(
-                value: $exerciseSetReps.onChange(update),
-                in: 1...100,
-                step: 1
-            ) {
-                Text("Reps: \(exerciseSetReps)")
+                Text(exerciseSet.exerciseSetId)
             }
         }
     }
@@ -45,7 +43,6 @@ struct ExerciseSetView: View {
         exerciseSet.objectWillChange.send()
 
         exerciseSet.reps = Int16(exerciseSetReps)
-        exerciseSet.completed = exerciseSetCompleted
     }
 }
 

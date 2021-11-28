@@ -63,16 +63,33 @@ struct EditWorkoutView: View {
 
                         ForEach(filterExerciseSets(exercise.exerciseSets), id: \.self) { exerciseSet in
                             ExerciseSetView(exerciseSet: exerciseSet)
-                        }
-                        .onDelete { offsets in
-                            let allSets = filterExerciseSets(exercise.exerciseSets)
-
-                            for offset in offsets {
-                                let exerciseSet = allSets[offset]
-                                dataController.delete(exerciseSet)
-                            }
-
-                            dataController.save()
+                                .swipeActions(edge: .leading) {
+                                    Button {
+                                        withAnimation {
+                                            exerciseSet.completed.toggle()
+                                            update()
+                                        }
+                                    } label: {
+                                        if exerciseSet.completed {
+                                            Label("Mark Incomplete", systemImage: "xmark")
+                                        } else {
+                                            Label("Complete", systemImage: "checkmark")
+                                        }
+                                    }
+                                    .tint(exerciseSet.completed
+                                          ? .red
+                                          : .green)
+                                }
+                                .swipeActions(edge: .trailing) {
+                                    Button(role: .destructive) {
+                                        withAnimation {
+                                            print("ExerciseSet deleted: \(exerciseSet.exerciseSetId)")
+                                            deleteExerciseSet(exerciseSet: exerciseSet)
+                                        }
+                                    } label: {
+                                        Label("Delete", systemImage: "trash")
+                                    }
+                                }
                         }
 
                         Button("Add Set") {
@@ -97,6 +114,15 @@ struct EditWorkoutView: View {
                     showingCompleteConfirmation = true
                     getConfirmationAlertTitleAndMessage()
                 })
+                .alert(isPresented: $showingCompleteConfirmation) {
+                    Alert(
+                        title: Text(completeConfirmationTitle),
+                        message: Text(completeConfirmationMessage),
+                        dismissButton: .default(Text("OK")) {
+                            update()
+                        }
+                    )
+                }
             }
 
             Section(header: Text("Deleting a workout cannot be undone.")) {
@@ -104,29 +130,20 @@ struct EditWorkoutView: View {
                     showingDeleteConfirmation = true
                 }
                 .tint(.red)
+                .alert(isPresented: $showingDeleteConfirmation) {
+                    Alert(
+                        title: Text("Are you sure?"),
+                        message: Text("Deleting a workout cannot be undone."),
+                        primaryButton: .destructive(Text("Delete"),
+                                                      action: delete),
+                        secondaryButton: .cancel()
+                    )
+                }
             }
         }
         .navigationTitle("Edit Workout")
         .onAppear { print(workout, workout.workoutExercises) }
         .onDisappear(perform: dataController.save)
-        .alert(isPresented: $showingDeleteConfirmation) {
-            Alert(
-                title: Text("Are you sure?"),
-                message: Text("Deleting a workout cannot be undone."),
-                primaryButton: .destructive(Text("Delete"),
-                                              action: delete),
-                secondaryButton: .cancel()
-            )
-        }
-        .alert(isPresented: $showingCompleteConfirmation) {
-            Alert(
-                title: Text(completeConfirmationTitle),
-                message: Text(completeConfirmationMessage),
-                dismissButton: .default(Text("OK")) {
-                    update()
-                }
-            )
-        }
     }
 
     func update() {
@@ -166,6 +183,11 @@ struct EditWorkoutView: View {
     func delete() {
         dataController.delete(workout)
         presentationMode.wrappedValue.dismiss()
+    }
+
+    func deleteExerciseSet(exerciseSet: ExerciseSet) {
+        dataController.delete(exerciseSet)
+        dataController.save()
     }
 
     func filterExerciseSets(_ exerciseSets: [ExerciseSet]) -> [ExerciseSet] {
