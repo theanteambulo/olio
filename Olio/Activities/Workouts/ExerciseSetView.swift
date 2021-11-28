@@ -28,6 +28,7 @@ struct ExerciseSetView: View {
                     exerciseSetCompleted.toggle()
                     update()
                     print("Exercise completed: \(exerciseSetCompleted)")
+                    print("Exercise completed: \(exerciseSet.completed)")
                 }
 
             Stepper(

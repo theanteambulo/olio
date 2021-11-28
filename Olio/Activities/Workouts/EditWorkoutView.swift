@@ -57,7 +57,7 @@ struct EditWorkoutView: View {
                 ForEach(workout.workoutExercises, id: \.self) { exercise in
                     Section(header: Text(exercise.exerciseName)) {
                         HStack {
-                            Text("\(Int(exerciseCompletionAmount(exercise) * 100))%")
+                            Text("\(Int(100 * exerciseCompletionAmount(exercise)))%")
                             ProgressView(value: exerciseCompletionAmount(exercise))
                         }
 
