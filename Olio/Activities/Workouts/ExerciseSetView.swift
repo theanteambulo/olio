@@ -25,16 +25,12 @@ struct ExerciseSetView: View {
             Image(systemName: exerciseSet.completed ? "checkmark" : "xmark")
                 .foregroundColor(exerciseSet.completed ? .green : .red)
 
-            VStack {
-                Stepper(
-                    value: $exerciseSetReps.onChange(update),
-                    in: 1...100,
-                    step: 1
-                ) {
-                    Text("Reps: \(exerciseSetReps)")
-                }
-
-                Text(exerciseSet.exerciseSetId)
+            Stepper(
+                value: $exerciseSetReps.onChange(update),
+                in: 1...100,
+                step: 1
+            ) {
+                Text("Reps: \(exerciseSetReps)")
             }
         }
     }
