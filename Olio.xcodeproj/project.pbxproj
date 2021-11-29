@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		230BAC58274C49EF0013E4AF /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 230BAC57274C49EF0013E4AF /* CloudKit.framework */; };
 		230E70F1274D62C6007F6232 /* ExerciseExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230E70F0274D62C6007F6232 /* ExerciseExtension.swift */; };
 		230E70F3274D62DD007F6232 /* WorkoutExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230E70F2274D62DD007F6232 /* WorkoutExtension.swift */; };
 		230E70F7274D779A007F6232 /* ExercisesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230E70F6274D779A007F6232 /* ExercisesView.swift */; };
@@ -19,7 +18,8 @@
 		23A1BA7B274F913800AA5123 /* TemplateWorkoutsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1BA7A274F913800AA5123 /* TemplateWorkoutsView.swift */; };
 		23A1BA7D274F930A00AA5123 /* TemplateWorkoutCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1BA7C274F930A00AA5123 /* TemplateWorkoutCardView.swift */; };
 		23A368B62750C248000725E9 /* SequenceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A368B52750C248000725E9 /* SequenceExtension.swift */; };
-		23A8BC1A275177BD00661A3C /* WorkoutListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A8BC19275177BD00661A3C /* WorkoutListView.swift */; };
+		23A9C01427554FA3005E0294 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 230BAC57274C49EF0013E4AF /* CloudKit.framework */; };
+		23A9C01627555457005E0294 /* WorkoutListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A9C01527555457005E0294 /* WorkoutListView.swift */; };
 		23AA141D275022B400AC637D /* AddExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AA141C275022B400AC637D /* AddExerciseView.swift */; };
 		23AA142327502E3A00AC637D /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AA142227502E3A00AC637D /* ColorExtension.swift */; };
 		23AA142527502ED000AC637D /* ViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AA142427502ED000AC637D /* ViewExtension.swift */; };
@@ -51,7 +51,8 @@
 		23A1BA7A274F913800AA5123 /* TemplateWorkoutsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateWorkoutsView.swift; sourceTree = "<group>"; };
 		23A1BA7C274F930A00AA5123 /* TemplateWorkoutCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateWorkoutCardView.swift; sourceTree = "<group>"; };
 		23A368B52750C248000725E9 /* SequenceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceExtension.swift; sourceTree = "<group>"; };
-		23A8BC19275177BD00661A3C /* WorkoutListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutListView.swift; sourceTree = "<group>"; };
+		23A9C01227554F79005E0294 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		23A9C01527555457005E0294 /* WorkoutListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutListView.swift; sourceTree = "<group>"; };
 		23AA141C275022B400AC637D /* AddExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseView.swift; sourceTree = "<group>"; };
 		23AA142227502E3A00AC637D /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		23AA142427502ED000AC637D /* ViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewExtension.swift; sourceTree = "<group>"; };
@@ -74,7 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				230BAC58274C49EF0013E4AF /* CloudKit.framework in Frameworks */,
+				23A9C01427554FA3005E0294 /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +85,7 @@
 		230BAC56274C49EF0013E4AF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				23A9C01227554F79005E0294 /* CoreServices.framework */,
 				230BAC57274C49EF0013E4AF /* CloudKit.framework */,
 			);
 			name = Frameworks;
@@ -167,7 +169,7 @@
 				23D55F19274CD691002B0105 /* HomeView.swift */,
 				23A1BA7A274F913800AA5123 /* TemplateWorkoutsView.swift */,
 				23A1BA7C274F930A00AA5123 /* TemplateWorkoutCardView.swift */,
-				23A8BC19275177BD00661A3C /* WorkoutListView.swift */,
+				23A9C01527555457005E0294 /* WorkoutListView.swift */,
 				23A1BA70274F742400AA5123 /* WorkoutRowView.swift */,
 			);
 			path = Home;
@@ -300,7 +302,6 @@
 				230E70F7274D779A007F6232 /* ExercisesView.swift in Sources */,
 				23C97E2E274E251F005611A3 /* EditExerciseView.swift in Sources */,
 				23AB0651274B7FCE00BCBD28 /* Main.xcdatamodeld in Sources */,
-				23A8BC1A275177BD00661A3C /* WorkoutListView.swift in Sources */,
 				23C97E30274E3C25005611A3 /* ExerciseRowView.swift in Sources */,
 				230E70F3274D62DD007F6232 /* WorkoutExtension.swift in Sources */,
 				23A1BA7D274F930A00AA5123 /* TemplateWorkoutCardView.swift in Sources */,
@@ -319,6 +320,7 @@
 				23C97E32274E548A005611A3 /* BindingExtension.swift in Sources */,
 				23A1BA71274F742400AA5123 /* WorkoutRowView.swift in Sources */,
 				2321AF15274EC3E30023F099 /* ExerciseSetExtension.swift in Sources */,
+				23A9C01627555457005E0294 /* WorkoutListView.swift in Sources */,
 				23A368B62750C248000725E9 /* SequenceExtension.swift in Sources */,
 				23AB0642274B7CF300BCBD28 /* OlioApp.swift in Sources */,
 			);

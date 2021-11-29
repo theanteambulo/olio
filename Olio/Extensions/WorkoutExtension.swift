@@ -57,4 +57,16 @@ extension Workout {
 
         return workout
     }
+
+    func getConfirmationAlertTitle(workout: Workout) -> String {
+        return workout.completed ? "Workout Scheduled" : "Workout Complete"
+    }
+
+    func getConfirmationAlertMessage(workout: Workout) -> String {
+        if workout.completed {
+            return "This workout will now move to your scheduled workouts. Get after it!"
+        } else {
+            return "Smashed it! This workout will now move to your workout history."
+        }
+    }
 }

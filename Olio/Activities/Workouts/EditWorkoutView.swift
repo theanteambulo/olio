@@ -130,12 +130,11 @@ struct EditWorkoutView: View {
             Section(header: Text("Complete a workout when you've finished every set for all exercises.")) {
                 Toggle("Complete workout", isOn: $completed.onChange {
                     showingCompleteConfirmation = true
-                    getConfirmationAlertTitleAndMessage()
                 })
                 .alert(isPresented: $showingCompleteConfirmation) {
                     Alert(
-                        title: Text(completeConfirmationTitle),
-                        message: Text(completeConfirmationMessage),
+                        title: Text(workout.getConfirmationAlertTitle(workout: workout)),
+                        message: Text(workout.getConfirmationAlertMessage(workout: workout)),
                         dismissButton: .default(Text("OK")) {
                             update()
                         }
@@ -151,7 +150,8 @@ struct EditWorkoutView: View {
                 .alert(isPresented: $showingDeleteConfirmation) {
                     Alert(
                         title: Text("Are you sure?"),
-                        message: Text("Deleting a workout cannot be undone."),
+                        // swiftlint:disable:next line_length
+                        message: Text("Deleting a workout cannot be undone and will also delete all sets contained in the workout."),
                         primaryButton: .destructive(Text("Delete"),
                                                       action: delete),
                         secondaryButton: .cancel()
@@ -174,16 +174,6 @@ struct EditWorkoutView: View {
             workout.dateCompleted = Date()
         } else {
             workout.dateCompleted = dateCompleted
-        }
-    }
-
-    func getConfirmationAlertTitleAndMessage() {
-        if workout.completed {
-            completeConfirmationTitle = "Workout Scheduled"
-            completeConfirmationMessage = "This workout will now move to your scheduled workouts. Get after it!"
-        } else {
-            completeConfirmationTitle = "Workout Complete"
-            completeConfirmationMessage = "Smashed it! This workout will now move to your workout history."
         }
     }
 
