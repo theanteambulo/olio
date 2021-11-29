@@ -69,7 +69,7 @@ struct AddExerciseToWorkoutView: View {
 
     func filterExercisesToMuscleGroup(_ muscleGroup: Exercise.MuscleGroup.RawValue,
                                       exercises: [Exercise]) -> [Exercise] {
-        return exercises.filter {$0.exerciseMuscleGroup == muscleGroup}
+        return exercises.filter { $0.exerciseMuscleGroup == muscleGroup }
     }
 
     func addExerciseToWorkout(_ exercise: Exercise) {

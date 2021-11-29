@@ -12,14 +12,7 @@ struct ExerciseRowView: View {
 
     var body: some View {
         NavigationLink(destination: EditExerciseView(exercise: exercise)) {
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(exercise.exerciseName)
-                    Text(exercise.exerciseId)
-                        .foregroundColor(.secondary)
-                        .font(.caption)
-                }
-            }
+            Text(exercise.exerciseName)
         }
     }
 }

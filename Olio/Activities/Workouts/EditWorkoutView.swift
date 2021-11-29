@@ -36,12 +36,18 @@ struct EditWorkoutView: View {
         _completed = State(wrappedValue: workout.completed)
     }
 
+    var sortedExercises: [Exercise] {
+        return workout.workoutExercises.sorted { first, second in
+            if first.exerciseName < second.exerciseName {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+
     var body: some View {
         Form {
-            Section(header: Text("Workout ID")) {
-                Text(workout.workoutId)
-            }
-
             Section(header: Text("Basic Settings")) {
                 TextField("Workout name",
                           text: $name.onChange(update))
@@ -55,8 +61,15 @@ struct EditWorkoutView: View {
                            displayedComponents: .date)
             }
 
+            Button("Add Exercise") {
+                showingAddExerciseSheet = true
+            }
+            .sheet(isPresented: $showingAddExerciseSheet) {
+                AddExerciseToWorkoutView(workout: workout)
+            }
+
             List {
-                ForEach(workout.workoutExercises, id: \.self) { exercise in
+                ForEach(sortedExercises, id: \.self) { exercise in
                     Section(header: Text("\(exercise.exerciseName)")) {
                         HStack {
                             Text("\(Int(100 * exerciseCompletionAmount(exercise)))%")
@@ -120,29 +133,21 @@ struct EditWorkoutView: View {
                 }
             }
 
-            Button("Add Exercise") {
-                showingAddExerciseSheet = true
-            }
-            .sheet(isPresented: $showingAddExerciseSheet) {
-                AddExerciseToWorkoutView(workout: workout)
-            }
-
-            Section(header: Text("Complete a workout when you've finished every set for all exercises.")) {
-                Toggle("Complete workout", isOn: $completed.onChange {
+            Section(header: Text("")) {
+                Button(workout.completed ? "Schedule workout" : "Complete workout") {
                     showingCompleteConfirmation = true
-                })
+                }
                 .alert(isPresented: $showingCompleteConfirmation) {
                     Alert(
                         title: Text(workout.getConfirmationAlertTitle(workout: workout)),
                         message: Text(workout.getConfirmationAlertMessage(workout: workout)),
                         dismissButton: .default(Text("OK")) {
+                            completed.toggle()
                             update()
                         }
                     )
                 }
-            }
 
-            Section(header: Text("Deleting a workout cannot be undone.")) {
                 Button("Delete workout", role: .destructive) {
                     showingDeleteConfirmation = true
                 }
@@ -206,6 +211,7 @@ struct EditWorkoutView: View {
         set.id = UUID()
         set.workout = workout
         set.exercise = exercise
+        set.reps = 10
         set.creationDate = Date()
         dataController.save()
     }
