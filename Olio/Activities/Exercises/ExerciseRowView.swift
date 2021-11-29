@@ -13,8 +13,6 @@ struct ExerciseRowView: View {
     var body: some View {
         NavigationLink(destination: EditExerciseView(exercise: exercise)) {
             HStack {
-                Image(systemName: exercise.bodyweight ? "figure.wave" : "wrench.fill")
-
                 VStack(alignment: .leading) {
                     Text(exercise.exerciseName)
                     Text(exercise.exerciseId)

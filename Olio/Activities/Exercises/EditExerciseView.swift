@@ -13,14 +13,12 @@ struct EditExerciseView: View {
     @EnvironmentObject var dataController: DataController
 
     @State private var name: String
-    @State private var bodyweight: Bool
     @State private var muscleGroup: Int
 
     init(exercise: Exercise) {
         self.exercise = exercise
 
         _name = State(wrappedValue: exercise.exerciseName)
-        _bodyweight = State(wrappedValue: exercise.bodyweight)
         _muscleGroup = State(wrappedValue: Int(exercise.muscleGroup))
     }
 
@@ -38,8 +36,6 @@ struct EditExerciseView: View {
                     Text("Legs").tag(6)
                     Text("Abs").tag(7)
                 }
-
-                Toggle("Bodyweight exercise", isOn: $bodyweight.onChange(update))
             }
         }
         .navigationTitle("Edit Exercise")
@@ -51,7 +47,6 @@ struct EditExerciseView: View {
 
         exercise.name = name
         exercise.muscleGroup = Int16(muscleGroup)
-        exercise.bodyweight = bodyweight
     }
 }
 

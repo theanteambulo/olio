@@ -76,8 +76,6 @@ struct AddExerciseView: View {
                         Text("Legs").tag(6)
                         Text("Abs").tag(7)
                     }
-
-                    Toggle("Bodyweight exercise", isOn: $bodyweight)
                 }
             }
             .navigationTitle("Add Exercise")
@@ -104,7 +102,6 @@ struct AddExerciseView: View {
         exercise.id = UUID()
         exercise.name = trimmedName
         exercise.muscleGroup = Int16(muscleGroup)
-        exercise.bodyweight = bodyweight
 
         dataController.save()
     }
