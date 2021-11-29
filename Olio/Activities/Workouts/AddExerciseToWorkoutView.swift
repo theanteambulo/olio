@@ -51,7 +51,6 @@ struct AddExerciseToWorkoutView: View {
                                 dismiss()
                             } label: {
                                 HStack {
-                                    Image(systemName: exercise.bodyweight ? "figure.wave" : "wrench.fill")
                                     Text(exercise.exerciseName)
                                 }
                                 .foregroundColor(.primary)
