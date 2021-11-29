@@ -39,13 +39,17 @@ struct AddExerciseToWorkoutView: View {
         }
     }
 
+    var filteredExercises: [Exercise] {
+        sortedExercises.filter { !workout.workoutExercises.contains($0) }
+    }
+
     var body: some View {
         NavigationView {
             List {
                 ForEach(Exercise.MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
                     Section(header: Text(muscleGroup.rawValue)) {
                         ForEach(filterExercisesToMuscleGroup(muscleGroup.rawValue,
-                                                             exercises: sortedExercises)) { exercise in
+                                                             exercises: filteredExercises)) { exercise in
                             Button {
                                 addExerciseToWorkout(exercise)
                                 dismiss()

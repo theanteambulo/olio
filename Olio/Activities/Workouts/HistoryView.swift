@@ -31,7 +31,7 @@ struct HistoryView: View {
     var body: some View {
         NavigationView {
             List {
-                WorkoutList(workouts: workoutsCompleted,
+                WorkoutListView(workouts: workoutsCompleted,
                             showingScheduledWorkouts: false)
             }
             .listStyle(InsetGroupedListStyle())

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct WorkoutList: View {
+struct WorkoutListView: View {
     let workouts: FetchRequest<Workout>
     let showingScheduledWorkouts: Bool
 

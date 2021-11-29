@@ -77,7 +77,7 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             List {
-                WorkoutList(workouts: scheduledWorkouts,
+                WorkoutListView(workouts: scheduledWorkouts,
                 showingScheduledWorkouts: true)
             }
             .listStyle(InsetGroupedListStyle())
