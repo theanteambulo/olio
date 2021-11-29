@@ -22,6 +22,8 @@ struct EditWorkoutView: View {
     @State private var showingAddExerciseSheet = false
     @State private var showingCompleteConfirmation = false
 
+    @State private var showingRemoveConfirmation = false
+
     @State private var completeConfirmationTitle = ""
     @State private var completeConfirmationMessage = ""
 
@@ -55,7 +57,7 @@ struct EditWorkoutView: View {
 
             List {
                 ForEach(workout.workoutExercises, id: \.self) { exercise in
-                    Section(header: Text(exercise.exerciseName)) {
+                    Section(header: Text("\(exercise.exerciseName)")) {
                         HStack {
                             Text("\(Int(100 * exerciseCompletionAmount(exercise)))%")
                             ProgressView(value: exerciseCompletionAmount(exercise))
@@ -90,7 +92,7 @@ struct EditWorkoutView: View {
                                         Label("Delete", systemImage: "trash")
                                     }
                                 }
-                        }
+                            }
 
                         Button("Add Set") {
                             withAnimation {
@@ -98,15 +100,31 @@ struct EditWorkoutView: View {
                                 print("A set was added to the exercise.")
                             }
                         }
+
+                        Button("Remove Exercise", role: .destructive) {
+                            showingDeleteConfirmation = true
+                        }
+                        .tint(.red)
+                        .alert(isPresented: $showingDeleteConfirmation) {
+                            Alert(
+                                title: Text("Are you sure?"),
+                                // swiftlint:disable:next line_length
+                                message: Text("Removing an exercise from the workout also deletes all of its sets and cannot be undone."),
+                                primaryButton: .destructive(Text("Remove")) {
+                                    removeExercise(exercise: exercise)
+                                },
+                                secondaryButton: .cancel()
+                            )
+                        }
                     }
                 }
+            }
 
-                Button("Add Exercise") {
-                    showingAddExerciseSheet = true
-                }
-                .sheet(isPresented: $showingAddExerciseSheet) {
-                    AddExerciseToWorkoutView(workout: workout)
-                }
+            Button("Add Exercise") {
+                showingAddExerciseSheet = true
+            }
+            .sheet(isPresented: $showingAddExerciseSheet) {
+                AddExerciseToWorkoutView(workout: workout)
             }
 
             Section(header: Text("Complete a workout when you've finished every set for all exercises.")) {
@@ -126,7 +144,7 @@ struct EditWorkoutView: View {
             }
 
             Section(header: Text("Deleting a workout cannot be undone.")) {
-                Button("Delete workout") {
+                Button("Delete workout", role: .destructive) {
                     showingDeleteConfirmation = true
                 }
                 .tint(.red)
@@ -142,7 +160,6 @@ struct EditWorkoutView: View {
             }
         }
         .navigationTitle("Edit Workout")
-        .onAppear { print(workout, workout.workoutExercises) }
         .onDisappear(perform: dataController.save)
     }
 
@@ -170,6 +187,29 @@ struct EditWorkoutView: View {
         }
     }
 
+    func delete() {
+        dataController.delete(workout)
+        presentationMode.wrappedValue.dismiss()
+    }
+
+    func exerciseCompletionAmount(_ exercise: Exercise) -> Double {
+        let allSets = exercise.exerciseSets.filter { $0.workout == workout }
+        guard allSets.isEmpty == false else { return 0 }
+
+        let completedSets = allSets.filter { $0.completed == true }
+
+        return Double(completedSets.count) / Double(allSets.count)
+    }
+
+    func filterExerciseSets(_ exerciseSets: [ExerciseSet]) -> [ExerciseSet] {
+        exerciseSets.filter { $0.workout == workout }.sorted(by: \ExerciseSet.exerciseSetCreationDate)
+    }
+
+    func deleteExerciseSet(exerciseSet: ExerciseSet) {
+        dataController.delete(exerciseSet)
+        dataController.save()
+    }
+
     func addSet(toExercise exercise: Exercise,
                 toWorkout workout: Workout) {
         let set = ExerciseSet(context: dataController.container.viewContext)
@@ -180,27 +220,18 @@ struct EditWorkoutView: View {
         dataController.save()
     }
 
-    func delete() {
-        dataController.delete(workout)
-        presentationMode.wrappedValue.dismiss()
-    }
+    func removeExercise(exercise: Exercise) {
+        var existingExercises = workout.workoutExercises
+        existingExercises.removeAll { $0.id == exercise.id }
 
-    func deleteExerciseSet(exerciseSet: ExerciseSet) {
-        dataController.delete(exerciseSet)
+        workout.setValue(NSSet(array: existingExercises), forKey: "exercises")
+
+        for exerciseSet in exercise.exerciseSets {
+            deleteExerciseSet(exerciseSet: exerciseSet)
+        }
+
         dataController.save()
-    }
-
-    func filterExerciseSets(_ exerciseSets: [ExerciseSet]) -> [ExerciseSet] {
-        exerciseSets.filter { $0.workout == workout }.sorted(by: \ExerciseSet.exerciseSetCreationDate)
-    }
-
-    func exerciseCompletionAmount(_ exercise: Exercise) -> Double {
-        let allSets = exercise.exerciseSets.filter { $0.workout == workout }
-        guard allSets.isEmpty == false else { return 0 }
-
-        let completedSets = allSets.filter { $0.completed == true }
-
-        return Double(completedSets.count) / Double(allSets.count)
+        presentationMode.wrappedValue.dismiss()
     }
 }
 

@@ -61,7 +61,6 @@ struct AddExerciseToWorkoutView: View {
                 }
             }
             .navigationTitle("Add Exercise")
-            .onDisappear(perform: dataController.save)
         }
     }
 
@@ -71,11 +70,14 @@ struct AddExerciseToWorkoutView: View {
     }
 
     func addExerciseToWorkout(_ exercise: Exercise) {
+        workout.objectWillChange.send()
+
         var existingExercises = workout.workoutExercises
         existingExercises.append(exercise)
-        let newExercises = NSSet(array: existingExercises)
 
-        workout.setValue(newExercises, forKey: "exercises")
+        workout.setValue(NSSet(array: existingExercises), forKey: "exercises")
+
+        dataController.save()
 
         print("Workout exercises: \(workout.workoutExercises)")
         print("Exercise workouts: \(exercise.exerciseWorkouts)")
