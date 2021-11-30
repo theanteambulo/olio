@@ -165,57 +165,16 @@ struct WorkoutsView: View {
                             ForEach(filterWorkoutsByDate(date,
                                                          workouts: sortedWorkouts)) { workout in
                                 WorkoutRowView(workout: workout)
-                                    .swipeActions(edge: .leading) {
-                                        Button {
-                                            confirmationAlertType = .complete
-                                            showingConfirmationAlert = true
-                                        } label: {
-                                            Label(workout.completed ? "Schedule": "Complete",
-                                                  systemImage: workout.completed ? "calendar" : "checkmark")
-                                        }
-                                        .tint(workout.completed ? .blue : .green)
-                                    }
-                                    .swipeActions(edge: .trailing) {
-                                        Button(role: .destructive) {
-                                            confirmationAlertType = .delete
-                                            showingConfirmationAlert = true
-                                        } label: {
-                                            Label("Delete",
-                                                  systemImage: "trash")
-                                        }
-                                        .tint(.red)
-                                    }
-                                    .alert(isPresented: $showingConfirmationAlert) {
-                                        switch confirmationAlertType {
-                                        case .complete:
-                                            return Alert(
-                                                title: Text(workout.getConfirmationAlertTitle(workout: workout)),
-                                                message: Text(workout.getConfirmationAlertMessage(workout: workout)),
-                                                dismissButton: .default(Text("OK")) {
-                                                    if workout.completed {
-                                                        workout.completed = false
-                                                    } else {
-                                                        workout.completed = true
-                                                    }
+                            }
+                            .onDelete { offsets in
+                                let allWorkouts = sortedWorkouts
 
-                                                    print("Workouts: \(workouts.wrappedValue.count)")
-                                                }
-                                            )
-                                        case .delete:
-                                            return Alert(
-                                                title: Text("Are you sure?"),
-                                                // swiftlint:disable:next line_length
-                                                message: Text("Deleting a workout cannot be undone and will also delete all sets contained in the workout."),
-                                                primaryButton: .destructive(Text("Delete"),
-                                                                            action: {
-                                                                                dataController.delete(workout)
-                                                                                // swiftlint:disable:next line_length
-                                                                                print("Workouts: \(workouts.wrappedValue.count)")
-                                                                            }),
-                                                secondaryButton: .cancel()
-                                            )
-                                        }
-                                    }
+                                for offset in offsets {
+                                    let workoutToDelete = allWorkouts[offset]
+                                    dataController.delete(workoutToDelete)
+                                }
+
+                                dataController.save()
                             }
                         }
                     }
