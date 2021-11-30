@@ -99,6 +99,8 @@ struct WorkoutListView: View {
                                             } else {
                                                 workout.completed = true
                                             }
+
+                                            print("Workouts: \(workouts.wrappedValue.count)")
                                         }
                                     )
                                 case .delete:
@@ -109,6 +111,8 @@ struct WorkoutListView: View {
                                         primaryButton: .destructive(Text("Delete"),
                                                                     action: {
                                                                         dataController.delete(workout)
+                                                                        // swiftlint:disable:next line_length
+                                                                        print("Workouts: \(workouts.wrappedValue.count)")
                                                                     }),
                                         secondaryButton: .cancel()
                                     )

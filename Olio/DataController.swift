@@ -118,4 +118,11 @@ class DataController: ObservableObject {
         let exerciseSetBatchDeleteRequest = NSBatchDeleteRequest(fetchRequest: exerciseSetFetchRequest)
         _ = try? container.viewContext.execute(exerciseSetBatchDeleteRequest)
     }
+
+    /// Counts the number of objects in the Core Data context for a given FetchRequest, without actually having to
+    /// execute that FetchRequest to get the count.
+    /// - Returns: A count of the objects in the Core Data context for a given FetchRequest.
+    func count<T>(for fetchRequest: NSFetchRequest<T>) -> Int {
+        (try? container.viewContext.count(for: fetchRequest)) ?? 0
+    }
 }

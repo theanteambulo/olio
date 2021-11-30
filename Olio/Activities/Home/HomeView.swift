@@ -35,13 +35,21 @@ struct HomeView: View {
         scheduledWorkouts = FetchRequest(fetchRequest: scheduledRequest)
     }
 
-    var addSampleDataToolbarItem: some ToolbarContent {
+    var deleteAllDataToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
-            Button("Add Data") {
-                withAnimation {
-                    dataController.deleteAll()
-                    try? dataController.createSampleData()
-                }
+            Button("Delete Data") {
+                dataController.deleteAll()
+                dataController.save()
+            }
+        }
+    }
+
+    var countDataToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button("Count Data") {
+                print("Workouts: \(dataController.count(for: Workout.fetchRequest()))")
+                print("Exercises: \(dataController.count(for: Exercise.fetchRequest()))")
+                print("Exercise Sets: \(dataController.count(for: ExerciseSet.fetchRequest()))")
             }
         }
     }
@@ -84,7 +92,8 @@ struct HomeView: View {
             .padding([.bottom])
             .navigationTitle("Scheduled")
             .toolbar {
-//                addSampleDataToolbarItem
+                deleteAllDataToolbarItem
+                countDataToolbarItem
                 addWorkoutToolbarItem
             }
         }
