@@ -16,7 +16,6 @@ struct EditWorkoutView: View {
     @State private var name: String
     @State private var dateScheduled: Date
     @State private var dateCompleted: Date
-    @State private var completed: Bool
 
     @State private var showingDeleteConfirmation = false
     @State private var showingAddExerciseSheet = false
@@ -33,7 +32,6 @@ struct EditWorkoutView: View {
         _name = State(wrappedValue: workout.workoutName)
         _dateScheduled = State(wrappedValue: workout.workoutDateScheduled)
         _dateCompleted = State(wrappedValue: workout.workoutDateCompleted)
-        _completed = State(wrappedValue: workout.completed)
     }
 
     var sortedExercises: [Exercise] {
@@ -142,8 +140,10 @@ struct EditWorkoutView: View {
                         title: Text(workout.getConfirmationAlertTitle(workout: workout)),
                         message: Text(workout.getConfirmationAlertMessage(workout: workout)),
                         dismissButton: .default(Text("OK")) {
-                            completed.toggle()
-                            update()
+                            withAnimation {
+                                workout.completed.toggle()
+                                update()
+                            }
                         }
                     )
                 }
@@ -173,7 +173,6 @@ struct EditWorkoutView: View {
 
         workout.name = name
         workout.dateScheduled = dateScheduled
-        workout.completed = completed
 
         if workout.completed && workout.dateCompleted == nil {
             workout.dateCompleted = Date()
