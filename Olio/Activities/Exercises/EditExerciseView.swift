@@ -27,7 +27,7 @@ struct EditExerciseView: View {
             Section(header: Text("Basic Settings")) {
                 TextField("Exercise name", text: $name.onChange(update))
 
-                Picker("Muscle Group", selection: $muscleGroup.onChange(update)) {
+                Picker("Muscle Group", selection: $muscleGroup) {
                     Text("Chest").tag(1)
                     Text("Back").tag(2)
                     Text("Shoulders").tag(3)
@@ -39,7 +39,12 @@ struct EditExerciseView: View {
             }
         }
         .navigationTitle("Edit Exercise")
-        .onDisappear(perform: dataController.save)
+        .onDisappear {
+            withAnimation {
+                update()
+                dataController.save()
+            }
+        }
     }
 
     func update() {
