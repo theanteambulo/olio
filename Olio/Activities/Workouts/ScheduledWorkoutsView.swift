@@ -13,7 +13,7 @@ struct ScheduledWorkoutsView: View {
 
     @EnvironmentObject var dataController: DataController
     @Environment(\.managedObjectContext) var managedObjectContext
-    
+
     static let scheduledTag: String? = "Scheduled"
 
     @State private var showingAddConfirmationDialog = false

@@ -166,6 +166,9 @@ struct EditWorkoutView: View {
     }
 
     func removeExercise(exercise: Exercise) {
+        workout.objectWillChange.send()
+        exercise.objectWillChange.send()
+
         var existingExercises = workout.workoutExercises
         existingExercises.removeAll { $0.id == exercise.id }
 
