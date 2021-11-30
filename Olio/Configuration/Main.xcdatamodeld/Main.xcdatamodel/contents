@@ -19,8 +19,7 @@
     </entity>
     <entity name="Workout" representedClassName="Workout" syncable="YES" codeGenerationType="class">
         <attribute name="completed" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
-        <attribute name="dateCompleted" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="dateScheduled" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="name" optional="YES" attributeType="String"/>
         <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="workouts" inverseEntity="Exercise"/>
@@ -29,6 +28,6 @@
     <elements>
         <element name="Exercise" positionX="-63" positionY="-18" width="128" height="119"/>
         <element name="ExerciseSet" positionX="-45" positionY="63" width="128" height="134"/>
-        <element name="Workout" positionX="-54" positionY="-9" width="128" height="134"/>
+        <element name="Workout" positionX="-54" positionY="-9" width="128" height="119"/>
     </elements>
 </model>

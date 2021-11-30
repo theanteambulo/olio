@@ -16,25 +16,15 @@ extension Workout {
         name ?? ""
     }
 
-    var workoutDateScheduled: Date {
-        dateScheduled ?? Date()
+    var workoutDate: Date {
+        date ?? Date()
     }
 
-    var formattedWorkoutDateScheduled: String {
+    var formattedWorkoutDate: String {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         formatter.timeStyle = .short
-        return formatter.string(from: workoutDateScheduled)
-    }
-
-    var workoutDateCompleted: Date {
-        dateCompleted ?? Date()
-    }
-
-    var formattedWorkoutDateCompleted: String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        return formatter.string(from: workoutDateCompleted)
+        return formatter.string(from: workoutDate)
     }
 
     var workoutExercises: [Exercise] {
@@ -51,8 +41,7 @@ extension Workout {
 
         let workout = Workout(context: viewContext)
         workout.name = "Example Workout"
-        workout.dateScheduled = Date()
-        workout.dateCompleted = Date()
+        workout.date = Date()
         workout.completed = true
 
         return workout

@@ -11,13 +11,12 @@ struct EditWorkoutView: View {
     @ObservedObject var workout: Workout
 
     @EnvironmentObject var dataController: DataController
-    @Environment(\.presentationMode) var presentationMode
 
     @State private var name: String
-    @State private var dateScheduled: Date
-    @State private var dateCompleted: Date
+    @State private var date: Date
 
-    @State private var showingDeleteConfirmation = false
+    @State private var showingDeleteWorkoutConfirmation = false
+    @State private var showingDeleteExerciseConfirmation = false
     @State private var showingAddExerciseSheet = false
     @State private var showingCompleteConfirmation = false
 
@@ -30,8 +29,7 @@ struct EditWorkoutView: View {
         self.workout = workout
 
         _name = State(wrappedValue: workout.workoutName)
-        _dateScheduled = State(wrappedValue: workout.workoutDateScheduled)
-        _dateCompleted = State(wrappedValue: workout.workoutDateCompleted)
+        _date = State(wrappedValue: workout.workoutDate)
     }
 
     var sortedExercises: [Exercise] {
@@ -50,12 +48,8 @@ struct EditWorkoutView: View {
                 TextField("Workout name",
                           text: $name.onChange(update))
 
-                DatePicker("Date scheduled",
-                           selection: $dateScheduled.onChange(update),
-                           displayedComponents: .date)
-
-                DatePicker("Date completed",
-                           selection: $dateCompleted.onChange(update),
+                DatePicker("Date",
+                           selection: $date.onChange(update),
                            displayedComponents: .date)
             }
 
@@ -95,19 +89,19 @@ struct EditWorkoutView: View {
                         }
 
                         Button("Remove Exercise", role: .destructive) {
-                            showingDeleteConfirmation = true
+                            showingDeleteExerciseConfirmation.toggle()
                         }
                         .tint(.red)
-                        .alert(isPresented: $showingDeleteConfirmation) {
-                            Alert(
-                                title: Text("Are you sure?"),
-                                // swiftlint:disable:next line_length
-                                message: Text("Removing an exercise from the workout also deletes all of its sets and cannot be undone."),
-                                primaryButton: .destructive(Text("Remove")) {
-                                    removeExercise(exercise: exercise)
-                                },
-                                secondaryButton: .cancel()
-                            )
+                        .alert("Are you sure?",
+                               isPresented: $showingDeleteExerciseConfirmation) {
+                            Button("Remove", role: .destructive) {
+                                removeExercise(exercise: exercise)
+                            }
+
+                            Button("Cancel", role: .cancel) { }
+                        } message: {
+                            // swiftlint:disable:next line_length
+                            Text("Removing an exercise from the workout also deletes all of its sets and cannot be undone.")
                         }
                     }
                 }
@@ -115,34 +109,28 @@ struct EditWorkoutView: View {
 
             Section(header: Text("")) {
                 Button(workout.completed ? "Schedule workout" : "Complete workout") {
-                    showingCompleteConfirmation = true
+                    workout.completed.toggle()
                 }
-                .alert(isPresented: $showingCompleteConfirmation) {
-                    Alert(
-                        title: Text(workout.getConfirmationAlertTitle(workout: workout)),
-                        message: Text(workout.getConfirmationAlertMessage(workout: workout)),
-                        dismissButton: .default(Text("OK")) {
-                            withAnimation {
-                                workout.completed.toggle()
-                                update()
-                            }
-                        }
-                    )
+                .alert(workout.getConfirmationAlertTitle(workout: workout),
+                       isPresented: $showingCompleteConfirmation) {
+                    Button("OK", role: .cancel) { }
+                } message: {
+                    Text(workout.getConfirmationAlertMessage(workout: workout))
                 }
 
                 Button("Delete workout", role: .destructive) {
-                    showingDeleteConfirmation = true
+                    showingDeleteWorkoutConfirmation.toggle()
                 }
                 .tint(.red)
-                .alert(isPresented: $showingDeleteConfirmation) {
-                    Alert(
-                        title: Text("Are you sure?"),
-                        // swiftlint:disable:next line_length
-                        message: Text("Deleting a workout cannot be undone and will also delete all sets contained in the workout."),
-                        primaryButton: .destructive(Text("Delete"),
-                                                      action: delete),
-                        secondaryButton: .cancel()
-                    )
+                .alert("Are you sure?",
+                       isPresented: $showingDeleteWorkoutConfirmation) {
+                    Button("Delete", role: .destructive) {
+                        dataController.delete(workout)
+                    }
+
+                    Button("Cancel", role: .cancel) { }
+                } message: {
+                    Text("Deleting a workout cannot be undone and will also delete all sets contained in the workout.")
                 }
             }
         }
@@ -154,18 +142,7 @@ struct EditWorkoutView: View {
         workout.objectWillChange.send()
 
         workout.name = name
-        workout.dateScheduled = dateScheduled
-
-        if workout.completed && workout.dateCompleted == nil {
-            workout.dateCompleted = Date()
-        } else {
-            workout.dateCompleted = dateCompleted
-        }
-    }
-
-    func delete() {
-        dataController.delete(workout)
-        presentationMode.wrappedValue.dismiss()
+        workout.date = date
     }
 
     func filterExerciseSets(_ exerciseSets: [ExerciseSet]) -> [ExerciseSet] {
@@ -195,11 +172,10 @@ struct EditWorkoutView: View {
         workout.setValue(NSSet(array: existingExercises), forKey: "exercises")
 
         for exerciseSet in exercise.exerciseSets {
-            deleteExerciseSet(exerciseSet: exerciseSet)
+            dataController.delete(exerciseSet)
         }
 
         dataController.save()
-        presentationMode.wrappedValue.dismiss()
     }
 }
 

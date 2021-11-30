@@ -12,20 +12,20 @@ struct ContentView: View {
 
     var body: some View {
         TabView(selection: $selectedView) {
-            WorkoutsView(showScheduledWorkouts: true)
+            ScheduledWorkoutsView()
                 .tabItem {
                     Image(systemName: "house")
                     Text("Home")
                 }
-                .tag(WorkoutsView.scheduledTag)
+                .tag(ScheduledWorkoutsView.scheduledTag)
                 .phoneOnlyStackNavigationView()
 
-            WorkoutsView(showScheduledWorkouts: false)
+            CompletedWorkoutsView()
                 .tabItem {
                     Image(systemName: "list.dash")
                     Text("History")
                 }
-                .tag(WorkoutsView.scheduledTag)
+                .tag(CompletedWorkoutsView.historyTag)
                 .phoneOnlyStackNavigationView()
 
             ExercisesView()
