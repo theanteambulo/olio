@@ -69,41 +69,23 @@ struct EditWorkoutView: View {
             List {
                 ForEach(sortedExercises, id: \.self) { exercise in
                     Section(header: Text("\(exercise.exerciseName)")) {
-                        HStack {
-                            Text("\(Int(100 * exerciseCompletionAmount(exercise)))%")
-                            ProgressView(value: exerciseCompletionAmount(exercise))
-                        }
+                        ExerciseHeaderView(workout: workout,
+                                           exercise: exercise)
 
                         ForEach(filterExerciseSets(exercise.exerciseSets), id: \.self) { exerciseSet in
                             ExerciseSetView(exerciseSet: exerciseSet)
-                                .swipeActions(edge: .leading) {
-                                    Button {
-                                        withAnimation {
-                                            exerciseSet.completed.toggle()
-                                            update()
-                                        }
-                                    } label: {
-                                        if exerciseSet.completed {
-                                            Label("Mark Incomplete", systemImage: "xmark")
-                                        } else {
-                                            Label("Complete", systemImage: "checkmark")
-                                        }
-                                    }
-                                    .tint(exerciseSet.completed
-                                          ? .red
-                                          : .green)
-                                }
-                                .swipeActions(edge: .trailing) {
-                                    Button(role: .destructive) {
-                                        withAnimation {
-                                            print("ExerciseSet deleted: \(exerciseSet.exerciseSetId)")
-                                            deleteExerciseSet(exerciseSet: exerciseSet)
-                                        }
-                                    } label: {
-                                        Label("Delete", systemImage: "trash")
-                                    }
+                        }
+                        .onDelete { offsets in
+                            let allExerciseSets = filterExerciseSets(exercise.exerciseSets)
+
+                            for offset in offsets {
+                                let exerciseSetToDelete = allExerciseSets[offset]
+
+                                withAnimation {
+                                    deleteExerciseSet(exerciseSet: exerciseSetToDelete)
                                 }
                             }
+                        }
 
                         Button("Add Set") {
                             withAnimation {
@@ -184,15 +166,6 @@ struct EditWorkoutView: View {
     func delete() {
         dataController.delete(workout)
         presentationMode.wrappedValue.dismiss()
-    }
-
-    func exerciseCompletionAmount(_ exercise: Exercise) -> Double {
-        let allSets = exercise.exerciseSets.filter { $0.workout == workout }
-        guard allSets.isEmpty == false else { return 0 }
-
-        let completedSets = allSets.filter { $0.completed == true }
-
-        return Double(completedSets.count) / Double(allSets.count)
     }
 
     func filterExerciseSets(_ exerciseSets: [ExerciseSet]) -> [ExerciseSet] {

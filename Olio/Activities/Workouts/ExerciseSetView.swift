@@ -23,20 +23,29 @@ struct ExerciseSetView: View {
     var body: some View {
         HStack {
             Image(systemName: exerciseSet.completed ? "checkmark" : "xmark")
+                .frame(width: 15)
                 .foregroundColor(exerciseSet.completed ? .green : .red)
+                .onTapGesture {
+                    withAnimation {
+                        exerciseSet.completed.toggle()
+                        update()
+                    }
+                }
 
             Stepper(
                 value: $exerciseSetReps.onChange(update),
                 in: 1...100,
                 step: 1
             ) {
-                Text("Reps: \(exerciseSetReps)")
+                Text("\(exerciseSetReps) \(exerciseSetReps == 1 ? "rep" : "reps")")
             }
         }
     }
 
     func update() {
         exerciseSet.objectWillChange.send()
+        exerciseSet.exercise?.objectWillChange.send()
+        exerciseSet.workout?.objectWillChange.send()
 
         exerciseSet.reps = Int16(exerciseSetReps)
     }
