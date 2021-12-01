@@ -185,15 +185,22 @@ struct EditWorkoutView: View {
             newWorkout.template = false
         }
 
+        var newWorkoutSets = [ExerciseSet]()
+
+        for exerciseSet in workout.workoutExerciseSets.sorted(by: \ExerciseSet.exerciseSetCreationDate) {
+            let exerciseSetToAdd = ExerciseSet(context: managedObjectContext)
+            exerciseSetToAdd.id = UUID()
+            exerciseSetToAdd.workout = newWorkout
+            exerciseSetToAdd.exercise = exerciseSet.exercise
+            exerciseSetToAdd.reps = Int16(exerciseSet.exerciseSetReps)
+            exerciseSetToAdd.creationDate = Date()
+            exerciseSetToAdd.completed = false
+
+            newWorkoutSets.append(exerciseSetToAdd)
+        }
+
         newWorkout.exercises = NSSet(array: workout.workoutExercises)
-
-//        let templateSets = [ExerciseSet]()
-
-        // for the exercises in the workout
-        // create the same number of sets for the exercise in the template
-        // where the number of reps for each set matches the original number of reps
-        // append each set to the templateSets array
-        // set the sets for the template equal to the templateSets array
+        newWorkout.sets = NSSet(array: newWorkoutSets)
 
         dataController.save()
     }
