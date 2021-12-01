@@ -28,6 +28,18 @@ struct CompletedWorkoutsView: View {
         }
     }
 
+    var workoutDates: [Date] {
+        var dates = [Date]()
+
+        for workout in sortedWorkouts {
+            if !dates.contains(Calendar.current.startOfDay(for: workout.workoutDate)) {
+                dates.append(Calendar.current.startOfDay(for: workout.workoutDate))
+            }
+        }
+
+        return dates
+    }
+
     init() {
         let workoutsRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
 
@@ -48,9 +60,22 @@ struct CompletedWorkoutsView: View {
 
     var body: some View {
         NavigationView {
-            WorkoutsListView(workouts: sortedWorkouts)
-                .padding(.bottom)
-                .navigationTitle("History")
+            Group {
+                if sortedWorkouts.isEmpty {
+                    Text("Nothing to see here... yet!")
+                } else {
+                    List {
+                        ForEach(workoutDates, id: \.self) { date in
+                            Section(header: Text(date.formatted(date: .complete, time: .omitted))) {
+                                WorkoutsListView(date: date, workouts: sortedWorkouts)
+                            }
+                        }
+                    }
+                    .listStyle(InsetGroupedListStyle())
+                }
+            }
+            .padding(.bottom)
+            .navigationTitle("Scheduled")
         }
     }
 }

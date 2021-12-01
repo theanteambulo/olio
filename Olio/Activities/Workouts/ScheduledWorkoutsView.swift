@@ -30,6 +30,18 @@ struct ScheduledWorkoutsView: View {
         }
     }
 
+    var workoutDates: [Date] {
+        var dates = [Date]()
+
+        for workout in sortedWorkouts {
+            if !dates.contains(Calendar.current.startOfDay(for: workout.workoutDate)) {
+                dates.append(Calendar.current.startOfDay(for: workout.workoutDate))
+            }
+        }
+
+        return dates
+    }
+
     init() {
         let workoutsRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
 
@@ -96,14 +108,27 @@ struct ScheduledWorkoutsView: View {
 
     var body: some View {
         NavigationView {
-            WorkoutsListView(workouts: sortedWorkouts)
-                .padding(.bottom)
-                .navigationTitle("Scheduled")
-                .toolbar {
-                    deleteAllDataToolbarItem
-                    countDataToolbarItem
-                    addWorkoutToolbarItem
+            Group {
+                if sortedWorkouts.isEmpty {
+                    Text("Nothing to see here... yet!")
+                } else {
+                    List {
+                        ForEach(workoutDates, id: \.self) { date in
+                            Section(header: Text(date.formatted(date: .complete, time: .omitted))) {
+                                WorkoutsListView(date: date, workouts: sortedWorkouts)
+                            }
+                        }
+                    }
+                    .listStyle(InsetGroupedListStyle())
                 }
+            }
+            .padding(.bottom)
+            .navigationTitle("Scheduled")
+            .toolbar {
+                deleteAllDataToolbarItem
+                countDataToolbarItem
+                addWorkoutToolbarItem
+            }
         }
     }
 }

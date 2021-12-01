@@ -22,8 +22,7 @@ extension Workout {
 
     var formattedWorkoutDate: String {
         let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
+        formatter.dateStyle = .full
         return formatter.string(from: workoutDate)
     }
 

@@ -15,14 +15,11 @@ struct EditWorkoutView: View {
     @State private var name: String
     @State private var date: Date
 
-    @State private var showingDeleteWorkoutConfirmation = false
     @State private var showingAddExerciseSheet = false
-    @State private var showingCompleteConfirmation = false
-
+    @State private var showingDateChangeConfirmation = false
     @State private var showingRemoveConfirmation = false
-
-    @State private var completeConfirmationTitle = ""
-    @State private var completeConfirmationMessage = ""
+    @State private var showingCompleteConfirmation = false
+    @State private var showingDeleteWorkoutConfirmation = false
 
     init(workout: Workout) {
         self.workout = workout
@@ -41,22 +38,49 @@ struct EditWorkoutView: View {
         }
     }
 
+    var addExerciseToWorkoutToolbarItem: some ToolbarContent {
+        ToolbarItem {
+            Button {
+                showingAddExerciseSheet = true
+            } label: {
+                Label("Add", systemImage: "plus")
+            }
+            .sheet(isPresented: $showingAddExerciseSheet) {
+                AddExerciseToWorkoutView(workout: workout)
+            }
+        }
+    }
+
     var body: some View {
         Form {
             Section(header: Text("Basic Settings")) {
                 TextField("Workout name",
                           text: $name.onChange(update))
-
-                DatePicker("Date",
-                           selection: $date.onChange(update),
-                           displayedComponents: .date)
             }
 
-            Button("Add Exercise") {
-                showingAddExerciseSheet = true
-            }
-            .sheet(isPresented: $showingAddExerciseSheet) {
-                AddExerciseToWorkoutView(workout: workout)
+            Section(header: Text("\(workout.completed ? "Completed" : "Scheduled")")) {
+                NavigationLink(
+                    destination: {
+                        DatePicker(
+                            "Date",
+                            selection: $date.onChange {
+                                showingDateChangeConfirmation.toggle()
+                            },
+                            displayedComponents: .date
+                        )
+                        .datePickerStyle(GraphicalDatePickerStyle())
+                        .alert("Workout date changed", isPresented: $showingDateChangeConfirmation) {
+                            Button("OK", role: .cancel) {
+                                update()
+                            }
+                        } message: {
+                            // swiftlint:disable:next line_length
+                            Text("Your workout date has changed. You can find it on the \(workout.completed ? "History" : "Scheduled") tab, under \(date.formatted(date: .complete, time: .omitted)).")
+                        }
+                    }, label: {
+                        Text("\(date.formatted(date: .complete, time: .omitted))")
+                    }
+                )
             }
 
             List {
@@ -97,6 +121,9 @@ struct EditWorkoutView: View {
         }
         .navigationTitle("Edit Workout")
         .onDisappear(perform: dataController.save)
+        .toolbar {
+            addExerciseToWorkoutToolbarItem
+        }
     }
 
     func update() {
