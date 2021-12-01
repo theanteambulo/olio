@@ -142,7 +142,7 @@ struct EditWorkoutView: View {
                     }
                 }
 
-                Button("Delete workout", role: .destructive) {
+                Button(workout.template ? "Delete template" : "Delete workout", role: .destructive) {
                     showingDeleteWorkoutConfirmation.toggle()
                 }
                 .tint(.red)
@@ -158,7 +158,7 @@ struct EditWorkoutView: View {
                 }
             }
         }
-        .navigationTitle("Edit Workout")
+        .navigationTitle(workout.template ? "Edit Template" : "Edit Workout")
         .onDisappear(perform: dataController.save)
         .toolbar {
             addExerciseToWorkoutToolbarItem
