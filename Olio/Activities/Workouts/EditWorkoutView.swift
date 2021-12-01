@@ -68,11 +68,13 @@ struct EditWorkoutView: View {
 
             Section(header: Text("")) {
                 Button(workout.completed ? "Schedule workout" : "Complete workout") {
-                    workout.completed.toggle()
+                    showingCompleteConfirmation.toggle()
                 }
                 .alert(workout.getConfirmationAlertTitle(workout: workout),
                        isPresented: $showingCompleteConfirmation) {
-                    Button("OK", role: .cancel) { }
+                    Button("OK", role: .cancel) {
+                        workout.completed.toggle()
+                    }
                 } message: {
                     Text(workout.getConfirmationAlertMessage(workout: workout))
                 }
