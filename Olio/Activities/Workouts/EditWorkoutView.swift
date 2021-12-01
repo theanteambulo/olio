@@ -154,7 +154,11 @@ struct EditWorkoutView: View {
 
                     Button("Cancel", role: .cancel) { }
                 } message: {
-                    Text("Deleting a workout cannot be undone and will also delete all sets contained in the workout.")
+                    Text(workout.template
+                         // swiftlint:disable:next line_length
+                         ? "Deleting a template cannot be undone and will also delete all sets contained in the template."
+                         // swiftlint:disable:next line_length
+                         : "Deleting a workout cannot be undone and will also delete all sets contained in the workout.")
                 }
             }
         }
