@@ -107,6 +107,18 @@ struct ScheduledWorkoutsView: View {
             }
             .confirmationDialog(Text("Select an option"),
                                 isPresented: $showingAddConfirmationDialog) {
+                Button("New template") {
+                    withAnimation {
+                        let workout = Workout(context: managedObjectContext)
+                        workout.id = UUID()
+                        workout.date = Date()
+                        workout.completed = false
+                        workout.template = true
+                        workout.name = "New Template"
+                        dataController.save()
+                    }
+                }
+
                 Button("New workout") {
                     withAnimation {
                         let workout = Workout(context: managedObjectContext)
