@@ -103,6 +103,21 @@ class DataController: ObservableObject {
         container.viewContext.delete(object)
     }
 
+    /// Removes an exercise from a workout by setting the value of a workout's "exercises" key.
+    /// - Parameters:
+    ///   - exercise: The exercise to remove.
+    ///   - workout: The workout to remove the exercise from.
+    func removeExerciseFromWorkout(_ exercise: Exercise, _ workout: Workout) {
+        var existingExercises = workout.workoutExercises
+        existingExercises.removeAll { $0.id == exercise.id }
+
+        workout.setValue(NSSet(array: existingExercises), forKey: "exercises")
+
+        for exerciseSet in exercise.exerciseSets {
+            container.viewContext.delete(exerciseSet)
+        }
+    }
+
     /// Batch deletes all workouts, exercises and sets from the Core Data context.
     func deleteAll() {
         let workoutFetchRequest: NSFetchRequest<NSFetchRequestResult> = Workout.fetchRequest()

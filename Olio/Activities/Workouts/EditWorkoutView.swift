@@ -16,7 +16,6 @@ struct EditWorkoutView: View {
     @State private var date: Date
 
     @State private var showingDeleteWorkoutConfirmation = false
-    @State private var showingDeleteExerciseConfirmation = false
     @State private var showingAddExerciseSheet = false
     @State private var showingCompleteConfirmation = false
 
@@ -62,48 +61,8 @@ struct EditWorkoutView: View {
 
             List {
                 ForEach(sortedExercises, id: \.self) { exercise in
-                    Section(header: Text("\(exercise.exerciseName)")) {
-                        ExerciseHeaderView(workout: workout,
-                                           exercise: exercise)
-
-                        ForEach(filterExerciseSets(exercise.exerciseSets), id: \.self) { exerciseSet in
-                            ExerciseSetView(exerciseSet: exerciseSet)
-                        }
-                        .onDelete { offsets in
-                            let allExerciseSets = filterExerciseSets(exercise.exerciseSets)
-
-                            for offset in offsets {
-                                let exerciseSetToDelete = allExerciseSets[offset]
-
-                                withAnimation {
-                                    deleteExerciseSet(exerciseSet: exerciseSetToDelete)
-                                }
-                            }
-                        }
-
-                        Button("Add Set") {
-                            withAnimation {
-                                addSet(toExercise: exercise, toWorkout: workout)
-                                print("A set was added to the exercise.")
-                            }
-                        }
-
-                        Button("Remove Exercise", role: .destructive) {
-                            showingDeleteExerciseConfirmation.toggle()
-                        }
-                        .tint(.red)
-                        .alert("Are you sure?",
-                               isPresented: $showingDeleteExerciseConfirmation) {
-                            Button("Remove", role: .destructive) {
-                                removeExercise(exercise: exercise)
-                            }
-
-                            Button("Cancel", role: .cancel) { }
-                        } message: {
-                            // swiftlint:disable:next line_length
-                            Text("Removing an exercise from the workout also deletes all of its sets and cannot be undone.")
-                        }
-                    }
+                    EditWorkoutExerciseListView(workout: workout,
+                                                exercise: exercise)
                 }
             }
 
@@ -143,42 +102,6 @@ struct EditWorkoutView: View {
 
         workout.name = name
         workout.date = date
-    }
-
-    func filterExerciseSets(_ exerciseSets: [ExerciseSet]) -> [ExerciseSet] {
-        exerciseSets.filter { $0.workout == workout }.sorted(by: \ExerciseSet.exerciseSetCreationDate)
-    }
-
-    func deleteExerciseSet(exerciseSet: ExerciseSet) {
-        dataController.delete(exerciseSet)
-        dataController.save()
-    }
-
-    func addSet(toExercise exercise: Exercise,
-                toWorkout workout: Workout) {
-        let set = ExerciseSet(context: dataController.container.viewContext)
-        set.id = UUID()
-        set.workout = workout
-        set.exercise = exercise
-        set.reps = 10
-        set.creationDate = Date()
-        dataController.save()
-    }
-
-    func removeExercise(exercise: Exercise) {
-        workout.objectWillChange.send()
-        exercise.objectWillChange.send()
-
-        var existingExercises = workout.workoutExercises
-        existingExercises.removeAll { $0.id == exercise.id }
-
-        workout.setValue(NSSet(array: existingExercises), forKey: "exercises")
-
-        for exerciseSet in exercise.exerciseSets {
-            dataController.delete(exerciseSet)
-        }
-
-        dataController.save()
     }
 }
 

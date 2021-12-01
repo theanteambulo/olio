@@ -51,8 +51,10 @@ struct AddExerciseToWorkoutView: View {
                         ForEach(filterExercisesToMuscleGroup(muscleGroup.rawValue,
                                                              exercises: filteredExercises)) { exercise in
                             Button {
-                                addExerciseToWorkout(exercise)
-                                dismiss()
+                                withAnimation {
+                                    addExerciseToWorkout(exercise)
+                                    dismiss()
+                                }
                             } label: {
                                 HStack {
                                     Text(exercise.exerciseName)
