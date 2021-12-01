@@ -21,10 +21,6 @@ struct TemplateCardView: View {
                 Text("\(template.workoutExercises.count) exercises, \(template.workoutExerciseSets.count) sets")
                     .foregroundColor(.secondary)
                     .font(.caption)
-
-                Text(template.workoutId)
-                    .foregroundColor(.secondary)
-                    .font(.caption)
             }
         }
         .padding()
