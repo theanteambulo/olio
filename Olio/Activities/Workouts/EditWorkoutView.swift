@@ -11,6 +11,7 @@ struct EditWorkoutView: View {
     @ObservedObject var workout: Workout
 
     @EnvironmentObject var dataController: DataController
+    @Environment(\.managedObjectContext) var managedObjectContext
 
     @State private var name: String
     @State private var date: Date
@@ -19,6 +20,7 @@ struct EditWorkoutView: View {
     @State private var showingDateChangeConfirmation = false
     @State private var showingRemoveConfirmation = false
     @State private var showingCompleteConfirmation = false
+    @State private var showingCreateTemplateConfirmation = false
     @State private var showingDeleteWorkoutConfirmation = false
 
     init(workout: Workout) {
@@ -103,6 +105,23 @@ struct EditWorkoutView: View {
                     Text(workout.getConfirmationAlertMessage(workout: workout))
                 }
 
+                if !workout.template {
+                    Button("Create template from workout") {
+                        showingCreateTemplateConfirmation.toggle()
+                    }
+                    .alert("Create a template?",
+                           isPresented: $showingCreateTemplateConfirmation) {
+                        Button("Confirm") {
+                            createTemplateFromWorkout(workout)
+                        }
+
+                        Button("Cancel", role: .cancel) { }
+                    } message: {
+                        // swiftlint:disable:next line_length
+                        Text("We'll use the exercises and sets in this workout to create a new template. You can view your workout templates on the Home tab.")
+                    }
+                }
+
                 Button("Delete workout", role: .destructive) {
                     showingDeleteWorkoutConfirmation.toggle()
                 }
@@ -131,6 +150,26 @@ struct EditWorkoutView: View {
 
         workout.name = name
         workout.date = date
+    }
+
+    func createTemplateFromWorkout(_ workout: Workout) {
+        let template = Workout(context: managedObjectContext)
+        template.id = UUID()
+        template.date = Date()
+        template.completed = false
+        template.template = true
+        template.name = "New Template"
+        template.exercises = NSSet(array: workout.workoutExercises)
+
+//        let templateSets = [ExerciseSet]()
+
+        // for the exercises in the workout
+        // create the same number of sets for the exercise in the template
+        // where the number of reps for each set matches the original number of reps
+        // append each set to the templateSets array
+        // set the sets for the template equal to the templateSets array
+
+        dataController.save()
     }
 }
 

@@ -44,8 +44,10 @@ struct CompletedWorkoutsView: View {
         let workoutsRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
 
         let completedPredicate = NSPredicate(format: "completed = true")
+        let templatePredicate = NSPredicate(format: "template != true")
         workoutsRequest.predicate = NSCompoundPredicate(type: .and,
-                                                        subpredicates: [completedPredicate])
+                                                        subpredicates: [completedPredicate,
+                                                                        templatePredicate])
         workoutsRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \Workout.date,
                              ascending: true),

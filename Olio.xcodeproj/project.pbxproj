@@ -94,8 +94,8 @@
 		2321AF16274ECF460023F099 /* Workouts */ = {
 			isa = PBXGroup;
 			children = (
-				233B4D692756CED2006B55DA /* CompletedWorkoutsView.swift */,
 				233B4D6B2756CEE9006B55DA /* ScheduledWorkoutsView.swift */,
+				233B4D692756CED2006B55DA /* CompletedWorkoutsView.swift */,
 				233B4D6D2756D2A2006B55DA /* WorkoutsListView.swift */,
 				23A1BA70274F742400AA5123 /* WorkoutRowView.swift */,
 				2321AF17274ECF710023F099 /* EditWorkoutView.swift */,

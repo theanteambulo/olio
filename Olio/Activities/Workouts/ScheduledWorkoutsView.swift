@@ -9,6 +9,7 @@ import CoreData
 import SwiftUI
 
 struct ScheduledWorkoutsView: View {
+    let templates: FetchRequest<Workout>
     let workouts: FetchRequest<Workout>
 
     @EnvironmentObject var dataController: DataController
@@ -43,11 +44,25 @@ struct ScheduledWorkoutsView: View {
     }
 
     init() {
+        // Get all the templates.
+        let templatesRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
+
+        let templateRequestPredicate = NSPredicate(format: "template = true")
+        templatesRequest.predicate = NSCompoundPredicate(type: .and,
+                                                         subpredicates: [templateRequestPredicate])
+        templatesRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Workout.name,
+                                                             ascending: true)]
+
+        templates = FetchRequest(fetchRequest: templatesRequest)
+
+        // Get the next 10 scheduled workouts.
         let workoutsRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
 
         let completedPredicate = NSPredicate(format: "completed = false")
+        let templatePredicate = NSPredicate(format: "template != true")
         workoutsRequest.predicate = NSCompoundPredicate(type: .and,
-                                                        subpredicates: [completedPredicate])
+                                                        subpredicates: [completedPredicate,
+                                                                        templatePredicate])
         workoutsRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \Workout.date,
                              ascending: true),
@@ -94,6 +109,7 @@ struct ScheduledWorkoutsView: View {
                         workout.id = UUID()
                         workout.date = Date()
                         workout.completed = false
+                        workout.template = false
                         workout.name = "New Workout"
                         dataController.save()
                     }
@@ -109,17 +125,24 @@ struct ScheduledWorkoutsView: View {
     var body: some View {
         NavigationView {
             Group {
-                if sortedWorkouts.isEmpty {
-                    Text("Nothing to see here... yet!")
-                } else {
-                    List {
-                        ForEach(workoutDates, id: \.self) { date in
-                            Section(header: Text(date.formatted(date: .complete, time: .omitted))) {
-                                WorkoutsListView(date: date, workouts: sortedWorkouts)
+                VStack {
+                    Button("Template count") {
+                        print("\(templates.wrappedValue.count) templates")
+                        print(templates.wrappedValue)
+                    }
+
+                    if sortedWorkouts.isEmpty {
+                        Text("Nothing to see here... yet!")
+                    } else {
+                        List {
+                            ForEach(workoutDates, id: \.self) { date in
+                                Section(header: Text(date.formatted(date: .complete, time: .omitted))) {
+                                    WorkoutsListView(date: date, workouts: sortedWorkouts)
+                                }
                             }
                         }
+                        .listStyle(InsetGroupedListStyle())
                     }
-                    .listStyle(InsetGroupedListStyle())
                 }
             }
             .padding(.bottom)
