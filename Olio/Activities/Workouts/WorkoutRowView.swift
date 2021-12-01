@@ -14,6 +14,9 @@ struct WorkoutRowView: View {
         NavigationLink(destination: EditWorkoutView(workout: workout)) {
             VStack(alignment: .leading) {
                 Text(workout.workoutName)
+                Text(workout.workoutId)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
                 Text("\(workout.workoutExercises.count) exercises, \(workout.workoutExerciseSets.count) sets")
                     .font(.caption)
                     .foregroundColor(.secondary)

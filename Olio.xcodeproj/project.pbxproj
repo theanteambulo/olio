@@ -34,6 +34,7 @@
 		23C97E2E274E251F005611A3 /* EditExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E2D274E251F005611A3 /* EditExerciseView.swift */; };
 		23C97E30274E3C25005611A3 /* ExerciseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E2F274E3C25005611A3 /* ExerciseRowView.swift */; };
 		23C97E32274E548A005611A3 /* BindingExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E31274E548A005611A3 /* BindingExtension.swift */; };
+		23FE12692757F3240096FDD0 /* TemplateCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FE12682757F3240096FDD0 /* TemplateCardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,7 @@
 		23C97E2D274E251F005611A3 /* EditExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditExerciseView.swift; sourceTree = "<group>"; };
 		23C97E2F274E3C25005611A3 /* ExerciseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRowView.swift; sourceTree = "<group>"; };
 		23C97E31274E548A005611A3 /* BindingExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingExtension.swift; sourceTree = "<group>"; };
+		23FE12682757F3240096FDD0 /* TemplateCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +98,7 @@
 			children = (
 				233B4D6B2756CEE9006B55DA /* ScheduledWorkoutsView.swift */,
 				233B4D692756CED2006B55DA /* CompletedWorkoutsView.swift */,
+				23FE12682757F3240096FDD0 /* TemplateCardView.swift */,
 				233B4D6D2756D2A2006B55DA /* WorkoutsListView.swift */,
 				23A1BA70274F742400AA5123 /* WorkoutRowView.swift */,
 				2321AF17274ECF710023F099 /* EditWorkoutView.swift */,
@@ -295,6 +298,7 @@
 				23C97E2E274E251F005611A3 /* EditExerciseView.swift in Sources */,
 				23AB0651274B7FCE00BCBD28 /* Main.xcdatamodeld in Sources */,
 				23C97E30274E3C25005611A3 /* ExerciseRowView.swift in Sources */,
+				23FE12692757F3240096FDD0 /* TemplateCardView.swift in Sources */,
 				230E70F3274D62DD007F6232 /* WorkoutExtension.swift in Sources */,
 				23AA142527502ED000AC637D /* ViewExtension.swift in Sources */,
 				2321AF18274ECF710023F099 /* EditWorkoutView.swift in Sources */,

@@ -19,6 +19,10 @@ struct ScheduledWorkoutsView: View {
 
     @State private var showingAddConfirmationDialog = false
 
+    var rows: [GridItem] {
+        [GridItem(.fixed(100))]
+    }
+
     var sortedWorkouts: [Workout] {
         return workouts.wrappedValue.sorted { first, second in
             if first.workoutDate < second.workoutDate {
@@ -125,14 +129,40 @@ struct ScheduledWorkoutsView: View {
     var body: some View {
         NavigationView {
             Group {
-                VStack {
-                    Button("Template count") {
-                        print("\(templates.wrappedValue.count) templates")
-                        print(templates.wrappedValue)
+                VStack(alignment: .leading) {
+                    Text("Templates")
+                        .padding(.leading)
+                        .font(.title3)
+
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        LazyHGrid(rows: rows) {
+                            ForEach(templates.wrappedValue) { template in
+                                TemplateCardView(template: template)
+                            }
+                        }
+                        .padding(.horizontal)
+                        .fixedSize(horizontal: false,
+                                   vertical: true)
                     }
+                    .padding(.bottom)
+
+                    Text("Scheduled Workouts")
+                        .padding(.leading)
+                        .font(.title3)
 
                     if sortedWorkouts.isEmpty {
-                        Text("Nothing to see here... yet!")
+                        Spacer()
+
+                        HStack {
+                            Spacer()
+
+                            Text("Nothing to see here... yet!")
+                                .padding(.horizontal)
+
+                            Spacer()
+                        }
+
+                        Spacer()
                     } else {
                         List {
                             ForEach(workoutDates, id: \.self) { date in
@@ -146,7 +176,7 @@ struct ScheduledWorkoutsView: View {
                 }
             }
             .padding(.bottom)
-            .navigationTitle("Scheduled")
+            .navigationTitle("Home")
             .toolbar {
                 deleteAllDataToolbarItem
                 countDataToolbarItem
