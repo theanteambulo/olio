@@ -75,7 +75,7 @@ struct CompletedWorkoutsView: View {
                 }
             }
             .padding(.bottom)
-            .navigationTitle("Scheduled")
+            .navigationTitle("History")
         }
     }
 }

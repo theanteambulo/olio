@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct EditExerciseView: View {
-    let exercise: Exercise
+    @ObservedObject var exercise: Exercise
 
     @EnvironmentObject var dataController: DataController
 
@@ -22,10 +22,14 @@ struct EditExerciseView: View {
         _muscleGroup = State(wrappedValue: Int(exercise.muscleGroup))
     }
 
+    var filteredExerciseSets: [ExerciseSet] {
+        exercise.exerciseSets.filter({ $0.completed == true })
+    }
+
     var body: some View {
         Form {
             Section(header: Text("Basic Settings")) {
-                TextField("Exercise name", text: $name.onChange(update))
+                TextField("Exercise name", text: $name)
 
                 Picker("Muscle Group", selection: $muscleGroup) {
                     Text("Chest").tag(1)
@@ -35,6 +39,30 @@ struct EditExerciseView: View {
                     Text("Triceps").tag(5)
                     Text("Legs").tag(6)
                     Text("Abs").tag(7)
+                }
+            }
+
+            if filteredExerciseSets.isEmpty {
+                EmptyView()
+            } else {
+                Section(header: Text("Exercise History")) {
+                    List {
+                        ForEach(filteredExerciseSets) { exerciseSet in
+                            HStack {
+                                VStack(alignment: .leading) {
+                                    // swiftlint:disable:next line_length
+                                    Text(exerciseSet.workout?.workoutDate.formatted(date: .abbreviated, time: .omitted) ?? "Workout date missing")
+                                    Text(exerciseSet.workout?.workoutName ?? "Workout name missing")
+                                        .font(.caption)
+                                        .foregroundColor(.secondary)
+                                }
+
+                                Spacer()
+
+                                Text("\(exerciseSet.reps) \(exerciseSet.reps == 1 ? "rep" : "reps")")
+                            }
+                        }
+                    }
                 }
             }
         }
