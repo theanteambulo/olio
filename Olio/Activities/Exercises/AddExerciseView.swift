@@ -28,13 +28,19 @@ struct AddExerciseView: View {
 
     var saveToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
-            Button("Save") {
+            Button(Strings.saveButton.localized) {
                 if exerciseNameValid {
                     save()
                     dismiss()
                 } else {
                     showingExerciseAlreadyExistsAlert = true
                 }
+            }
+            .alert(Strings.duplicationErrorAlertTitle.localized,
+                   isPresented: $showingExerciseAlreadyExistsAlert) {
+                Button(Strings.okButton.localized, role: .cancel) { }
+            } message: {
+                Text(.duplicationErrorAlertMessage)
             }
         }
     }
@@ -64,31 +70,24 @@ struct AddExerciseView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text("Basic Settings")) {
-                    TextField("Exercise name", text: $name)
+                Section(header: Text(.basicSettings)) {
+                    TextField(Strings.exerciseName.localized, text: $name)
 
-                    Picker("Muscle Group", selection: $muscleGroup) {
-                        Text("Chest").tag(1)
-                        Text("Back").tag(2)
-                        Text("Shoulders").tag(3)
-                        Text("Biceps").tag(4)
-                        Text("Triceps").tag(5)
-                        Text("Legs").tag(6)
-                        Text("Abs").tag(7)
+                    Picker(Strings.muscleGroup.localized, selection: $muscleGroup) {
+                        Text(.chest).tag(1)
+                        Text(.back).tag(2)
+                        Text(.shoulders).tag(3)
+                        Text(.biceps).tag(4)
+                        Text(.triceps).tag(5)
+                        Text(.legs).tag(6)
+                        Text(.abs).tag(7)
                     }
                 }
             }
-            .navigationTitle("Add Exercise")
+            .navigationTitle(Text(.addExercise))
             .toolbar {
                 saveToolbarItem
                 dismissNoSaveToolbarItem
-            }
-            .alert(isPresented: $showingExerciseAlreadyExistsAlert) {
-                Alert(
-                    title: Text("Oops!"),
-                    message: Text("Looks like this exercise already exists. Try changing the name to proceed."),
-                    dismissButton: .default(Text("OK"))
-                )
             }
         }
     }

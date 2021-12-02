@@ -79,24 +79,24 @@ struct ScheduledWorkoutsView: View {
         workouts = FetchRequest(fetchRequest: workoutsRequest)
     }
 
-    var deleteAllDataToolbarItem: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button("Delete Data") {
-                dataController.deleteAll()
-                dataController.save()
-            }
-        }
-    }
+//    var deleteAllDataToolbarItem: some ToolbarContent {
+//        ToolbarItem(placement: .navigationBarLeading) {
+//            Button("Delete Data") {
+//                dataController.deleteAll()
+//                dataController.save()
+//            }
+//        }
+//    }
 
-    var countDataToolbarItem: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
-            Button("Count Data") {
-                print("Workouts: \(dataController.count(for: Workout.fetchRequest()))")
-                print("Exercises: \(dataController.count(for: Exercise.fetchRequest()))")
-                print("Exercise Sets: \(dataController.count(for: ExerciseSet.fetchRequest()))")
-            }
-        }
-    }
+//    var countDataToolbarItem: some ToolbarContent {
+//        ToolbarItem(placement: .navigationBarLeading) {
+//            Button("Count Data") {
+//                print("Workouts: \(dataController.count(for: Workout.fetchRequest()))")
+//                print("Exercises: \(dataController.count(for: Exercise.fetchRequest()))")
+//                print("Exercise Sets: \(dataController.count(for: ExerciseSet.fetchRequest()))")
+//            }
+//        }
+//    }
 
     var addWorkoutToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
@@ -105,33 +105,31 @@ struct ScheduledWorkoutsView: View {
             } label: {
                 Label("Add", systemImage: "plus")
             }
-            .confirmationDialog(Text("Select an option"),
+            .confirmationDialog(Text(.selectOption),
                                 isPresented: $showingAddConfirmationDialog) {
-                Button("New template") {
+                Button(Strings.newTemplate.localized) {
                     withAnimation {
                         let workout = Workout(context: managedObjectContext)
                         workout.id = UUID()
                         workout.date = Date()
                         workout.completed = false
                         workout.template = true
-                        workout.name = "New Template"
                         dataController.save()
                     }
                 }
 
-                Button("New workout") {
+                Button(Strings.newWorkout.localized) {
                     withAnimation {
                         let workout = Workout(context: managedObjectContext)
                         workout.id = UUID()
                         workout.date = Date()
                         workout.completed = false
                         workout.template = false
-                        workout.name = "New Workout"
                         dataController.save()
                     }
                 }
 
-                Button("Cancel", role: .cancel) {
+                Button(Strings.cancelButton.localized, role: .cancel) {
                     showingAddConfirmationDialog = false
                 }
             }
@@ -142,7 +140,7 @@ struct ScheduledWorkoutsView: View {
         NavigationView {
             Group {
                 VStack(alignment: .leading) {
-                    Text("Templates")
+                    Text(.workoutTemplates)
                         .padding(.leading)
                         .font(.title3)
 
@@ -158,7 +156,7 @@ struct ScheduledWorkoutsView: View {
                     }
                     .padding(.bottom)
 
-                    Text("Scheduled Workouts")
+                    Text(.workoutsScheduled)
                         .padding(.leading)
                         .font(.title3)
 
@@ -168,7 +166,7 @@ struct ScheduledWorkoutsView: View {
                         HStack {
                             Spacer()
 
-                            Text("Nothing to see here... yet!")
+                            Text(.nothingToSeeHere)
                                 .padding(.horizontal)
 
                             Spacer()
@@ -188,10 +186,10 @@ struct ScheduledWorkoutsView: View {
                 }
             }
             .padding(.bottom)
-            .navigationTitle("Home")
+            .navigationTitle(Strings.homeTab.localized)
             .toolbar {
-                deleteAllDataToolbarItem
-                countDataToolbarItem
+//                deleteAllDataToolbarItem
+//                countDataToolbarItem
                 addWorkoutToolbarItem
             }
         }

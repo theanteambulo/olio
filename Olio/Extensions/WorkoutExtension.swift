@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension Workout {
     var workoutId: String {
@@ -13,7 +14,8 @@ extension Workout {
     }
 
     var workoutName: String {
-        name ?? ""
+        name ?? NSLocalizedString("newWorkout",
+                                  comment: "Create a new workout")
     }
 
     var workoutDate: Date {
@@ -46,15 +48,17 @@ extension Workout {
         return workout
     }
 
-    func getConfirmationAlertTitle(workout: Workout) -> String {
-        return workout.completed ? "Workout Scheduled" : "Workout Complete"
+    func getConfirmationAlertTitle(workout: Workout) -> LocalizedStringKey {
+        return workout.completed
+        ? Strings.workoutScheduledAlertTitle.localized
+        : Strings.workoutCompletedAlertTitle.localized
     }
 
-    func getConfirmationAlertMessage(workout: Workout) -> String {
+    func getConfirmationAlertMessage(workout: Workout) -> LocalizedStringKey {
         if workout.completed {
-            return "This workout will now move to your scheduled workouts. Get after it!"
+            return Strings.workoutScheduledAlertMessage.localized
         } else {
-            return "Smashed it! This workout will now move to your workout history."
+            return Strings.workoutCompletedAlertMessage.localized
         }
     }
 }

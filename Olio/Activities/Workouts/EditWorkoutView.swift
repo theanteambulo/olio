@@ -54,26 +54,58 @@ struct EditWorkoutView: View {
         }
     }
 
+    var workoutDateSectionHeader: some View {
+        if workout.completed {
+            return Text(.completedSectionHeader)
+        } else {
+            return Text(.scheduledSectionHeader)
+        }
+    }
+
+    var completeScheduleWorkoutButtonText: LocalizedStringKey {
+        workout.completed
+        ? Strings.scheduleWorkout.localized
+        : Strings.completeWorkout.localized
+    }
+
+    var deleteWorkoutTemplateButtonText: LocalizedStringKey {
+        workout.template
+        ? Strings.deleteTemplateButton.localized
+        : Strings.deleteWorkoutButton.localized
+    }
+
+    var deleteWorkoutTemplateAlertMessage: some View {
+        workout.template
+        ? Text(.deleteTemplateConfirmationMessage)
+        : Text(.deleteWorkoutConfirmationMessage)
+    }
+
+    var navigationTitle: LocalizedStringKey {
+        workout.template
+        ? Strings.editTemplateNavigationTitle.localized
+        : Strings.editWorkoutNavigationTitle.localized
+    }
+
     var body: some View {
         Form {
-            Section(header: Text("Basic Settings")) {
-                TextField("Workout name",
+            Section(header: Text(.basicSettings)) {
+                TextField(Strings.workoutName.localized,
                           text: $name.onChange(update))
             }
 
             if !workout.template {
-                Section(header: Text("\(workout.completed ? "Completed" : "Scheduled")")) {
+                Section(header: workoutDateSectionHeader) {
                     NavigationLink(
                         destination: {
                             DatePicker(
-                                "Date",
+                                Strings.workoutDate.localized,
                                 selection: $date.onChange {
                                     showingDateChangeConfirmation.toggle()
                                 },
                                 displayedComponents: .date
                             )
                             .datePickerStyle(GraphicalDatePickerStyle())
-                            .alert("Workout date changed", isPresented: $showingDateChangeConfirmation) {
+                            .alert(Strings.workoutDateChanged.localized, isPresented: $showingDateChangeConfirmation) {
                                 Button("OK", role: .cancel) {
                                     update()
                                 }
@@ -97,7 +129,7 @@ struct EditWorkoutView: View {
 
             Section(header: Text("")) {
                 if !workout.template {
-                    Button(workout.completed ? "Schedule workout" : "Complete workout") {
+                    Button(completeScheduleWorkoutButtonText) {
                         showingCompleteConfirmation.toggle()
                     }
                     .alert(workout.getConfirmationAlertTitle(workout: workout),
@@ -109,60 +141,54 @@ struct EditWorkoutView: View {
                         Text(workout.getConfirmationAlertMessage(workout: workout))
                     }
 
-                    Button("Create template from workout") {
+                    Button(Strings.createTemplateFromWorkoutButton.localized) {
                         showingCreateTemplateConfirmation.toggle()
                     }
-                    .alert("Create a template?",
+                    .alert(Strings.createTemplateConfirmationTitle.localized,
                            isPresented: $showingCreateTemplateConfirmation) {
-                        Button("Confirm") {
+                        Button(Strings.confirmButton.localized) {
                             createWorkoutFromExisting(workout,
                                                       newWorkoutIsTemplate: true)
                         }
 
-                        Button("Cancel", role: .cancel) { }
+                        Button(Strings.cancelButton.localized, role: .cancel) { }
                     } message: {
-                        // swiftlint:disable:next line_length
-                        Text("We'll use the exercises and sets in this workout to create a new template. You can view your workout templates on the Home tab.")
+                        Text(.createTemplateConfirmationMessage)
                     }
                 } else {
-                    Button("Create workout from template") {
+                    Button(Strings.createWorkoutFromTemplateButton.localized) {
                          showingCreateWorkoutConfirmation.toggle()
                     }
-                    .alert("Create a workout?",
+                    .alert(Strings.createWorkoutConfirmationTitle.localized,
                            isPresented: $showingCreateWorkoutConfirmation) {
-                        Button("Confirm") {
+                        Button(Strings.confirmButton.localized) {
                             createWorkoutFromExisting(workout,
                                                       newWorkoutIsTemplate: false)
                         }
 
-                        Button("Cancel", role: .cancel) { }
+                        Button(Strings.cancelButton.localized, role: .cancel) { }
                     } message: {
-                        // swiftlint:disable:next line_length
-                        Text("We'll use the exercises and sets in this template to create a new workout. You can view your workouts on the Home tab.")
+                        Text(.createWorkoutConfirmationMessage)
                     }
                 }
 
-                Button(workout.template ? "Delete template" : "Delete workout", role: .destructive) {
+                Button(deleteWorkoutTemplateButtonText, role: .destructive) {
                     showingDeleteWorkoutConfirmation.toggle()
                 }
                 .tint(.red)
-                .alert("Are you sure?",
+                .alert(Strings.areYouSureAlertTitle.localized,
                        isPresented: $showingDeleteWorkoutConfirmation) {
-                    Button("Delete", role: .destructive) {
+                    Button(Strings.deleteButton.localized, role: .destructive) {
                         dataController.delete(workout)
                     }
 
-                    Button("Cancel", role: .cancel) { }
+                    Button(Strings.cancelButton.localized, role: .cancel) { }
                 } message: {
-                    Text(workout.template
-                         // swiftlint:disable:next line_length
-                         ? "Deleting a template cannot be undone and will also delete all sets contained in the template."
-                         // swiftlint:disable:next line_length
-                         : "Deleting a workout cannot be undone and will also delete all sets contained in the workout.")
+                    deleteWorkoutTemplateAlertMessage
                 }
             }
         }
-        .navigationTitle(workout.template ? "Edit Template" : "Edit Workout")
+        .navigationTitle(navigationTitle)
         .onDisappear(perform: dataController.save)
         .toolbar {
             addExerciseToWorkoutToolbarItem

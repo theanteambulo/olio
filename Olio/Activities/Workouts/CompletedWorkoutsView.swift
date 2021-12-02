@@ -64,7 +64,7 @@ struct CompletedWorkoutsView: View {
         NavigationView {
             Group {
                 if sortedWorkouts.isEmpty {
-                    Text("Nothing to see here... yet!")
+                    Text(.nothingToSeeHere)
                 } else {
                     List {
                         ForEach(workoutDates, id: \.self) { date in
@@ -77,7 +77,7 @@ struct CompletedWorkoutsView: View {
                 }
             }
             .padding(.bottom)
-            .navigationTitle("History")
+            .navigationTitle(Text(.historyTab))
         }
     }
 }

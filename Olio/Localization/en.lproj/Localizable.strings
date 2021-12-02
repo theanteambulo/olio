@@ -1,0 +1,92 @@
+/* GENERAL */
+"okButton" = "OK";
+"areYouSureAlertTitle" = "Are you sure?";
+"confirmButton" = "Confirm";
+"deleteButton" = "Delete";
+"removeButton" = "Remove";
+"cancelButton" = "Cancel";
+"addExercise" = "Add Exercise";
+"basicSettings" = "Basic Settings";
+
+
+
+/* TABS */
+"homeTab" = "Home";
+"historyTab" = "History";
+"exercisesTab" = "Exercises";
+
+
+
+/* WORKOUTS */
+"workoutTemplates" = "Templates";
+"workoutsScheduled" = "Scheduled Workouts";
+"nothingToSeeHere" = "Nothing to see here... yet!";
+"selectOption" = "Select an option";
+"newTemplate" = "New Template";
+"newWorkout" = "New Workout";
+
+
+
+/* EDITING WORKOUTS */
+"editWorkoutNavigationTitle" = "Edit Workout";
+"editTemplateNavigationTitle" = "Edit Template";
+"workoutName" = "Workout Name";
+"completedSectionHeader" = "Completed";
+"scheduledSectionHeader" = "Scheduled";
+"workoutDate" = "Date";
+"workoutDateChanged" = "Workout date changed";
+"scheduleWorkout" = "Schedule workout";
+"completeWorkout" = "Complete workout";
+"createTemplateFromWorkoutButton" = "Create template from workout";
+"createTemplateConfirmationTitle" = "Create a template?";
+"createTemplateConfirmationMessage" = "We'll use the exercises and sets in this workout to create a new template. You can view your workout templates on the Home tab.";
+"createWorkoutFromTemplateButton" = "Create workout from template";
+"createWorkoutConfirmationTitle" = "Create a workout?";
+"createWorkoutConfirmationMessage" = "We'll use the exercises and sets in this template to create a new workout. You can view your workouts on the Home tab.";
+"deleteWorkoutButton" = "Delete workout";
+"deleteWorkoutConfirmationMessage" = "Deleting a workout cannot be undone and will also delete all sets contained in the workout.";
+"deleteTemplateButton" = "Delete template";
+"deleteTemplateConfirmationMessage" = "Deleting a template cannot be undone and will also delete all sets contained in the template.";
+"addSet" = "Add set";
+"removeExerciseButton" = "Remove exercise";
+"removeExerciseConfirmationMessage" = "Removing an exercise from the workout also deletes all of its sets and cannot be undone.";
+
+
+
+/* EXERCISES */
+"exerciseNavigationTitle" = "Exercises";
+"saveButton" = "Save";
+"exerciseName" = "Exercise Name";
+"muscleGroup" = "Muscle Group";
+"chest" = "Chest";
+"back" = "Back";
+"shoulders" = "Shoulders";
+"biceps" = "Biceps";
+"triceps" = "Triceps";
+"legs" = "Legs";
+"abs" = "Abs";
+"duplicationErrorAlertTitle" = "Oops!";
+"duplicationErrorAlertMessage" = "Looks like this exercise already exists. Try changing the name to proceed.";
+
+
+
+/* EDIT EXERCISES */
+"editExerciseNavigationTitle" = "Edit Exercise";
+"exerciseHistory" = "Exercise History";
+"workoutDateMissing" = "Workout date missing";
+"workoutNameMissing" = "Workout name missing";
+
+
+
+/* WORKOUT EXTENSION */
+"workoutCompletedAlertTitle" = "Workout Complete";
+"workoutCompletedAlertMessage" = "Smashed it! This workout will now move to your workout history.";
+"workoutScheduledAlertTitle" = "Workout Scheduled";
+"workoutScheduledAlertMessage" = "This workout will now move to your scheduled workouts. Get after it!";
+
+
+
+/* EXERCISE EXTENSION */
+
+
+

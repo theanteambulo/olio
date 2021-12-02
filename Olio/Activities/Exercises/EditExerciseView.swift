@@ -28,33 +28,29 @@ struct EditExerciseView: View {
 
     var body: some View {
         Form {
-            Section(header: Text("Basic Settings")) {
-                TextField("Exercise name", text: $name)
+            Section(header: Text(.basicSettings)) {
+                TextField(Strings.exerciseName.localized, text: $name)
 
-                Picker("Muscle Group", selection: $muscleGroup) {
-                    Text("Chest").tag(1)
-                    Text("Back").tag(2)
-                    Text("Shoulders").tag(3)
-                    Text("Biceps").tag(4)
-                    Text("Triceps").tag(5)
-                    Text("Legs").tag(6)
-                    Text("Abs").tag(7)
+                Picker(Strings.muscleGroup.localized, selection: $muscleGroup) {
+                    Text(.chest).tag(1)
+                    Text(.back).tag(2)
+                    Text(.shoulders).tag(3)
+                    Text(.biceps).tag(4)
+                    Text(.triceps).tag(5)
+                    Text(.legs).tag(6)
+                    Text(.abs).tag(7)
                 }
             }
 
             if filteredExerciseSets.isEmpty {
                 EmptyView()
             } else {
-                Section(header: Text("Exercise History")) {
+                Section(header: Text(.exerciseHistory)) {
                     List {
                         ForEach(filteredExerciseSets) { exerciseSet in
                             HStack {
                                 VStack(alignment: .leading) {
-                                    // swiftlint:disable:next line_length
-                                    Text(exerciseSet.workout?.workoutDate.formatted(date: .abbreviated, time: .omitted) ?? "Workout date missing")
-                                    Text(exerciseSet.workout?.workoutName ?? "Workout name missing")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
+                                    ExerciseHistoryRowView(exerciseSet: exerciseSet)
                                 }
 
                                 Spacer()
@@ -66,7 +62,7 @@ struct EditExerciseView: View {
                 }
             }
         }
-        .navigationTitle("Edit Exercise")
+        .navigationTitle(Text(.editExerciseNavigationTitle))
         .onDisappear {
             withAnimation {
                 update()

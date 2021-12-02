@@ -65,7 +65,7 @@ struct AddExerciseToWorkoutView: View {
                     }
                 }
             }
-            .navigationTitle("Add Exercise")
+            .navigationTitle(Text(.addExercise))
         }
     }
 
@@ -83,9 +83,6 @@ struct AddExerciseToWorkoutView: View {
         workout.setValue(NSSet(array: existingExercises), forKey: "exercises")
 
         dataController.save()
-
-        print("Workout exercises: \(workout.workoutExercises)")
-        print("Exercise workouts: \(exercise.exerciseWorkouts)")
     }
 }
 

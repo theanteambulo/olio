@@ -35,29 +35,28 @@ struct EditWorkoutExerciseListView: View {
                 }
             }
 
-            Button("Add Set") {
+            Button(Strings.addSet.localized) {
                 withAnimation {
                     addSet(toExercise: exercise, toWorkout: workout)
-                    print("A set was added to the exercise.")
                 }
             }
 
-            Button("Remove Exercise", role: .destructive) {
+            Button(Strings.removeExerciseButton.localized, role: .destructive) {
                 showingDeleteExerciseConfirmation.toggle()
             }
             .tint(.red)
-            .alert("Are you sure?",
+            .alert(Strings.areYouSureAlertTitle.localized,
                    isPresented: $showingDeleteExerciseConfirmation) {
-                Button("Remove", role: .destructive) {
+                Button(Strings.removeButton.localized, role: .destructive) {
                     withAnimation {
                         dataController.removeExerciseFromWorkout(exercise, workout)
                         dataController.save()
                     }
                 }
 
-                Button("Cancel", role: .cancel) { }
+                Button(Strings.cancelButton.localized, role: .cancel) { }
             } message: {
-                Text("Removing an exercise from the workout also deletes all of its sets and cannot be undone.")
+                Text(.removeExerciseConfirmationMessage)
             }
         }
     }

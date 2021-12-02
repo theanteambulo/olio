@@ -42,7 +42,7 @@ struct ExercisesView: View {
             Button {
                 showingAddExerciseSheet.toggle()
             } label: {
-                Label("", systemImage: "plus")
+                Label("Add", systemImage: "plus")
             }
             .sheet(isPresented: $showingAddExerciseSheet) {
                 AddExerciseView()
@@ -74,7 +74,7 @@ struct ExercisesView: View {
                 }
             }
             .listStyle(InsetGroupedListStyle())
-            .navigationTitle("Exercises")
+            .navigationTitle(Text(.exercisesTab))
             .toolbar {
                 addExerciseToolbarItem
             }

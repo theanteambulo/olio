@@ -13,7 +13,8 @@ extension Exercise {
     }
 
     var exerciseName: String {
-        name ?? ""
+        name ?? NSLocalizedString("newExercise",
+                                  comment: "Create a new exercise")
     }
 
     var exerciseMuscleGroup: String {
