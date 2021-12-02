@@ -23,7 +23,7 @@ struct EditExerciseView: View {
     }
 
     var filteredExerciseSets: [ExerciseSet] {
-        exercise.exerciseSets.filter({ $0.completed == true })
+        exercise.exerciseSets.filter({ $0.completed == true && $0.workout?.template == false })
     }
 
     var body: some View {
