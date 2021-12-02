@@ -146,7 +146,7 @@ struct EditWorkoutView: View {
                     }
                     .alert(workout.getConfirmationAlertTitle(workout: workout),
                            isPresented: $showingCompleteConfirmation) {
-                        Button("OK", role: .cancel) {
+                        Button(Strings.okButton.localized, role: .cancel) {
                             workout.completed.toggle()
                         }
                     } message: {
