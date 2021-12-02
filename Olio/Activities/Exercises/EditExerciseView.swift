@@ -48,15 +48,7 @@ struct EditExerciseView: View {
                 Section(header: Text(.exerciseHistory)) {
                     List {
                         ForEach(filteredExerciseSets) { exerciseSet in
-                            HStack {
-                                VStack(alignment: .leading) {
-                                    ExerciseHistoryRowView(exerciseSet: exerciseSet)
-                                }
-
-                                Spacer()
-
-                                Text("\(exerciseSet.reps) \(exerciseSet.reps == 1 ? "rep" : "reps")")
-                            }
+                            ExerciseHistoryRowView(exerciseSet: exerciseSet)
                         }
                     }
                 }

@@ -35,6 +35,8 @@
 "scheduledSectionHeader" = "Scheduled";
 "workoutDate" = "Date";
 "workoutDateChanged" = "Workout date changed";
+"completedWorkoutDateChangeAlertMessage" = "Your workout date has changed. You can find it on the History tab.";
+"scheduledWorkoutDateChangeAlertMessage" = "Your workout date has changed. You can find it on the Scheduled tab.";
 "scheduleWorkout" = "Schedule workout";
 "completeWorkout" = "Complete workout";
 "createTemplateFromWorkoutButton" = "Create template from workout";

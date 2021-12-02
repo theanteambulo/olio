@@ -188,8 +188,6 @@ struct ScheduledWorkoutsView: View {
             .padding(.bottom)
             .navigationTitle(Strings.homeTab.localized)
             .toolbar {
-//                deleteAllDataToolbarItem
-//                countDataToolbarItem
                 addWorkoutToolbarItem
             }
         }

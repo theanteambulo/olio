@@ -27,11 +27,17 @@ struct ExerciseHistoryRowView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading) {
-            exerciseSetWorkoutDate
-            exerciseSetWorkoutName
-                .font(.caption)
-                .foregroundColor(.secondary)
+        HStack {
+            VStack(alignment: .leading) {
+                exerciseSetWorkoutDate
+                exerciseSetWorkoutName
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+
+            Spacer()
+
+            Text("\(exerciseSet.exerciseSetReps) reps")
         }
     }
 }

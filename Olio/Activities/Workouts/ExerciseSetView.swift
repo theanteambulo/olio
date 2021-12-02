@@ -37,7 +37,7 @@ struct ExerciseSetView: View {
                 in: 1...100,
                 step: 1
             ) {
-                Text("\(exerciseSetReps) \(exerciseSetReps == 1 ? "rep" : "reps")")
+                Text("\(exerciseSetReps) reps")
             }
         }
     }

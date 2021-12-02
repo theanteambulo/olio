@@ -86,6 +86,18 @@ struct EditWorkoutView: View {
         : Strings.editWorkoutNavigationTitle.localized
     }
 
+    var dateString: String {
+        date.formatted(date: .complete, time: .omitted)
+    }
+
+    var dateChangeConfirmation: some View {
+        if workout.completed {
+            return Text(.completedWorkoutDateChangeAlertMessage)
+        } else {
+            return Text(.scheduledWorkoutDateChangeAlertMessage)
+        }
+    }
+
     var body: some View {
         Form {
             Section(header: Text(.basicSettings)) {
@@ -105,13 +117,13 @@ struct EditWorkoutView: View {
                                 displayedComponents: .date
                             )
                             .datePickerStyle(GraphicalDatePickerStyle())
-                            .alert(Strings.workoutDateChanged.localized, isPresented: $showingDateChangeConfirmation) {
-                                Button("OK", role: .cancel) {
+                            .alert(dateString, isPresented: $showingDateChangeConfirmation) {
+                                Button(Strings.okButton.localized, role: .cancel) {
                                     update()
+                                    dataController.save()
                                 }
                             } message: {
-                                // swiftlint:disable:next line_length
-                                Text("Your workout date has changed. You can find it on the \(workout.completed ? "History" : "Scheduled") tab, under \(date.formatted(date: .complete, time: .omitted)).")
+                                dateChangeConfirmation
                             }
                         }, label: {
                             Text("\(date.formatted(date: .complete, time: .omitted))")

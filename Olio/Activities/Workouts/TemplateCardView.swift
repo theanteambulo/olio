@@ -17,8 +17,12 @@ struct TemplateCardView: View {
                     .foregroundColor(.primary)
                     .frame(minWidth: 125,
                            alignment: .leading)
-                // swiftlint:disable:next line_length
-                Text("\(template.workoutExercises.count) \(template.workoutExercises.count == 1 ? "exercise" : "exercises"), \(template.workoutExerciseSets.count) \(template.workoutExerciseSets.count == 1 ? "set" : "sets")")
+
+                Text("\(template.workoutExercises.count) exercises")
+                    .foregroundColor(.secondary)
+                    .font(.caption)
+
+                Text("\(template.workoutExerciseSets.count) sets")
                     .foregroundColor(.secondary)
                     .font(.caption)
             }

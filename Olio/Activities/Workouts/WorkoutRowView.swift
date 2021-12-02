@@ -17,8 +17,12 @@ struct WorkoutRowView: View {
                 Text(workout.workoutId)
                     .font(.caption)
                     .foregroundColor(.secondary)
-                // swiftlint:disable:next line_length
-                Text("\(workout.workoutExercises.count) \(workout.workoutExercises.count == 1 ? "exercise" : "exercises"), \(workout.workoutExerciseSets.count) \(workout.workoutExerciseSets.count == 1 ? "set" : "sets")")
+
+                Text("\(workout.workoutExercises.count) exercises")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+
+                Text("\(workout.workoutExerciseSets.count) sets")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
