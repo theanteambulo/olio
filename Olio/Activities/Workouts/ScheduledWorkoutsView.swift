@@ -79,25 +79,6 @@ struct ScheduledWorkoutsView: View {
         workouts = FetchRequest(fetchRequest: workoutsRequest)
     }
 
-//    var deleteAllDataToolbarItem: some ToolbarContent {
-//        ToolbarItem(placement: .navigationBarLeading) {
-//            Button("Delete Data") {
-//                dataController.deleteAll()
-//                dataController.save()
-//            }
-//        }
-//    }
-
-//    var countDataToolbarItem: some ToolbarContent {
-//        ToolbarItem(placement: .navigationBarLeading) {
-//            Button("Count Data") {
-//                print("Workouts: \(dataController.count(for: Workout.fetchRequest()))")
-//                print("Exercises: \(dataController.count(for: Exercise.fetchRequest()))")
-//                print("Exercise Sets: \(dataController.count(for: ExerciseSet.fetchRequest()))")
-//            }
-//        }
-//    }
-
     var addWorkoutToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button {
