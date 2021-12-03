@@ -20,11 +20,19 @@ struct ExerciseSetView: View {
         _exerciseSetCompleted = State(wrappedValue: exerciseSet.completed)
     }
 
+    var completionIcon: String {
+        exerciseSet.completed ? "checkmark" : "xmark"
+    }
+
+    var iconColor: Color {
+        exerciseSet.completed ? .green : .red
+    }
+
     var body: some View {
         HStack {
-            Image(systemName: exerciseSet.completed ? "checkmark" : "xmark")
+            Image(systemName: completionIcon)
                 .frame(width: 15)
-                .foregroundColor(exerciseSet.completed ? .green : .red)
+                .foregroundColor(iconColor)
                 .onTapGesture {
                     withAnimation {
                         exerciseSet.completed.toggle()
