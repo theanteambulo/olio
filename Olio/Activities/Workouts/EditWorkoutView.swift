@@ -54,12 +54,10 @@ struct EditWorkoutView: View {
         }
     }
 
-    var workoutDateSectionHeader: some View {
-        if workout.completed {
-            return Text(.completedSectionHeader)
-        } else {
-            return Text(.scheduledSectionHeader)
-        }
+    var workoutDateSectionHeader: LocalizedStringKey {
+        workout.completed
+        ? Strings.completedSectionHeader.localized
+        : Strings.scheduledSectionHeader.localized
     }
 
     var completeScheduleWorkoutButtonText: LocalizedStringKey {
@@ -106,7 +104,7 @@ struct EditWorkoutView: View {
             }
 
             if !workout.template {
-                Section(header: workoutDateSectionHeader) {
+                Section(header: Text(workoutDateSectionHeader)) {
                     NavigationLink(
                         destination: {
                             DatePicker(
