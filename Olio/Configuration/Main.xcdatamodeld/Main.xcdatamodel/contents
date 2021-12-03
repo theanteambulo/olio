@@ -5,7 +5,7 @@
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
         <attribute name="muscleGroup" optional="YES" attributeType="Integer 16" defaultValueString="1" usesScalarValueType="YES"/>
         <attribute name="name" optional="YES" attributeType="String"/>
-        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExerciseSet" inverseName="exercise" inverseEntity="ExerciseSet"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ExerciseSet" inverseName="exercise" inverseEntity="ExerciseSet"/>
         <relationship name="workouts" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Workout" inverseName="exercises" inverseEntity="Workout"/>
     </entity>
     <entity name="ExerciseSet" representedClassName="ExerciseSet" syncable="YES" codeGenerationType="class">
