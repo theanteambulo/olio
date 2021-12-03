@@ -72,12 +72,6 @@ struct EditWorkoutView: View {
         : Strings.deleteWorkoutButton.localized
     }
 
-    var deleteWorkoutTemplateAlertMessage: some View {
-        workout.template
-        ? Text(.deleteTemplateConfirmationMessage)
-        : Text(.deleteWorkoutConfirmationMessage)
-    }
-
     var navigationTitle: LocalizedStringKey {
         workout.template
         ? Strings.editTemplateNavigationTitle.localized
@@ -86,6 +80,12 @@ struct EditWorkoutView: View {
 
     var dateString: String {
         date.formatted(date: .complete, time: .omitted)
+    }
+
+    var deleteWorkoutTemplateAlertMessage: some View {
+        workout.template
+        ? Text(.deleteTemplateConfirmationMessage)
+        : Text(.deleteWorkoutConfirmationMessage)
     }
 
     var dateChangeConfirmation: some View {
