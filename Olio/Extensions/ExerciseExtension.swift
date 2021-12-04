@@ -55,12 +55,12 @@ extension Exercise {
     }
 
     static var example: Exercise {
-        let dataController = DataController(inMemory: true)
+        let dataController = DataController.preview
         let viewContext = dataController.container.viewContext
 
         let exercise = Exercise(context: viewContext)
         exercise.name = "Example Exercise"
-        exercise.bodyweight = Bool.random()
+        exercise.bodyweight = true
         exercise.muscleGroup = Int16.random(in: 1...7)
         exercise.sets = [ExerciseSet.example]
 

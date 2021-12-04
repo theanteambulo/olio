@@ -14,8 +14,11 @@ extension Workout {
     }
 
     var workoutName: String {
-        name ?? NSLocalizedString("newWorkout",
-                                  comment: "Create a new workout")
+        template
+        ? name ?? NSLocalizedString("newTemplate",
+                                    comment: "Create a new template")
+        : name ?? NSLocalizedString("newWorkout",
+                                    comment: "Create a new workout")
     }
 
     var workoutDate: Date {
@@ -37,7 +40,7 @@ extension Workout {
     }
 
     static var example: Workout {
-        let dataController = DataController(inMemory: true)
+        let dataController = DataController.preview
         let viewContext = dataController.container.viewContext
 
         let workout = Workout(context: viewContext)

@@ -21,13 +21,13 @@ extension ExerciseSet {
     }
 
     static var example: ExerciseSet {
-        let dataController = DataController(inMemory: true)
+        let dataController = DataController.preview
         let viewContext = dataController.container.viewContext
 
         let exerciseSet = ExerciseSet(context: viewContext)
         exerciseSet.reps = 10
         exerciseSet.weight = 0
-        exerciseSet.completed = Bool.random()
+        exerciseSet.completed = false
 
         return exerciseSet
     }

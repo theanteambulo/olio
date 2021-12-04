@@ -24,7 +24,7 @@
         <attribute name="name" optional="YES" attributeType="String"/>
         <attribute name="template" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <relationship name="exercises" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Exercise" inverseName="workouts" inverseEntity="Exercise"/>
-        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="ExerciseSet" inverseName="workout" inverseEntity="ExerciseSet"/>
+        <relationship name="sets" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ExerciseSet" inverseName="workout" inverseEntity="ExerciseSet"/>
     </entity>
     <elements>
         <element name="Exercise" positionX="-63" positionY="-18" width="128" height="119"/>

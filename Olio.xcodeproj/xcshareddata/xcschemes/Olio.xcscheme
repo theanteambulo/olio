@@ -49,6 +49,26 @@
                ReferencedContainer = "container:Olio.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "237E95B4275BAA4700937AAF"
+               BuildableName = "OlioPerformanceTests.xctest"
+               BlueprintName = "OlioPerformanceTests"
+               ReferencedContainer = "container:Olio.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "237E95C3275BB32600937AAF"
+               BuildableName = "OlioUITests.xctest"
+               BlueprintName = "OlioUITests"
+               ReferencedContainer = "container:Olio.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction

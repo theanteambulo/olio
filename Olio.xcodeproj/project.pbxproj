@@ -16,6 +16,13 @@
 		236E4A2727523A780012C4B2 /* AddExerciseToWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236E4A2627523A780012C4B2 /* AddExerciseToWorkoutView.swift */; };
 		236E4A2927524D6D0012C4B2 /* ExerciseSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236E4A2827524D6D0012C4B2 /* ExerciseSetView.swift */; };
 		2375DA982758F6F100B2874B /* ExerciseHistoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375DA972758F6F100B2874B /* ExerciseHistoryRowView.swift */; };
+		237E95AC275B7DB200937AAF /* ProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E95AB275B7DB200937AAF /* ProjectTests.swift */; };
+		237E95AE275B891200937AAF /* DevelopmentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E95AD275B891200937AAF /* DevelopmentTests.swift */; };
+		237E95B0275BA20B00937AAF /* ExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E95AF275BA20B00937AAF /* ExtensionTests.swift */; };
+		237E95B8275BAA4700937AAF /* OlioPerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E95B7275BAA4700937AAF /* OlioPerformanceTests.swift */; };
+		237E95BF275BAB9400937AAF /* PerformanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E95BE275BAB9400937AAF /* PerformanceTests.swift */; };
+		237E95C7275BB32600937AAF /* OlioUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E95C6275BB32600937AAF /* OlioUITests.swift */; };
+		237E95C9275BB32600937AAF /* OlioUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E95C8275BB32600937AAF /* OlioUITestsLaunchTests.swift */; };
 		23A1BA71274F742400AA5123 /* WorkoutRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1BA70274F742400AA5123 /* WorkoutRowView.swift */; };
 		23A368B62750C248000725E9 /* SequenceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A368B52750C248000725E9 /* SequenceExtension.swift */; };
 		23A9C01427554FA3005E0294 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 230BAC57274C49EF0013E4AF /* CloudKit.framework */; };
@@ -41,6 +48,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		237E95B9275BAA4700937AAF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23AB0636274B7CF300BCBD28 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 23AB063D274B7CF300BCBD28;
+			remoteInfo = Olio;
+		};
+		237E95CA275BB32600937AAF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23AB0636274B7CF300BCBD28 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 23AB063D274B7CF300BCBD28;
+			remoteInfo = Olio;
+		};
 		23B20E33275A184700215A72 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 23AB0636274B7CF300BCBD28 /* Project object */;
@@ -63,6 +84,15 @@
 		236E4A2627523A780012C4B2 /* AddExerciseToWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseToWorkoutView.swift; sourceTree = "<group>"; };
 		236E4A2827524D6D0012C4B2 /* ExerciseSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSetView.swift; sourceTree = "<group>"; };
 		2375DA972758F6F100B2874B /* ExerciseHistoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryRowView.swift; sourceTree = "<group>"; };
+		237E95AB275B7DB200937AAF /* ProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTests.swift; sourceTree = "<group>"; };
+		237E95AD275B891200937AAF /* DevelopmentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DevelopmentTests.swift; sourceTree = "<group>"; };
+		237E95AF275BA20B00937AAF /* ExtensionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTests.swift; sourceTree = "<group>"; };
+		237E95B5275BAA4700937AAF /* OlioPerformanceTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OlioPerformanceTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		237E95B7275BAA4700937AAF /* OlioPerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioPerformanceTests.swift; sourceTree = "<group>"; };
+		237E95BE275BAB9400937AAF /* PerformanceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceTests.swift; sourceTree = "<group>"; };
+		237E95C4275BB32600937AAF /* OlioUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OlioUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		237E95C6275BB32600937AAF /* OlioUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioUITests.swift; sourceTree = "<group>"; };
+		237E95C8275BB32600937AAF /* OlioUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		23A1BA70274F742400AA5123 /* WorkoutRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutRowView.swift; sourceTree = "<group>"; };
 		23A368B52750C248000725E9 /* SequenceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceExtension.swift; sourceTree = "<group>"; };
 		23A9C01227554F79005E0294 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
@@ -90,6 +120,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		237E95B2275BAA4700937AAF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		237E95C1275BB32600937AAF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		23AB063B274B7CF300BCBD28 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -132,11 +176,31 @@
 			path = Workouts;
 			sourceTree = "<group>";
 		};
+		237E95B6275BAA4700937AAF /* OlioPerformanceTests */ = {
+			isa = PBXGroup;
+			children = (
+				237E95B7275BAA4700937AAF /* OlioPerformanceTests.swift */,
+				237E95BE275BAB9400937AAF /* PerformanceTests.swift */,
+			);
+			path = OlioPerformanceTests;
+			sourceTree = "<group>";
+		};
+		237E95C5275BB32600937AAF /* OlioUITests */ = {
+			isa = PBXGroup;
+			children = (
+				237E95C6275BB32600937AAF /* OlioUITests.swift */,
+				237E95C8275BB32600937AAF /* OlioUITestsLaunchTests.swift */,
+			);
+			path = OlioUITests;
+			sourceTree = "<group>";
+		};
 		23AB0635274B7CF300BCBD28 = {
 			isa = PBXGroup;
 			children = (
 				23AB0640274B7CF300BCBD28 /* Olio */,
 				23B20E30275A184700215A72 /* OlioTests */,
+				237E95B6275BAA4700937AAF /* OlioPerformanceTests */,
+				237E95C5275BB32600937AAF /* OlioUITests */,
 				23AB063F274B7CF300BCBD28 /* Products */,
 				230BAC56274C49EF0013E4AF /* Frameworks */,
 			);
@@ -147,6 +211,8 @@
 			children = (
 				23AB063E274B7CF300BCBD28 /* Olio.app */,
 				23B20E2F275A184700215A72 /* OlioTests.xctest */,
+				237E95B5275BAA4700937AAF /* OlioPerformanceTests.xctest */,
+				237E95C4275BB32600937AAF /* OlioUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -179,6 +245,9 @@
 			isa = PBXGroup;
 			children = (
 				23B20E31275A184700215A72 /* OlioTests.swift */,
+				237E95AB275B7DB200937AAF /* ProjectTests.swift */,
+				237E95AD275B891200937AAF /* DevelopmentTests.swift */,
+				237E95AF275BA20B00937AAF /* ExtensionTests.swift */,
 			);
 			path = OlioTests;
 			sourceTree = "<group>";
@@ -241,6 +310,42 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		237E95B4275BAA4700937AAF /* OlioPerformanceTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 237E95BB275BAA4700937AAF /* Build configuration list for PBXNativeTarget "OlioPerformanceTests" */;
+			buildPhases = (
+				237E95B1275BAA4700937AAF /* Sources */,
+				237E95B2275BAA4700937AAF /* Frameworks */,
+				237E95B3275BAA4700937AAF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				237E95BA275BAA4700937AAF /* PBXTargetDependency */,
+			);
+			name = OlioPerformanceTests;
+			productName = OlioPerformanceTests;
+			productReference = 237E95B5275BAA4700937AAF /* OlioPerformanceTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		237E95C3275BB32600937AAF /* OlioUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 237E95CC275BB32600937AAF /* Build configuration list for PBXNativeTarget "OlioUITests" */;
+			buildPhases = (
+				237E95C0275BB32600937AAF /* Sources */,
+				237E95C1275BB32600937AAF /* Frameworks */,
+				237E95C2275BB32600937AAF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				237E95CB275BB32600937AAF /* PBXTargetDependency */,
+			);
+			name = OlioUITests;
+			productName = OlioUITests;
+			productReference = 237E95C4275BB32600937AAF /* OlioUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		23AB063D274B7CF300BCBD28 /* Olio */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23AB064C274B7CF400BCBD28 /* Build configuration list for PBXNativeTarget "Olio" */;
@@ -287,6 +392,14 @@
 				LastSwiftUpdateCheck = 1310;
 				LastUpgradeCheck = 1310;
 				TargetAttributes = {
+					237E95B4275BAA4700937AAF = {
+						CreatedOnToolsVersion = 13.1;
+						TestTargetID = 23AB063D274B7CF300BCBD28;
+					};
+					237E95C3275BB32600937AAF = {
+						CreatedOnToolsVersion = 13.1;
+						TestTargetID = 23AB063D274B7CF300BCBD28;
+					};
 					23AB063D274B7CF300BCBD28 = {
 						CreatedOnToolsVersion = 13.1;
 					};
@@ -311,11 +424,27 @@
 			targets = (
 				23AB063D274B7CF300BCBD28 /* Olio */,
 				23B20E2E275A184700215A72 /* OlioTests */,
+				237E95B4275BAA4700937AAF /* OlioPerformanceTests */,
+				237E95C3275BB32600937AAF /* OlioUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		237E95B3275BAA4700937AAF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		237E95C2275BB32600937AAF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		23AB063C274B7CF300BCBD28 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -358,6 +487,24 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		237E95B1275BAA4700937AAF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				237E95BF275BAB9400937AAF /* PerformanceTests.swift in Sources */,
+				237E95B8275BAA4700937AAF /* OlioPerformanceTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		237E95C0275BB32600937AAF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				237E95C7275BB32600937AAF /* OlioUITests.swift in Sources */,
+				237E95C9275BB32600937AAF /* OlioUITestsLaunchTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		23AB063A274B7CF300BCBD28 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -395,12 +542,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				23B20E32275A184700215A72 /* OlioTests.swift in Sources */,
+				237E95AC275B7DB200937AAF /* ProjectTests.swift in Sources */,
+				237E95AE275B891200937AAF /* DevelopmentTests.swift in Sources */,
+				237E95B0275BA20B00937AAF /* ExtensionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		237E95BA275BAA4700937AAF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 23AB063D274B7CF300BCBD28 /* Olio */;
+			targetProxy = 237E95B9275BAA4700937AAF /* PBXContainerItemProxy */;
+		};
+		237E95CB275BB32600937AAF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 23AB063D274B7CF300BCBD28 /* Olio */;
+			targetProxy = 237E95CA275BB32600937AAF /* PBXContainerItemProxy */;
+		};
 		23B20E34275A184700215A72 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 23AB063D274B7CF300BCBD28 /* Olio */;
@@ -420,6 +580,96 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		237E95BC275BAA4700937AAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52R27K29BJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.theanteambulo.OlioPerformanceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Olio.app/Olio";
+			};
+			name = Debug;
+		};
+		237E95BD275BAA4700937AAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52R27K29BJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.theanteambulo.OlioPerformanceTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Olio.app/Olio";
+			};
+			name = Release;
+		};
+		237E95CD275BB32600937AAF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52R27K29BJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.theanteambulo.OlioUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Olio;
+			};
+			name = Debug;
+		};
+		237E95CE275BB32600937AAF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 52R27K29BJ;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.theanteambulo.OlioUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = Olio;
+			};
+			name = Release;
+		};
 		23AB064A274B7CF400BCBD28 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -651,6 +901,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		237E95BB275BAA4700937AAF /* Build configuration list for PBXNativeTarget "OlioPerformanceTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				237E95BC275BAA4700937AAF /* Debug */,
+				237E95BD275BAA4700937AAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		237E95CC275BB32600937AAF /* Build configuration list for PBXNativeTarget "OlioUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				237E95CD275BB32600937AAF /* Debug */,
+				237E95CE275BB32600937AAF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		23AB0639274B7CF300BCBD28 /* Build configuration list for PBXProject "Olio" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

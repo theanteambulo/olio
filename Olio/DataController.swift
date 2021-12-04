@@ -14,14 +14,27 @@ class DataController: ObservableObject {
     /// The lone CloudKit container used to store all our data.
     let container: NSPersistentCloudKitContainer
 
+    /// Ensures data model is loaded only once.
+    static let model: NSManagedObjectModel = {
+        guard let url = Bundle.main.url(forResource: "Main", withExtension: "momd") else {
+            fatalError("Failed to locate model file.")
+        }
+
+        guard let managedObjectModel = NSManagedObjectModel(contentsOf: url) else {
+            fatalError("Failed to load model file.")
+        }
+
+        return managedObjectModel
+    }()
+
     /// Initialises a DataController either in memory (for temporary use such as testing and previewing), or in
     /// permanent storage (for use in regular app runs).
     ///
     /// Defaults to permanent storage.
     /// - Parameter inMemory: Whether to store data in temporary storage or not.
     init(inMemory: Bool = false) {
-        // Load the data model.
-        container = NSPersistentCloudKitContainer(name: "Main")
+        // Load the data model exactly once.
+        container = NSPersistentCloudKitContainer(name: "Main", managedObjectModel: Self.model)
 
         // Create data in memory when true for testing/previewing purposes.
         if inMemory {
@@ -33,6 +46,13 @@ class DataController: ObservableObject {
             if let error = error {
                 fatalError("Failed to load storage: \(error.localizedDescription)")
             }
+
+            #if DEBUG
+            if CommandLine.arguments.contains("enable-testing") {
+                UIView.setAnimationsEnabled(false)
+                self.deleteAll()
+            }
+            #endif
         }
     }
 
@@ -123,5 +143,14 @@ class DataController: ObservableObject {
     /// - Returns: A count of the objects in the Core Data context for a given FetchRequest.
     func count<T>(for fetchRequest: NSFetchRequest<T>) -> Int {
         (try? container.viewContext.count(for: fetchRequest)) ?? 0
+    }
+
+    /// Checks whether a given exercise set has been completed.
+    ///
+    /// Used for performance testing.
+    /// - Parameter exerciseSet: The exercise set to check.
+    /// - Returns: Boolean indicating whether the exercise set is completed or not.
+    func exerciseSetComplete(exerciseSet: ExerciseSet) -> Bool {
+        exerciseSet.completed
     }
 }

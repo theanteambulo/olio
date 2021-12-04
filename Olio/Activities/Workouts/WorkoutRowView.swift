@@ -27,6 +27,7 @@ struct WorkoutRowView: View {
                     .foregroundColor(.secondary)
             }
         }
+        .accessibilityIdentifier(workout.workoutName)
     }
 }
 
