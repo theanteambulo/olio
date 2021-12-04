@@ -43,30 +43,15 @@ class DataController: ObservableObject {
         let viewContext = container.viewContext
 
         // Create 5 sample workouts, each with 5 sample exercises.
-        for workoutCount in 1...5 {
+        for _ in 1...5 {
             let workout = Workout(context: viewContext)
-            workout.name = "Workout \(workoutCount)"
-            workout.date = Date()
-            workout.completed = Bool.random()
-            workout.exercises = []
-            workout.sets = []
+            let exercise = Exercise(context: viewContext)
+            exercise.workouts = [workout]
 
-            for exerciseCount in 1...5 {
-                let exercise = Exercise(context: viewContext)
-                exercise.name = "Exercise \(exerciseCount) - \(workout.workoutName)"
-                exercise.bodyweight = Bool.random()
-                exercise.muscleGroup = Int16(Int.random(in: 1...7))
-                exercise.workouts = [workout]
-                exercise.sets = []
-
-                for _ in 1...3 {
-                    let exerciseSet = ExerciseSet(context: viewContext)
-                    exerciseSet.reps = Int16(Int.random(in: 1...100))
-                    exerciseSet.weight = 0
-                    exerciseSet.completed = Bool.random()
-                    exerciseSet.exercise = exercise
-                    exerciseSet.workout = workout
-                }
+            for _ in 1...3 {
+                let exerciseSet = ExerciseSet(context: viewContext)
+                exerciseSet.exercise = exercise
+                exerciseSet.workout = workout
             }
         }
 
