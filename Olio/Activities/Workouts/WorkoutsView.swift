@@ -111,6 +111,7 @@ struct WorkoutsView: View {
                             dataController.save()
                         }
                     }
+                    .accessibilityIdentifier("Add New Template")
 
                     Button(Strings.newWorkout.localized) {
                         withAnimation {
@@ -122,6 +123,7 @@ struct WorkoutsView: View {
                             dataController.save()
                         }
                     }
+                    .accessibilityIdentifier("Add New Workout")
 
                     Button(Strings.cancelButton.localized, role: .cancel) {
                         showingAddConfirmationDialog = false

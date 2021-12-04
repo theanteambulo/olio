@@ -127,6 +127,7 @@ struct EditWorkoutView: View {
                             Text("\(date.formatted(date: .complete, time: .omitted))")
                         }
                     )
+                    .accessibilityIdentifier("Workout Date")
                 }
             }
 
