@@ -22,6 +22,7 @@ struct EditWorkoutExerciseListView: View {
 
             ForEach(filterExerciseSets(exercise.exerciseSets), id: \.self) { exerciseSet in
                 ExerciseSetView(exerciseSet: exerciseSet)
+                    .accessibilityIdentifier("Exercise Set")
             }
             .onDelete { offsets in
                 let allExerciseSets = filterExerciseSets(exercise.exerciseSets)
@@ -40,6 +41,7 @@ struct EditWorkoutExerciseListView: View {
                     addSet(toExercise: exercise, toWorkout: workout)
                 }
             }
+            .accessibilityIdentifier("Add Set to Exercise: \(exercise.exerciseName)")
 
             Button(Strings.removeExerciseButton.localized, role: .destructive) {
                 showingDeleteExerciseConfirmation.toggle()

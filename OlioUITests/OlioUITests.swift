@@ -7,6 +7,18 @@
 
 import XCTest
 
+extension XCUIElement {
+    func forceTapElement() {
+        if self.isHittable {
+            self.tap()
+        } else {
+            let coordinate: XCUICoordinate = self.coordinate(withNormalizedOffset: CGVector(dx: 0.5, dy: 0.5))
+            coordinate.tap()
+        }
+    }
+}
+
+// swiftlint:disable:next type_body_length
 class OlioUITests: XCTestCase {
     var app: XCUIApplication!
 
@@ -25,7 +37,6 @@ class OlioUITests: XCTestCase {
         )
     }
 
-    // HOME
     func testHomeTabAddsWorkout() throws {
         XCTAssertEqual(
             app.tables.cells.count,
@@ -64,39 +75,6 @@ class OlioUITests: XCTestCase {
         }
     }
 
-    func testEditingTemplateName() throws {
-        XCTAssertEqual(
-            app.scrollViews.buttons.count,
-            0,
-            "There should be 0 templates in the scroll view initially."
-        )
-
-        app.buttons["Add"].tap()
-        app.buttons["Add New Template"].tap()
-
-        XCTAssertEqual(
-            app.scrollViews.buttons.count,
-            1,
-            "There should be 1 template in the scroll view."
-        )
-
-        app.scrollViews.buttons["New Template"].tap()
-
-        app.textFields["New Template"].tap()
-        app.keys["more"].tap()
-        app.keys["space"].tap()
-        app.keys["more"].tap()
-        app.keys["2"].tap()
-        app.buttons["Return"].tap()
-
-        app.navigationBars.buttons["Home"].tap()
-
-        XCTAssertTrue(
-            app.scrollViews.buttons["New Template 2"].exists,
-            "The new template name should be visible in the list."
-        )
-    }
-
     func testEditingWorkoutName() throws {
         XCTAssertEqual(
             app.tables.cells.count,
@@ -130,7 +108,40 @@ class OlioUITests: XCTestCase {
         )
     }
 
-    func testChangingWorkoutDate() {
+    func testEditingTemplateName() throws {
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            0,
+            "There should be 0 templates in the scroll view initially."
+        )
+
+        app.buttons["Add"].tap()
+        app.buttons["Add New Template"].tap()
+
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            1,
+            "There should be 1 template in the scroll view."
+        )
+
+        app.scrollViews.buttons["New Template"].tap()
+
+        app.textFields["New Template"].tap()
+        app.keys["more"].tap()
+        app.keys["space"].tap()
+        app.keys["more"].tap()
+        app.keys["2"].tap()
+        app.buttons["Return"].tap()
+
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertTrue(
+            app.scrollViews.buttons["New Template 2"].exists,
+            "The new template name should be visible in the list."
+        )
+    }
+
+    func testEditingWorkoutDate() {
         XCTAssertEqual(
             app.tables.cells.count,
             0,
@@ -191,6 +202,216 @@ class OlioUITests: XCTestCase {
         )
     }
 
+    func testAddingAnExercise() {
+        app.tabBars.buttons["Exercises"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            0,
+            "There should be 0 exercises in the list initially."
+        )
+
+        app.navigationBars.buttons["Add"].tap()
+
+        app.textFields["Exercise Name"].tap()
+
+        XCTAssertTrue(
+            app.keys["B"].waitForExistence(timeout: 1),
+            "The keyboard must be visible on screen before being used."
+        )
+
+        app.keys["B"].tap()
+        app.keys["e"].tap()
+        app.keys["n"].tap()
+        app.keys["c"].tap()
+        app.keys["h"].tap()
+        app.buttons["Return"].tap()
+        app.buttons["Save"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 1 exercise in the list."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Bench"].exists,
+            "The exercise that the user created should be available as a button in the list."
+        )
+    }
+
+    func testAddingExerciseToWorkout() {
+        testAddingAnExercise()
+
+        app.tabBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            0,
+            "There should be no workouts initially."
+        )
+
+        app.navigationBars.buttons["Add"].forceTapElement()
+        app.buttons["Add New Workout"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 1 workout in the list."
+        )
+
+        app.tables.cells.buttons["New Workout"].tap()
+        app.navigationBars.buttons["Add"].forceTapElement()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["Bench"].exists,
+            "A section with a header matching the added exercise's should exist."
+        )
+
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 1 workout in the list."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["1 exercise"].exists,
+            "There should be 1 workout in the list with caption text reading '1 exercise'."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["No sets"].exists,
+            "There should be 1 workout in the scroll view with caption text reading 'No sets'."
+        )
+    }
+
+    func testAddingExerciseToTemplate() {
+        testAddingAnExercise()
+
+        app.tabBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            0,
+            "There should be 0 templates in the scroll view initially."
+        )
+
+        app.navigationBars.buttons["Add"].forceTapElement()
+        app.buttons["Add New Template"].tap()
+
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            1,
+            "There should be 1 template in the scroll view."
+        )
+
+        app.scrollViews.buttons["New Template"].forceTapElement()
+        app.navigationBars.buttons["Add"].forceTapElement()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["Bench"].exists,
+            "A section with a header matching the added exercise's should exist."
+        )
+
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            1,
+            "There should be 1 template in the scroll view."
+        )
+
+        XCTAssertTrue(
+            app.scrollViews.buttons.staticTexts["1 exercise"].exists,
+            "There should be 1 template in the scroll view with caption text reading '1 exercise'."
+        )
+
+        XCTAssertTrue(
+            app.scrollViews.buttons.staticTexts["No sets"].exists,
+            "There should be 1 template in the scroll view with caption text reading 'No sets'."
+        )
+    }
+
+    func testAddingSetToExerciseInWorkout() {
+        testAddingExerciseToWorkout()
+
+        app.tables.cells.buttons["New Workout"].tap()
+
+        for exerciseSetCount in 1...3 {
+            app.tables.buttons["Add Set to Exercise: Bench"].tap()
+
+            XCTAssertEqual(
+                app.tables.children(matching: .cell).matching(identifier: "Close, Decrement, Increment").count,
+                exerciseSetCount,
+                "There should be \(exerciseSetCount) sets for the exercise."
+             )
+        }
+
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertTrue(
+            app.tables.buttons.staticTexts["1 exercise"].exists,
+            "There should be 1 workout in the list with caption text reading '1 exercise'."
+        )
+
+        XCTAssertTrue(
+            app.tables.buttons.staticTexts["3 sets"].exists,
+            "There should be 1 workout in the list with caption text reading '3 sets'."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            !app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should not yet exist for this exercise since no sets have been completed."
+        )
+
+        app.navigationBars.buttons["Exercises"].tap()
+    }
+
+    func testAddingSetToExerciseInTemplate() {
+        testAddingExerciseToTemplate()
+
+        app.scrollViews.buttons["New Template"].forceTapElement()
+
+        for exerciseSetCount in 1...3 {
+            app.tables.buttons["Add Set to Exercise: Bench"].tap()
+
+            XCTAssertEqual(
+                app.tables.children(matching: .cell).matching(identifier: "Close, Decrement, Increment").count,
+                exerciseSetCount,
+                "There should be \(exerciseSetCount) sets for the exercise."
+            )
+        }
+
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertTrue(
+            app.scrollViews.buttons.staticTexts["1 exercise"].exists,
+            "There should be 1 template in the scroll view with caption text reading '1 exercise'."
+        )
+
+        XCTAssertTrue(
+            app.scrollViews.buttons.staticTexts["3 sets"].exists,
+            "There should be 1 template in the scroll view with caption text reading '3 sets'."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            !app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should not yet exist for this exercise since no sets have been completed."
+        )
+
+        app.navigationBars.buttons["Exercises"].tap()
+    }
+
     func testCompletingWorkoutMovesItToHistoryTab() {
         XCTAssertEqual(
             app.tables.cells.count,
@@ -239,9 +460,218 @@ class OlioUITests: XCTestCase {
         )
     }
 
-//    func testCreatingWorkoutFromTemplate() {
-//    }
-//
-//    func testDeletingWorkout() {
-//    }
+    func testCreatingWorkoutFromTemplate() {
+        testAddingSetToExerciseInTemplate()
+
+        app.tabBars.buttons["Home"].tap()
+        app.scrollViews.buttons["New Template"].forceTapElement()
+        app.tables.buttons["Create workout from template"].tap()
+
+        XCTAssertTrue(
+            app.alerts.element.exists,
+            "An alert should be displayed after the user taps to create a workout from a template."
+        )
+
+        XCTAssertEqual(
+            app.alerts.element.label,
+            "Create a workout?",
+            "The alert title should read 'Create a workout?'."
+        )
+
+        app.alerts.buttons["Confirm"].tap()
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 1 workouts in the list."
+        )
+
+        XCTAssertTrue(
+            app.tables.buttons.staticTexts["1 exercise"].exists,
+            "There should be 1 workout in the list with caption text reading '1 exercise'."
+        )
+
+        XCTAssertTrue(
+            app.tables.buttons.staticTexts["3 sets"].exists,
+            "There should be 1 workout in the list with caption text reading '3 sets'."
+        )
+
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            1,
+            "There should be 1 template in the scroll view."
+        )
+
+        XCTAssertTrue(
+            app.scrollViews.buttons.staticTexts["1 exercise"].exists,
+            "There should be 1 template in the scroll view with caption text reading '1 exercise'."
+        )
+
+        XCTAssertTrue(
+            app.scrollViews.buttons.staticTexts["3 sets"].exists,
+            "There should be 1 template in the scroll view with caption text reading '3 sets'."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+
+        XCTAssertTrue(
+            app.navigationBars.element.staticTexts["Exercises"].exists
+        )
+
+        app.tables.cells.buttons["Bench"].forceTapElement()
+
+        XCTAssertTrue(
+            !app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should not yet exist for this exercise since no sets have been completed."
+        )
+    }
+
+    func testCreatingTemplateFromWorkout() {
+        testAddingSetToExerciseInWorkout()
+
+        app.tabBars.buttons["Home"].tap()
+        app.tables.buttons["New Workout"].forceTapElement()
+        app.tables.buttons["Create template from workout"].tap()
+
+        XCTAssertTrue(
+            app.alerts.element.exists,
+            "An alert should be displayed after the user taps to create a template from a workout."
+        )
+
+        XCTAssertEqual(
+            app.alerts.element.label,
+            "Create a template?",
+            "The alert title should read 'Create a template?'."
+        )
+
+        app.alerts.buttons["Confirm"].tap()
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 1 workouts in the list."
+        )
+
+        XCTAssertTrue(
+            app.tables.buttons.staticTexts["1 exercise"].exists,
+            "There should be 1 workout in the list with caption text reading '1 exercise'."
+        )
+
+        XCTAssertTrue(
+            app.tables.buttons.staticTexts["3 sets"].exists,
+            "There should be 1 workout in the list with caption text reading '3 sets'."
+        )
+
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            1,
+            "There should be 1 template in the scroll view."
+        )
+
+        XCTAssertTrue(
+            app.scrollViews.buttons.staticTexts["1 exercise"].exists,
+            "There should be 1 template in the scroll view with caption text reading '1 exercise'."
+        )
+
+        XCTAssertTrue(
+            app.scrollViews.buttons.staticTexts["3 sets"].exists,
+            "There should be 1 template in the scroll view with caption text reading '3 sets'."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+
+        XCTAssertTrue(
+            app.navigationBars.element.staticTexts["Exercises"].exists
+        )
+
+        app.tables.cells.buttons["Bench"].forceTapElement()
+
+        XCTAssertTrue(
+            !app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should not yet exist for this exercise since no sets have been completed."
+        )
+    }
+
+    func testDeletingWorkout() {
+        XCTAssertEqual(
+            app.tables.cells.count,
+            0,
+            "There should be 0 workouts initially."
+        )
+
+        app.buttons["Add"].tap()
+        app.buttons["Add New Workout"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 1 workout in the list."
+        )
+
+        app.tables.cells.buttons["New Workout"].tap()
+        app.tables.cells.buttons["Delete workout"].tap()
+
+        XCTAssertTrue(
+            app.alerts.element.exists,
+            "An alert should be displayed after the user taps to delete a workout."
+        )
+
+        XCTAssertEqual(
+            app.alerts.element.label,
+            "Are you sure?",
+            "The alert title should read 'Are you sure?'."
+        )
+
+        app.alerts.buttons["Delete"].tap()
+        app.tabBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            0,
+            "There should be 0 workouts in the list."
+        )
+    }
+
+    func testDeletingTemplate() {
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            0,
+            "There should be 0 templates in the scroll view initially."
+        )
+
+        app.buttons["Add"].tap()
+        app.buttons["Add New Template"].tap()
+
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            1,
+            "There should be 1 template in the scroll view."
+        )
+
+        app.scrollViews.buttons["New Template"].tap()
+        app.tables.cells.buttons["Delete template"].tap()
+
+        XCTAssertTrue(
+            app.alerts.element.exists,
+            "An alert should be displayed after the user taps to delete a template."
+        )
+
+        XCTAssertEqual(
+            app.alerts.element.label,
+            "Are you sure?",
+            "The alert title should read 'Are you sure?'."
+        )
+
+        app.alerts.buttons["Delete"].tap()
+        app.tabBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            0,
+            "There should be 0 templates in the scroll view."
+        )
+    }
+// swiftlint:disable:next file_length
 }
