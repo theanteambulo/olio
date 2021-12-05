@@ -57,6 +57,7 @@
 
 /* EXERCISES */
 "exerciseNavigationTitle" = "Exercises";
+"deleteExerciseConfirmationMessage" = "Deleting an exercise cannot be undone and you will lose its history forever. This will also remove the exercise from all scheduled and completed workouts.";
 "saveButton" = "Save";
 "exerciseName" = "Exercise Name";
 "muscleGroup" = "Muscle Group";

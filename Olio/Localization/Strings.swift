@@ -65,6 +65,7 @@ enum Strings: LocalizedStringKey {
 
     // EXERCISES
     case exerciseNavigationTitle
+    case deleteExerciseConfirmationMessage
     case saveButton
     case exerciseName
     case muscleGroup

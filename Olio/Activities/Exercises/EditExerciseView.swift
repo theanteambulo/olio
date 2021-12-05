@@ -14,6 +14,7 @@ struct EditExerciseView: View {
 
     @State private var name: String
     @State private var muscleGroup: Int
+    @State private var showingDeleteExerciseAlert = false
 
     init(exercise: Exercise) {
         self.exercise = exercise
@@ -24,6 +25,27 @@ struct EditExerciseView: View {
 
     var filteredExerciseSets: [ExerciseSet] {
         exercise.exerciseSets.filter({ $0.completed == true && $0.workout?.template == false })
+    }
+
+    var deleteExerciseToolbarItem: some ToolbarContent {
+        ToolbarItem {
+            Button(role: .destructive) {
+                showingDeleteExerciseAlert = true
+            } label: {
+                Label("Delete", systemImage: "trash")
+            }
+            .tint(.red)
+            .alert(Strings.areYouSureAlertTitle.localized,
+                   isPresented: $showingDeleteExerciseAlert) {
+                Button(Strings.deleteButton.localized, role: .destructive) {
+                    dataController.delete(exercise)
+                }
+
+                Button(Strings.cancelButton.localized, role: .cancel) { }
+            } message: {
+                Text(.deleteExerciseConfirmationMessage)
+            }
+        }
     }
 
     var body: some View {
@@ -60,6 +82,9 @@ struct EditExerciseView: View {
                 update()
                 dataController.save()
             }
+        }
+        .toolbar {
+            deleteExerciseToolbarItem
         }
     }
 
