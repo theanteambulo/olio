@@ -39,6 +39,7 @@ struct ExerciseSetView: View {
                         update()
                     }
                 }
+                .accessibilityAddTraits(.isButton)
 
             Stepper(
                 value: $exerciseSetReps.onChange(update),

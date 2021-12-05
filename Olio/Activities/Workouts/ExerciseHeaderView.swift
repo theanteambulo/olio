@@ -14,6 +14,7 @@ struct ExerciseHeaderView: View {
     var body: some View {
         HStack {
             Text("\(Int(100 * exerciseCompletionAmount(exercise)))%")
+                .frame(minWidth: 50)
             ProgressView(value: exerciseCompletionAmount(exercise))
         }
     }

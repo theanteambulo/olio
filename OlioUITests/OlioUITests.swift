@@ -341,15 +341,13 @@ class OlioUITests: XCTestCase {
 
         app.tables.cells.buttons["New Workout"].tap()
 
-        for exerciseSetCount in 1...3 {
-            app.tables.buttons["Add Set to Exercise: Bench"].tap()
+        app.tables.buttons["Add Set to Exercise: Bench"].tap()
 
-            XCTAssertEqual(
-                app.tables.children(matching: .cell).matching(identifier: "Close, Decrement, Increment").count,
-                exerciseSetCount,
-                "There should be \(exerciseSetCount) sets for the exercise."
-             )
-        }
+        XCTAssertEqual(
+            app.tables.children(matching: .cell).matching(identifier: "Close, Decrement, Increment").count,
+            1,
+            "There should be 1 set for the exercise."
+         )
 
         app.navigationBars.buttons["Home"].tap()
 
@@ -359,8 +357,8 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.tables.buttons.staticTexts["3 sets"].exists,
-            "There should be 1 workout in the list with caption text reading '3 sets'."
+            app.tables.buttons.staticTexts["1 set"].exists,
+            "There should be 1 workout in the list with caption text reading '1 set'."
         )
 
         app.tabBars.buttons["Exercises"].tap()
@@ -379,15 +377,13 @@ class OlioUITests: XCTestCase {
 
         app.scrollViews.buttons["New Template"].forceTapElement()
 
-        for exerciseSetCount in 1...3 {
-            app.tables.buttons["Add Set to Exercise: Bench"].tap()
+        app.tables.buttons["Add Set to Exercise: Bench"].tap()
 
-            XCTAssertEqual(
-                app.tables.children(matching: .cell).matching(identifier: "Close, Decrement, Increment").count,
-                exerciseSetCount,
-                "There should be \(exerciseSetCount) sets for the exercise."
-            )
-        }
+        XCTAssertEqual(
+            app.tables.children(matching: .cell).matching(identifier: "Close, Decrement, Increment").count,
+            1,
+            "There should be 1 set for the exercise."
+        )
 
         app.navigationBars.buttons["Home"].tap()
 
@@ -397,8 +393,8 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.scrollViews.buttons.staticTexts["3 sets"].exists,
-            "There should be 1 template in the scroll view with caption text reading '3 sets'."
+            app.scrollViews.buttons.staticTexts["1 set"].exists,
+            "There should be 1 template in the scroll view with caption text reading '1 set'."
         )
 
         app.tabBars.buttons["Exercises"].tap()
@@ -493,8 +489,8 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.tables.buttons.staticTexts["3 sets"].exists,
-            "There should be 1 workout in the list with caption text reading '3 sets'."
+            app.tables.buttons.staticTexts["1 set"].exists,
+            "There should be 1 workout in the list with caption text reading '1 set'."
         )
 
         XCTAssertEqual(
@@ -509,8 +505,8 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.scrollViews.buttons.staticTexts["3 sets"].exists,
-            "There should be 1 template in the scroll view with caption text reading '3 sets'."
+            app.scrollViews.buttons.staticTexts["1 set"].exists,
+            "There should be 1 template in the scroll view with caption text reading '1 set'."
         )
 
         app.tabBars.buttons["Exercises"].tap()
@@ -560,8 +556,8 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.tables.buttons.staticTexts["3 sets"].exists,
-            "There should be 1 workout in the list with caption text reading '3 sets'."
+            app.tables.buttons.staticTexts["1 set"].exists,
+            "There should be 1 workout in the list with caption text reading '1 set'."
         )
 
         XCTAssertEqual(
@@ -576,8 +572,8 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.scrollViews.buttons.staticTexts["3 sets"].exists,
-            "There should be 1 template in the scroll view with caption text reading '3 sets'."
+            app.scrollViews.buttons.staticTexts["1 set"].exists,
+            "There should be 1 template in the scroll view with caption text reading '1 set'."
         )
 
         app.tabBars.buttons["Exercises"].tap()
@@ -673,5 +669,73 @@ class OlioUITests: XCTestCase {
             "There should be 0 templates in the scroll view."
         )
     }
+
+    func testSwipeToDeleteWorkout() throws {
+        try testHomeTabAddsWorkout()
+
+        app.tables.cells.firstMatch.swipeLeft()
+        app.tables.cells.firstMatch.buttons["Delete"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            4,
+            "There should be four workouts remaining in the list."
+        )
+    }
+
+    func testCompletingWorkoutExerciseSet() throws {
+        testAddingSetToExerciseInWorkout()
+
+        app.tabBars.buttons["Home"].tap()
+        app.tables.cells.buttons["New Workout"].tap()
+
+        app.tables.cells["Close, Decrement, Increment"].children(matching: .other).buttons.firstMatch.forceTapElement()
+
+        XCTAssertTrue(
+            app.tables.cells["100%, Progress"].staticTexts["100%"].exists,
+            "1 of 1 exercises has been completed, therefore progress should be 100%."
+        )
+
+        app.navigationBars.buttons["Home"].tap()
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should exist for this exercise since a set has been completed."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["10 reps"].exists,
+            "A row should exist in the exercise history with containing static text that reads '10 reps'."
+        )
+
+        app.navigationBars.buttons["Exercises"].tap()
+    }
+
+    func testIncreasingWorkoutExerciseSetReps() throws {
+        try testCompletingWorkoutExerciseSet()
+
+        app.tabBars.buttons["Home"].tap()
+        app.tables.cells.buttons["New Workout"].tap()
+        app.tables.steppers["10 reps"].buttons["Increment"].tap()
+
+        app.navigationBars.buttons["Home"].tap()
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should exist for this exercise since a set has been completed."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["11 reps"].exists,
+            "A row should exist in the exercise history with containing static text that reads '11 reps'."
+        )
+
+        app.navigationBars.buttons["Exercises"].tap()
+    }
+
 // swiftlint:disable:next file_length
 }

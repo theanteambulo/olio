@@ -22,7 +22,6 @@ struct EditWorkoutExerciseListView: View {
 
             ForEach(filterExerciseSets(exercise.exerciseSets), id: \.self) { exerciseSet in
                 ExerciseSetView(exerciseSet: exerciseSet)
-                    .accessibilityIdentifier("Exercise Set")
             }
             .onDelete { offsets in
                 let allExerciseSets = filterExerciseSets(exercise.exerciseSets)
