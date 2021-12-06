@@ -737,5 +737,120 @@ class OlioUITests: XCTestCase {
         app.navigationBars.buttons["Exercises"].tap()
     }
 
+    func testRemovingExerciseFromWorkout() throws {
+        try testCompletingWorkoutExerciseSet()
+
+        app.tabBars.buttons["Home"].tap()
+        app.tables.cells.buttons["New Workout"].tap()
+        app.tables.cells.buttons["Remove exercise"].tap()
+
+        XCTAssertTrue(
+            app.alerts.element.exists,
+            "An alert should be displayed after the user taps to remove an exercise."
+        )
+
+        XCTAssertEqual(
+            app.alerts.element.label,
+            "Are you sure?",
+            "The alert title should read 'Are you sure?'."
+        )
+
+        app.alerts.buttons["Remove"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            5,
+            "There should only be 5 cells in the list."
+        )
+
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 1 workout in the list."
+        )
+
+        XCTAssertTrue(
+            app.tables.buttons.staticTexts["No exercises"].exists,
+            "There should be 1 workout in the list with caption text reading 'No exercises'."
+        )
+
+        XCTAssertTrue(
+            app.tables.buttons.staticTexts["No sets"].exists,
+            "There should be 1 workout in the list with caption text reading 'No sets'."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            !app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should not yet exist for this exercise since no sets have been completed."
+        )
+    }
+
+    func testRenamingAnExercise() throws {
+        testAddingExerciseToWorkout()
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+        app.textFields["Bench"].tap()
+
+        XCTAssertTrue(
+            app.keys["space"].waitForExistence(timeout: 1),
+            "The keyboard must be visible on screen before being used."
+        )
+
+        app.keys["space"].tap()
+        app.keys["more"].tap()
+        app.keys["2"].tap()
+        app.buttons["Return"].tap()
+
+        app.tabBars.buttons["Home"].tap()
+        app.tables.cells.buttons["New Workout"].tap()
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["Bench 2"].exists,
+            "The exercise name should have been updated."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.navigationBars.buttons["Exercises"].tap()
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Bench 2"].exists,
+            "The exercise should be displayed with its new name."
+        )
+
+        app.tabBars.buttons["Home"].tap()
+    }
+
+    func testRegroupingAnExercise() throws {
+        testAddingExerciseToWorkout()
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+        app.tables.cells.buttons["Muscle Group"].tap()
+        app.tables.switches["Back"].tap()
+        app.navigationBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["MuscleGroup"].staticTexts[""].exists,
+            "The exercise name should have been updated."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.navigationBars.buttons["Exercises"].tap()
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Bench 2"].exists,
+            "The exercise should be displayed with its new name."
+        )
+
+        app.tabBars.buttons["Home"].tap()
+    }
+
 // swiftlint:disable:next file_length
 }
