@@ -63,13 +63,30 @@ class DataController: ObservableObject {
         let viewContext = container.viewContext
 
         // Create 5 sample workouts, each with 5 sample exercises.
-        for _ in 1...5 {
+        for workoutCount in 1...5 {
             let workout = Workout(context: viewContext)
             let exercise = Exercise(context: viewContext)
             exercise.workouts = [workout]
+            workout.id = UUID()
+            exercise.id = UUID()
+            workout.name = "Workout - \(workoutCount)"
+            exercise.name = "Exercise - \(workoutCount)"
+
+            if workoutCount == 1 {
+                workout.template = true
+            } else {
+                workout.template = false
+
+                if workoutCount.isMultiple(of: 2) {
+                    workout.completed = true
+                } else {
+                    workout.completed = false
+                }
+            }
 
             for _ in 1...3 {
                 let exerciseSet = ExerciseSet(context: viewContext)
+                exerciseSet.id = UUID()
                 exerciseSet.exercise = exercise
                 exerciseSet.workout = workout
             }

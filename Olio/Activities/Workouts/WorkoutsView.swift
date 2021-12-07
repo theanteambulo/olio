@@ -133,6 +133,15 @@ struct WorkoutsView: View {
         }
     }
 
+    var addSampleDataToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button("Sample Data") {
+                dataController.deleteAll()
+                try? dataController.createSampleData()
+            }
+        }
+    }
+
     var workoutsList: some View {
         List {
             ForEach(workoutDates, id: \.self) { date in
@@ -213,6 +222,7 @@ struct WorkoutsView: View {
             .padding(.bottom)
             .navigationTitle(Text(navigationTitleLocalizedStringKey))
             .toolbar {
+                addSampleDataToolbarItem
                 addWorkoutToolbarItem
             }
         }
