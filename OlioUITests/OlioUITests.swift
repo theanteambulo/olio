@@ -1164,5 +1164,40 @@ class OlioUITests: XCTestCase {
 
         app.navigationBars.buttons["Exercises"].tap()
     }
+
+    func testSchedulingWorkoutMovesItToHomeTab() {
+        testCompletingWorkoutMovesItToHistoryTab()
+
+        app.tables.cells.buttons["New Workout"].tap()
+        app.tables.cells.buttons["Schedule workout"].tap()
+
+        XCTAssertTrue(
+            app.alerts.element.exists,
+            "An alert should be displayed after the user schedules a workout."
+        )
+
+        XCTAssertEqual(
+            app.alerts.element.label,
+            "Workout Scheduled",
+            "The alert title should read 'Workout Scheduled'."
+        )
+
+        app.alerts.buttons["OK"].tap()
+        app.tabBars.buttons["History"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            0,
+            "There should be 0 workouts on the History tab after the workout has been marked as scheduled."
+        )
+
+        app.tabBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 1 workout on the Home tab after the workout has been marked as scheduled."
+        )
+    }
 // swiftlint:disable:next file_length
 }
