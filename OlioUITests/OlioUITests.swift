@@ -848,44 +848,38 @@ class OlioUITests: XCTestCase {
 
     func testSwipeToDeleteExerciseSetFromWorkoutExercise() throws {
         app.navigationBars.buttons["Sample Data"].tap()
+
+        XCTAssertTrue(
+            app.tables.buttons.firstMatch.staticTexts["1 exercise"].exists,
+            "There should be 2 workouts in the list and the first should have caption text reading '1 exercise'."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["3 sets"].exists,
+            "There should be 2 workouts in the list and the first should have caption text reading '3 sets'."
+        )
+
         app.tables.cells.buttons["Workout - 3"].tap()
 
         XCTAssertTrue(
-            app.tables.cells["Close, Decrement, Increment"].waitForExistence(timeout: 1),
+            app.tables.cells["Selected, Decrement, Increment"].waitForExistence(timeout: 1),
             "The exercise set cell should be visible on screen."
         )
 
-        app.tables.cells["Close, Decrement, Increment"].children(matching: .other).buttons.firstMatch.tap()
-
-        app.navigationBars.buttons["Home"].tap()
-        app.tabBars.buttons["Exercises"].tap()
-        app.tables.cells.buttons["Exercise - 3"].tap()
-
-        XCTAssertTrue(
-            app.tables.otherElements.staticTexts["Exercise History"].exists,
-            "An exercise history should exist for this exercise since a set has been completed."
+        XCTAssertEqual(
+            app.tables.cells.matching(identifier: "Selected, Decrement, Increment").count,
+            1,
+            "There should be exactly one completed workout."
         )
 
-        XCTAssertTrue(
-            app.tables.cells.staticTexts["1 rep"].exists,
-            "A row should exist in the exercise history with containing static text that reads '1 rep'."
-        )
-
-        app.tabBars.buttons["Home"].tap()
-        app.tables.cells.buttons["Workout - 3"].tap()
-
-        XCTAssertTrue(
-            app.tables.cells["Close, Decrement, Increment"].waitForExistence(timeout: 1),
-            "The exercise set cell should be visible on screen."
-        )
-
-        app.tables.cells["Close, Decrement, Increment"].firstMatch.swipeLeft()
+        app.swipeUp()
+        app.tables.cells["Selected, Decrement, Increment"].children(matching: .other).firstMatch.swipeLeft()
         app.tables.cells.buttons["Delete"].tap()
 
         XCTAssertEqual(
-            app.tables.cells.matching(identifier: "Close, Decrement, Increment").count,
-            2,
-            "There should be 0 sets for the exercise."
+            app.tables.cells.matching(identifier: "Selected, Decrement, Increment").count,
+            0,
+            "There should be 0 completed sets for the exercise."
         )
 
         app.navigationBars.buttons["Home"].tap()
@@ -971,9 +965,204 @@ class OlioUITests: XCTestCase {
     func testSwipeToDeleteExercise() throws {
         app.navigationBars.buttons["Sample Data"].tap()
 
+        XCTAssertTrue(
+            app.tables.buttons.firstMatch.staticTexts["1 exercise"].exists,
+            "There should be 2 workouts in the list and the first should have caption text reading '1 exercise'."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["3 sets"].exists,
+            "There should be 2 workouts in the list and the first should have caption text reading '3 sets'."
+        )
+
+        app.tables.cells.buttons["Workout - 3"].tap()
+
+        XCTAssertTrue(
+            app.tables.cells.count > 5,
+            "There should be at least 5 cells visible since a workout has been added to the exercise."
+        )
+
         app.tabBars.buttons["Exercises"].tap()
-        app.tables.cells.firstMatch.swipeLeft()
-        app.tables.cells.firstMatch.buttons["Delete"].tap()
+        app.tables.cells.buttons["Exercise - 3"].swipeLeft()
+        app.tables.cells.buttons["Delete"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            4,
+            "There should be four exercises remaining in the list."
+        )
+
+        XCTAssertTrue(
+            !app.tables.cells.buttons["Exercise - 3"].exists,
+            "There should be no exercise named 'Exercise - 3' in the list."
+        )
+
+        app.tabBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            5,
+            "There should only be 5 cells remaining in the table since the exercise has been deleted."
+        )
+
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Workout - 3"].staticTexts["No exercises"].exists,
+            "'Workout - 3' should contain no exercises."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Workout - 3"].staticTexts["No sets"].exists,
+            "'Workout - 3' should contain no sets."
+        )
+    }
+
+    func testEditingTemplateNameIndependentOfWorkout() {
+        app.navigationBars.buttons["Sample Data"].tap()
+        app.scrollViews.buttons.firstMatch.tap()
+        app.tables.cells.buttons["Create workout from template"].tap()
+        app.alerts.buttons["Confirm"].tap()
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Workout - 1"].exists,
+            "A workout should have been created from the template."
+        )
+
+        app.scrollViews.buttons.firstMatch.tap()
+        app.textFields["Workout - 1"].tap()
+
+        XCTAssertTrue(
+            app.keys["space"].waitForExistence(timeout: 1),
+            "The keyboard should exist prior to attempting to type."
+        )
+
+        app.keys["space"].tap()
+        app.keys["more"].tap()
+        app.keys["2"].tap()
+        app.buttons["Return"].tap()
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertTrue(
+            app.scrollViews.buttons["Workout - 1 2"].exists,
+            "The template name should have been updated."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Workout - 1"].exists,
+            "The workout name should have remained the same despite the template name changing."
+        )
+
+        XCTAssertTrue(
+            !app.tables.cells.buttons["Workout - 1 2"].exists,
+            "No new workouts should have been created as a result of the template name change."
+        )
+    }
+
+    func testRemovingTemplateExercisesIndependentOfWorkout() {
+        app.navigationBars.buttons["Sample Data"].tap()
+        app.scrollViews.buttons.firstMatch.tap()
+        app.tables.cells.buttons["Create workout from template"].tap()
+        app.alerts.buttons["Confirm"].tap()
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Workout - 1"].exists,
+            "A workout should have been created from the template."
+        )
+
+        app.scrollViews.buttons.firstMatch.tap()
+        app.tables.cells.buttons["Remove exercise"].tap()
+        app.alerts.buttons["Remove"].tap()
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertTrue(
+            app.scrollViews.buttons.staticTexts["No exercises"].exists,
+            "The template should contain no exercises."
+        )
+
+        XCTAssertTrue(
+            app.scrollViews.buttons.staticTexts["No sets"].exists,
+            "The template should contain no sets."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Workout - 1"].staticTexts["1 exercise"].exists,
+            "The workout should contain one exercise."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Workout - 1"].staticTexts["3 sets"].exists,
+            "The workout should contain three sets."
+        )
+    }
+
+    func testEditingTemplateExerciseSetIndependentOfWorkout() {
+        app.navigationBars.buttons["Sample Data"].tap()
+        app.scrollViews.buttons.firstMatch.tap()
+        app.tables.cells.buttons["Create workout from template"].tap()
+        app.alerts.buttons["Confirm"].tap()
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Workout - 1"].exists,
+            "A workout should have been created from the template."
+        )
+
+        app.scrollViews.buttons.firstMatch.tap()
+
+        XCTAssertTrue(
+            app.tables.cells["Selected, Decrement, Increment"].waitForExistence(timeout: 1),
+            "The exercise set cell should be visible on screen."
+        )
+
+        XCTAssertEqual(
+            app.tables.cells.matching(identifier: "Selected, Decrement, Increment").count,
+            1,
+            "There should be exactly one completed workout."
+        )
+
+        app.swipeUp()
+        app.tables.cells["Selected, Decrement, Increment"].children(matching: .other).firstMatch.swipeLeft()
+        app.tables.cells.buttons["Delete"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.matching(identifier: "Selected, Decrement, Increment").count,
+            0,
+            "There should be 0 completed sets for the exercise."
+        )
+
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertTrue(
+            app.scrollViews.buttons.staticTexts["2 sets"].exists,
+            "The template should contain no sets."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Workout - 1"].staticTexts["3 sets"].exists,
+            "The workout should contain three sets."
+        )
+    }
+
+    func testCompletingTemplateExerciseSetNoImpactOnExerciseHistory() {
+        app.navigationBars.buttons["Sample Data"].tap()
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Exercise - 1"].tap()
+
+        XCTAssertTrue(
+            !app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should not yet exist for this exercise since no sets have been completed."
+        )
+
+        XCTAssertTrue(
+            !app.tables.cells.staticTexts["1 rep"].exists,
+            "No rows should exist in the exercise history."
+        )
+
+        app.navigationBars.buttons["Exercises"].tap()
     }
 // swiftlint:disable:next file_length
 }

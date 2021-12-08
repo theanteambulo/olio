@@ -84,11 +84,18 @@ class DataController: ObservableObject {
                 }
             }
 
-            for _ in 1...3 {
+            for exerciseSetCount in 1...3 {
                 let exerciseSet = ExerciseSet(context: viewContext)
                 exerciseSet.id = UUID()
                 exerciseSet.exercise = exercise
                 exerciseSet.workout = workout
+                exerciseSet.creationDate = Date()
+
+                if exerciseSetCount == 1 {
+                    exerciseSet.completed = true
+                } else {
+                    exerciseSet.completed = false
+                }
             }
         }
 
@@ -135,7 +142,7 @@ class DataController: ObservableObject {
 
         workout.setValue(NSSet(array: existingExercises), forKey: "exercises")
 
-        for exerciseSet in exercise.exerciseSets {
+        for exerciseSet in exercise.exerciseSets.filter({ $0.workout == workout }) {
             container.viewContext.delete(exerciseSet)
         }
     }
