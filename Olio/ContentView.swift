@@ -9,10 +9,12 @@ import SwiftUI
 
 struct ContentView: View {
     @SceneStorage("selectedView") var selectedView: String?
+    @EnvironmentObject var dataController: DataController
 
     var body: some View {
         TabView(selection: $selectedView) {
-            WorkoutsView(showingCompletedWorkouts: false)
+            WorkoutsView(dataController: dataController,
+                         showingCompletedWorkouts: false)
                 .tabItem {
                     Image(systemName: "house")
                     Text("Home")
@@ -20,7 +22,8 @@ struct ContentView: View {
                 .tag(WorkoutsView.scheduledTag)
                 .phoneOnlyStackNavigationView()
 
-            WorkoutsView(showingCompletedWorkouts: true)
+            WorkoutsView(dataController: dataController,
+                         showingCompletedWorkouts: true)
                 .tabItem {
                     Image(systemName: "list.dash")
                     Text("History")

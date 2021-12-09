@@ -124,6 +124,11 @@ class OlioUITests: XCTestCase {
             "There should be 1 template in the scroll view."
         )
 
+        XCTAssertTrue(
+            app.scrollViews.buttons["New Template"].waitForExistence(timeout: 1),
+            "The 'New Template' button should exist in the view before attempting to tap it."
+        )
+
         app.scrollViews.buttons["New Template"].tap()
 
         app.textFields["New Template"].tap()
@@ -260,7 +265,12 @@ class OlioUITests: XCTestCase {
             "There should be 1 workout in the list."
         )
 
-        app.tables.cells.buttons["New Workout"].tap()
+        XCTAssertTrue(
+            app.tables.cells.buttons["New Workout"].waitForExistence(timeout: 1),
+            "The 'New Workout' button should exist in the view before attempting to tap it."
+        )
+
+        app.tables.cells.buttons["New Workout"].forceTapElement()
         app.navigationBars.buttons["Add"].forceTapElement()
         app.tables.cells.buttons["Bench"].tap()
 
@@ -306,6 +316,11 @@ class OlioUITests: XCTestCase {
             app.scrollViews.buttons.count,
             1,
             "There should be 1 template in the scroll view."
+        )
+
+        XCTAssertTrue(
+            app.scrollViews.buttons["New Template"].waitForExistence(timeout: 1),
+            "The 'New Template' button should exist in the view before attempting to tap it."
         )
 
         app.scrollViews.buttons["New Template"].forceTapElement()
@@ -644,6 +659,11 @@ class OlioUITests: XCTestCase {
             app.scrollViews.buttons.count,
             1,
             "There should be 1 template in the scroll view."
+        )
+
+        XCTAssertTrue(
+            app.scrollViews.buttons["New Template"].waitForExistence(timeout: 1),
+            "The 'New Template' button should exist in the view before attempting to tap it."
         )
 
         app.scrollViews.buttons["New Template"].tap()
