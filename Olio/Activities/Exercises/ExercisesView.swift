@@ -8,33 +8,15 @@
 import SwiftUI
 
 struct ExercisesView: View {
-    let exercises: FetchRequest<Exercise>
-
-    @EnvironmentObject var dataController: DataController
-    @Environment(\.managedObjectContext) var managedObjectContext
+    @StateObject var viewModel: ViewModel
 
     static let tag: String? = "Exercises"
 
     @State private var showingAddExerciseSheet = false
 
-    init() {
-        exercises = FetchRequest<Exercise>(
-            entity: Exercise.entity(),
-            sortDescriptors: [NSSortDescriptor(keyPath: \Exercise.muscleGroup, ascending: true),
-                              NSSortDescriptor(keyPath: \Exercise.name, ascending: true)]
-        )
-    }
-
-    var sortedExercises: [Exercise] {
-        return exercises.wrappedValue.sorted { first, second in
-            if first.muscleGroup < second.muscleGroup {
-                return true
-            } else if first.muscleGroup > second.muscleGroup {
-                return false
-            }
-
-            return first.exerciseName < second.exerciseName
-        }
+    init(dataController: DataController) {
+        let viewModel = ViewModel(dataController: dataController)
+        _viewModel = StateObject(wrappedValue: viewModel)
     }
 
     var addExerciseToolbarItem: some ToolbarContent {
@@ -55,20 +37,18 @@ struct ExercisesView: View {
             List {
                 ForEach(Exercise.MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
                     Section(header: Text(muscleGroup.rawValue)) {
-                        ForEach(filterExercisesToMuscleGroup(muscleGroup.rawValue,
-                                                             exercises: sortedExercises)) { exercise in
+                        ForEach(viewModel.filterByMuscleGroup(muscleGroup.rawValue,
+                                                                       exercises: viewModel.exercises)) { exercise in
                             ExerciseRowView(exercise: exercise)
                         }
                         .onDelete { offsets in
-                            let muscleGroupExercises = filterExercisesToMuscleGroup(muscleGroup.rawValue,
-                                                                                    exercises: sortedExercises)
+                            let muscleGroupExercises = viewModel.filterByMuscleGroup(muscleGroup.rawValue,
+                                                                                     exercises: viewModel.exercises)
 
                             for offset in offsets {
-                                let exercise = muscleGroupExercises[offset]
-                                dataController.delete(exercise)
+                                viewModel.swipeToDeleteExercise(exercises: muscleGroupExercises,
+                                                                at: offset)
                             }
-
-                            dataController.save()
                         }
                     }
                 }
@@ -80,19 +60,12 @@ struct ExercisesView: View {
             }
         }
     }
-
-    func filterExercisesToMuscleGroup(_ muscleGroup: Exercise.MuscleGroup.RawValue,
-                                      exercises: [Exercise]) -> [Exercise] {
-        return exercises.filter {$0.exerciseMuscleGroup == muscleGroup}
-    }
 }
 
 struct ExercisesView_Previews: PreviewProvider {
     static var dataController = DataController.preview
 
     static var previews: some View {
-        ExercisesView()
-            .environment(\.managedObjectContext, dataController.container.viewContext)
-            .environmentObject(dataController)
+        ExercisesView(dataController: DataController.preview)
     }
 }

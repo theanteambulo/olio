@@ -31,7 +31,7 @@ struct ContentView: View {
                 .tag(WorkoutsView.historyTag)
                 .phoneOnlyStackNavigationView()
 
-            ExercisesView()
+            ExercisesView(dataController: dataController)
                 .tabItem {
                     Image(systemName: "books.vertical")
                     Text("Exercises")

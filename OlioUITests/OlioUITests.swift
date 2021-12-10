@@ -146,6 +146,7 @@ class OlioUITests: XCTestCase {
         )
     }
 
+    // swiftlint:disable:next function_body_length
     func testEditingWorkoutDate() {
         XCTAssertEqual(
             app.tables.cells.count,
@@ -182,6 +183,11 @@ class OlioUITests: XCTestCase {
 
         let buttonFormatter = DateFormatter()
         buttonFormatter.dateFormat = "EEEE, MMMM d"
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["New Workout"].waitForExistence(timeout: 1),
+            "The 'New Workout' button should exist in the view before attempting to tap it."
+        )
 
         app.tables.cells.buttons["New Workout"].tap()
         app.tables.cells.buttons["Workout Date"].tap()

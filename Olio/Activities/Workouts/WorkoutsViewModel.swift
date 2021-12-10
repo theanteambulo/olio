@@ -105,8 +105,8 @@ extension WorkoutsView {
             try? dataController.createSampleData()
         }
 
-        func filterWorkoutsByDate(_ date: Date,
-                                  workouts: [Workout]) -> [Workout] {
+        func filterByDate(_ date: Date,
+                          workouts: [Workout]) -> [Workout] {
             return workouts.filter { Calendar.current.startOfDay(for: $0.workoutDate) == date }
         }
 

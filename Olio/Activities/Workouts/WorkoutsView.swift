@@ -74,13 +74,13 @@ struct WorkoutsView: View {
         List {
             ForEach(viewModel.workoutDates, id: \.self) { date in
                 Section(header: Text(date.formatted(date: .complete, time: .omitted))) {
-                    ForEach(viewModel.filterWorkoutsByDate(date,
-                                                           workouts: viewModel.sortedWorkouts)) { workout in
+                    ForEach(viewModel.filterByDate(date,
+                                                   workouts: viewModel.sortedWorkouts)) { workout in
                         WorkoutRowView(workout: workout)
                     }
                     .onDelete { offsets in
-                        let allWorkouts = viewModel.filterWorkoutsByDate(date,
-                                                                         workouts: viewModel.sortedWorkouts)
+                        let allWorkouts = viewModel.filterByDate(date,
+                                                                 workouts: viewModel.sortedWorkouts)
 
                         for offset in offsets {
                             withAnimation {
