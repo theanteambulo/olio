@@ -28,6 +28,12 @@ struct ExerciseSetView: View {
         exerciseSet.completed ? .green : .red
     }
 
+    var iconAccessibilityLabel: Text {
+        exerciseSet.completed
+        ? Text("\(exerciseSetReps) reps") + Text(". Mark set incomplete")
+        : Text("\(exerciseSetReps) reps") + Text(". Mark set complete")
+    }
+
     var body: some View {
         HStack {
             Image(systemName: completionIcon)
@@ -39,15 +45,13 @@ struct ExerciseSetView: View {
                         update()
                     }
                 }
+                .accessibilityLabel(iconAccessibilityLabel)
                 .accessibilityAddTraits(.isButton)
 
-            Stepper(
-                value: $exerciseSetReps.onChange(update),
-                in: 1...100,
-                step: 1
-            ) {
-                Text("\(exerciseSetReps) reps")
-            }
+            Stepper("\(exerciseSetReps) reps",
+                    value: $exerciseSetReps.onChange(update),
+                    in: 1...100,
+                    step: 1)
         }
     }
 

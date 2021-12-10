@@ -365,7 +365,8 @@ class OlioUITests: XCTestCase {
         app.tables.buttons["Add Set to Exercise: Bench"].tap()
 
         XCTAssertEqual(
-            app.tables.children(matching: .cell).matching(identifier: "Close, Decrement, Increment").count,
+            // swiftlint:disable:next line_length
+            app.tables.children(matching: .cell).matching(identifier: "10 reps. Mark set complete, Decrement, Increment").count,
             1,
             "There should be 1 set for the exercise."
          )
@@ -401,7 +402,7 @@ class OlioUITests: XCTestCase {
         app.tables.buttons["Add Set to Exercise: Bench"].tap()
 
         XCTAssertEqual(
-            app.tables.children(matching: .cell).matching(identifier: "Close, Decrement, Increment").count,
+            app.tables.steppers.matching(identifier: "10 reps").count,
             1,
             "There should be 1 set for the exercise."
         )
@@ -445,7 +446,12 @@ class OlioUITests: XCTestCase {
             "There should be 1 workout in the list."
         )
 
-        app.tables.cells.buttons["New Workout"].tap()
+        XCTAssertTrue(
+            app.tables.cells.buttons["New Workout"].waitForExistence(timeout: 1),
+            "The 'New Workout' button should exist in the view before attempting to tap it."
+        )
+
+        app.tables.cells.buttons["New Workout"].forceTapElement()
         app.tables.cells.buttons["Complete workout"].tap()
 
         XCTAssertTrue(
@@ -713,12 +719,19 @@ class OlioUITests: XCTestCase {
         testAddingSetToExerciseInWorkout()
 
         app.tabBars.buttons["Home"].tap()
-        app.tables.cells.buttons["New Workout"].tap()
-
-        app.tables.cells["Close, Decrement, Increment"].children(matching: .other).buttons.firstMatch.forceTapElement()
 
         XCTAssertTrue(
-            app.tables.cells["100%, Progress"].staticTexts["100%"].exists,
+            app.tables.cells.buttons["New Workout"].waitForExistence(timeout: 1),
+            "The 'New Workout' button should exist in the view before attempting to tap it."
+        )
+
+        app.tables.cells.buttons["New Workout"].forceTapElement()
+
+        // swiftlint:disable:next line_length
+        app.tables.cells["10 reps. Mark set complete, Decrement, Increment"].children(matching: .other).buttons.firstMatch.forceTapElement()
+
+        XCTAssertTrue(
+            app.tables.cells["Progress: 100%"].exists,
             "1 of 1 exercises has been completed, therefore progress should be 100%."
         )
 
@@ -888,18 +901,19 @@ class OlioUITests: XCTestCase {
         app.tables.cells.buttons["Workout - 3"].tap()
 
         XCTAssertTrue(
-            app.tables.cells["Selected, Decrement, Increment"].waitForExistence(timeout: 1),
+            app.tables.cells["1 rep. Mark set incomplete, Decrement, Increment"].waitForExistence(timeout: 1),
             "The exercise set cell should be visible on screen."
         )
 
         XCTAssertEqual(
-            app.tables.cells.matching(identifier: "Selected, Decrement, Increment").count,
+            app.tables.cells.matching(identifier: "1 rep. Mark set incomplete, Decrement, Increment").count,
             1,
             "There should be exactly one completed workout."
         )
 
         app.swipeUp()
-        app.tables.cells["Selected, Decrement, Increment"].children(matching: .other).firstMatch.swipeLeft()
+        // swiftlint:disable:next line_length
+        app.tables.cells["1 rep. Mark set incomplete, Decrement, Increment"].children(matching: .other).firstMatch.swipeLeft()
         app.tables.cells.buttons["Delete"].tap()
 
         XCTAssertEqual(
@@ -1139,22 +1153,23 @@ class OlioUITests: XCTestCase {
         app.scrollViews.buttons.firstMatch.tap()
 
         XCTAssertTrue(
-            app.tables.cells["Selected, Decrement, Increment"].waitForExistence(timeout: 1),
+            app.tables.cells["1 rep. Mark set incomplete, Decrement, Increment"].waitForExistence(timeout: 1),
             "The exercise set cell should be visible on screen."
         )
 
         XCTAssertEqual(
-            app.tables.cells.matching(identifier: "Selected, Decrement, Increment").count,
+            app.tables.cells.matching(identifier: "1 rep. Mark set incomplete, Decrement, Increment").count,
             1,
             "There should be exactly one completed workout."
         )
 
         app.swipeUp()
-        app.tables.cells["Selected, Decrement, Increment"].children(matching: .other).firstMatch.swipeLeft()
+        // swiftlint:disable:next line_length
+        app.tables.cells["1 rep. Mark set incomplete, Decrement, Increment"].children(matching: .other).firstMatch.swipeLeft()
         app.tables.cells.buttons["Delete"].tap()
 
         XCTAssertEqual(
-            app.tables.cells.matching(identifier: "Selected, Decrement, Increment").count,
+            app.tables.cells.matching(identifier: "1 rep. Mark set incomplete, Decrement, Increment").count,
             0,
             "There should be 0 completed sets for the exercise."
         )

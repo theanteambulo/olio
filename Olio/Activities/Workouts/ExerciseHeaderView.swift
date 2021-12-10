@@ -11,12 +11,18 @@ struct ExerciseHeaderView: View {
     @ObservedObject var workout: Workout
     @ObservedObject var exercise: Exercise
 
+    var exerciseCompletionAmountInt: Int {
+        Int(100 * exerciseCompletionAmount(exercise))
+    }
+
     var body: some View {
         HStack {
-            Text("\(Int(100 * exerciseCompletionAmount(exercise)))%")
+            Text("\(exerciseCompletionAmountInt)%")
                 .frame(minWidth: 50)
             ProgressView(value: exerciseCompletionAmount(exercise))
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("Progress: \(exerciseCompletionAmountInt)%"))
     }
 
     func exerciseCompletionAmount(_ exercise: Exercise) -> Double {

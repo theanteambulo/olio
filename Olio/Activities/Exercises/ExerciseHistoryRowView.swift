@@ -10,7 +10,7 @@ import SwiftUI
 struct ExerciseHistoryRowView: View {
     @ObservedObject var exerciseSet: ExerciseSet
 
-    var exerciseSetWorkoutDate: some View {
+    var exerciseSetWorkoutDate: Text {
         if let workout = exerciseSet.workout {
             return Text(workout.workoutDate.formatted(date: .abbreviated, time: .omitted))
          } else {
@@ -18,7 +18,7 @@ struct ExerciseHistoryRowView: View {
         }
     }
 
-    var exerciseSetWorkoutName: some View {
+    var exerciseSetWorkoutName: Text {
         if let workout = exerciseSet.workout {
             return Text(workout.workoutName)
          } else {
@@ -26,19 +26,29 @@ struct ExerciseHistoryRowView: View {
         }
     }
 
+    var exerciseSetReps: Text {
+        Text("\(exerciseSet.exerciseSetReps) reps")
+    }
+
+    var accessibilityLabel: Text {
+        exerciseSetWorkoutName + Text(" ,") + exerciseSetWorkoutDate + Text(" ,") + exerciseSetReps
+    }
+
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
-                exerciseSetWorkoutDate
                 exerciseSetWorkoutName
+                exerciseSetWorkoutDate
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
 
             Spacer()
 
-            Text("\(exerciseSet.exerciseSetReps) reps")
+            exerciseSetReps
         }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(accessibilityLabel)
     }
 }
 

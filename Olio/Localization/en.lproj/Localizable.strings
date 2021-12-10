@@ -52,6 +52,8 @@
 "addSet" = "Add set";
 "removeExerciseButton" = "Remove exercise";
 "removeExerciseConfirmationMessage" = "Removing an exercise from the workout also deletes all of its sets and cannot be undone.";
+"markSetComplete" = "Mark set complete";
+"markSetIncomplete" = "Mark set incomplete";
 
 
 
