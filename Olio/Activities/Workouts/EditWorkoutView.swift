@@ -41,6 +41,22 @@ struct EditWorkoutView: View {
         }
     }
 
+    var completeScheduleWorkoutButtonText: LocalizedStringKey {
+        workout.completed
+        ? Strings.scheduleWorkout.localized
+        : Strings.completeWorkout.localized
+    }
+
+    var deleteWorkoutTemplateButtonText: LocalizedStringKey {
+        workout.template
+        ? Strings.deleteTemplateButton.localized
+        : Strings.deleteWorkoutButton.localized
+    }
+
+    var dateString: String {
+        date.formatted(date: .complete, time: .omitted)
+    }
+
     var addExerciseToWorkoutToolbarItem: some ToolbarContent {
         ToolbarItem {
             Button {
@@ -54,41 +70,25 @@ struct EditWorkoutView: View {
         }
     }
 
-    var workoutDateSectionHeader: LocalizedStringKey {
+    var workoutDateSectionHeader: Text {
         workout.completed
-        ? Strings.completedSectionHeader.localized
-        : Strings.scheduledSectionHeader.localized
+        ? Text(.completedSectionHeader)
+        : Text(.scheduledSectionHeader)
     }
 
-    var completeScheduleWorkoutButtonText: LocalizedStringKey {
-        workout.completed
-        ? Strings.scheduleWorkout.localized
-        : Strings.completeWorkout.localized
-    }
-
-    var deleteWorkoutTemplateButtonText: LocalizedStringKey {
+    var navigationTitle: Text {
         workout.template
-        ? Strings.deleteTemplateButton.localized
-        : Strings.deleteWorkoutButton.localized
+        ? Text(.editTemplateNavigationTitle)
+        : Text(.editWorkoutNavigationTitle)
     }
 
-    var navigationTitle: LocalizedStringKey {
-        workout.template
-        ? Strings.editTemplateNavigationTitle.localized
-        : Strings.editWorkoutNavigationTitle.localized
-    }
-
-    var dateString: String {
-        date.formatted(date: .complete, time: .omitted)
-    }
-
-    var deleteWorkoutTemplateAlertMessage: some View {
+    var deleteWorkoutTemplateAlertMessage: Text {
         workout.template
         ? Text(.deleteTemplateConfirmationMessage)
         : Text(.deleteWorkoutConfirmationMessage)
     }
 
-    var dateChangeConfirmation: some View {
+    var dateChangeConfirmation: Text {
         if workout.completed {
             return Text(.completedWorkoutDateChangeAlertMessage)
         } else {
@@ -104,7 +104,7 @@ struct EditWorkoutView: View {
             }
 
             if !workout.template {
-                Section(header: Text(workoutDateSectionHeader)) {
+                Section(header: workoutDateSectionHeader) {
                     NavigationLink(
                         destination: {
                             DatePicker(
