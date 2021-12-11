@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A view to display a list of all exercises in the user's "library".
 struct ExercisesView: View {
     /// The presentation model representing the state of this view capable of reading model data and carrying out all
     /// transformations needed to prepare that data for presentation.

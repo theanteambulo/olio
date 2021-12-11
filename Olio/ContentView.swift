@@ -22,7 +22,7 @@ struct ContentView: View {
                     Image(systemName: "house")
                     Text("Home")
                 }
-                .tag(WorkoutsView.scheduledTag)
+                .tag(WorkoutsView.homeTag)
                 .phoneOnlyStackNavigationView()
 
             // "History" tab - displays completed workouts.
