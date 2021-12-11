@@ -9,18 +9,27 @@ import CoreData
 import Foundation
 
 extension WorkoutsView {
+    /// A presentation model representing the state of WorkoutsView capable of reading model data and carrying out all
+    /// transformations needed to prepare that data for presentation.
     class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
-        let dataController: DataController
-        let showingCompletedWorkouts: Bool
+        /// Performs the initial fetch request and ensures it remains up to date.
         private let workoutsController: NSFetchedResultsController<Workout>
+
+        /// An array of Workout objects.
         @Published var workouts = [Workout]()
+
+        /// The environment singleton responsible for managing the Core Data stack.
+        let dataController: DataController
+
+        /// Boolean indicating whether completed or scheduled workouts should be displayed.
+        let showingCompletedWorkouts: Bool
 
         init(dataController: DataController,
              showingCompletedWorkouts: Bool) {
             self.dataController = dataController
             self.showingCompletedWorkouts = showingCompletedWorkouts
 
-            // Get all the workouts.
+            // Get all workouts that aren't templates with completed status corresponding to showingCompletedWorkouts.
             let workoutsRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
             let completedWorkoutsPredicate = NSPredicate(format: "completed = %d",
                                                          showingCompletedWorkouts)
@@ -28,7 +37,7 @@ extension WorkoutsView {
 
             workoutsRequest.predicate = NSCompoundPredicate(type: .and,
                                                             subpredicates: [completedWorkoutsPredicate,
-                            templateWorkoutsPredicate])
+                                                                            templateWorkoutsPredicate])
 
             workoutsRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Workout.date,
                                                                 ascending: true),
@@ -47,9 +56,11 @@ extension WorkoutsView {
                 workoutsRequest.fetchLimit = 10
             }
 
+            // Set the class as the delegate of the fetched results controller so it announces when the data changes.
             super.init()
             workoutsController.delegate = self
 
+            // Execute the fetch request and assign fetched objects to the workouts property.
             do {
                 try workoutsController.performFetch()
                 workouts = workoutsController.fetchedObjects ?? []
@@ -58,6 +69,9 @@ extension WorkoutsView {
             }
         }
 
+        /// Computed property to sort workouts by date, then by name.
+        ///
+        /// Example: Workout X comes before Workout Y on 12 December, which both come before Workout A on 13 December.
         var sortedWorkouts: [Workout] {
             return workouts.sorted { first, second in
                 if first.workoutDate < second.workoutDate {
@@ -70,6 +84,7 @@ extension WorkoutsView {
             }
         }
 
+        /// Computed property to get all dates corresponding to the date property of all workouts.
         var workoutDates: [Date] {
             var dates = [Date]()
 
@@ -82,6 +97,7 @@ extension WorkoutsView {
             return dates
         }
 
+        /// Creates a new template workout.
         func addTemplate() {
             let workout = Workout(context: dataController.container.viewContext)
             workout.id = UUID()
@@ -91,6 +107,7 @@ extension WorkoutsView {
             dataController.save()
         }
 
+        /// Creates a new workout.
         func addWorkout() {
             let workout = Workout(context: dataController.container.viewContext)
             workout.id = UUID()
@@ -100,22 +117,36 @@ extension WorkoutsView {
             dataController.save()
         }
 
+        /// Generates sample data for the app.
+        ///
+        /// Used for development purposes only.
         func createSampleData() {
             dataController.deleteAll()
             try? dataController.createSampleData()
         }
 
+        /// Filters a given array of workouts based on whether their date property matches a given date.
+        /// - Parameters:
+        ///   - date: The date to filter workouts by.
+        ///   - workouts: The array of workouts to filter.
+        /// - Returns: An array of workouts.
         func filterByDate(_ date: Date,
                           workouts: [Workout]) -> [Workout] {
             return workouts.filter { Calendar.current.startOfDay(for: $0.workoutDate) == date }
         }
 
+        /// Deletes a workout based on its position in a given array of workouts.
+        /// - Parameters:
+        ///   - workouts: The array of workouts.
+        ///   - offset: The position of the workout to delete in the given array of workouts.
         func swipeToDeleteWorkout(_ workouts: [Workout], at offset: Int) {
             let workoutToDelete = workouts[offset]
             dataController.delete(workoutToDelete)
             dataController.save()
         }
 
+        /// Notifies WorkoutsView when the underlying array of workouts changes.
+        /// - Parameter controller: The controller that manages the results of the view model's Core Data fetch request.
         func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
             if let newWorkouts = controller.fetchedObjects as? [Workout] {
                 workouts = newWorkouts

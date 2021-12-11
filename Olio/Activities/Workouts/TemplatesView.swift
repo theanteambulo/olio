@@ -17,7 +17,7 @@ struct TemplatesView: View {
         let viewModel = ViewModel(dataController: dataController)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
-    
+
     /// A grid with a single row 100 points in size.
     var rows: [GridItem] {
         [GridItem(.fixed(100))]
