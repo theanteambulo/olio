@@ -91,6 +91,11 @@ class OlioUITests: XCTestCase {
             "There should be 1 workout in the list."
         )
 
+        XCTAssertTrue(
+            app.tables.cells.buttons["New Workout"].waitForExistence(timeout: 1),
+            "The 'New Workout' button should exist in the view before attempting to tap it."
+        )
+
         app.tables.cells.buttons["New Workout"].tap()
 
         app.textFields["New Workout"].tap()
@@ -631,6 +636,11 @@ class OlioUITests: XCTestCase {
             app.tables.cells.count,
             1,
             "There should be 1 workout in the list."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["New Workout"].waitForExistence(timeout: 1),
+            "The 'New Workout' button should exist in the view before attempting to tap it."
         )
 
         app.tables.cells.buttons["New Workout"].tap()

@@ -75,14 +75,14 @@ struct WorkoutsView: View {
         }
     }
 
-//    /// Toolbar button to add sample data to the app.
-//    var addSampleDataToolbarItem: some ToolbarContent {
-//        ToolbarItem(placement: .navigationBarLeading) {
-//            Button("Sample Data") {
-//                viewModel.createSampleData()
-//            }
-//        }
-//    }
+    /// Toolbar button to add sample data to the app.
+    var addSampleDataToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button("Sample Data") {
+                viewModel.createSampleData()
+            }
+        }
+    }
 
     /// The list of workouts to be displayed.
     var workoutsList: some View {
@@ -140,7 +140,7 @@ struct WorkoutsView: View {
             .padding(.bottom)
             .navigationTitle(navigationTitleLocalizedStringKey)
             .toolbar {
-//                addSampleDataToolbarItem
+                addSampleDataToolbarItem
                 addWorkoutToolbarItem
             }
         }
