@@ -7,21 +7,42 @@
 
 import SwiftUI
 
+/// A view to edit the details of a given workout, including templates.
 struct EditWorkoutView: View {
+    /// The workout used to construct this view.
     @ObservedObject var workout: Workout
 
+    /// The environment singleton responsible for managing the Core Data stack.
     @EnvironmentObject var dataController: DataController
+
+    /// The object space in which all managed objects exist.
     @Environment(\.managedObjectContext) var managedObjectContext
 
+    /// The workout's name property value.
     @State private var name: String
+
+    /// The workout's date property value.
     @State private var date: Date
 
+    /// Boolean to indicate whether the sheet used for adding an exercise to the workout is displayed.
     @State private var showingAddExerciseSheet = false
+
+    /// Boolean to indicate whether the alert confirming the workout date has been changed is displayed.
     @State private var showingDateChangeConfirmation = false
+
+    /// Boolean to indicate whether the alert warning the user about removing an exercise from the workout is displayed.
     @State private var showingRemoveConfirmation = false
+
+    /// Boolean to indicate whether the alert confirming the workout has been completed is displayed.
     @State private var showingCompleteConfirmation = false
+
+    /// Boolean to indicate whether the alert confirming a template will be created is displayed.
     @State private var showingCreateTemplateConfirmation = false
+
+    /// Boolean to indicate whether the alert confirming a workout will be created is displayed.
     @State private var showingCreateWorkoutConfirmation = false
+
+    /// Boolean to indicate whether the alert warning the user about deleting an exercise is displayed.
     @State private var showingDeleteWorkoutConfirmation = false
 
     init(workout: Workout) {
@@ -31,6 +52,7 @@ struct EditWorkoutView: View {
         _date = State(wrappedValue: workout.workoutDate)
     }
 
+    /// Computed property to sort exercises by name.
     var sortedExercises: [Exercise] {
         return workout.workoutExercises.sorted { first, second in
             if first.exerciseName < second.exerciseName {
@@ -41,22 +63,31 @@ struct EditWorkoutView: View {
         }
     }
 
+    /// Computed property to get text displayed on the button for completing or scheduling a workout.
+    ///
+    /// Conditional on the completed property of the workout.
     var completeScheduleWorkoutButtonText: LocalizedStringKey {
         workout.completed
         ? Strings.scheduleWorkout.localized
         : Strings.completeWorkout.localized
     }
 
+    /// Computed property to get text displayed on the button for deleting a workout.
+    ///
+    /// Conditional on the completed property of the workout.
     var deleteWorkoutTemplateButtonText: LocalizedStringKey {
         workout.template
         ? Strings.deleteTemplateButton.localized
         : Strings.deleteWorkoutButton.localized
     }
 
+    /// Computed property to get the date string of the workout formatted to omit the time component but show the date
+    /// in full.
     var dateString: String {
         date.formatted(date: .complete, time: .omitted)
     }
 
+    /// Toolbar button that displays a sheet containing AddExerciseToWorkoutView.
     var addExerciseToWorkoutToolbarItem: some ToolbarContent {
         ToolbarItem {
             Button {
@@ -70,25 +101,38 @@ struct EditWorkoutView: View {
         }
     }
 
+    /// Computed property to get the text displayed in the section header for the workout date.
+    ///
+    /// Conditional on the completed property of the workout.
     var workoutDateSectionHeader: Text {
         workout.completed
         ? Text(.completedSectionHeader)
         : Text(.scheduledSectionHeader)
     }
 
+    /// Computed property to get the text displayed in the navigation title of the view.
+    ///
+    /// Conditional on the template property of the workout.
     var navigationTitle: Text {
         workout.template
         ? Text(.editTemplateNavigationTitle)
         : Text(.editWorkoutNavigationTitle)
     }
 
+    /// Computed property to get the text displayed in the alert message shown when deleting a workout.
+    ///
+    /// Conditional on the template property of the workout.
     var deleteWorkoutTemplateAlertMessage: Text {
         workout.template
         ? Text(.deleteTemplateConfirmationMessage)
         : Text(.deleteWorkoutConfirmationMessage)
     }
 
-    var dateChangeConfirmation: Text {
+    /// Computed property to get the text displayed in the alert message shown when changing the date
+    /// property of a workout.
+    ///
+    /// Conditional on the completed property of the workout.
+    var dateChangeConfirmationAlertMessage: Text {
         if workout.completed {
             return Text(.completedWorkoutDateChangeAlertMessage)
         } else {
@@ -98,11 +142,13 @@ struct EditWorkoutView: View {
 
     var body: some View {
         Form {
+            // Basic settings.
             Section(header: Text(.basicSettings)) {
                 TextField(Strings.workoutName.localized,
                           text: $name.onChange(update))
             }
 
+            // If the workout isn't a template, show date editing option.
             if !workout.template {
                 Section(header: workoutDateSectionHeader) {
                     NavigationLink(
@@ -121,7 +167,7 @@ struct EditWorkoutView: View {
                                     dataController.save()
                                 }
                             } message: {
-                                dateChangeConfirmation
+                                dateChangeConfirmationAlertMessage
                             }
                         }, label: {
                             Text("\(date.formatted(date: .complete, time: .omitted))")
@@ -131,6 +177,7 @@ struct EditWorkoutView: View {
                 }
             }
 
+            // List of exercises the workout is parent of.
             List {
                 ForEach(sortedExercises, id: \.self) { exercise in
                     EditWorkoutExerciseListView(workout: workout,
@@ -140,6 +187,7 @@ struct EditWorkoutView: View {
 
             Section(header: Text("")) {
                 if !workout.template {
+                    // Button to complete or schedule workout.
                     Button(completeScheduleWorkoutButtonText) {
                         showingCompleteConfirmation.toggle()
                     }
@@ -152,6 +200,7 @@ struct EditWorkoutView: View {
                         Text(workout.getConfirmationAlertMessage(workout: workout))
                     }
 
+                    // Button to create a template from the workout.
                     Button(Strings.createTemplateFromWorkoutButton.localized) {
                         showingCreateTemplateConfirmation.toggle()
                     }
@@ -167,6 +216,7 @@ struct EditWorkoutView: View {
                         Text(.createTemplateConfirmationMessage)
                     }
                 } else {
+                    // Button to create a workout from the template.
                     Button(Strings.createWorkoutFromTemplateButton.localized) {
                          showingCreateWorkoutConfirmation.toggle()
                     }
@@ -183,6 +233,7 @@ struct EditWorkoutView: View {
                     }
                 }
 
+                // Button to delete the workout.
                 Button(deleteWorkoutTemplateButtonText, role: .destructive) {
                     showingDeleteWorkoutConfirmation.toggle()
                 }
@@ -206,6 +257,10 @@ struct EditWorkoutView: View {
         }
     }
 
+    /// Synchronise the @State properties of the view with their Core Data equivalents in whichever Workout
+    /// object is being edited.
+    ///
+    /// Changes will be announced to any property wrappers observing the workout.
     func update() {
         workout.objectWillChange.send()
 
@@ -213,6 +268,12 @@ struct EditWorkoutView: View {
         workout.date = date
     }
 
+    /// Create a workout or template from a given workout.
+    ///
+    /// Note the workout can be a template or a "normal" workout, i.e. not a template.
+    /// - Parameters:
+    ///   - workout: The workout to use as the basis for creating a new workout.
+    ///   - newWorkoutIsTemplate: Boolean to indicate whether the workout being created is a template or not.
     func createWorkoutFromExisting(_ workout: Workout, newWorkoutIsTemplate: Bool) {
         let newWorkout = Workout(context: managedObjectContext)
         newWorkout.id = UUID()
