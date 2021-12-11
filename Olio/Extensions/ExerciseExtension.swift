@@ -60,7 +60,7 @@ extension Exercise {
         workouts?.allObjects as? [Workout] ?? []
     }
 
-    /// An example
+    /// An example exercise for previewing purposes.
     static var example: Exercise {
         let dataController = DataController.preview
         let viewContext = dataController.container.viewContext
