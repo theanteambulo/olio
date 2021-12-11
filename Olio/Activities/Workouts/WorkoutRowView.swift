@@ -7,7 +7,9 @@
 
 import SwiftUI
 
+/// A single row in a list of workouts representing a given workout.
 struct WorkoutRowView: View {
+    /// The workout used to construct this view.
     @ObservedObject var workout: Workout
 
     var body: some View {
