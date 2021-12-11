@@ -8,18 +8,22 @@
 import Foundation
 
 extension ExerciseSet {
+    /// The unwrapped id property of an exercise set.
     var exerciseSetId: String {
         id?.uuidString ?? ""
     }
-
+    
+    /// The unwrapped reps property of an exercise set.
     var exerciseSetReps: Int {
         Int(reps)
     }
-
+    
+    /// The unwrapped creation date property of an exercise set.
     var exerciseSetCreationDate: Date {
         creationDate ?? Date()
     }
-
+    
+    /// Creates an example exercise set for previewing purposes.
     static var example: ExerciseSet {
         let dataController = DataController.preview
         let viewContext = dataController.container.viewContext
