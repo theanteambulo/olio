@@ -303,8 +303,8 @@
 				2321AF14274EC3E30023F099 /* ExerciseSetExtension.swift */,
 				23C97E31274E548A005611A3 /* BindingExtension.swift */,
 				23AA142227502E3A00AC637D /* ColorExtension.swift */,
-				23AA142427502ED000AC637D /* ViewExtension.swift */,
 				23A368B52750C248000725E9 /* SequenceExtension.swift */,
+				23AA142427502ED000AC637D /* ViewExtension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
