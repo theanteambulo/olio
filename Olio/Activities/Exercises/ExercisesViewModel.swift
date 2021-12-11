@@ -64,7 +64,7 @@ extension ExercisesView {
                 return first.exerciseName < second.exerciseName
             }
         }
-        
+
         /// Filters a given array of exercises based on whether their muscleGroup property matches a given muscle group.
         /// - Parameters:
         ///   - muscleGroup: The muscle group to filter the array of exercises by.
@@ -74,7 +74,7 @@ extension ExercisesView {
                                  exercises: [Exercise]) -> [Exercise] {
             return exercises.filter {$0.exerciseMuscleGroup == muscleGroup}
         }
-        
+
         /// Deletes an exercise based on its position in a given array of exercises.
         /// - Parameters:
         ///   - exercises: The array of exercises.
@@ -84,9 +84,9 @@ extension ExercisesView {
             dataController.delete(exercise)
             dataController.save()
         }
-        
+
         /// Notifies ExercisesView when the underlying array of exercises changes.
-        /// - Parameter controller: The controller used to manage the results of the view model's Core Data fetch request.
+        /// - Parameter controller: The controller that manages the results of the view model's Core Data fetch request.
         func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
             if let newExercises = controller.fetchedObjects as? [Exercise] {
                 exercises = newExercises
