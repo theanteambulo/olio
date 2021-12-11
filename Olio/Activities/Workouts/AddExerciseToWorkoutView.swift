@@ -83,7 +83,7 @@ struct AddExerciseToWorkoutView: View {
             .navigationTitle(Text(.addExercise))
         }
     }
-    
+
     /// Filters a given array of exercises based on whether their muscleGroup property matches a given muscle group.
     /// - Parameters:
     ///   - muscleGroup: The muscle group to filter the array of exercises by.
@@ -93,7 +93,7 @@ struct AddExerciseToWorkoutView: View {
                                       exercises: [Exercise]) -> [Exercise] {
         return exercises.filter { $0.exerciseMuscleGroup == muscleGroup }
     }
-    
+
     /// Updates the set of exercises that the workout is parent of to include a given exercise.
     /// - Parameter exercise: The exercise to make a child of the workout.
     func addExerciseToWorkout(_ exercise: Exercise) {
