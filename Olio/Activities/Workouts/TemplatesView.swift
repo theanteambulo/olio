@@ -7,14 +7,18 @@
 
 import SwiftUI
 
+/// A horizontal scroll view containing tappable cards with details of each template.
 struct TemplatesView: View {
+    /// The presentation model representing the state of this view capable of reading model data and carrying out all
+    /// transformations needed to prepare that data for presentation.
     @StateObject var viewModel: ViewModel
 
     init(dataController: DataController) {
         let viewModel = ViewModel(dataController: dataController)
         _viewModel = StateObject(wrappedValue: viewModel)
     }
-
+    
+    /// A grid with a single row 100 points in size.
     var rows: [GridItem] {
         [GridItem(.fixed(100))]
     }
