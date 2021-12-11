@@ -7,12 +7,23 @@
 
 import SwiftUI
 
+/// A view to add an exercise from the library to a given workout.
 struct AddExerciseToWorkoutView: View {
+    /// The workout used to construct this view.
     @ObservedObject var workout: Workout
+
+    /// A fetch request of Exercise objects.
     let exercises: FetchRequest<Exercise>
 
+    /// The environment singleton responsible for managing the Core Data stack.
     @EnvironmentObject var dataController: DataController
+
+    /// The object space in which all managed objects exist.
     @Environment(\.managedObjectContext) var managedObjectContext
+
+    /// Provides functionality for dismissing a presentation.
+    ///
+    /// Used in this view for dismissing a sheet.
     @Environment(\.dismiss) var dismiss
 
     init(workout: Workout) {
@@ -27,6 +38,9 @@ struct AddExerciseToWorkoutView: View {
         )
     }
 
+    /// Computed property to sort exercises by muscle group, then by name.
+    ///
+    /// Example: Bench comes before Flys in Chest, which both come before Squats in Legs.
     var sortedExercises: [Exercise] {
         return exercises.wrappedValue.sorted { first, second in
             if first.muscleGroup < second.muscleGroup {
@@ -39,6 +53,7 @@ struct AddExerciseToWorkoutView: View {
         }
     }
 
+    /// Computed property to filter out any exercises which have already been added to the workout.
     var filteredExercises: [Exercise] {
         sortedExercises.filter { !workout.workoutExercises.contains($0) }
     }
@@ -68,12 +83,19 @@ struct AddExerciseToWorkoutView: View {
             .navigationTitle(Text(.addExercise))
         }
     }
-
+    
+    /// Filters a given array of exercises based on whether their muscleGroup property matches a given muscle group.
+    /// - Parameters:
+    ///   - muscleGroup: The muscle group to filter the array of exercises by.
+    ///   - exercises: The array of exercises to filter.
+    /// - Returns: An array of exercises.
     func filterExercisesToMuscleGroup(_ muscleGroup: Exercise.MuscleGroup.RawValue,
                                       exercises: [Exercise]) -> [Exercise] {
         return exercises.filter { $0.exerciseMuscleGroup == muscleGroup }
     }
-
+    
+    /// Updates the set of exercises that the workout is parent of to include a given exercise.
+    /// - Parameter exercise: The exercise to make a child of the workout.
     func addExerciseToWorkout(_ exercise: Exercise) {
         workout.objectWillChange.send()
 

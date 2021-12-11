@@ -75,21 +75,21 @@ struct EditWorkoutExerciseListView: View {
             }
         }
     }
-    
+
     /// Filters a given array of exercise sets based on whether their workout property matches the current workout.
     /// - Parameter exerciseSets: The array of exercise sets to filter.
     /// - Returns: An array of exercise sets.
     func filterExerciseSets(_ exerciseSets: [ExerciseSet]) -> [ExerciseSet] {
         exerciseSets.filter { $0.workout == workout }.sorted(by: \ExerciseSet.exerciseSetCreationDate)
     }
-    
+
     /// Deletes a given exercise set from the Core Data context.
     /// - Parameter exerciseSet: The exercise set to delete.
     func deleteExerciseSet(exerciseSet: ExerciseSet) {
         dataController.delete(exerciseSet)
         dataController.save()
     }
-    
+
     /// Saves a new exercise set to the Core Data context.
     /// - Parameters:
     ///   - exercise: The exercise that is parent of the exercise set being created.
