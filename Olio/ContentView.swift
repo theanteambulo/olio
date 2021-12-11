@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    /// The current screen displayed, stored for state restoration.
     @SceneStorage("selectedView") var selectedView: String?
+    /// The environment singleton responsible for managing the Core Data stack.
     @EnvironmentObject var dataController: DataController
 
     var body: some View {
         TabView(selection: $selectedView) {
+            // "Home" tab - displays templates and scheduled workouts.
             WorkoutsView(dataController: dataController,
                          showingCompletedWorkouts: false)
                 .tabItem {
@@ -22,6 +25,7 @@ struct ContentView: View {
                 .tag(WorkoutsView.scheduledTag)
                 .phoneOnlyStackNavigationView()
 
+            // "History" tab - displays completed workouts.
             WorkoutsView(dataController: dataController,
                          showingCompletedWorkouts: true)
                 .tabItem {
@@ -31,6 +35,7 @@ struct ContentView: View {
                 .tag(WorkoutsView.historyTag)
                 .phoneOnlyStackNavigationView()
 
+            // "Exercises" tab - displays library of added exercises.
             ExercisesView(dataController: dataController)
                 .tabItem {
                     Image(systemName: "books.vertical")
