@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A single row in an exercise's history representing a completed set.
 struct ExerciseHistoryRowView: View {
     /// The exercise set used to construct this view.
     @ObservedObject var exerciseSet: ExerciseSet
@@ -20,7 +21,7 @@ struct ExerciseHistoryRowView: View {
         }
     }
 
-    /// <#Description#>
+    /// The name of the workout the exercise set is child of.
     var exerciseSetWorkoutName: Text {
         if let workout = exerciseSet.workout {
             return Text(workout.workoutName)
@@ -29,10 +30,12 @@ struct ExerciseHistoryRowView: View {
         }
     }
 
+    /// The number of reps completed in the exercise set.
     var exerciseSetReps: Text {
         Text("\(exerciseSet.exerciseSetReps) reps")
     }
 
+    /// The accessibility label used for the view.
     var accessibilityLabel: Text {
         exerciseSetWorkoutName + Text(" ,") + exerciseSetWorkoutDate + Text(" ,") + exerciseSetReps
     }
