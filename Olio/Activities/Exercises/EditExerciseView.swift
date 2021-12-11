@@ -7,13 +7,21 @@
 
 import SwiftUI
 
+/// A view to edit the details of a given exercise.
 struct EditExerciseView: View {
+    /// The exercise used to construct this view and be edited.
     @ObservedObject var exercise: Exercise
 
+    /// The environment singleton responsible for managing the Core Data stack.
     @EnvironmentObject var dataController: DataController
 
+    /// The exercise's name property value.
     @State private var name: String
+
+    /// The exercise's muscle group property value.
     @State private var muscleGroup: Int
+
+    /// Boolean to indicate whether the alert warning the user about deleting the exercise is displayed.
     @State private var showingDeleteExerciseAlert = false
 
     init(exercise: Exercise) {
@@ -23,10 +31,12 @@ struct EditExerciseView: View {
         _muscleGroup = State(wrappedValue: Int(exercise.muscleGroup))
     }
 
+    /// The exercise sets this exercise is parent of, filtered to only show those which are completed and not part of a template workout.
     var filteredExerciseSets: [ExerciseSet] {
         exercise.exerciseSets.filter({ $0.completed == true && $0.workout?.template == false })
     }
 
+    /// A toolbar button used for deleting the exercise.
     var deleteExerciseToolbarItem: some ToolbarContent {
         ToolbarItem {
             Button(role: .destructive) {
@@ -88,6 +98,9 @@ struct EditExerciseView: View {
         }
     }
 
+    /// Synchronise the @State properties of EditExerciseView with their Core Data equivalents in whichever Exercise object is being edited.
+    ///
+    /// Changes will be announced to any property wrappers observing the exercise.
     func update() {
         exercise.objectWillChange.send()
 
