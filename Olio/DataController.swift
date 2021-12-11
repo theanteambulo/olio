@@ -14,7 +14,9 @@ class DataController: ObservableObject {
     /// The lone CloudKit container used to store all our data.
     let container: NSPersistentCloudKitContainer
 
-    /// Ensures data model is loaded only once.
+    /// A programmatic representation of the data model file describing Core Data objects.
+    ///
+    /// Ensures the data model is only loaded once, avoiding failures during testing.
     static let model: NSManagedObjectModel = {
         guard let url = Bundle.main.url(forResource: "Main", withExtension: "momd") else {
             fatalError("Failed to locate model file.")
@@ -31,7 +33,7 @@ class DataController: ObservableObject {
     /// permanent storage (for use in regular app runs).
     ///
     /// Defaults to permanent storage.
-    /// - Parameter inMemory: Whether to store data in temporary storage or not.
+    /// - Parameter inMemory: Whether to store data in temporary memory or not.
     init(inMemory: Bool = false) {
         // Load the data model exactly once.
         container = NSPersistentCloudKitContainer(name: "Main", managedObjectModel: Self.model)
@@ -47,6 +49,7 @@ class DataController: ObservableObject {
                 fatalError("Failed to load storage: \(error.localizedDescription)")
             }
 
+            // Ensure each test is started with no prior data and UI tests run without animations.
             #if DEBUG
             if CommandLine.arguments.contains("enable-testing") {
                 UIView.setAnimationsEnabled(false)
@@ -62,21 +65,23 @@ class DataController: ObservableObject {
         // Data loaded from disk to work with.
         let viewContext = container.viewContext
 
-        // Create 5 sample workouts, each with 5 sample exercises.
+        // Create 5 sample workouts, each with 1 sample exercise.
         for workoutCount in 1...5 {
             let workout = Workout(context: viewContext)
             let exercise = Exercise(context: viewContext)
-            exercise.workouts = [workout]
             workout.id = UUID()
             exercise.id = UUID()
             workout.name = "Workout - \(workoutCount)"
             exercise.name = "Exercise - \(workoutCount)"
+            exercise.workouts = [workout]
 
+            // Create a sample template.
             if workoutCount == 1 {
                 workout.template = true
             } else {
                 workout.template = false
 
+                // Create sample complete and scheduled workouts.
                 if workoutCount.isMultiple(of: 2) {
                     workout.completed = true
                 } else {
@@ -84,12 +89,13 @@ class DataController: ObservableObject {
                 }
             }
 
+            // Create sample exercise sets.
             for exerciseSetCount in 1...3 {
                 let exerciseSet = ExerciseSet(context: viewContext)
                 exerciseSet.id = UUID()
+                exerciseSet.creationDate = Date()
                 exerciseSet.exercise = exercise
                 exerciseSet.workout = workout
-                exerciseSet.creationDate = Date()
 
                 if exerciseSetCount == 1 {
                     exerciseSet.completed = true
