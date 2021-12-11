@@ -9,9 +9,16 @@ import CoreData
 import Foundation
 
 extension ExercisesView {
+    /// A presentation model representing the state of ExercisesView capable of reading model data and carrying out all
+    /// transformations needed to prepare that data for presentation.
     class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
+        /// Performs the initial fetch request and ensures it remains up to date.
         private let exercisesController: NSFetchedResultsController<Exercise>
+
+        /// An array of exercise objects.
         @Published var exercises = [Exercise]()
+
+        /// Dependency injection of the environment singleton responsible for managing the Core Data stack.
         var dataController: DataController
 
         init(dataController: DataController) {
@@ -30,9 +37,11 @@ extension ExercisesView {
                 cacheName: nil
             )
 
+            // Set the class as the delegate of the fetched results controller so it announces when the data changes.
             super.init()
             exercisesController.delegate = self
 
+            // Execute fetch request and assign fetched objects to the exercises property.
             do {
                 try exercisesController.performFetch()
                 exercises = exercisesController.fetchedObjects ?? []
@@ -41,6 +50,9 @@ extension ExercisesView {
             }
         }
 
+        /// Computed property to sort exercises by muscle group, then by name.
+        ///
+        /// Example: Bench comes before Flys in Chest, which both come before Squats in Legs.
         var sortedExercises: [Exercise] {
             return exercises.sorted { first, second in
                 if first.muscleGroup < second.muscleGroup {
@@ -52,18 +64,29 @@ extension ExercisesView {
                 return first.exerciseName < second.exerciseName
             }
         }
-
+        
+        /// Filters a given array of exercises based on whether their muscleGroup property matches a given muscle group.
+        /// - Parameters:
+        ///   - muscleGroup: The muscle group to filter the array of exercises by.
+        ///   - exercises: The array of exercises to filter.
+        /// - Returns: An array of exercises.
         func filterByMuscleGroup(_ muscleGroup: Exercise.MuscleGroup.RawValue,
                                  exercises: [Exercise]) -> [Exercise] {
             return exercises.filter {$0.exerciseMuscleGroup == muscleGroup}
         }
-
+        
+        /// Deletes an exercise based on its position in a given array of exercises.
+        /// - Parameters:
+        ///   - exercises: The array of exercises.
+        ///   - offset: The position of the exercise to delete in the given array of exercises.
         func swipeToDeleteExercise(exercises: [Exercise], at offset: Int) {
             let exercise = exercises[offset]
             dataController.delete(exercise)
             dataController.save()
         }
-
+        
+        /// Notifies ExercisesView when the underlying array of exercises changes.
+        /// - Parameter controller: The controller used to manage the results of the view model's Core Data fetch request.
         func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
             if let newExercises = controller.fetchedObjects as? [Exercise] {
                 exercises = newExercises
