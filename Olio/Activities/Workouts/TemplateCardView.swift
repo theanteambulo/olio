@@ -7,7 +7,9 @@
 
 import SwiftUI
 
+/// A single card representing a given workout template.
 struct TemplateCardView: View {
+    /// The workout template used to construct this view.
     @ObservedObject var template: Workout
 
     var body: some View {
