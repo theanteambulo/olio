@@ -99,7 +99,7 @@ struct EditExerciseView: View {
         }
     }
 
-    /// Synchronise the @State properties of EditExerciseView with their Core Data equivalents in whichever Exercise
+    /// Synchronise the @State properties of the view with their Core Data equivalents in whichever Exercise
     /// object is being edited.
     ///
     /// Changes will be announced to any property wrappers observing the exercise.

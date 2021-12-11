@@ -7,10 +7,15 @@
 
 import SwiftUI
 
+/// A single row for an exercise in a workout representing a set added to that exercise.
 struct ExerciseSetView: View {
+    /// The exercise set used to construct this view.
     @ObservedObject var exerciseSet: ExerciseSet
 
+    /// The exercise set's reps property value.
     @State private var exerciseSetReps: Int
+
+    /// The exercise set's complete property value.
     @State private var exerciseSetCompleted: Bool
 
     init(exerciseSet: ExerciseSet) {
@@ -20,14 +25,21 @@ struct ExerciseSetView: View {
         _exerciseSetCompleted = State(wrappedValue: exerciseSet.completed)
     }
 
+    /// Computed string representing the name of the icon that should be displayed.
     var completionIcon: String {
-        exerciseSet.completed ? "checkmark" : "xmark"
+        exerciseSet.completed
+        ? "checkmark"
+        : "xmark"
     }
 
+    /// Computed string representing the colour of the icon that should be displayed.
     var iconColor: Color {
-        exerciseSet.completed ? .green : .red
+        exerciseSet.completed
+        ? .green
+        : .red
     }
 
+    /// The accessibility label of the icon displayed.
     var iconAccessibilityLabel: Text {
         exerciseSet.completed
         ? Text("\(exerciseSetReps) reps") + Text(". Mark set incomplete")
@@ -55,6 +67,10 @@ struct ExerciseSetView: View {
         }
     }
 
+    /// Synchronise the @State properties of the view with their Core Data equivalents in whichever ExerciseSet
+    /// object is being edited.
+    ///
+    /// Changes will be announced to any property wrappers observing the exercise set.
     func update() {
         exerciseSet.objectWillChange.send()
         exerciseSet.exercise?.objectWillChange.send()
