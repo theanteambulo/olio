@@ -78,8 +78,9 @@ enum Strings: LocalizedStringKey {
     case triceps
     case legs
     case abs
-    case duplicationErrorAlertTitle
+    case errorAlertTitle
     case duplicationErrorAlertMessage
+    case emptyNameErrorAlertMessage
 
     // EDIT EXERCISE
     case editExerciseNavigationTitle

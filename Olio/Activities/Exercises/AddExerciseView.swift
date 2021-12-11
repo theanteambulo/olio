@@ -7,16 +7,29 @@
 
 import SwiftUI
 
+/// A view to add a new exercise.
 struct AddExerciseView: View {
+    /// A fetch request of Exercise objects.
     let exercises: FetchRequest<Exercise>
 
+    /// The environment singleton responsible for managing the Core Data stack.
     @EnvironmentObject var dataController: DataController
+
+    /// The object space in which the new exercise should be created.
     @Environment(\.managedObjectContext) var managedObjectContext
+
+    /// Provides functionality for dismissing a presentation.
+    ///
+    /// Used in this view for dismissing a sheet.
     @Environment(\.dismiss) var dismiss
 
+    /// The exercise's name property value.
     @State private var name = ""
-    @State private var bodyweight = true
+
+    /// The exercise's muscle group property value.
     @State private var muscleGroup = 1
+
+    /// Boolean to indicate whether the alert warning the user the alert already exists is displayed.
     @State private var showingExerciseAlreadyExistsAlert = false
 
     init() {
@@ -26,6 +39,27 @@ struct AddExerciseView: View {
                                                ascending: true)])
     }
 
+    /// Computed property to get the chosen exercise name when whitespaces and fullstops are removed.
+    var trimmedExerciseName: String {
+        name
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .trimmingCharacters(in: CharacterSet(charactersIn: "."))
+    }
+
+    /// Computed property to indicate whether the chosen exercise name is valid or not.
+    var exerciseNameValid: Bool {
+        if trimmedExerciseName == "" {
+            return false
+        } else {
+            if exercises.wrappedValue.filter({ $0.exerciseName == trimmedExerciseName }).isEmpty {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+
+    /// A toolbar button used for saving the new exercise.
     var saveToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button(Strings.saveButton.localized) {
@@ -36,15 +70,18 @@ struct AddExerciseView: View {
                     showingExerciseAlreadyExistsAlert = true
                 }
             }
-            .alert(Strings.duplicationErrorAlertTitle.localized,
+            .alert(Strings.errorAlertTitle.localized,
                    isPresented: $showingExerciseAlreadyExistsAlert) {
                 Button(Strings.okButton.localized, role: .cancel) { }
             } message: {
-                Text(.duplicationErrorAlertMessage)
+                trimmedExerciseName == ""
+                ? Text(.emptyNameErrorAlertMessage)
+                : Text(.duplicationErrorAlertMessage)
             }
         }
     }
 
+    /// A toolbar button used for dismissing the view without saving details of the new exercise.
     var dismissNoSaveToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -52,18 +89,6 @@ struct AddExerciseView: View {
             } label: {
                 Label("Dismiss", systemImage: "xmark")
             }
-        }
-    }
-
-    var exerciseNameValid: Bool {
-        let trimmedName = name
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .trimmingCharacters(in: CharacterSet(charactersIn: "."))
-
-        if trimmedName != "" && exercises.wrappedValue.filter({ $0.exerciseName == trimmedName }).isEmpty {
-            return true
-        } else {
-            return false
         }
     }
 
@@ -92,6 +117,7 @@ struct AddExerciseView: View {
         }
     }
 
+    /// Saves the new exercise to the Core Data context.
     func save() {
         let trimmedName = name
             .trimmingCharacters(in: .whitespacesAndNewlines)

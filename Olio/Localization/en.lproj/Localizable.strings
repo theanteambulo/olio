@@ -70,8 +70,9 @@
 "triceps" = "Triceps";
 "legs" = "Legs";
 "abs" = "Abs";
-"duplicationErrorAlertTitle" = "Oops!";
+"errorAlertTitle" = "Oops!";
 "duplicationErrorAlertMessage" = "Looks like this exercise already exists. Try changing the name to proceed.";
+"emptyNameErrorAlertMessage" = "Looks like this exercise doesn't have a name. Try providing one to proceed.";
 
 
 

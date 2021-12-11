@@ -31,7 +31,8 @@ struct EditExerciseView: View {
         _muscleGroup = State(wrappedValue: Int(exercise.muscleGroup))
     }
 
-    /// The exercise sets this exercise is parent of, filtered to only show those which are completed and not part of a template workout.
+    /// The exercise sets this exercise is parent of, filtered to only show those which are completed and not part of a
+    /// template workout.
     var filteredExerciseSets: [ExerciseSet] {
         exercise.exerciseSets.filter({ $0.completed == true && $0.workout?.template == false })
     }
@@ -98,7 +99,8 @@ struct EditExerciseView: View {
         }
     }
 
-    /// Synchronise the @State properties of EditExerciseView with their Core Data equivalents in whichever Exercise object is being edited.
+    /// Synchronise the @State properties of EditExerciseView with their Core Data equivalents in whichever Exercise
+    /// object is being edited.
     ///
     /// Changes will be announced to any property wrappers observing the exercise.
     func update() {
