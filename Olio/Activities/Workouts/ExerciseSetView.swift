@@ -8,6 +8,8 @@
 import SwiftUI
 
 /// A single row for an exercise in a workout representing a set added to that exercise.
+///
+/// Used a component to construct EditWorkoutExerciseListView.
 struct ExerciseSetView: View {
     /// The exercise set used to construct this view.
     @ObservedObject var exerciseSet: ExerciseSet

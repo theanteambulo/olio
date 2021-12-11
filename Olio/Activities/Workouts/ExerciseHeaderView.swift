@@ -8,6 +8,8 @@
 import SwiftUI
 
 /// A header for a given exercise in a given workout representing the percentage of exercise sets completed so far.
+///
+/// Used as component to construct EditWorkoutExerciseListView.
 struct ExerciseHeaderView: View {
     /// The workout used to construct this view.
     @ObservedObject var workout: Workout
