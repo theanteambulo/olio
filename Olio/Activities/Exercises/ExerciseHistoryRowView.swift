@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-/// A single row in an exercise's history representing a completed set.
+/// A single row in an exercise's history representing a given completed set not part of a template workout.
 struct ExerciseHistoryRowView: View {
     /// The exercise set used to construct this view.
     @ObservedObject var exerciseSet: ExerciseSet
