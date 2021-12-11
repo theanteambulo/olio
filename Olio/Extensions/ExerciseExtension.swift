@@ -19,7 +19,7 @@ extension Exercise {
                                   comment: "Create a new exercise")
     }
 
-    /// The unwrapped muscle group property of an exercise
+    /// The unwrapped muscle group property of an exercise.
     var exerciseMuscleGroup: String {
         switch muscleGroup {
         case Int16(1):
