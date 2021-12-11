@@ -8,8 +8,10 @@
 import SwiftUI
 
 struct ExerciseHistoryRowView: View {
+    /// The exercise set used to construct this view.
     @ObservedObject var exerciseSet: ExerciseSet
 
+    /// The date the exercise set was completed.
     var exerciseSetWorkoutDate: Text {
         if let workout = exerciseSet.workout {
             return Text(workout.workoutDate.formatted(date: .abbreviated, time: .omitted))
@@ -18,6 +20,7 @@ struct ExerciseHistoryRowView: View {
         }
     }
 
+    /// <#Description#>
     var exerciseSetWorkoutName: Text {
         if let workout = exerciseSet.workout {
             return Text(workout.workoutName)

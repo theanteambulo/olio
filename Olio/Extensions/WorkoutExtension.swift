@@ -68,7 +68,7 @@ extension Workout {
         ? Strings.workoutScheduledAlertTitle.localized
         : Strings.workoutCompletedAlertTitle.localized
     }
-    
+
     /// Derives the message of an alert displayed when a user completes or schedules a workout.
     /// - Parameter workout: The workout being completed or scheduled.
     /// - Returns: A LocalizedStringKey corresponding to the action taken on the workout (i.e. complete or schedule).
