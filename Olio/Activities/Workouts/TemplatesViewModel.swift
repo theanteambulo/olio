@@ -9,10 +9,17 @@ import CoreData
 import Foundation
 
 extension TemplatesView {
+    /// A presentation model representing the state of TemplatesView capable of reading model data and carrying out all
+    /// transformations needed to prepare that data for presentation.
     class ViewModel: NSObject, ObservableObject, NSFetchedResultsControllerDelegate {
-        let dataController: DataController
+        /// Performs the initial fetch request and ensures it remains up to date.
         private let templatesController: NSFetchedResultsController<Workout>
+
+        /// An array of Workout objects.
         @Published var templates = [Workout]()
+
+        /// Dependency injection of the environment singleton responsible for managing the Core Data stack.
+        let dataController: DataController
 
         init(dataController: DataController) {
             self.dataController = dataController
@@ -30,9 +37,11 @@ extension TemplatesView {
                 cacheName: nil
             )
 
+            // Set the class as the delegate of the fetched results controller so it announces when the data changes.
             super.init()
             templatesController.delegate = self
 
+            // Execute the fetch request and assign fetched objects to the templates property.
             do {
                 try templatesController.performFetch()
                 templates = templatesController.fetchedObjects ?? []
@@ -41,6 +50,8 @@ extension TemplatesView {
             }
         }
 
+        /// Notifies TemplatesView when the underlying array of workouts changes.
+        /// - Parameter controller: The controller that manages the results of the view model's Core Data fetch request.
         func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
             if let newTemplates = controller.fetchedObjects as? [Workout] {
                 templates = newTemplates

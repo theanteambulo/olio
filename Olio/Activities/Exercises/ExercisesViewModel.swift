@@ -15,11 +15,11 @@ extension ExercisesView {
         /// Performs the initial fetch request and ensures it remains up to date.
         private let exercisesController: NSFetchedResultsController<Exercise>
 
-        /// An array of exercise objects.
+        /// An array of Exercise objects.
         @Published var exercises = [Exercise]()
 
         /// Dependency injection of the environment singleton responsible for managing the Core Data stack.
-        var dataController: DataController
+        let dataController: DataController
 
         init(dataController: DataController) {
             self.dataController = dataController
@@ -41,7 +41,7 @@ extension ExercisesView {
             super.init()
             exercisesController.delegate = self
 
-            // Execute fetch request and assign fetched objects to the exercises property.
+            // Execute the fetch request and assign fetched objects to the exercises property.
             do {
                 try exercisesController.performFetch()
                 exercises = exercisesController.fetchedObjects ?? []
