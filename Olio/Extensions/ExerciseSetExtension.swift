@@ -23,7 +23,7 @@ extension ExerciseSet {
         creationDate ?? Date()
     }
     
-    /// Creates an example exercise set for previewing purposes.
+    /// An example exercise set for previewing purposes.
     static var example: ExerciseSet {
         let dataController = DataController.preview
         let viewContext = dataController.container.viewContext
