@@ -87,8 +87,7 @@ struct EditExerciseView: View {
                     Text(.triceps).tag(5)
                     Text(.legs).tag(6)
                     Text(.abs).tag(7)
-                    Text(.cardio).tag(8)
-                    Text(.exerciseClass).tag(9)
+                    Text(.fullBody).tag(8)
                 }
             }
 

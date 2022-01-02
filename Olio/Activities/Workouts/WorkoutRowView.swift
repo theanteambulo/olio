@@ -12,13 +12,36 @@ struct WorkoutRowView: View {
     /// The workout used to construct this view.
     @ObservedObject var workout: Workout
 
+    private var exerciseCategoryColors: [Color]
+
+    var rows: [GridItem] {
+        [GridItem()]
+    }
+
+    init(workout: Workout) {
+        self.workout = workout
+        exerciseCategoryColors = [Color]()
+
+        for exercise in workout.workoutExercises.sorted(by: \.exerciseCategory) {
+            exerciseCategoryColors.append(exercise.getExerciseCategoryColor())
+        }
+
+        exerciseCategoryColors.removeDuplicates()
+    }
+
     var body: some View {
         NavigationLink(destination: EditWorkoutView(workout: workout)) {
             VStack(alignment: .leading) {
                 HStack {
                     Text(workout.workoutName)
 
-                    CategoryColorView(colors: workout.getWorkoutColors())
+                    LazyHGrid(rows: rows) {
+                        ForEach(exerciseCategoryColors, id: \.self) { categoryColor in
+                            Circle()
+                                .frame(width: 7)
+                                .foregroundColor(categoryColor)
+                        }
+                    }
                 }
 
                 Text("\(workout.workoutExercises.count) exercises")
