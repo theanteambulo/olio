@@ -15,7 +15,11 @@ struct WorkoutRowView: View {
     var body: some View {
         NavigationLink(destination: EditWorkoutView(workout: workout)) {
             VStack(alignment: .leading) {
-                Text(workout.workoutName)
+                HStack {
+                    Text(workout.workoutName)
+
+                    CategoryColorView(colors: workout.getWorkoutColors())
+                }
 
                 Text("\(workout.workoutExercises.count) exercises")
                     .font(.caption)

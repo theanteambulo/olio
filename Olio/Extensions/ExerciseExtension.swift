@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 extension Exercise {
     /// The unwrapped id property of an exercise.
@@ -17,6 +18,46 @@ extension Exercise {
     var exerciseName: String {
         name ?? NSLocalizedString("newExercise",
                                   comment: "Create a new exercise")
+    }
+
+    /// The unwrapped category property of an exercise.
+    var exerciseCategory: String {
+        switch category {
+        case Int16(1):
+            return "Weighted"
+        case Int16(2):
+            return "Bodyweight"
+        case Int16(3):
+            return "Cardio"
+        case Int16(4):
+            return "Class"
+        default:
+            return "Stretch"
+        }
+    }
+
+    func getExerciseCategoryColor() -> Color {
+        switch exerciseCategory {
+        case "Weighted":
+            return .red
+        case "Bodyweight":
+            return .blue
+        case "Cardio":
+            return .green
+        case "Class":
+            return .yellow
+        default:
+            return .purple
+        }
+    }
+
+    /// An enum containing all possible cases for an exercise category.
+    enum ExerciseCategory: String, CaseIterable {
+        case weighted = "Weighted"
+        case bodyweight = "Bodyweight"
+        case cardio = "Cardio"
+        case exerciseClass = "Class"
+        case stretch = "Stretch"
     }
 
     /// The unwrapped muscle group property of an exercise.
@@ -34,8 +75,10 @@ extension Exercise {
             return "Triceps"
         case Int16(6):
             return "Legs"
-        default:
+        case Int16(7):
             return "Abs"
+        default:
+            return "Full Body"
         }
     }
 
@@ -48,6 +91,7 @@ extension Exercise {
         case triceps = "Triceps"
         case legs = "Legs"
         case abs = "Abs"
+        case fullBody = "Full Body"
     }
 
     /// The unwrapped exercise sets an exercise is parent of.

@@ -70,6 +70,7 @@ enum Strings: LocalizedStringKey {
     case deleteExerciseConfirmationMessage
     case saveButton
     case exerciseName
+    case exerciseCategory
     case muscleGroup
     case chest
     case back
@@ -78,6 +79,12 @@ enum Strings: LocalizedStringKey {
     case triceps
     case legs
     case abs
+    case fullBody
+    case weighted
+    case bodyweight
+    case cardio
+    case exerciseClass
+    case stretch
     case errorAlertTitle
     case duplicationErrorAlertMessage
     case emptyNameErrorAlertMessage
@@ -87,6 +94,7 @@ enum Strings: LocalizedStringKey {
     case exerciseHistory
     case workoutDateMissing
     case workoutNameMissing
+    case saveChanges
 
     // WORKOUT EXTENSION
     case exampleWorkout

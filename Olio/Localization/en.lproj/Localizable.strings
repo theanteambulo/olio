@@ -62,6 +62,7 @@
 "deleteExerciseConfirmationMessage" = "Deleting an exercise cannot be undone and you will lose its history forever. This will also remove the exercise from all scheduled and completed workouts.";
 "saveButton" = "Save";
 "exerciseName" = "Exercise Name";
+"exerciseCategory" = "Exercise Category";
 "muscleGroup" = "Muscle Group";
 "chest" = "Chest";
 "back" = "Back";
@@ -70,6 +71,12 @@
 "triceps" = "Triceps";
 "legs" = "Legs";
 "abs" = "Abs";
+"fullBody" = "Full Body";
+"weighted" = "Weighted";
+"bodyweight" = "Bodyweight";
+"cardio" = "Cardio";
+"exerciseClass" = "Class";
+"stretch" = "Stretch";
 "errorAlertTitle" = "Oops!";
 "duplicationErrorAlertMessage" = "Looks like this exercise already exists. Try changing the name to proceed.";
 "emptyNameErrorAlertMessage" = "Looks like this exercise doesn't have a name. Try providing one to proceed.";
@@ -81,6 +88,7 @@
 "exerciseHistory" = "Exercise History";
 "workoutDateMissing" = "Workout date missing";
 "workoutNameMissing" = "Workout name missing";
+"saveChanges" = "Save Changes";
 
 
 

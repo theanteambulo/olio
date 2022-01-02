@@ -30,14 +30,14 @@ struct ExerciseHistoryRowView: View {
         }
     }
 
-    /// The number of reps completed in the exercise set.
-    var exerciseSetReps: Text {
-        Text("\(exerciseSet.exerciseSetReps) reps")
+    /// The weight and number of reps completed in the exercise set.
+    var exerciseSetDetail: Text {
+        Text("\(exerciseSet.exerciseSetWeight, specifier: "%.2f") kg, \(exerciseSet.exerciseSetReps) reps")
     }
 
     /// The accessibility label used for the view.
     var accessibilityLabel: Text {
-        exerciseSetWorkoutName + Text(" ,") + exerciseSetWorkoutDate + Text(" ,") + exerciseSetReps
+        exerciseSetWorkoutName + Text(" ,") + exerciseSetWorkoutDate + Text(" ,") + exerciseSetDetail
     }
 
     var body: some View {
@@ -51,7 +51,9 @@ struct ExerciseHistoryRowView: View {
 
             Spacer()
 
-            exerciseSetReps
+            HStack {
+                exerciseSetDetail
+            }
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(accessibilityLabel)

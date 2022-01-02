@@ -26,6 +26,9 @@ struct AddExerciseView: View {
     /// The exercise's name property value.
     @State private var name = ""
 
+    /// The exercise's category property value.
+    @State private var exerciseCategory = 1
+
     /// The exercise's muscle group property value.
     @State private var muscleGroup = 1
 
@@ -98,6 +101,14 @@ struct AddExerciseView: View {
                 Section(header: Text(.basicSettings)) {
                     TextField(Strings.exerciseName.localized, text: $name)
 
+                    Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory) {
+                        Text(.weighted).tag(1)
+                        Text(.bodyweight).tag(2)
+                        Text(.cardio).tag(3)
+                        Text(.exerciseClass).tag(4)
+                        Text(.stretch).tag(5)
+                    }
+
                     Picker(Strings.muscleGroup.localized, selection: $muscleGroup) {
                         Text(.chest).tag(1)
                         Text(.back).tag(2)
@@ -126,6 +137,7 @@ struct AddExerciseView: View {
         let exercise = Exercise(context: managedObjectContext)
         exercise.id = UUID()
         exercise.name = trimmedName
+        exercise.category = Int16(exerciseCategory)
         exercise.muscleGroup = Int16(muscleGroup)
 
         dataController.save()

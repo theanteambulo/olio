@@ -18,8 +18,14 @@ struct EditExerciseView: View {
     /// The exercise's name property value.
     @State private var name: String
 
+    /// The exercise's category property value.
+    @State private var exerciseCategory: Int
+
     /// The exercise's muscle group property value.
     @State private var muscleGroup: Int
+
+    /// Boolean to indicate some change to the exercise's settings was made.
+    @State private var changeMade = false
 
     /// Boolean to indicate whether the alert warning the user about deleting the exercise is displayed.
     @State private var showingDeleteExerciseAlert = false
@@ -28,6 +34,7 @@ struct EditExerciseView: View {
         self.exercise = exercise
 
         _name = State(wrappedValue: exercise.exerciseName)
+        _exerciseCategory = State(wrappedValue: Int(exercise.category))
         _muscleGroup = State(wrappedValue: Int(exercise.muscleGroup))
     }
 
@@ -62,9 +69,17 @@ struct EditExerciseView: View {
     var body: some View {
         Form {
             Section(header: Text(.basicSettings)) {
-                TextField(Strings.exerciseName.localized, text: $name)
+                TextField(Strings.exerciseName.localized, text: $name.onChange(changesMade))
 
-                Picker(Strings.muscleGroup.localized, selection: $muscleGroup) {
+                Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory.onChange(changesMade)) {
+                    Text(.weighted).tag(1)
+                    Text(.bodyweight).tag(2)
+                    Text(.cardio).tag(3)
+                    Text(.exerciseClass).tag(4)
+                    Text(.stretch).tag(5)
+                }
+
+                Picker(Strings.muscleGroup.localized, selection: $muscleGroup.onChange(changesMade)) {
                     Text(.chest).tag(1)
                     Text(.back).tag(2)
                     Text(.shoulders).tag(3)
@@ -72,8 +87,16 @@ struct EditExerciseView: View {
                     Text(.triceps).tag(5)
                     Text(.legs).tag(6)
                     Text(.abs).tag(7)
+                    Text(.cardio).tag(8)
+                    Text(.exerciseClass).tag(9)
                 }
             }
+
+            Button(Strings.saveChanges.localized) {
+                update()
+                changeMade = false
+            }
+                .disabled(!changeMade)
 
             if filteredExerciseSets.isEmpty {
                 EmptyView()
@@ -90,7 +113,6 @@ struct EditExerciseView: View {
         .navigationTitle(Text(.editExerciseNavigationTitle))
         .onDisappear {
             withAnimation {
-                update()
                 dataController.save()
             }
         }
@@ -107,7 +129,13 @@ struct EditExerciseView: View {
         exercise.objectWillChange.send()
 
         exercise.name = name
+        exercise.category = Int16(exerciseCategory)
         exercise.muscleGroup = Int16(muscleGroup)
+    }
+
+    /// Toggles the Boolean indicating some change to the exercise's settings has been made.
+    func changesMade() {
+        changeMade = true
     }
 }
 

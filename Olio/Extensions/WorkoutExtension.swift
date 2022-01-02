@@ -79,4 +79,16 @@ extension Workout {
             return Strings.workoutCompletedAlertMessage.localized
         }
     }
+
+    func getWorkoutColors() -> [Color] {
+        var workoutColors = [Color]()
+
+        for exercise in workoutExercises {
+            workoutColors.append(exercise.getExerciseCategoryColor())
+        }
+
+        workoutColors.removeDuplicates()
+
+        return workoutColors
+    }
 }

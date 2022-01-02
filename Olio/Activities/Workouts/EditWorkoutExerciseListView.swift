@@ -25,8 +25,18 @@ struct EditWorkoutExerciseListView: View {
     /// Boolean to indicate whether the alert warning the user about deleting the workout is displayed.
     @State private var showingDeleteExerciseConfirmation = false
 
+    var headerView: some View {
+        HStack {
+            Circle()
+                .frame(width: 7)
+                .foregroundColor(exercise.getExerciseCategoryColor())
+
+            Text("\(exercise.exerciseName)")
+        }
+    }
+
     var body: some View {
-        Section(header: Text("\(exercise.exerciseName)")) {
+        Section(header: headerView) {
             // The exercise header showing progress.
             ExerciseHeaderView(workout: workout,
                                exercise: exercise)
@@ -100,6 +110,7 @@ struct EditWorkoutExerciseListView: View {
         set.id = UUID()
         set.workout = workout
         set.exercise = exercise
+        set.weight = 0
         set.reps = 10
         set.creationDate = Date()
         dataController.save()

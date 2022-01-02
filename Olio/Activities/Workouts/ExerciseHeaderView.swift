@@ -27,6 +27,7 @@ struct ExerciseHeaderView: View {
             Text("\(exerciseCompletionAmountInt)%")
                 .frame(minWidth: 50)
             ProgressView(value: exerciseCompletionAmount(exercise))
+                .tint(exercise.getExerciseCategoryColor())
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text("Progress: \(exerciseCompletionAmountInt)%"))

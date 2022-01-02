@@ -16,22 +16,31 @@ struct ExerciseSetView: View {
 
     /// The exercise set's reps property value.
     @State private var exerciseSetReps: Int
-
+    /// The exercise set's weight property value.
+    @State private var exerciseSetWeight: Double
     /// The exercise set's complete property value.
     @State private var exerciseSetCompleted: Bool
+
+    enum FocusedField {
+        case reps, weight
+    }
+
+    /// Boolean to be toggled when an element is in focus.
+    @FocusState private var focusedField: FocusedField?
 
     init(exerciseSet: ExerciseSet) {
         self.exerciseSet = exerciseSet
 
         _exerciseSetReps = State(wrappedValue: exerciseSet.exerciseSetReps)
+        _exerciseSetWeight = State(wrappedValue: exerciseSet.exerciseSetWeight)
         _exerciseSetCompleted = State(wrappedValue: exerciseSet.completed)
     }
 
     /// Computed string representing the name of the icon that should be displayed.
     var completionIcon: String {
         exerciseSet.completed
-        ? "checkmark"
-        : "xmark"
+        ? "checkmark.circle.fill"
+        : "circle"
     }
 
     /// Computed string representing the colour of the icon that should be displayed.
@@ -50,22 +59,51 @@ struct ExerciseSetView: View {
 
     var body: some View {
         HStack {
-            Image(systemName: completionIcon)
-                .frame(width: 15)
-                .foregroundColor(iconColor)
-                .onTapGesture {
-                    withAnimation {
-                        exerciseSet.completed.toggle()
-                        update()
+            HStack {
+                Image(systemName: completionIcon)
+                    .frame(width: 25)
+                    .foregroundColor(iconColor)
+                    .onTapGesture {
+                        withAnimation {
+                            exerciseSet.completed.toggle()
+                            update()
+                        }
                     }
-                }
-                .accessibilityLabel(iconAccessibilityLabel)
-                .accessibilityAddTraits(.isButton)
+                    .accessibilityLabel(iconAccessibilityLabel)
+                    .accessibilityAddTraits(.isButton)
 
-            Stepper("\(exerciseSetReps) reps",
-                    value: $exerciseSetReps.onChange(update),
-                    in: 1...100,
-                    step: 1)
+                HStack {
+                    TextField("Weight",
+                              value: $exerciseSetWeight.onChange(update),
+                              format: .number)
+                        .frame(width: 75)
+                        .textFieldStyle(.roundedBorder)
+                        .keyboardType(.decimalPad)
+                        .focused($focusedField, equals: .weight)
+
+                    Text("kg")
+                }
+
+                Spacer()
+
+                HStack {
+                    TextField("Reps",
+                              value: $exerciseSetReps.onChange(update),
+                              format: .number)
+                        .frame(width: 75)
+                        .textFieldStyle(.roundedBorder)
+                        .keyboardType(.numberPad)
+                        .focused($focusedField, equals: .reps)
+
+                    Text("reps")
+                }
+            }
+
+            Spacer()
+
+            if focusedField != nil {
+                Button("Done", action: hideKeyboard)
+            }
         }
     }
 
@@ -79,8 +117,21 @@ struct ExerciseSetView: View {
         exerciseSet.workout?.objectWillChange.send()
 
         exerciseSet.reps = Int16(exerciseSetReps)
+        exerciseSet.weight = Double(exerciseSetWeight)
     }
 }
+
+/// Force hides any keyboard currently being displayed.
+#if canImport(UIKit)
+extension View {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
+                                        to: nil,
+                                        from: nil,
+                                        for: nil)
+    }
+}
+#endif
 
 struct ExerciseSetView_Previews: PreviewProvider {
     static var previews: some View {

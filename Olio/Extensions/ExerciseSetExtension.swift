@@ -18,6 +18,11 @@ extension ExerciseSet {
         Int(reps)
     }
 
+    /// The unwrapped weight property of an exercise set.
+    var exerciseSetWeight: Double {
+        Double(weight)
+    }
+
     /// The unwrapped creation date property of an exercise set.
     var exerciseSetCreationDate: Date {
         creationDate ?? Date()
