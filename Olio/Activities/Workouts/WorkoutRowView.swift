@@ -12,10 +12,12 @@ struct WorkoutRowView: View {
     /// The workout used to construct this view.
     @ObservedObject var workout: Workout
 
+    /// The array of colors corresponding to unique exercise categories in this workout.
     private var exerciseCategoryColors: [Color]
 
+    /// A grid with a single row.
     var rows: [GridItem] {
-        [GridItem()]
+        Array(repeating: GridItem(), count: 1)
     }
 
     init(workout: Workout) {
@@ -31,11 +33,11 @@ struct WorkoutRowView: View {
 
     var body: some View {
         NavigationLink(destination: EditWorkoutView(workout: workout)) {
-            VStack(alignment: .leading) {
-                HStack {
-                    Text(workout.workoutName)
+            VStack(alignment: .leading, spacing: 0) {
+                Text(workout.workoutName)
 
-                    LazyHGrid(rows: rows) {
+                if !workout.workoutExercises.isEmpty {
+                    LazyHGrid(rows: rows, spacing: 7) {
                         ForEach(exerciseCategoryColors, id: \.self) { categoryColor in
                             Circle()
                                 .frame(width: 7)
