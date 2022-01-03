@@ -23,6 +23,16 @@ extension ExerciseSet {
         Double(weight)
     }
 
+    /// The unwrapped distance property of an exercise set.
+    var exerciseSetDistance: Double {
+        Double(distance)
+    }
+
+    /// The unwrapped duration property of an exercise set.
+    var exerciseSetDuration: Int {
+        Int(duration)
+    }
+
     /// The unwrapped creation date property of an exercise set.
     var exerciseSetCreationDate: Date {
         creationDate ?? Date()

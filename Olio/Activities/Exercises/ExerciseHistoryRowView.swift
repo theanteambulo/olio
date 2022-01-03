@@ -32,7 +32,18 @@ struct ExerciseHistoryRowView: View {
 
     /// The weight and number of reps completed in the exercise set.
     var exerciseSetDetail: Text {
-        Text("\(exerciseSet.exerciseSetWeight, specifier: "%.2f") kg, \(exerciseSet.exerciseSetReps) reps")
+        switch exerciseSet.exercise?.exerciseCategory {
+        case "Weights":
+            return Text("\(exerciseSet.exerciseSetWeight, specifier: "%.2f") kg, \(exerciseSet.exerciseSetReps) reps")
+        case "Body":
+            return Text("\(exerciseSet.exerciseSetReps) reps")
+        case "Cardio":
+            return Text("\(exerciseSet.exerciseSetDistance, specifier: "%.2f")km / duration")
+        case "Class":
+            return Text("\(exerciseSet.exerciseSetDuration) mins")
+        default:
+            return Text("\(exerciseSet.exerciseSetDuration) secs")
+        }
     }
 
     /// The accessibility label used for the view.

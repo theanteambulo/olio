@@ -18,11 +18,20 @@ struct ExerciseSetView: View {
     @State private var exerciseSetReps: Int
     /// The exercise set's weight property value.
     @State private var exerciseSetWeight: Double
+    /// The exercise set's distance property value.
+    @State private var exerciseSetDistance: Double
+    /// The exercise set's duration property value.
+    @State private var exerciseSetDuration: Int
+//    /// A special version of the exercise set's duration property value for use on cardio exercises only.
+//    @State private var exerciseSetCardioDuration: String
     /// The exercise set's complete property value.
     @State private var exerciseSetCompleted: Bool
 
+    /// Boolean indicating whether the sheet to input cardio exercise duration is being displayed.
+    @State private var displayDurationInputSheet = false
+
     enum FocusedField {
-        case reps, weight
+        case reps, weight, distance, duration
     }
 
     /// Boolean to be toggled when an element is in focus.
@@ -33,7 +42,11 @@ struct ExerciseSetView: View {
 
         _exerciseSetReps = State(wrappedValue: exerciseSet.exerciseSetReps)
         _exerciseSetWeight = State(wrappedValue: exerciseSet.exerciseSetWeight)
+        _exerciseSetDistance = State(wrappedValue: exerciseSet.exerciseSetDistance)
+        _exerciseSetDuration = State(wrappedValue: exerciseSet.exerciseSetDuration)
         _exerciseSetCompleted = State(wrappedValue: exerciseSet.completed)
+
+//        _exerciseSetCardioDuration = State(wrappedValue: "")
     }
 
     /// Computed string representing the name of the icon that should be displayed.
@@ -72,30 +85,79 @@ struct ExerciseSetView: View {
                     .accessibilityLabel(iconAccessibilityLabel)
                     .accessibilityAddTraits(.isButton)
 
-                HStack {
-                    TextField("Weight",
-                              value: $exerciseSetWeight.onChange(update),
-                              format: .number)
-                        .frame(width: 75)
-                        .textFieldStyle(.roundedBorder)
-                        .keyboardType(.decimalPad)
-                        .focused($focusedField, equals: .weight)
+                // Only weighted exercises should have weight text field.
+                if exerciseSet.exercise?.exerciseCategory == "Weights" {
+                    HStack {
+                        TextField("Weight",
+                                  value: $exerciseSetWeight.onChange(update),
+                                  format: .number)
+                            .frame(width: 75)
+                            .textFieldStyle(.roundedBorder)
+                            .keyboardType(.decimalPad)
+                            .focused($focusedField, equals: .weight)
 
-                    Text("kg")
+                        Text("kg")
+                    }
+
+                    Spacer()
                 }
 
-                Spacer()
+                // Weighted and bodyweight exercises should have reps field.
+                if exerciseSet.exercise?.category == 1 || exerciseSet.exercise?.category == 2 {
+                    HStack {
+                        TextField("Reps",
+                                  value: $exerciseSetReps.onChange(update),
+                                  format: .number)
+                            .frame(width: 75)
+                            .textFieldStyle(.roundedBorder)
+                            .keyboardType(.numberPad)
+                            .focused($focusedField, equals: .reps)
 
-                HStack {
-                    TextField("Reps",
-                              value: $exerciseSetReps.onChange(update),
-                              format: .number)
-                        .frame(width: 75)
-                        .textFieldStyle(.roundedBorder)
-                        .keyboardType(.numberPad)
-                        .focused($focusedField, equals: .reps)
+                        Text("reps")
+                    }
+                }
 
-                    Text("reps")
+                // Only cardio should have a distance field and a special duration field.
+                if exerciseSet.exercise?.category == 3 {
+                    HStack {
+                        TextField("Distance",
+                                  value: $exerciseSetDistance.onChange(update),
+                                  format: .number)
+                            .frame(width: 75)
+                            .textFieldStyle(.roundedBorder)
+                            .keyboardType(.decimalPad)
+                            .focused($focusedField, equals: .distance)
+
+                        Text("km")
+
+                        Spacer()
+
+//                        TextField("mm:ss",
+//                                  text: $exerciseSetCardioDuration)
+//                            .frame(width: 75)
+//                            .textFieldStyle(.roundedBorder)
+//                            .keyboardType(.decimalPad)
+//                            .focused($focusedField, equals: .duration)
+                    }
+                }
+
+                // Classes and stretches should have a duration field.
+                if exerciseSet.exercise?.category == 4 || exerciseSet.exercise?.category == 5 {
+                    HStack {
+                        TextField("Duration",
+                                  value: $exerciseSetDuration.onChange(update),
+                                  format: .number)
+                            .frame(width: 75)
+                            .textFieldStyle(.roundedBorder)
+                            .keyboardType(.numberPad)
+                            .focused($focusedField, equals: .duration)
+
+                        Text(exerciseSet.exercise?.category == 4
+                             ? "mins"
+                             : "secs")
+
+                        Spacer()
+                    }
                 }
             }
 
@@ -118,6 +180,8 @@ struct ExerciseSetView: View {
 
         exerciseSet.reps = Int16(exerciseSetReps)
         exerciseSet.weight = Double(exerciseSetWeight)
+        exerciseSet.distance = Double(exerciseSetDistance)
+        exerciseSet.duration = Int16(exerciseSetDuration)
     }
 }
 
