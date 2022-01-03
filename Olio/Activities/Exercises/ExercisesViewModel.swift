@@ -15,6 +15,9 @@ extension ExercisesView {
         /// Performs the initial fetch request and ensures it remains up to date.
         private let exercisesController: NSFetchedResultsController<Exercise>
 
+        /// An exercise category selected by the user.
+        @Published var exerciseCategory: String
+
         /// An array of Exercise objects.
         @Published var exercises = [Exercise]()
 
@@ -23,6 +26,7 @@ extension ExercisesView {
 
         init(dataController: DataController) {
             self.dataController = dataController
+            self.exerciseCategory = "Weights"
 
             // Get all the exercises.
             let exercisesRequest: NSFetchRequest<Exercise> = Exercise.fetchRequest()
@@ -54,7 +58,8 @@ extension ExercisesView {
         ///
         /// Example: Bench comes before Flys in Chest, which both come before Squats in Legs.
         var sortedExercises: [Exercise] {
-            return exercises.sorted { first, second in
+            return filterByExerciseCategory(exerciseCategory,
+                                            exercises: exercises).sorted { first, second in
                 if first.muscleGroup < second.muscleGroup {
                     return true
                 } else if first.muscleGroup > second.muscleGroup {
@@ -72,7 +77,12 @@ extension ExercisesView {
         /// - Returns: An array of exercises.
         func filterByMuscleGroup(_ muscleGroup: Exercise.MuscleGroup.RawValue,
                                  exercises: [Exercise]) -> [Exercise] {
-            return exercises.filter {$0.exerciseMuscleGroup == muscleGroup}
+            return exercises.filter { $0.exerciseMuscleGroup == muscleGroup }
+        }
+
+        func filterByExerciseCategory(_ exerciseCategory: Exercise.ExerciseCategory.RawValue,
+                                      exercises: [Exercise]) -> [Exercise] {
+            return exercises.filter { $0.exerciseCategory == exerciseCategory }
         }
 
         /// Deletes an exercise based on its position in a given array of exercises.

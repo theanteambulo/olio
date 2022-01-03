@@ -20,13 +20,13 @@ extension Exercise {
                                   comment: "Create a new exercise")
     }
 
-    /// The unwrapped category property of an exercise.
+    /// The unwrapped category property of an exercise as a String.
     var exerciseCategory: String {
         switch category {
         case Int16(1):
-            return "Weighted"
+            return "Weights"
         case Int16(2):
-            return "Bodyweight"
+            return "Body"
         case Int16(3):
             return "Cardio"
         case Int16(4):
@@ -38,9 +38,9 @@ extension Exercise {
 
     func getExerciseCategoryColor() -> Color {
         switch exerciseCategory {
-        case "Weighted":
+        case "Weights":
             return .red
-        case "Bodyweight":
+        case "Body":
             return .blue
         case "Cardio":
             return .green
@@ -53,8 +53,8 @@ extension Exercise {
 
     /// An enum containing all possible cases for an exercise category.
     enum ExerciseCategory: String, CaseIterable {
-        case weighted = "Weighted"
-        case bodyweight = "Bodyweight"
+        case weighted = "Weights"
+        case bodyweight = "Body"
         case cardio = "Cardio"
         case exerciseClass = "Class"
         case stretch = "Stretch"

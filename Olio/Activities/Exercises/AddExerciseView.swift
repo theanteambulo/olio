@@ -102,8 +102,8 @@ struct AddExerciseView: View {
                     TextField(Strings.exerciseName.localized, text: $name)
 
                     Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory) {
-                        Text(.weighted).tag(1)
-                        Text(.bodyweight).tag(2)
+                        Text(.weights).tag(1)
+                        Text(.body).tag(2)
                         Text(.cardio).tag(3)
                         Text(.exerciseClass).tag(4)
                         Text(.stretch).tag(5)
@@ -117,6 +117,7 @@ struct AddExerciseView: View {
                         Text(.triceps).tag(5)
                         Text(.legs).tag(6)
                         Text(.abs).tag(7)
+                        Text(.fullBody).tag(8)
                     }
                 }
             }

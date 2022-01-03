@@ -14,7 +14,13 @@ struct ExerciseRowView: View {
 
     var body: some View {
         NavigationLink(destination: EditExerciseView(exercise: exercise)) {
-            Text(exercise.exerciseName)
+            HStack {
+                Circle()
+                    .frame(width: 7)
+                    .foregroundColor(exercise.getExerciseCategoryColor())
+
+                Text(exercise.exerciseName)
+            }
         }
     }
 }

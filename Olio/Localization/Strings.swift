@@ -80,8 +80,8 @@ enum Strings: LocalizedStringKey {
     case legs
     case abs
     case fullBody
-    case weighted
-    case bodyweight
+    case weights
+    case body
     case cardio
     case exerciseClass
     case stretch

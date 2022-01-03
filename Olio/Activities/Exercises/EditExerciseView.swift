@@ -72,8 +72,8 @@ struct EditExerciseView: View {
                 TextField(Strings.exerciseName.localized, text: $name.onChange(changesMade))
 
                 Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory.onChange(changesMade)) {
-                    Text(.weighted).tag(1)
-                    Text(.bodyweight).tag(2)
+                    Text(.weights).tag(1)
+                    Text(.body).tag(2)
                     Text(.cardio).tag(3)
                     Text(.exerciseClass).tag(4)
                     Text(.stretch).tag(5)

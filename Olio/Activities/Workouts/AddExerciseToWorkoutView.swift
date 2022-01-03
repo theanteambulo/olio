@@ -15,6 +15,8 @@ struct AddExerciseToWorkoutView: View {
     /// A fetch request of Exercise objects.
     let exercises: FetchRequest<Exercise>
 
+    @State private var exerciseCategory = "Weights"
+
     /// The environment singleton responsible for managing the Core Data stack.
     @EnvironmentObject var dataController: DataController
 
@@ -55,26 +57,43 @@ struct AddExerciseToWorkoutView: View {
 
     /// Computed property to filter out any exercises which have already been added to the workout.
     var filteredExercises: [Exercise] {
-        sortedExercises.filter { !workout.workoutExercises.contains($0) }
+        filterByExerciseCategory(exerciseCategory,
+                                 exercises: sortedExercises).filter { !workout.workoutExercises.contains($0) }
     }
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(Exercise.MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
-                    Section(header: Text(muscleGroup.rawValue)) {
-                        ForEach(filterExercisesToMuscleGroup(muscleGroup.rawValue,
-                                                             exercises: filteredExercises)) { exercise in
-                            Button {
-                                withAnimation {
-                                    addExerciseToWorkout(exercise)
-                                    dismiss()
+            VStack {
+                Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory) {
+                    Text(.weights).tag("Weights")
+                    Text(.body).tag("Body")
+                    Text(.cardio).tag("Cardio")
+                    Text(.exerciseClass).tag("Class")
+                    Text(.stretch).tag("Stretch")
+                }
+                .pickerStyle(SegmentedPickerStyle())
+                .padding()
+
+                List {
+                    ForEach(Exercise.MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
+                        Section(header: Text(muscleGroup.rawValue)) {
+                            ForEach(filterExercisesToMuscleGroup(muscleGroup.rawValue,
+                                                                 exercises: filteredExercises)) { exercise in
+                                Button {
+                                    withAnimation {
+                                        addExerciseToWorkout(exercise)
+                                        dismiss()
+                                    }
+                                } label: {
+                                    HStack {
+                                        Circle()
+                                            .frame(width: 7)
+                                            .foregroundColor(exercise.getExerciseCategoryColor())
+
+                                        Text(exercise.exerciseName)
+                                    }
+                                    .foregroundColor(.primary)
                                 }
-                            } label: {
-                                HStack {
-                                    Text(exercise.exerciseName)
-                                }
-                                .foregroundColor(.primary)
                             }
                         }
                     }
@@ -92,6 +111,11 @@ struct AddExerciseToWorkoutView: View {
     func filterExercisesToMuscleGroup(_ muscleGroup: Exercise.MuscleGroup.RawValue,
                                       exercises: [Exercise]) -> [Exercise] {
         return exercises.filter { $0.exerciseMuscleGroup == muscleGroup }
+    }
+
+    func filterByExerciseCategory(_ exerciseCategory: Exercise.ExerciseCategory.RawValue,
+                                  exercises: [Exercise]) -> [Exercise] {
+        return exercises.filter { $0.exerciseCategory == exerciseCategory }
     }
 
     /// Updates the set of exercises that the workout is parent of to include a given exercise.

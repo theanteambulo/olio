@@ -40,27 +40,38 @@ struct ExercisesView: View {
 
     var body: some View {
         NavigationView {
-            List {
-                ForEach(Exercise.MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
-                    Section(header: Text(muscleGroup.rawValue)) {
-                        ForEach(
-                            viewModel.filterByMuscleGroup(muscleGroup.rawValue,
-                                                          exercises: viewModel.sortedExercises)) { exercise in
-                            ExerciseRowView(exercise: exercise)
-                        }
-                        .onDelete { offsets in
-                            let allExercises = viewModel.filterByMuscleGroup(muscleGroup.rawValue,
-                                                                             exercises: viewModel.sortedExercises)
+            VStack {
+                Picker(Strings.exerciseCategory.localized, selection: $viewModel.exerciseCategory) {
+                    Text(.weights).tag("Weights")
+                    Text(.body).tag("Body")
+                    Text(.cardio).tag("Cardio")
+                    Text(.exerciseClass).tag("Class")
+                    Text(.stretch).tag("Stretch")
+                }
+                .pickerStyle(SegmentedPickerStyle())
 
-                            for offset in offsets {
-                                viewModel.swipeToDeleteExercise(exercises: allExercises,
-                                                                at: offset)
+                List {
+                    ForEach(Exercise.MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
+                        Section(header: Text(muscleGroup.rawValue)) {
+                            ForEach(
+                                viewModel.filterByMuscleGroup(muscleGroup.rawValue,
+                                                              exercises: viewModel.sortedExercises)) { exercise in
+                                ExerciseRowView(exercise: exercise)
+                            }
+                            .onDelete { offsets in
+                                let allExercises = viewModel.filterByMuscleGroup(muscleGroup.rawValue,
+                                                                                 exercises: viewModel.sortedExercises)
+
+                                for offset in offsets {
+                                    viewModel.swipeToDeleteExercise(exercises: allExercises,
+                                                                    at: offset)
+                                }
                             }
                         }
                     }
                 }
+                .listStyle(InsetGroupedListStyle())
             }
-            .listStyle(InsetGroupedListStyle())
             .navigationTitle(Text(.exercisesTab))
             .toolbar {
                 addExerciseToolbarItem
