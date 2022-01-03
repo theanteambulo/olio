@@ -58,7 +58,7 @@ struct TemplateCardView: View {
                     .font(.caption)
             }
         }
-        .padding()
+        .padding(10)
         .frame(maxHeight: .infinity)
         .background(Color.secondarySystemGroupedBackground)
         .cornerRadius(5)

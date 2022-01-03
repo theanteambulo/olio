@@ -73,17 +73,19 @@ struct ExerciseSetView: View {
     var body: some View {
         HStack {
             HStack {
-                Image(systemName: completionIcon)
-                    .frame(width: 25)
-                    .foregroundColor(iconColor)
-                    .onTapGesture {
-                        withAnimation {
-                            exerciseSet.completed.toggle()
-                            update()
+                if !(exerciseSet.workout?.template ?? true) {
+                    Image(systemName: completionIcon)
+                        .frame(width: 25)
+                        .foregroundColor(iconColor)
+                        .onTapGesture {
+                            withAnimation {
+                                exerciseSet.completed.toggle()
+                                update()
+                            }
                         }
-                    }
-                    .accessibilityLabel(iconAccessibilityLabel)
-                    .accessibilityAddTraits(.isButton)
+                        .accessibilityLabel(iconAccessibilityLabel)
+                        .accessibilityAddTraits(.isButton)
+                }
 
                 // Only weighted exercises should have weight text field.
                 if exerciseSet.exercise?.exerciseCategory == "Weights" {

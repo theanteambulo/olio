@@ -18,7 +18,7 @@ struct TemplatesView: View {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
-    /// A grid with a single row 85 points in size.
+    /// A grid with a single row 80 points in size.
     var rows: [GridItem] {
         [GridItem(.fixed(85))]
     }
@@ -41,7 +41,7 @@ struct TemplatesView: View {
                             Text(.newTemplate)
                         }
                     }
-                    .padding()
+                    .padding(10)
                     .frame(maxHeight: .infinity)
                     .background(Color.secondarySystemGroupedBackground)
                     .cornerRadius(5)

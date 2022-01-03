@@ -37,9 +37,11 @@ struct EditWorkoutExerciseListView: View {
 
     var body: some View {
         Section(header: headerView) {
-            // The exercise header showing progress.
-            ExerciseHeaderView(workout: workout,
-                               exercise: exercise)
+            // The exercise header showing progress for non-template workouts.
+            if !workout.template {
+                ExerciseHeaderView(workout: workout,
+                                   exercise: exercise)
+            }
 
             // The exercise sets.
             ForEach(filterExerciseSets(exercise.exerciseSets), id: \.self) { exerciseSet in
