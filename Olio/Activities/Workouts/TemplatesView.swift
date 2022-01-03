@@ -18,9 +18,9 @@ struct TemplatesView: View {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
 
-    /// A grid with a single row 100 points in size.
+    /// A grid with a single row 80 points in size.
     var rows: [GridItem] {
-        [GridItem(.fixed(100))]
+        [GridItem(.fixed(85))]
     }
 
     var body: some View {
@@ -31,6 +31,22 @@ struct TemplatesView: View {
 
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHGrid(rows: rows) {
+                    Button {
+                         viewModel.addTemplate()
+                    } label: {
+                        VStack(alignment: .center) {
+                            Image(systemName: "plus")
+
+                            Text(.newTemplate)
+                        }
+                    }
+                    .padding()
+                    .frame(maxHeight: .infinity)
+                    .background(Color.secondarySystemGroupedBackground)
+                    .cornerRadius(5)
+                    .shadow(color: Color.black.opacity(0.2),
+                            radius: 5)
+
                     ForEach(viewModel.templates) { template in
                         TemplateCardView(template: template)
                     }

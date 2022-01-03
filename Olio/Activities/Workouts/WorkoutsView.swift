@@ -87,6 +87,16 @@ struct WorkoutsView: View {
     /// The list of workouts to be displayed.
     var workoutsList: some View {
         List {
+            if !viewModel.showingCompletedWorkouts {
+                Button {
+                    withAnimation {
+                        viewModel.addWorkout()
+                    }
+                } label: {
+                    Label(Strings.newWorkout.localized, systemImage: "plus")
+                }
+            }
+
             ForEach(viewModel.workoutDates, id: \.self) { date in
                 Section(header: Text(date.formatted(date: .complete, time: .omitted))) {
                     ForEach(viewModel.filterByDate(date,
@@ -119,22 +129,7 @@ struct WorkoutsView: View {
                     }
 
                     // Display list of workouts, if any exist.
-                    if viewModel.sortedWorkouts.isEmpty {
-                        Spacer()
-
-                        HStack {
-                            Spacer()
-
-                            Text(.nothingToSeeHere)
-                                .padding(.horizontal)
-
-                            Spacer()
-                        }
-
-                        Spacer()
-                    } else {
-                        workoutsList
-                    }
+                    workoutsList
                 }
             }
             .padding(.bottom)

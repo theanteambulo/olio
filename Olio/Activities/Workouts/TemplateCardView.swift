@@ -30,6 +30,7 @@ struct TemplateCardView: View {
             }
         }
         .padding()
+        .frame(maxHeight: .infinity)
         .background(Color.secondarySystemGroupedBackground)
         .cornerRadius(5)
         .shadow(color: Color.black.opacity(0.2),

@@ -32,7 +32,6 @@ enum Strings: LocalizedStringKey {
     // WORKOUTS
     case workoutTemplates
     case workoutsScheduled
-    case nothingToSeeHere
     case selectOption
     case newTemplate
     case newWorkout

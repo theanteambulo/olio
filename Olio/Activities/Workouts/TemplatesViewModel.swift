@@ -57,5 +57,15 @@ extension TemplatesView {
                 templates = newTemplates
             }
         }
+
+        /// Creates a new template workout.
+        func addTemplate() {
+            let workout = Workout(context: dataController.container.viewContext)
+            workout.id = UUID()
+            workout.date = Date()
+            workout.completed = false
+            workout.template = true
+            dataController.save()
+        }
     }
 }
