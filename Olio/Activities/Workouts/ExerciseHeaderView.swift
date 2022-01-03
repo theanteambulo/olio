@@ -22,12 +22,24 @@ struct ExerciseHeaderView: View {
         Int(100 * exerciseCompletionAmount(exercise))
     }
 
+    /// A count of the exercise sets for this exercise in this workout.
+    var exerciseSetsAll: [ExerciseSet] {
+        exercise.exerciseSets.filter { $0.workout == workout }
+    }
+
+    /// A count of the exercise sets completed, expressed as an integer.
+    var exerciseSetsCompleted: [ExerciseSet] {
+        return exerciseSetsAll.filter { $0.completed == true }
+    }
+
     var body: some View {
         HStack {
-            Text("\(exerciseCompletionAmountInt)%")
-                .frame(minWidth: 50)
+            Text("\(exerciseSetsCompleted.count) / \(exerciseSetsAll.count)")
+                .frame(minWidth: 50, alignment: .leading)
+
             ProgressView(value: exerciseCompletionAmount(exercise))
                 .tint(exercise.getExerciseCategoryColor())
+                .frame(minWidth: 220)
         }
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text("Progress: \(exerciseCompletionAmountInt)%"))
