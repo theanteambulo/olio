@@ -22,6 +22,9 @@ struct EditWorkoutExerciseListView: View {
     /// The environment singleton responsible for managing the Core Data stack.
     @EnvironmentObject var dataController: DataController
 
+    /// Boolean to indicate whether the sheet showing the exercise's sets is displayed.
+    @State private var showingExerciseSheet = false
+
     /// Boolean to indicate whether the alert warning the user about deleting the workout is displayed.
     @State private var showingDeleteExerciseConfirmation = false
 
@@ -41,6 +44,15 @@ struct EditWorkoutExerciseListView: View {
             if !workout.template {
                 ExerciseHeaderView(workout: workout,
                                    exercise: exercise)
+            }
+
+            // New exercise sheet view.
+            Button(exercise.exerciseName) {
+                showingExerciseSheet = true
+            }
+            .sheet(isPresented: $showingExerciseSheet,
+                   onDismiss: hideKeyboard) {
+                ExerciseSheetView(workout: workout, exercise: exercise)
             }
 
             // The exercise sets.

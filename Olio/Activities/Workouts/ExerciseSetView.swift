@@ -35,7 +35,7 @@ struct ExerciseSetView: View {
     }
 
     /// Boolean to be toggled when an element is in focus.
-    @FocusState private var focusedField: FocusedField?
+    @FocusState var inputActive: Bool
 
     init(exerciseSet: ExerciseSet, exerciseSetIndex: Int) {
         self.exerciseSet = exerciseSet
@@ -48,60 +48,19 @@ struct ExerciseSetView: View {
         _exerciseSetCompleted = State(wrappedValue: exerciseSet.completed)
     }
 
-    /// Computed string representing the name of the icon that should be displayed.
-    var completionIcon: String {
-        exerciseSet.completed
-        ? "checkmark.circle.fill"
-        : "circle"
-    }
-
-    /// Computed string representing the colour of the icon that should be displayed.
-    var iconColor: Color {
-        exerciseSet.completed
-        ? .green
-        : .red
-    }
-
-    /// The accessibility label of the icon displayed.
-    var iconAccessibilityLabel: Text {
-        exerciseSet.completed
-        ? Text("\(exerciseSetReps) reps") + Text(". Mark set incomplete")
-        : Text("\(exerciseSetReps) reps") + Text(". Mark set complete")
-    }
-
     var body: some View {
         HStack {
             HStack {
-                VStack(alignment: .leading) {
-                    if !(exerciseSet.workout?.template ?? true) {
-                        Image(systemName: completionIcon)
-                            .frame(width: 25)
-                            .foregroundColor(iconColor)
-                            .onTapGesture {
-                                withAnimation {
-                                    exerciseSet.completed.toggle()
-                                    update()
-                                }
-                            }
-                            .accessibilityLabel(iconAccessibilityLabel)
-                            .accessibilityAddTraits(.isButton)
-                    } else {
-                        Text("\(exerciseSetIndex + 1)")
-                            .frame(minWidth: 20)
-                            .padding(.trailing, 5)
-                    }
-                }
+                ExerciseSetCompletionIcon(exerciseSet: exerciseSet)
 
                 // Only weighted exercises should have weight text field.
-                if exerciseSet.exercise?.exerciseCategory == "Weights" {
+                if exerciseSet.exercise?.category == 1 {
                     HStack {
                         TextField("Weight",
                                   value: $exerciseSetWeight.onChange(update),
                                   format: .number)
-                            .frame(width: 75)
-                            .textFieldStyle(.roundedBorder)
-                            .keyboardType(.decimalPad)
-                            .focused($focusedField, equals: .weight)
+                            .exerciseSetDecimalTextField()
+                            .focused($inputActive)
 
                         Text("kg")
                     }
@@ -115,10 +74,8 @@ struct ExerciseSetView: View {
                         TextField("Reps",
                                   value: $exerciseSetReps.onChange(update),
                                   format: .number)
-                            .frame(width: 75)
-                            .textFieldStyle(.roundedBorder)
-                            .keyboardType(.numberPad)
-                            .focused($focusedField, equals: .reps)
+                            .exerciseSetIntegerTextField()
+                            .focused($inputActive)
 
                         Text("reps")
                     }
@@ -130,10 +87,8 @@ struct ExerciseSetView: View {
                         TextField("Distance",
                                   value: $exerciseSetDistance.onChange(update),
                                   format: .number)
-                            .frame(width: 75)
-                            .textFieldStyle(.roundedBorder)
-                            .keyboardType(.decimalPad)
-                            .focused($focusedField, equals: .distance)
+                            .exerciseSetDecimalTextField()
+                            .focused($inputActive)
 
                         Text("km")
 
@@ -147,10 +102,8 @@ struct ExerciseSetView: View {
                         TextField("Duration",
                                   value: $exerciseSetDuration.onChange(update),
                                   format: .number)
-                            .frame(width: 75)
-                            .textFieldStyle(.roundedBorder)
-                            .keyboardType(.numberPad)
-                            .focused($focusedField, equals: .duration)
+                            .exerciseSetIntegerTextField()
+                            .focused($inputActive)
 
                         Text(exerciseSet.exercise?.category != 5
                              ? "mins"
@@ -159,12 +112,6 @@ struct ExerciseSetView: View {
                         Spacer()
                     }
                 }
-            }
-
-            Spacer()
-
-            if focusedField != nil {
-                Button("Done", action: hideKeyboard)
             }
         }
     }
@@ -184,18 +131,6 @@ struct ExerciseSetView: View {
         exerciseSet.duration = Int16(exerciseSetDuration)
     }
 }
-
-/// Force hides any keyboard currently being displayed.
-#if canImport(UIKit)
-extension View {
-    func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder),
-                                        to: nil,
-                                        from: nil,
-                                        for: nil)
-    }
-}
-#endif
 
 struct ExerciseSetView_Previews: PreviewProvider {
     static var previews: some View {

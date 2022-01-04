@@ -27,6 +27,9 @@
 		237E95C9275BB32600937AAF /* OlioUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E95C8275BB32600937AAF /* OlioUITestsLaunchTests.swift */; };
 		2394AA6427633F45000F06B4 /* ExercisesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2394AA6327633F45000F06B4 /* ExercisesViewModel.swift */; };
 		2396430F2762868700524792 /* WorkoutsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2396430E2762868700524792 /* WorkoutsViewModel.swift */; };
+		239743D72784CC4B000F3F51 /* ExerciseSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239743D62784CC4B000F3F51 /* ExerciseSheetView.swift */; };
+		239743D92784D654000F3F51 /* BodybuildingExerciseSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239743D82784D654000F3F51 /* BodybuildingExerciseSetView.swift */; };
+		239743DB2784DD52000F3F51 /* ExerciseSetCompletionIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239743DA2784DD52000F3F51 /* ExerciseSetCompletionIcon.swift */; };
 		23A1BA71274F742400AA5123 /* WorkoutRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A1BA70274F742400AA5123 /* WorkoutRowView.swift */; };
 		23A368B62750C248000725E9 /* SequenceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23A368B52750C248000725E9 /* SequenceExtension.swift */; };
 		23A9C01427554FA3005E0294 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 230BAC57274C49EF0013E4AF /* CloudKit.framework */; };
@@ -102,6 +105,9 @@
 		237E95C8275BB32600937AAF /* OlioUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		2394AA6327633F45000F06B4 /* ExercisesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisesViewModel.swift; sourceTree = "<group>"; };
 		2396430E2762868700524792 /* WorkoutsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutsViewModel.swift; sourceTree = "<group>"; };
+		239743D62784CC4B000F3F51 /* ExerciseSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSheetView.swift; sourceTree = "<group>"; };
+		239743D82784D654000F3F51 /* BodybuildingExerciseSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodybuildingExerciseSetView.swift; sourceTree = "<group>"; };
+		239743DA2784DD52000F3F51 /* ExerciseSetCompletionIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSetCompletionIcon.swift; sourceTree = "<group>"; };
 		23A1BA70274F742400AA5123 /* WorkoutRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutRowView.swift; sourceTree = "<group>"; };
 		23A368B52750C248000725E9 /* SequenceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SequenceExtension.swift; sourceTree = "<group>"; };
 		23A9C01227554F79005E0294 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
@@ -184,6 +190,9 @@
 				236E4A2627523A780012C4B2 /* AddExerciseToWorkoutView.swift */,
 				23ACD59627575DE600A24E1F /* EditWorkoutExerciseListView.swift */,
 				233B4D652756AD61006B55DA /* ExerciseHeaderView.swift */,
+				239743D62784CC4B000F3F51 /* ExerciseSheetView.swift */,
+				239743D82784D654000F3F51 /* BodybuildingExerciseSetView.swift */,
+				239743DA2784DD52000F3F51 /* ExerciseSetCompletionIcon.swift */,
 				236E4A2827524D6D0012C4B2 /* ExerciseSetView.swift */,
 			);
 			path = Workouts;
@@ -527,10 +536,12 @@
 				230E70F7274D779A007F6232 /* ExercisesView.swift in Sources */,
 				23C97E2E274E251F005611A3 /* EditExerciseView.swift in Sources */,
 				23AB0651274B7FCE00BCBD28 /* Main.xcdatamodeld in Sources */,
+				239743D72784CC4B000F3F51 /* ExerciseSheetView.swift in Sources */,
 				2375DA982758F6F100B2874B /* ExerciseHistoryRowView.swift in Sources */,
 				23C97E30274E3C25005611A3 /* ExerciseRowView.swift in Sources */,
 				232DF17427629D83007D7B57 /* TemplatesView.swift in Sources */,
 				23FE12692757F3240096FDD0 /* TemplateCardView.swift in Sources */,
+				239743D92784D654000F3F51 /* BodybuildingExerciseSetView.swift in Sources */,
 				230E70F3274D62DD007F6232 /* WorkoutExtension.swift in Sources */,
 				23AA142527502ED000AC637D /* ViewExtension.swift in Sources */,
 				2321AF18274ECF710023F099 /* EditWorkoutView.swift in Sources */,
@@ -551,6 +562,7 @@
 				2321AF15274EC3E30023F099 /* ExerciseSetExtension.swift in Sources */,
 				23ACD59727575DE600A24E1F /* EditWorkoutExerciseListView.swift in Sources */,
 				23C29B472781FD05000861D0 /* ArrayExtension.swift in Sources */,
+				239743DB2784DD52000F3F51 /* ExerciseSetCompletionIcon.swift in Sources */,
 				23A368B62750C248000725E9 /* SequenceExtension.swift in Sources */,
 				23B20E29275A044D00215A72 /* WorkoutsView.swift in Sources */,
 				23AB0642274B7CF300BCBD28 /* OlioApp.swift in Sources */,
