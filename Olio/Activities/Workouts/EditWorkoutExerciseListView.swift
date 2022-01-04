@@ -44,8 +44,10 @@ struct EditWorkoutExerciseListView: View {
             }
 
             // The exercise sets.
-            ForEach(filterExerciseSets(exercise.exerciseSets), id: \.self) { exerciseSet in
-                ExerciseSetView(exerciseSet: exerciseSet)
+            ForEach(Array(zip(filterExerciseSets(exercise.exerciseSets).indices,
+                              filterExerciseSets(exercise.exerciseSets))),
+                    id: \.1) { index, exerciseSet in
+                ExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
             }
             .onDelete { offsets in
                 let allExerciseSets = filterExerciseSets(exercise.exerciseSets)
@@ -66,6 +68,7 @@ struct EditWorkoutExerciseListView: View {
                 }
             }
             .accessibilityIdentifier("Add Set to Exercise: \(exercise.exerciseName)")
+            .disabled(exercise.exerciseSets.filter({ $0.workout == workout }).count >= 99)
 
             // Button to remove the exercise from the workout.
             Button(Strings.removeExerciseButton.localized, role: .destructive) {
@@ -108,14 +111,26 @@ struct EditWorkoutExerciseListView: View {
     ///   - workout: The workout that is parent of the exercise set being created.
     func addSet(toExercise exercise: Exercise,
                 toWorkout workout: Workout) {
-        let set = ExerciseSet(context: dataController.container.viewContext)
-        set.id = UUID()
-        set.workout = workout
-        set.exercise = exercise
-        set.weight = 0
-        set.reps = 10
-        set.creationDate = Date()
-        dataController.save()
+        let currentWorkoutExerciseSets = exercise.exerciseSets.filter({ $0.workout == workout })
+
+        if currentWorkoutExerciseSets.count < 99 {
+            let set = ExerciseSet(context: dataController.container.viewContext)
+            set.id = UUID()
+            set.workout = workout
+            set.exercise = exercise
+            set.weight = currentWorkoutExerciseSets.last?.exerciseSetWeight ?? 0
+            set.reps = Int16(currentWorkoutExerciseSets.last?.exerciseSetReps ?? 10)
+            set.distance = currentWorkoutExerciseSets.last?.exerciseSetDistance ?? 3
+
+            if exercise.exerciseCategory == "Class" {
+                set.duration = Int16(currentWorkoutExerciseSets.last?.exerciseSetDuration ?? 60)
+            } else {
+                set.duration = Int16(currentWorkoutExerciseSets.last?.exerciseSetDuration ?? 15)
+            }
+
+            set.creationDate = Date()
+            dataController.save()
+        }
     }
 }
 

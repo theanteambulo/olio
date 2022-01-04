@@ -13,6 +13,8 @@ import SwiftUI
 struct ExerciseSetView: View {
     /// The exercise set used to construct this view.
     @ObservedObject var exerciseSet: ExerciseSet
+    /// The index of this exercise set in the array of exercise sets for this exercise in this workout.
+    private var exerciseSetIndex: Int
 
     /// The exercise set's reps property value.
     @State private var exerciseSetReps: Int
@@ -22,8 +24,6 @@ struct ExerciseSetView: View {
     @State private var exerciseSetDistance: Double
     /// The exercise set's duration property value.
     @State private var exerciseSetDuration: Int
-//    /// A special version of the exercise set's duration property value for use on cardio exercises only.
-//    @State private var exerciseSetCardioDuration: String
     /// The exercise set's complete property value.
     @State private var exerciseSetCompleted: Bool
 
@@ -37,16 +37,15 @@ struct ExerciseSetView: View {
     /// Boolean to be toggled when an element is in focus.
     @FocusState private var focusedField: FocusedField?
 
-    init(exerciseSet: ExerciseSet) {
+    init(exerciseSet: ExerciseSet, exerciseSetIndex: Int) {
         self.exerciseSet = exerciseSet
+        self.exerciseSetIndex = exerciseSetIndex
 
         _exerciseSetReps = State(wrappedValue: exerciseSet.exerciseSetReps)
         _exerciseSetWeight = State(wrappedValue: exerciseSet.exerciseSetWeight)
         _exerciseSetDistance = State(wrappedValue: exerciseSet.exerciseSetDistance)
         _exerciseSetDuration = State(wrappedValue: exerciseSet.exerciseSetDuration)
         _exerciseSetCompleted = State(wrappedValue: exerciseSet.completed)
-
-//        _exerciseSetCardioDuration = State(wrappedValue: "")
     }
 
     /// Computed string representing the name of the icon that should be displayed.
@@ -73,18 +72,24 @@ struct ExerciseSetView: View {
     var body: some View {
         HStack {
             HStack {
-                if !(exerciseSet.workout?.template ?? true) {
-                    Image(systemName: completionIcon)
-                        .frame(width: 25)
-                        .foregroundColor(iconColor)
-                        .onTapGesture {
-                            withAnimation {
-                                exerciseSet.completed.toggle()
-                                update()
+                VStack(alignment: .leading) {
+                    if !(exerciseSet.workout?.template ?? true) {
+                        Image(systemName: completionIcon)
+                            .frame(width: 25)
+                            .foregroundColor(iconColor)
+                            .onTapGesture {
+                                withAnimation {
+                                    exerciseSet.completed.toggle()
+                                    update()
+                                }
                             }
-                        }
-                        .accessibilityLabel(iconAccessibilityLabel)
-                        .accessibilityAddTraits(.isButton)
+                            .accessibilityLabel(iconAccessibilityLabel)
+                            .accessibilityAddTraits(.isButton)
+                    } else {
+                        Text("\(exerciseSetIndex + 1)")
+                            .frame(minWidth: 20)
+                            .padding(.trailing, 5)
+                    }
                 }
 
                 // Only weighted exercises should have weight text field.
@@ -119,7 +124,7 @@ struct ExerciseSetView: View {
                     }
                 }
 
-                // Only cardio should have a distance field and a special duration field.
+                // Only cardio should have a distance field.
                 if exerciseSet.exercise?.category == 3 {
                     HStack {
                         TextField("Distance",
@@ -133,18 +138,11 @@ struct ExerciseSetView: View {
                         Text("km")
 
                         Spacer()
-
-//                        TextField("mm:ss",
-//                                  text: $exerciseSetCardioDuration)
-//                            .frame(width: 75)
-//                            .textFieldStyle(.roundedBorder)
-//                            .keyboardType(.decimalPad)
-//                            .focused($focusedField, equals: .duration)
                     }
                 }
 
-                // Classes and stretches should have a duration field.
-                if exerciseSet.exercise?.category == 4 || exerciseSet.exercise?.category == 5 {
+                // Cardio, classes and stretches should have a duration field.
+                if !((exerciseSet.exercise?.category == 1) || (exerciseSet.exercise?.category == 2)) {
                     HStack {
                         TextField("Duration",
                                   value: $exerciseSetDuration.onChange(update),
@@ -154,7 +152,7 @@ struct ExerciseSetView: View {
                             .keyboardType(.numberPad)
                             .focused($focusedField, equals: .duration)
 
-                        Text(exerciseSet.exercise?.category == 4
+                        Text(exerciseSet.exercise?.category != 5
                              ? "mins"
                              : "secs")
 
@@ -201,6 +199,6 @@ extension View {
 
 struct ExerciseSetView_Previews: PreviewProvider {
     static var previews: some View {
-        ExerciseSetView(exerciseSet: ExerciseSet.example)
+        ExerciseSetView(exerciseSet: ExerciseSet.example, exerciseSetIndex: 1)
     }
 }
