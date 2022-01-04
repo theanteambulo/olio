@@ -49,6 +49,7 @@ struct ExercisesView: View {
                     Text(.stretch).tag("Stretch")
                 }
                 .pickerStyle(SegmentedPickerStyle())
+                .padding(.horizontal)
 
                 List {
                     ForEach(Exercise.MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
