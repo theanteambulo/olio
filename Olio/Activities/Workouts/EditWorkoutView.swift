@@ -177,8 +177,8 @@ struct EditWorkoutView: View {
                 }
             }
 
-            // List of exercises the workout is parent of.
             List {
+                // List of exercises the workout is parent of.
                 ForEach(sortedExercises, id: \.self) { exercise in
                     EditWorkoutExerciseListView(workout: workout,
                                                 exercise: exercise)
@@ -191,6 +191,18 @@ struct EditWorkoutView: View {
                         dataController.removeExerciseFromWorkout(exerciseToDelete, workout)
                         dataController.save()
                     }
+                }
+
+                // Button to add a new exercise to the workout.
+                Button {
+                    withAnimation {
+                        showingAddExerciseSheet = true
+                    }
+                } label: {
+                    Label(Strings.addExercise.localized, systemImage: "plus")
+                }
+                .sheet(isPresented: $showingAddExerciseSheet) {
+                    AddExerciseToWorkoutView(workout: workout)
                 }
             }
 
