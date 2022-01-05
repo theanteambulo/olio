@@ -303,7 +303,10 @@ struct EditWorkoutView: View {
             exerciseSetToAdd.id = UUID()
             exerciseSetToAdd.workout = newWorkout
             exerciseSetToAdd.exercise = exerciseSet.exercise
+            exerciseSetToAdd.weight = Double(exerciseSet.exerciseSetWeight)
             exerciseSetToAdd.reps = Int16(exerciseSet.exerciseSetReps)
+            exerciseSetToAdd.distance = Double(exerciseSet.exerciseSetDistance)
+            exerciseSetToAdd.duration = Int16(exerciseSet.exerciseSetDuration)
             exerciseSetToAdd.creationDate = Date()
             exerciseSetToAdd.completed = false
 
