@@ -40,6 +40,11 @@ struct EditWorkoutExerciseListView: View {
 
     var body: some View {
         Section(header: headerView) {
+            // HStack showing
+            // Doughnut with completion amount coloured by exercise category colour
+            // Exercise name in headline font
+            // # sets, # complete in caption font
+
             // The exercise header showing progress for non-template workouts.
             if !workout.template {
                 ExerciseHeaderView(workout: workout,
@@ -53,94 +58,6 @@ struct EditWorkoutExerciseListView: View {
             .sheet(isPresented: $showingExerciseSheet) {
                 ExerciseSheetView(workout: workout, exercise: exercise)
             }
-
-            // The exercise sets.
-            ForEach(Array(zip(filterExerciseSets(exercise.exerciseSets).indices,
-                              filterExerciseSets(exercise.exerciseSets))),
-                    id: \.1) { index, exerciseSet in
-                ExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
-            }
-            .onDelete { offsets in
-                let allExerciseSets = filterExerciseSets(exercise.exerciseSets)
-
-                for offset in offsets {
-                    let exerciseSetToDelete = allExerciseSets[offset]
-
-                    withAnimation {
-                        deleteExerciseSet(exerciseSet: exerciseSetToDelete)
-                    }
-                }
-            }
-
-            // Button to add an additional exercise set.
-            Button(Strings.addSet.localized) {
-                withAnimation {
-                    addSet(toExercise: exercise, toWorkout: workout)
-                }
-            }
-            .accessibilityIdentifier("Add Set to Exercise: \(exercise.exerciseName)")
-            .disabled(exercise.exerciseSets.filter({ $0.workout == workout }).count >= 99)
-
-            // Button to remove the exercise from the workout.
-            Button(Strings.removeExerciseButton.localized, role: .destructive) {
-                showingDeleteExerciseConfirmation.toggle()
-            }
-            .tint(.red)
-            .alert(Strings.areYouSureAlertTitle.localized,
-                   isPresented: $showingDeleteExerciseConfirmation) {
-                Button(Strings.removeButton.localized, role: .destructive) {
-                    withAnimation {
-                        dataController.removeExerciseFromWorkout(exercise, workout)
-                        dataController.save()
-                    }
-                }
-
-                Button(Strings.cancelButton.localized, role: .cancel) { }
-            } message: {
-                Text(.removeExerciseConfirmationMessage)
-            }
-        }
-    }
-
-    /// Filters a given array of exercise sets based on whether their workout property matches the current workout.
-    /// - Parameter exerciseSets: The array of exercise sets to filter.
-    /// - Returns: An array of exercise sets.
-    func filterExerciseSets(_ exerciseSets: [ExerciseSet]) -> [ExerciseSet] {
-        exerciseSets.filter { $0.workout == workout }.sorted(by: \ExerciseSet.exerciseSetCreationDate)
-    }
-
-    /// Deletes a given exercise set from the Core Data context.
-    /// - Parameter exerciseSet: The exercise set to delete.
-    func deleteExerciseSet(exerciseSet: ExerciseSet) {
-        dataController.delete(exerciseSet)
-        dataController.save()
-    }
-
-    /// Saves a new exercise set to the Core Data context.
-    /// - Parameters:
-    ///   - exercise: The exercise that is parent of the exercise set being created.
-    ///   - workout: The workout that is parent of the exercise set being created.
-    func addSet(toExercise exercise: Exercise,
-                toWorkout workout: Workout) {
-        let currentWorkoutExerciseSets = exercise.exerciseSets.filter({ $0.workout == workout })
-
-        if currentWorkoutExerciseSets.count < 99 {
-            let set = ExerciseSet(context: dataController.container.viewContext)
-            set.id = UUID()
-            set.workout = workout
-            set.exercise = exercise
-            set.weight = currentWorkoutExerciseSets.last?.exerciseSetWeight ?? 0
-            set.reps = Int16(currentWorkoutExerciseSets.last?.exerciseSetReps ?? 10)
-            set.distance = currentWorkoutExerciseSets.last?.exerciseSetDistance ?? 3
-
-            if exercise.exerciseCategory == "Class" {
-                set.duration = Int16(currentWorkoutExerciseSets.last?.exerciseSetDuration ?? 60)
-            } else {
-                set.duration = Int16(currentWorkoutExerciseSets.last?.exerciseSetDuration ?? 15)
-            }
-
-            set.creationDate = Date()
-            dataController.save()
         }
     }
 }

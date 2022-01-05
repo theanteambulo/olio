@@ -183,6 +183,15 @@ struct EditWorkoutView: View {
                     EditWorkoutExerciseListView(workout: workout,
                                                 exercise: exercise)
                 }
+                .onDelete { offsets in
+                    let allExercises = sortedExercises
+
+                    for offset in offsets {
+                        let exerciseToDelete = allExercises[offset]
+                        dataController.removeExerciseFromWorkout(exerciseToDelete, workout)
+                        dataController.save()
+                    }
+                }
             }
 
             Section(header: Text("")) {
