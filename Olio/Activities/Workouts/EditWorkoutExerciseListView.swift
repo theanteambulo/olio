@@ -52,11 +52,6 @@ struct EditWorkoutExerciseListView: View {
     }
 
     var body: some View {
-        // HStack showing
-        // Doughnut with completion amount coloured by exercise category colour
-        // Exercise name in headline font
-        // # sets, # complete in caption font
-
         HStack(spacing: 20) {
             VStack(alignment: .leading) {
                 // The exercise header showing progress for non-template workouts.
