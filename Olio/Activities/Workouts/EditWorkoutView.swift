@@ -177,32 +177,34 @@ struct EditWorkoutView: View {
                 }
             }
 
-            List {
-                // List of exercises the workout is parent of.
-                ForEach(sortedExercises, id: \.self) { exercise in
-                    EditWorkoutExerciseListView(workout: workout,
-                                                exercise: exercise)
-                }
-                .onDelete { offsets in
-                    let allExercises = sortedExercises
-
-                    for offset in offsets {
-                        let exerciseToDelete = allExercises[offset]
-                        dataController.removeExerciseFromWorkout(exerciseToDelete, workout)
-                        dataController.save()
+            Section(header: Text("Exercises")) {
+                List {
+                    // List of exercises the workout is parent of.
+                    ForEach(sortedExercises, id: \.self) { exercise in
+                        EditWorkoutExerciseListView(workout: workout,
+                                                    exercise: exercise)
                     }
-                }
+                    .onDelete { offsets in
+                        let allExercises = sortedExercises
 
-                // Button to add a new exercise to the workout.
-                Button {
-                    withAnimation {
-                        showingAddExerciseSheet = true
+                        for offset in offsets {
+                            let exerciseToDelete = allExercises[offset]
+                            dataController.removeExerciseFromWorkout(exerciseToDelete, workout)
+                            dataController.save()
+                        }
                     }
-                } label: {
-                    Label(Strings.addExercise.localized, systemImage: "plus")
-                }
-                .sheet(isPresented: $showingAddExerciseSheet) {
-                    AddExerciseToWorkoutView(workout: workout)
+
+                    // Button to add a new exercise to the workout.
+                    Button {
+                        withAnimation {
+                            showingAddExerciseSheet = true
+                        }
+                    } label: {
+                        Label(Strings.addExercise.localized, systemImage: "plus")
+                    }
+                    .sheet(isPresented: $showingAddExerciseSheet) {
+                        AddExerciseToWorkoutView(workout: workout)
+                    }
                 }
             }
 

@@ -54,6 +54,7 @@ struct WorkoutRowView: View {
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
+            .padding(.vertical, 5)
         }
         .accessibilityIdentifier(workout.workoutName)
     }
