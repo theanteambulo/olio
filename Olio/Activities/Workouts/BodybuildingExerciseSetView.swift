@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/// A single row for a weighted or bodyweight exercise in a workout representing a set added to that exercise.
 struct BodybuildingExerciseSetView: View {
     /// The exercise set used to construct this view.
     @ObservedObject var exerciseSet: ExerciseSet
@@ -37,24 +38,10 @@ struct BodybuildingExerciseSetView: View {
         _exerciseSetCompleted = State(wrappedValue: exerciseSet.completed)
     }
 
-    var keyboardDoneButton: some ToolbarContent {
-        ToolbarItemGroup(placement: .keyboard) {
-            Spacer()
-
-            Button("Done") {
-                hideKeyboard()
-            }
-        }
-    }
-
     var body: some View {
         HStack {
             ExerciseSetCompletionIcon(exerciseSet: exerciseSet)
 
-            // Warning: In iOS 15, adding a toolbar to a keyboard such as in the first TextField seems to add a toolbar
-            // to any keyboard that appears when the text field in the view is tapped. Adding multiple toolbar modifiers
-            // results in multiple toolbar items. This is not desired behaviour, hence a single toolbar modifier has
-            // been applied to a single text field.
             if exerciseSet.exercise?.category == 1 {
                 HStack {
                     TextField("Weight",
