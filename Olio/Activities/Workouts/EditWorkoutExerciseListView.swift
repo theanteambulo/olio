@@ -25,39 +25,73 @@ struct EditWorkoutExerciseListView: View {
     /// Boolean to indicate whether the sheet showing the exercise's sets is displayed.
     @State private var showingExerciseSheet = false
 
-    /// Boolean to indicate whether the alert warning the user about deleting the workout is displayed.
-    @State private var showingDeleteExerciseConfirmation = false
+    var exerciseSetsForWorkout: [ExerciseSet] {
+        exercise.exerciseSets.filter({ $0.workout == workout })
+    }
 
-    var headerView: some View {
-        HStack {
-            Circle()
-                .frame(width: 7)
-                .foregroundColor(exercise.getExerciseCategoryColor())
+    /// The number of sets in the workout for the given exercise.
+    var exerciseSetCount: Int {
+        exerciseSetsForWorkout.count
+    }
 
-            Text("\(exercise.exerciseName)")
-        }
+    /// The number of completed sets in the workout for the given exercise.
+    var completedExerciseSetCount: Int {
+        exerciseSetsForWorkout.filter({ $0.completed == true }).count
+    }
+
+    /// The percentage of exercise sets completed, expressed as a double.
+    var exerciseCompletionAmountDouble: Double {
+        guard exerciseSetsForWorkout.isEmpty == false else { return 0 }
+
+        return Double(completedExerciseSetCount) / Double(exerciseSetCount)
+    }
+
+    /// The percentage of exercises sets completed, expressed as an integer.
+    var exerciseCompletionAmountInt: Int {
+        Int(100 * exerciseCompletionAmountDouble)
     }
 
     var body: some View {
-        Section(header: headerView) {
-            // HStack showing
-            // Doughnut with completion amount coloured by exercise category colour
-            // Exercise name in headline font
-            // # sets, # complete in caption font
+        // HStack showing
+        // Doughnut with completion amount coloured by exercise category colour
+        // Exercise name in headline font
+        // # sets, # complete in caption font
 
-            // The exercise header showing progress for non-template workouts.
-            if !workout.template {
-                ExerciseHeaderView(workout: workout,
-                                   exercise: exercise)
-            }
+        HStack(spacing: 20) {
+            VStack(alignment: .leading) {
+                // The exercise header showing progress for non-template workouts.
+                if !workout.template {
+                    ProgressView(value: exerciseCompletionAmountDouble)
+                        .tint(exercise.getExerciseCategoryColor())
+                        .padding(.top, 5)
+                }
 
-            // New exercise sheet view.
-            Button(exercise.exerciseName) {
-                showingExerciseSheet = true
+                Text(exercise.exerciseName)
+                    .font(.headline)
+
+                Text(exercise.exerciseCategory)
+                    .font(.caption)
+                    .foregroundColor(exercise.getExerciseCategoryColor())
+
+                Group {
+                    if exerciseSetCount == 0 {
+                        Text("No sets")
+                    } else {
+                        Text("\(exerciseSetCount) sets, \(completedExerciseSetCount) completed")
+                    }
+                }
+                .font(.caption)
+                .foregroundColor(.secondary)
             }
-            .sheet(isPresented: $showingExerciseSheet) {
-                ExerciseSheetView(workout: workout, exercise: exercise)
-            }
+        }
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(Text("\(exercise.exerciseName), progress: \(exerciseCompletionAmountInt)%"))
+        .contentShape(Rectangle())
+        .onTapGesture {
+            showingExerciseSheet = true
+        }
+        .sheet(isPresented: $showingExerciseSheet) {
+            ExerciseSheetView(workout: workout, exercise: exercise)
         }
     }
 }
