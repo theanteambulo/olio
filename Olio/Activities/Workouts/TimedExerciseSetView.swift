@@ -1,5 +1,5 @@
 //
-//  CardioExerciseSetView.swift
+//  TimedExerciseSetView.swift
 //  Olio
 //
 //  Created by Jake King on 05/01/2022.
@@ -7,7 +7,8 @@
 
 import SwiftUI
 
-struct CardioExerciseSetView: View {
+/// A single row for a cardio, class or stretch exercise in a workout representing a set added to that exercise.
+struct TimedExerciseSetView: View {
     /// The exercise set used to construct this view.
     @ObservedObject var exerciseSet: ExerciseSet
 
@@ -36,31 +37,33 @@ struct CardioExerciseSetView: View {
         _exerciseSetDuration = State(wrappedValue: exerciseSet.exerciseSetDuration)
         _exerciseSetCompleted = State(wrappedValue: exerciseSet.completed)
     }
-    
+
     var body: some View {
         HStack {
             ExerciseSetCompletionIcon(exerciseSet: exerciseSet)
 
-            if exerciseSet.exercise?.category == 1 {
-                TextField("Distance",
-                          value: $exerciseSetDistance.onChange(update),
-                          format: .number)
-                    .exerciseSetDecimalTextField()
-                    .focused($inputActive)
+            if exerciseSet.exercise?.category == 3 {
+                HStack {
+                    TextField("Distance",
+                              value: $exerciseSetDistance.onChange(update),
+                              format: .number)
+                        .exerciseSetDecimalTextField()
+                        .focused($inputActive, equals: .distance)
 
-                Text("km")
+                    Text("km")
+                }
 
                 Spacer()
             }
 
             HStack {
-                TextField("Reps",
-                          value: $exerciseSetReps.onChange(update),
+                TextField("Duration",
+                          value: $exerciseSetDuration.onChange(update),
                           format: .number)
                     .exerciseSetIntegerTextField()
-                    .focused($inputActive, equals: .reps)
+                    .focused($inputActive, equals: .duration)
 
-                Text("reps")
+                Text(exerciseSet.exercise?.category == 5 ? "secs" : "mins")
             }
         }
     }
@@ -74,13 +77,13 @@ struct CardioExerciseSetView: View {
         exerciseSet.exercise?.objectWillChange.send()
         exerciseSet.workout?.objectWillChange.send()
 
-        exerciseSet.weight = Double(exerciseSetWeight)
-        exerciseSet.reps = Int16(exerciseSetReps)
+        exerciseSet.distance = Double(exerciseSetDistance)
+        exerciseSet.duration = Int16(exerciseSetDuration)
     }
 }
 
-struct CardioExerciseSetView_Previews: PreviewProvider {
+struct TimedExerciseSetView_Previews: PreviewProvider {
     static var previews: some View {
-        CardioExerciseSetView(exerciseSet: ExerciseSet.example, exerciseSetIndex: 1)
+        TimedExerciseSetView(exerciseSet: ExerciseSet.example, exerciseSetIndex: 1)
     }
 }
