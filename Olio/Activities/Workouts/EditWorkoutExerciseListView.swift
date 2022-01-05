@@ -50,8 +50,7 @@ struct EditWorkoutExerciseListView: View {
             Button(exercise.exerciseName) {
                 showingExerciseSheet = true
             }
-            .sheet(isPresented: $showingExerciseSheet,
-                   onDismiss: hideKeyboard) {
+            .sheet(isPresented: $showingExerciseSheet) {
                 ExerciseSheetView(workout: workout, exercise: exercise)
             }
 

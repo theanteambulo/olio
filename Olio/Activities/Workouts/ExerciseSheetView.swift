@@ -25,6 +25,37 @@ struct ExerciseSheetView: View {
         exercise.exerciseSets.filter({ $0.workout == workout }).sorted(by: \.exerciseSetCreationDate)
     }
 
+    var keyboardDoneButton: some ToolbarContent {
+        ToolbarItemGroup(placement: .keyboard) {
+            Spacer()
+
+            Button("Done") {
+                hideKeyboard()
+            }
+        }
+    }
+
+    var sheetCloseButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button {
+                hideKeyboard()
+                dismiss()
+            } label: {
+                Label("Close", systemImage: "xmark")
+            }
+        }
+    }
+
+    var sheetSaveButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(Strings.saveButton.localized) {
+                hideKeyboard()
+                update()
+                dismiss()
+            }
+        }
+    }
+
     var body: some View {
         NavigationView {
             List {
@@ -53,22 +84,9 @@ struct ExerciseSheetView: View {
             .listStyle(InsetGroupedListStyle())
             .navigationTitle(exercise.exerciseName)
             .toolbar {
-                // Close button
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Label("Close", systemImage: "xmark")
-                    }
-                }
-
-                // Save button
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(Strings.saveButton.localized) {
-                        update()
-                        dismiss()
-                    }
-                }
+                keyboardDoneButton
+                sheetCloseButton
+                sheetSaveButton
             }
         }
     }

@@ -62,7 +62,6 @@ struct BodybuildingExerciseSetView: View {
                               format: .number)
                         .exerciseSetDecimalTextField()
                         .focused($inputActive, equals: .weight)
-                        .toolbar { keyboardDoneButton }
 
                     Text("kg")
                 }
