@@ -51,6 +51,22 @@ struct EditWorkoutExerciseListView: View {
         Int(100 * exerciseCompletionAmountDouble)
     }
 
+    var exerciseSetsDescriptionView: some View {
+        Group {
+            if exerciseSetCount == 0 {
+                Text("No sets")
+            } else {
+                if workout.template {
+                    Text("\(exerciseSetCount) sets")
+                } else {
+                    Text("\(exerciseSetCount) sets, \(completedExerciseSetCount) completed")
+                }
+            }
+        }
+        .font(.caption)
+        .foregroundColor(.secondary)
+    }
+
     var body: some View {
         HStack(spacing: 20) {
             VStack(alignment: .leading) {
@@ -68,20 +84,14 @@ struct EditWorkoutExerciseListView: View {
                     .font(.caption)
                     .foregroundColor(exercise.getExerciseCategoryColor())
 
-                Group {
-                    if exerciseSetCount == 0 {
-                        Text("No sets")
-                    } else {
-                        Text("\(exerciseSetCount) sets, \(completedExerciseSetCount) completed")
-                    }
-                }
-                .font(.caption)
-                .foregroundColor(.secondary)
+                exerciseSetsDescriptionView
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.vertical, 5)
         }
+        .contentShape(Rectangle())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(Text("\(exercise.exerciseName), progress: \(exerciseCompletionAmountInt)%"))
-        .contentShape(Rectangle())
         .onTapGesture {
             showingExerciseSheet = true
         }
