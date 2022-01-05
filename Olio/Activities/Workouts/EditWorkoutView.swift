@@ -45,6 +45,9 @@ struct EditWorkoutView: View {
     /// Boolean to indicate whether the alert warning the user about deleting an exercise is displayed.
     @State private var showingDeleteWorkoutConfirmation = false
 
+    /// The opacity of the toolbar button used for completing and scheduling workouts.
+    @State private var toolbarButtonOpacity: Double = 1
+
     init(workout: Workout) {
         self.workout = workout
 
@@ -88,15 +91,32 @@ struct EditWorkoutView: View {
     }
 
     /// Toolbar button that displays a sheet containing AddExerciseToWorkoutView.
-    var addExerciseToWorkoutToolbarItem: some ToolbarContent {
+    var completeScheduleWorkoutToolbarItem: some ToolbarContent {
         ToolbarItem {
-            Button {
-                showingAddExerciseSheet = true
-            } label: {
-                Label("Add", systemImage: "plus")
-            }
-            .sheet(isPresented: $showingAddExerciseSheet) {
-                AddExerciseToWorkoutView(workout: workout)
+            if !workout.template {
+                Button {
+                    showingCompleteConfirmation = true
+                } label: {
+                    if workout.completed {
+                        Label("Reschedule", systemImage: "calendar")
+                    } else {
+                        Label("Complete", systemImage: "checkmark")
+                    }
+                }
+                .opacity(toolbarButtonOpacity)
+                .alert(workout.getConfirmationAlertTitle(workout: workout),
+                       isPresented: $showingCompleteConfirmation) {
+                    Button(Strings.okButton.localized) {
+                        workout.completed.toggle()
+                        toolbarButtonOpacity = 0
+                    }
+
+                    Button(Strings.cancelButton.localized, role: .cancel, action: { })
+                } message: {
+                    Text(workout.getConfirmationAlertMessage(workout: workout))
+                }
+            } else {
+                EmptyView()
             }
         }
     }
@@ -210,19 +230,6 @@ struct EditWorkoutView: View {
 
             Section(header: Text("")) {
                 if !workout.template {
-                    // Button to complete or schedule workout.
-                    Button(completeScheduleWorkoutButtonText) {
-                        showingCompleteConfirmation.toggle()
-                    }
-                    .alert(workout.getConfirmationAlertTitle(workout: workout),
-                           isPresented: $showingCompleteConfirmation) {
-                        Button(Strings.okButton.localized, role: .cancel) {
-                            workout.completed.toggle()
-                        }
-                    } message: {
-                        Text(workout.getConfirmationAlertMessage(workout: workout))
-                    }
-
                     // Button to create a template from the workout.
                     Button(Strings.createTemplateFromWorkoutButton.localized) {
                         showingCreateTemplateConfirmation.toggle()
@@ -276,7 +283,7 @@ struct EditWorkoutView: View {
         .navigationTitle(navigationTitle)
         .onDisappear(perform: dataController.save)
         .toolbar {
-            addExerciseToWorkoutToolbarItem
+            completeScheduleWorkoutToolbarItem
         }
     }
 
