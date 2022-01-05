@@ -66,13 +66,10 @@ struct EditWorkoutView: View {
         }
     }
 
-    /// Computed property to get text displayed on the button for completing or scheduling a workout.
-    ///
-    /// Conditional on the completed property of the workout.
-    var completeScheduleWorkoutButtonText: LocalizedStringKey {
-        workout.completed
-        ? Strings.scheduleWorkout.localized
-        : Strings.completeWorkout.localized
+    var completeScheduleWorkoutButton: LocalizedStringKey {
+        return workout.completed
+        ? Strings.rescheduleButton.localized
+        : Strings.completeButton.localized
     }
 
     /// Computed property to get text displayed on the button for deleting a workout.
@@ -98,15 +95,15 @@ struct EditWorkoutView: View {
                     showingCompleteConfirmation = true
                 } label: {
                     if workout.completed {
-                        Label("Reschedule", systemImage: "calendar")
+                        Label(Strings.rescheduleButton.localized, systemImage: "calendar")
                     } else {
-                        Label("Complete", systemImage: "checkmark")
+                        Label(Strings.completeButton.localized, systemImage: "checkmark")
                     }
                 }
                 .opacity(toolbarButtonOpacity)
                 .alert(workout.getConfirmationAlertTitle(workout: workout),
                        isPresented: $showingCompleteConfirmation) {
-                    Button(Strings.okButton.localized) {
+                    Button(completeScheduleWorkoutButton) {
                         workout.completed.toggle()
                         toolbarButtonOpacity = 0
                     }

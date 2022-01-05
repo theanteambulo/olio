@@ -7,6 +7,8 @@
 "cancelButton" = "Cancel";
 "addExercise" = "Add Exercise";
 "basicSettings" = "Basic Settings";
+"completeButton" = "Complete";
+"rescheduleButton" = "Reschedule";
 
 
 
@@ -92,10 +94,10 @@
 
 
 /* WORKOUT EXTENSION */
-"workoutCompletedAlertTitle" = "Workout Complete";
-"workoutCompletedAlertMessage" = "Smashed it! This workout will now move to your workout history.";
-"workoutScheduledAlertTitle" = "Workout Scheduled";
-"workoutScheduledAlertMessage" = "This workout will now move to your scheduled workouts. Get after it!";
+"workoutCompletedAlertTitle" = "Complete workout?";
+"workoutCompletedAlertMessage" = "When you've finished this workout, complete it to move it to your workout history.";
+"workoutScheduledAlertTitle" = "Reschedule workout?";
+"workoutScheduledAlertMessage" = "If you haven't quite finished this workout, reschedule it to move it back to your scheduled workouts.";
 
 
 

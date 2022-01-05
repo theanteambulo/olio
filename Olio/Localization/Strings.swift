@@ -23,6 +23,8 @@ enum Strings: LocalizedStringKey {
     case cancelButton
     case addExercise
     case basicSettings
+    case completeButton
+    case rescheduleButton
 
     // TABS
     case homeTab
