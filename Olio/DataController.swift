@@ -142,7 +142,7 @@ class DataController: ObservableObject {
     /// - Parameters:
     ///   - exercise: The exercise to remove.
     ///   - workout: The workout to remove the exercise from.
-    func removeExerciseFromWorkout(_ exercise: Exercise, _ workout: Workout) {
+    func removeExercise(_ exercise: Exercise, fromWorkout workout: Workout) {
         var existingExercises = workout.workoutExercises
         existingExercises.removeAll { $0.id == exercise.id }
 
@@ -153,7 +153,33 @@ class DataController: ObservableObject {
         }
     }
 
-    func completeAllSetsInWorkout(_ exercise: Exercise, _ workout: Workout) {
+    /// Saves a new exercise set to the Core Data context.
+    /// - Parameters:
+    ///   - exercise: The exercise that is parent of the exercise set being created.
+    ///   - workout: The workout that is parent of the exercise set being created.
+    func addSet(toExercise exercise: Exercise, inWorkout workout: Workout) {
+        let currentWorkoutExerciseSets = exercise.exerciseSets.filter({ $0.workout == workout })
+
+        if currentWorkoutExerciseSets.count < 99 {
+            let set = ExerciseSet(context: container.viewContext)
+            set.id = UUID()
+            set.workout = workout
+            set.exercise = exercise
+            set.weight = currentWorkoutExerciseSets.last?.exerciseSetWeight ?? 0
+            set.reps = Int16(currentWorkoutExerciseSets.last?.exerciseSetReps ?? 10)
+            set.distance = currentWorkoutExerciseSets.last?.exerciseSetDistance ?? 3
+
+            if exercise.exerciseCategory == "Class" {
+                set.duration = Int16(currentWorkoutExerciseSets.last?.exerciseSetDuration ?? 60)
+            } else {
+                set.duration = Int16(currentWorkoutExerciseSets.last?.exerciseSetDuration ?? 15)
+            }
+
+            set.creationDate = Date()
+        }
+    }
+
+    func completeAllSets(forExercise exercise: Exercise, inWorkout workout: Workout) {
         let allExerciseSetsInWorkout = exercise.exerciseSets.filter({ $0.workout == workout })
 
         for exerciseSet in allExerciseSetsInWorkout {

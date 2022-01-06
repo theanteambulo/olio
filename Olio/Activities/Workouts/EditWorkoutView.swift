@@ -21,28 +21,21 @@ struct EditWorkoutView: View {
 
     /// The workout's name property value.
     @State private var name: String
-
     /// The workout's date property value.
     @State private var date: Date
 
     /// Boolean to indicate whether the sheet used for adding an exercise to the workout is displayed.
     @State private var showingAddExerciseSheet = false
-
     /// Boolean to indicate whether the confirmation dialog used for changing the workout date is displayed.
     @State private var showingDateConfirmationDialog = false
-
     /// Boolean to indicate whether the alert confirming the workout has been completed is displayed.
     @State private var showingCompleteConfirmation = false
-
     /// Boolean to indicate whether the alert confirming a template will be created is displayed.
     @State private var showingCreateTemplateConfirmation = false
-
     /// Boolean to indicate whether the alert confirming a workout will be created is displayed.
     @State private var showingCreateWorkoutConfirmation = false
-
     /// Boolean to indicate whether the alert warning the user about deleting an exercise is displayed.
     @State private var showingDeleteWorkoutConfirmation = false
-
     /// The opacity of the toolbar button used for completing and scheduling workouts.
     @State private var toolbarButtonOpacity: Double = 1
 
@@ -176,7 +169,7 @@ struct EditWorkoutView: View {
                     .swipeActions(edge: .trailing) {
                         Button(role: .destructive) {
                             withAnimation {
-                                dataController.removeExerciseFromWorkout(exercise, workout)
+                                dataController.removeExercise(exercise, fromWorkout: workout)
                                 dataController.save()
                             }
                         } label: {
@@ -184,10 +177,20 @@ struct EditWorkoutView: View {
                                 .labelStyle(.titleAndIcon)
                         }
                     }
-                    .swipeActions(edge: .leading) {
+                    .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                        Button {
+                            dataController.addSet(toExercise: exercise, inWorkout: workout)
+                            update()
+                            dataController.save()
+                        } label: {
+                            Label(Strings.addSet.localized, systemImage: "plus.circle")
+                                .labelStyle(.titleAndIcon)
+                        }
+                        .tint(.indigo)
+
                         Button {
                             withAnimation {
-                                dataController.completeAllSetsInWorkout(exercise, workout)
+                                dataController.completeAllSets(forExercise: exercise, inWorkout: workout)
                                 update()
                                 dataController.save()
                             }

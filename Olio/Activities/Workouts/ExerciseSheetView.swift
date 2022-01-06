@@ -90,7 +90,7 @@ struct ExerciseSheetView: View {
                 // Add a set
                 Button {
                     withAnimation {
-                        addSet(toExercise: exercise, toWorkout: workout)
+                        dataController.addSet(toExercise: exercise, inWorkout: workout)
                     }
                 } label: {
                     Label(Strings.addSet.localized, systemImage: "plus")
@@ -115,34 +115,6 @@ struct ExerciseSheetView: View {
     func update() {
         workout.objectWillChange.send()
         exercise.objectWillChange.send()
-    }
-
-    /// Saves a new exercise set to the Core Data context.
-    /// - Parameters:
-    ///   - exercise: The exercise that is parent of the exercise set being created.
-    ///   - workout: The workout that is parent of the exercise set being created.
-    func addSet(toExercise exercise: Exercise,
-                toWorkout workout: Workout) {
-        let currentWorkoutExerciseSets = exercise.exerciseSets.filter({ $0.workout == workout })
-
-        if currentWorkoutExerciseSets.count < 99 {
-            let set = ExerciseSet(context: dataController.container.viewContext)
-            set.id = UUID()
-            set.workout = workout
-            set.exercise = exercise
-            set.weight = currentWorkoutExerciseSets.last?.exerciseSetWeight ?? 0
-            set.reps = Int16(currentWorkoutExerciseSets.last?.exerciseSetReps ?? 10)
-            set.distance = currentWorkoutExerciseSets.last?.exerciseSetDistance ?? 3
-
-            if exercise.exerciseCategory == "Class" {
-                set.duration = Int16(currentWorkoutExerciseSets.last?.exerciseSetDuration ?? 60)
-            } else {
-                set.duration = Int16(currentWorkoutExerciseSets.last?.exerciseSetDuration ?? 15)
-            }
-
-            set.creationDate = Date()
-            dataController.save()
-        }
     }
 
     /// Deletes a given exercise set from the Core Data context.
