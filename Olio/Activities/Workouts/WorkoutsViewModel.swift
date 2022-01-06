@@ -135,13 +135,10 @@ extension WorkoutsView {
             return workouts.filter { Calendar.current.startOfDay(for: $0.workoutDate) == date }
         }
 
-        /// Deletes a workout based on its position in a given array of workouts.
-        /// - Parameters:
-        ///   - workouts: The array of workouts.
-        ///   - offset: The position of the workout to delete in the given array of workouts.
-        func swipeToDeleteWorkout(_ workouts: [Workout], at offset: Int) {
-            let workoutToDelete = workouts[offset]
-            dataController.delete(workoutToDelete)
+        /// Deletes a workout from the Core Data context.
+        /// - Parameter workout: The workout to delete.
+        func deleteWorkout(_ workout: Workout) {
+            dataController.delete(workout)
             dataController.save()
         }
 

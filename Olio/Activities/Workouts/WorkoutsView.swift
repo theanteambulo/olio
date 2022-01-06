@@ -102,16 +102,16 @@ struct WorkoutsView: View {
                     ForEach(viewModel.filterByDate(date,
                                                    workouts: viewModel.sortedWorkouts)) { workout in
                         WorkoutRowView(workout: workout)
-                    }
-                    .onDelete { offsets in
-                        let allWorkouts = viewModel.filterByDate(date,
-                                                                 workouts: viewModel.sortedWorkouts)
-
-                        for offset in offsets {
-                            withAnimation {
-                                viewModel.swipeToDeleteWorkout(allWorkouts, at: offset)
+                            .swipeActions(edge: .trailing) {
+                                Button(role: .destructive) {
+                                    withAnimation {
+                                        viewModel.deleteWorkout(workout)
+                                    }
+                                } label: {
+                                    Label(Strings.deleteButton.localized, systemImage: "trash")
+                                        .labelStyle(.titleAndIcon)
+                                }
                             }
-                        }
                     }
                 }
             }
