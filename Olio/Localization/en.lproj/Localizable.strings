@@ -35,9 +35,10 @@
 "completedSectionHeader" = "Completed";
 "scheduledSectionHeader" = "Scheduled";
 "workoutDate" = "Date";
-"workoutDateChanged" = "Workout date changed";
-"completedWorkoutDateChangeAlertMessage" = "Your workout date has changed. You can find it on the History tab.";
-"scheduledWorkoutDateChangeAlertMessage" = "Your workout date has changed. You can find it on the Scheduled tab.";
+"today" = "Today";
+"tomorrow" = "Tomorrow";
+"selectWorkoutDateLabel" = "Select a workout date";
+"selectWorkoutDateMessage" = "Select a date to schedule this workout on or view more date options.";
 "scheduleWorkout" = "Schedule workout";
 "completeWorkout" = "Complete workout";
 "createTemplateFromWorkoutButton" = "Create template from workout";

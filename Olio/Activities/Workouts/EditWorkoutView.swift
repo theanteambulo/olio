@@ -30,15 +30,6 @@ struct EditWorkoutView: View {
     /// Boolean to indicate whether the confirmation dialog used for changing the workout date is displayed.
     @State private var showingDateConfirmationDialog = false
 
-    /// Boolean to indicate whether the date picker sheet for selecting other date options is displayed.
-    @State private var showingDatePickerSheet = false
-
-    /// Boolean to indicate whether the alert confirming the workout date has been changed is displayed.
-    @State private var showingDateChangeConfirmation = false
-
-    /// Boolean to indicate whether the alert warning the user about removing an exercise from the workout is displayed.
-    @State private var showingRemoveConfirmation = false
-
     /// Boolean to indicate whether the alert confirming the workout has been completed is displayed.
     @State private var showingCompleteConfirmation = false
 
@@ -72,25 +63,20 @@ struct EditWorkoutView: View {
         }
     }
 
+    // Navigation bar
+
+    /// Computed property to get the text displayed in the navigation title of the view.
+    var navigationTitle: Text {
+        workout.template
+        ? Text(.editTemplateNavigationTitle)
+        : Text(.editWorkoutNavigationTitle)
+    }
+
+    /// Button copy used in alert presented after a user completes or reschedules a workout.
     var completeScheduleWorkoutButton: LocalizedStringKey {
         return workout.completed
         ? Strings.rescheduleButton.localized
         : Strings.completeButton.localized
-    }
-
-    /// Computed property to get text displayed on the button for deleting a workout.
-    ///
-    /// Conditional on the completed property of the workout.
-    var deleteWorkoutTemplateButtonText: LocalizedStringKey {
-        workout.template
-        ? Strings.deleteTemplateButton.localized
-        : Strings.deleteWorkoutButton.localized
-    }
-
-    /// Computed property to get the date string of the workout formatted to omit the time component but show the date
-    /// in full.
-    var dateString: String {
-        date.formatted(date: .complete, time: .omitted)
     }
 
     /// Toolbar button that displays a sheet containing AddExerciseToWorkoutView.
@@ -124,189 +110,213 @@ struct EditWorkoutView: View {
         }
     }
 
+    // Workout date
+
     /// Computed property to get the text displayed in the section header for the workout date.
-    ///
-    /// Conditional on the completed property of the workout.
     var workoutDateSectionHeader: Text {
         workout.completed
         ? Text(.completedSectionHeader)
         : Text(.scheduledSectionHeader)
     }
 
-    /// Computed property to get the text displayed in the navigation title of the view.
-    ///
-    /// Conditional on the template property of the workout.
-    var navigationTitle: Text {
+    /// Computed property to get the date string of the workout formatted to omit the time component but show the date
+    /// in full.
+    var dateString: String {
+        date.formatted(date: .complete, time: .omitted)
+    }
+
+    /// Button that presents a confirmation dialog enabling the user to schedule a workout for up to 7 days in advance.
+    var workoutDateButton: some View {
+        Button {
+            showingDateConfirmationDialog = true
+        } label: {
+            Text(dateString)
+        }
+        .accessibilityIdentifier("Workout date")
+        .confirmationDialog(Strings.selectWorkoutDateLabel.localized,
+                            isPresented: $showingDateConfirmationDialog) {
+            Button(Strings.today.localized) {
+                withAnimation {
+                    saveNewWorkoutDate(dayOffset: 0)
+                }
+            }
+
+            Button(Strings.tomorrow.localized) {
+                withAnimation {
+                    saveNewWorkoutDate(dayOffset: 1)
+                }
+            }
+
+            ForEach(2...7, id: \.self) { dayOffset in
+                Button("\(getDateOption(dayOffset).formatted(date: .complete, time: .omitted))") {
+                    withAnimation {
+                        saveNewWorkoutDate(dayOffset: Double(dayOffset))
+                    }
+                }
+            }
+        } message: {
+            Text(.selectWorkoutDateMessage)
+        }
+    }
+
+    // Exercise list
+
+    /// The list of exercises contained in the workout, as well as a button to add additional exercises.
+    var workoutExerciseList: some View {
+        List {
+            // List of exercises the workout is parent of.
+            ForEach(sortedExercises, id: \.self) { exercise in
+                EditWorkoutExerciseListView(workout: workout,
+                                            exercise: exercise)
+            }
+            .onDelete { offsets in
+                let allExercises = sortedExercises
+
+                for offset in offsets {
+                    let exerciseToDelete = allExercises[offset]
+                    dataController.removeExerciseFromWorkout(exerciseToDelete, workout)
+                    dataController.save()
+                }
+            }
+
+            // Button to add a new exercise to the workout.
+            Button {
+                withAnimation {
+                    showingAddExerciseSheet = true
+                }
+            } label: {
+                Label(Strings.addExercise.localized, systemImage: "plus")
+            }
+            .sheet(isPresented: $showingAddExerciseSheet) {
+                AddExerciseToWorkoutView(workout: workout)
+            }
+        }
+    }
+
+    // Create workout/template from template/workout
+
+    /// Button enabling the user to create a template from a workout.
+    var createTemplateFromWorkoutButton: some View {
+        Button(Strings.createTemplateFromWorkoutButton.localized) {
+            showingCreateTemplateConfirmation.toggle()
+        }
+        .alert(Strings.createTemplateConfirmationTitle.localized,
+               isPresented: $showingCreateTemplateConfirmation) {
+            Button(Strings.confirmButton.localized) {
+                createWorkoutFromExisting(workout,
+                                          newWorkoutIsTemplate: true)
+            }
+
+            Button(Strings.cancelButton.localized, role: .cancel) { }
+        } message: {
+            Text(.createTemplateConfirmationMessage)
+        }
+    }
+
+    /// Button enabling the user to create a workout from a template.
+    var createWorkoutFromTemplateButton: some View {
+        Button(Strings.createWorkoutFromTemplateButton.localized) {
+             showingCreateWorkoutConfirmation.toggle()
+        }
+        .alert(Strings.createWorkoutConfirmationTitle.localized,
+               isPresented: $showingCreateWorkoutConfirmation) {
+            Button(Strings.confirmButton.localized) {
+                createWorkoutFromExisting(workout,
+                                          newWorkoutIsTemplate: false)
+            }
+
+            Button(Strings.cancelButton.localized, role: .cancel) { }
+        } message: {
+            Text(.createWorkoutConfirmationMessage)
+        }
+    }
+
+    // Delete workout
+
+    /// Button to delete the workout.
+    var deleteWorkoutButton: some View {
+        Button(deleteWorkoutTemplateButtonText, role: .destructive) {
+            showingDeleteWorkoutConfirmation.toggle()
+        }
+        .tint(.red)
+        .alert(Strings.areYouSureAlertTitle.localized,
+               isPresented: $showingDeleteWorkoutConfirmation) {
+            Button(Strings.deleteButton.localized, role: .destructive) {
+                dataController.delete(workout)
+            }
+
+            Button(Strings.cancelButton.localized, role: .cancel) { }
+        } message: {
+            deleteWorkoutTemplateAlertMessage
+        }
+    }
+
+    /// Computed property to get text displayed on the button for deleting a workout.
+    var deleteWorkoutTemplateButtonText: LocalizedStringKey {
         workout.template
-        ? Text(.editTemplateNavigationTitle)
-        : Text(.editWorkoutNavigationTitle)
+        ? Strings.deleteTemplateButton.localized
+        : Strings.deleteWorkoutButton.localized
     }
 
     /// Computed property to get the text displayed in the alert message shown when deleting a workout.
-    ///
-    /// Conditional on the template property of the workout.
     var deleteWorkoutTemplateAlertMessage: Text {
         workout.template
         ? Text(.deleteTemplateConfirmationMessage)
         : Text(.deleteWorkoutConfirmationMessage)
     }
 
-    /// Computed property to get the text displayed in the alert message shown when changing the date
-    /// property of a workout.
-    ///
-    /// Conditional on the completed property of the workout.
-    var dateChangeConfirmationAlertMessage: Text {
-        if workout.completed {
-            return Text(.completedWorkoutDateChangeAlertMessage)
-        } else {
-            return Text(.scheduledWorkoutDateChangeAlertMessage)
-        }
-    }
-
     var body: some View {
         Form {
-            // Basic settings.
             Section(header: Text(.basicSettings)) {
                 TextField(Strings.workoutName.localized,
-                          text: $name.onChange(update))
+                          text: $name)
             }
 
-            // If the workout isn't a template, show date editing option.
             if !workout.template {
                 Section(header: workoutDateSectionHeader) {
-                    Button {
-                        showingDateConfirmationDialog = true
-                    } label: {
-                        Text("\(date.formatted(date: .complete, time: .omitted))")
-                    }
-                    .accessibilityIdentifier("Workout Date")
-                    .confirmationDialog("Select a date",
-                                        isPresented: $showingDateConfirmationDialog) {
-                        Button("Today") {
-                            withAnimation {
-                                saveNewWorkoutDate(dayOffset: 0)
-                            }
-                        }
-
-                        Button("Tomorrow") {
-                            withAnimation {
-                                saveNewWorkoutDate(dayOffset: 1)
-                            }
-                        }
-
-                        ForEach(2...7, id: \.self) { dayOffset in
-                            Button("\(getDateOption(dayOffset).formatted(date: .complete, time: .omitted))") {
-                                withAnimation {
-                                    saveNewWorkoutDate(dayOffset: Double(dayOffset))
-                                }
-                            }
-                        }
-                    } message: {
-                        Text("Select a date to schedule this workout on or view more date options.")
-                    }
+                    workoutDateButton
                 }
                 .accessibilityIdentifier("Workout Date")
             }
 
-            Section(header: Text("Exercises")) {
-                List {
-                    // List of exercises the workout is parent of.
-                    ForEach(sortedExercises, id: \.self) { exercise in
-                        EditWorkoutExerciseListView(workout: workout,
-                                                    exercise: exercise)
-                    }
-                    .onDelete { offsets in
-                        let allExercises = sortedExercises
-
-                        for offset in offsets {
-                            let exerciseToDelete = allExercises[offset]
-                            dataController.removeExerciseFromWorkout(exerciseToDelete, workout)
-                            dataController.save()
-                        }
-                    }
-
-                    // Button to add a new exercise to the workout.
-                    Button {
-                        withAnimation {
-                            showingAddExerciseSheet = true
-                        }
-                    } label: {
-                        Label(Strings.addExercise.localized, systemImage: "plus")
-                    }
-                    .sheet(isPresented: $showingAddExerciseSheet) {
-                        AddExerciseToWorkoutView(workout: workout)
-                    }
-                }
+            Section(header: Text(.exercisesTab)) {
+                workoutExerciseList
             }
 
             Section(header: Text("")) {
                 if !workout.template {
-                    // Button to create a template from the workout.
-                    Button(Strings.createTemplateFromWorkoutButton.localized) {
-                        showingCreateTemplateConfirmation.toggle()
-                    }
-                    .alert(Strings.createTemplateConfirmationTitle.localized,
-                           isPresented: $showingCreateTemplateConfirmation) {
-                        Button(Strings.confirmButton.localized) {
-                            createWorkoutFromExisting(workout,
-                                                      newWorkoutIsTemplate: true)
-                        }
-
-                        Button(Strings.cancelButton.localized, role: .cancel) { }
-                    } message: {
-                        Text(.createTemplateConfirmationMessage)
-                    }
+                    createTemplateFromWorkoutButton
                 } else {
-                    // Button to create a workout from the template.
-                    Button(Strings.createWorkoutFromTemplateButton.localized) {
-                         showingCreateWorkoutConfirmation.toggle()
-                    }
-                    .alert(Strings.createWorkoutConfirmationTitle.localized,
-                           isPresented: $showingCreateWorkoutConfirmation) {
-                        Button(Strings.confirmButton.localized) {
-                            createWorkoutFromExisting(workout,
-                                                      newWorkoutIsTemplate: false)
-                        }
-
-                        Button(Strings.cancelButton.localized, role: .cancel) { }
-                    } message: {
-                        Text(.createWorkoutConfirmationMessage)
-                    }
+                    createWorkoutFromTemplateButton
                 }
 
-                // Button to delete the workout.
-                Button(deleteWorkoutTemplateButtonText, role: .destructive) {
-                    showingDeleteWorkoutConfirmation.toggle()
-                }
-                .tint(.red)
-                .alert(Strings.areYouSureAlertTitle.localized,
-                       isPresented: $showingDeleteWorkoutConfirmation) {
-                    Button(Strings.deleteButton.localized, role: .destructive) {
-                        dataController.delete(workout)
-                    }
-
-                    Button(Strings.cancelButton.localized, role: .cancel) { }
-                } message: {
-                    deleteWorkoutTemplateAlertMessage
-                }
+                deleteWorkoutButton
             }
         }
         .navigationTitle(navigationTitle)
-        .onDisappear(perform: dataController.save)
+        .onDisappear {
+            withAnimation {
+                update()
+                dataController.save()
+            }
+        }
         .toolbar {
             completeScheduleWorkoutToolbarItem
         }
     }
 
+    /// Returns a date offset by a given number of days from today.
+    /// - Parameter dayOffset: The number of days offset from the current date the workout option will be.
+    /// - Returns: A date offset by a given number of days from today.
     func getDateOption(_ dayOffset: Int) -> Date {
         let dateOption = Date.now + Double(dayOffset * 86400)
         return dateOption
     }
 
+    /// Saves the new workout date the user selected.
+    /// - Parameter dayOffset: The number of days offset from the current date the workout is scheduled on.
     func saveNewWorkoutDate(dayOffset: Double) {
         date = Date.now + (dayOffset * 86400)
-        update()
-        dataController.save()
     }
 
     /// Synchronise the @State properties of the view with their Core Data equivalents in whichever Workout
@@ -320,9 +330,7 @@ struct EditWorkoutView: View {
         workout.date = date
     }
 
-    /// Create a workout or template from a given workout.
-    ///
-    /// Note the workout can be a template or a "normal" workout, i.e. not a template.
+    /// Create a workout or template from a given workout or template.
     /// - Parameters:
     ///   - workout: The workout to use as the basis for creating a new workout.
     ///   - newWorkoutIsTemplate: Boolean to indicate whether the workout being created is a template or not.

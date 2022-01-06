@@ -45,9 +45,10 @@ enum Strings: LocalizedStringKey {
     case completedSectionHeader
     case scheduledSectionHeader
     case workoutDate
-    case workoutDateChanged
-    case completedWorkoutDateChangeAlertMessage
-    case scheduledWorkoutDateChangeAlertMessage
+    case today
+    case tomorrow
+    case selectWorkoutDateLabel
+    case selectWorkoutDateMessage
     case scheduleWorkout
     case completeWorkout
     case createTemplateFromWorkoutButton
