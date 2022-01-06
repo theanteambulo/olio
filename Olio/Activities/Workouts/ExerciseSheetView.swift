@@ -91,6 +91,7 @@ struct ExerciseSheetView: View {
                 Button {
                     withAnimation {
                         dataController.addSet(toExercise: exercise, inWorkout: workout)
+                        update()
                     }
                 } label: {
                     Label(Strings.addSet.localized, systemImage: "plus")

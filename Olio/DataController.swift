@@ -158,21 +158,21 @@ class DataController: ObservableObject {
     ///   - exercise: The exercise that is parent of the exercise set being created.
     ///   - workout: The workout that is parent of the exercise set being created.
     func addSet(toExercise exercise: Exercise, inWorkout workout: Workout) {
-        let currentWorkoutExerciseSets = exercise.exerciseSets.filter({ $0.workout == workout })
+        let setsCompleted = exercise.exerciseSets.filter({ $0.workout == workout && $0.completed == true })
 
-        if currentWorkoutExerciseSets.count < 99 {
+        if setsCompleted.count < 99 {
             let set = ExerciseSet(context: container.viewContext)
             set.id = UUID()
             set.workout = workout
             set.exercise = exercise
-            set.weight = currentWorkoutExerciseSets.last?.exerciseSetWeight ?? 0
-            set.reps = Int16(currentWorkoutExerciseSets.last?.exerciseSetReps ?? 10)
-            set.distance = currentWorkoutExerciseSets.last?.exerciseSetDistance ?? 3
+            set.weight = setsCompleted.last?.exerciseSetWeight ?? 0
+            set.reps = Int16(setsCompleted.last?.exerciseSetReps ?? 10)
+            set.distance = setsCompleted.last?.exerciseSetDistance ?? 3
 
             if exercise.exerciseCategory == "Class" {
-                set.duration = Int16(currentWorkoutExerciseSets.last?.exerciseSetDuration ?? 60)
+                set.duration = Int16(setsCompleted.last?.exerciseSetDuration ?? 60)
             } else {
-                set.duration = Int16(currentWorkoutExerciseSets.last?.exerciseSetDuration ?? 15)
+                set.duration = Int16(setsCompleted.last?.exerciseSetDuration ?? 15)
             }
 
             set.creationDate = Date()
