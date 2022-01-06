@@ -136,22 +136,16 @@ struct EditWorkoutView: View {
         .confirmationDialog(Strings.selectWorkoutDateLabel.localized,
                             isPresented: $showingDateConfirmationDialog) {
             Button(Strings.today.localized) {
-                withAnimation {
-                    saveNewWorkoutDate(dayOffset: 0)
-                }
+                saveNewWorkoutDate(dayOffset: 0)
             }
 
             Button(Strings.tomorrow.localized) {
-                withAnimation {
-                    saveNewWorkoutDate(dayOffset: 1)
-                }
+                saveNewWorkoutDate(dayOffset: 1)
             }
 
             ForEach(2...7, id: \.self) { dayOffset in
                 Button("\(getDateOption(dayOffset).formatted(date: .complete, time: .omitted))") {
-                    withAnimation {
-                        saveNewWorkoutDate(dayOffset: Double(dayOffset))
-                    }
+                    saveNewWorkoutDate(dayOffset: Double(dayOffset))
                 }
             }
         } message: {
@@ -295,10 +289,8 @@ struct EditWorkoutView: View {
         }
         .navigationTitle(navigationTitle)
         .onDisappear {
-            withAnimation {
-                update()
-                dataController.save()
-            }
+            update()
+            dataController.save()
         }
         .toolbar {
             completeScheduleWorkoutToolbarItem
