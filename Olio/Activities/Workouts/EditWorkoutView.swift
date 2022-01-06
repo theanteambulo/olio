@@ -27,6 +27,12 @@ struct EditWorkoutView: View {
     /// Boolean to indicate whether the sheet used for adding an exercise to the workout is displayed.
     @State private var showingAddExerciseSheet = false
 
+    /// Boolean to indicate whether the confirmation dialog used for changing the workout date is displayed.
+    @State private var showingDateConfirmationDialog = false
+
+    /// Boolean to indicate whether the date picker sheet for selecting other date options is displayed.
+    @State private var showingDatePickerSheet = false
+
     /// Boolean to indicate whether the alert confirming the workout date has been changed is displayed.
     @State private var showingDateChangeConfirmation = false
 
@@ -168,30 +174,38 @@ struct EditWorkoutView: View {
             // If the workout isn't a template, show date editing option.
             if !workout.template {
                 Section(header: workoutDateSectionHeader) {
-                    NavigationLink(
-                        destination: {
-                            DatePicker(
-                                Strings.workoutDate.localized,
-                                selection: $date.onChange {
-                                    showingDateChangeConfirmation.toggle()
-                                },
-                                displayedComponents: .date
-                            )
-                            .datePickerStyle(GraphicalDatePickerStyle())
-                            .alert(dateString, isPresented: $showingDateChangeConfirmation) {
-                                Button(Strings.okButton.localized, role: .cancel) {
-                                    update()
-                                    dataController.save()
-                                }
-                            } message: {
-                                dateChangeConfirmationAlertMessage
-                            }
-                        }, label: {
-                            Text("\(date.formatted(date: .complete, time: .omitted))")
-                        }
-                    )
+                    Button {
+                        showingDateConfirmationDialog = true
+                    } label: {
+                        Text("\(date.formatted(date: .complete, time: .omitted))")
+                    }
                     .accessibilityIdentifier("Workout Date")
+                    .confirmationDialog("Select a date",
+                                        isPresented: $showingDateConfirmationDialog) {
+                        Button("Today") {
+                            withAnimation {
+                                saveNewWorkoutDate(dayOffset: 0)
+                            }
+                        }
+
+                        Button("Tomorrow") {
+                            withAnimation {
+                                saveNewWorkoutDate(dayOffset: 1)
+                            }
+                        }
+
+                        ForEach(2...7, id: \.self) { dayOffset in
+                            Button("\(getDateOption(dayOffset).formatted(date: .complete, time: .omitted))") {
+                                withAnimation {
+                                    saveNewWorkoutDate(dayOffset: Double(dayOffset))
+                                }
+                            }
+                        }
+                    } message: {
+                        Text("Select a date to schedule this workout on or view more date options.")
+                    }
                 }
+                .accessibilityIdentifier("Workout Date")
             }
 
             Section(header: Text("Exercises")) {
@@ -282,6 +296,17 @@ struct EditWorkoutView: View {
         .toolbar {
             completeScheduleWorkoutToolbarItem
         }
+    }
+
+    func getDateOption(_ dayOffset: Int) -> Date {
+        let dateOption = Date.now + Double(dayOffset * 86400)
+        return dateOption
+    }
+
+    func saveNewWorkoutDate(dayOffset: Double) {
+        date = Date.now + (dayOffset * 86400)
+        update()
+        dataController.save()
     }
 
     /// Synchronise the @State properties of the view with their Core Data equivalents in whichever Workout
