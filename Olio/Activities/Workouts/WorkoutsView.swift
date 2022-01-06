@@ -26,6 +26,9 @@ struct WorkoutsView: View {
     /// Boolean indicating whether the action sheet used to add a new template or exercise is displayed.
     @State private var showingAddConfirmationDialog = false
 
+    /// Boolean to indicate whether the alert confirming the workout has been completed is displayed.
+    @State private var showingCompleteConfirmation = false
+
     init(dataController: DataController,
          showingCompletedWorkouts: Bool) {
         let viewModel = ViewModel(dataController: dataController,
@@ -34,50 +37,36 @@ struct WorkoutsView: View {
     }
 
     /// Computed property to get the text displayed in the navigation title of the view.
-    ///
-    /// Conditional on whether completed or scheduled workouts are being displayed.
     var navigationTitleLocalizedStringKey: Text {
         viewModel.showingCompletedWorkouts
         ? Text(.historyTab)
         : Text(.homeTab)
     }
 
-    /// Toolbar button that displays an action sheet to add a new template or workout.
-    var addWorkoutToolbarItem: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarTrailing) {
-            if !viewModel.showingCompletedWorkouts {
-                Button {
-                    showingAddConfirmationDialog = true
-                } label: {
-                    Label("Add", systemImage: "plus")
-                }
-                .confirmationDialog(Text(.selectOption),
-                                    isPresented: $showingAddConfirmationDialog) {
-                    Button(Strings.newTemplate.localized) {
-                        withAnimation {
-                            viewModel.addTemplate()
-                        }
-                    }
-                    .accessibilityIdentifier("Add New Template")
+    /// Computed property that derives the title of an alert displayed when a user completes or schedules a workout.
+    var completeRescheduleAlertTitle: Text {
+        viewModel.showingCompletedWorkouts
+        ? Text(.workoutScheduledAlertTitle)
+        : Text(.workoutCompletedAlertTitle)
+    }
 
-                    Button(Strings.newWorkout.localized) {
-                        withAnimation {
-                            viewModel.addWorkout()
-                        }
-                    }
-                    .accessibilityIdentifier("Add New Workout")
+    /// Computed property that derives the message of an alert displayed when a user completes or schedules a workout.
+    var completeRescheduleAlertMessage: Text {
+        viewModel.showingCompletedWorkouts
+        ? Text(.workoutScheduledAlertMessage)
+        : Text(.workoutCompletedAlertMessage)
+    }
 
-                    Button(Strings.cancelButton.localized, role: .cancel) {
-                        showingAddConfirmationDialog = false
-                    }
-                }
-            }
-        }
+    /// Button copy used in alert presented after a user completes or reschedules a workout.
+    var completeScheduleWorkoutButton: LocalizedStringKey {
+        return viewModel.showingCompletedWorkouts
+        ? Strings.rescheduleButton.localized
+        : Strings.completeButton.localized
     }
 
     /// Toolbar button to add sample data to the app.
     var addSampleDataToolbarItem: some ToolbarContent {
-        ToolbarItem(placement: .navigationBarLeading) {
+        ToolbarItem(placement: .navigationBarTrailing) {
             Button("Sample Data") {
                 viewModel.createSampleData()
             }
@@ -102,6 +91,18 @@ struct WorkoutsView: View {
                     ForEach(viewModel.filterByDate(date,
                                                    workouts: viewModel.sortedWorkouts)) { workout in
                         WorkoutRowView(workout: workout)
+                            .swipeActions(edge: .leading) {
+                                Button {
+                                    showingCompleteConfirmation = true
+                                } label: {
+                                    if viewModel.showingCompletedWorkouts {
+                                        Label(Strings.rescheduleButton.localized, systemImage: "calendar")
+                                    } else {
+                                        Label(Strings.completeButton.localized, systemImage: "checkmark.circle")
+                                    }
+                                }
+                                .tint(viewModel.showingCompletedWorkouts ? .indigo : .green)
+                            }
                             .swipeActions(edge: .trailing) {
                                 Button(role: .destructive) {
                                     withAnimation {
@@ -111,6 +112,16 @@ struct WorkoutsView: View {
                                     Label(Strings.deleteButton.localized, systemImage: "trash")
                                         .labelStyle(.titleAndIcon)
                                 }
+                            }
+                            .alert(completeRescheduleAlertTitle,
+                                   isPresented: $showingCompleteConfirmation) {
+                                Button(completeScheduleWorkoutButton) {
+                                    viewModel.toggleWorkoutCompletionStatus(workout)
+                                }
+
+                                Button(Strings.cancelButton.localized, role: .cancel, action: { })
+                            } message: {
+                                completeRescheduleAlertMessage
                             }
                     }
                 }
@@ -136,7 +147,6 @@ struct WorkoutsView: View {
             .navigationTitle(navigationTitleLocalizedStringKey)
             .toolbar {
                 addSampleDataToolbarItem
-                addWorkoutToolbarItem
             }
         }
     }

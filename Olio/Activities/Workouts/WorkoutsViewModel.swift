@@ -135,6 +135,12 @@ extension WorkoutsView {
             return workouts.filter { Calendar.current.startOfDay(for: $0.workoutDate) == date }
         }
 
+        /// Toggles a given workout's completion status.
+        /// - Parameter workout: The workout to toggle completion status of.
+        func toggleWorkoutCompletionStatus(_ workout: Workout) {
+            workout.completed.toggle()
+        }
+
         /// Deletes a workout from the Core Data context.
         /// - Parameter workout: The workout to delete.
         func deleteWorkout(_ workout: Workout) {
