@@ -153,6 +153,14 @@ class DataController: ObservableObject {
         }
     }
 
+    func completeAllSetsInWorkout(_ exercise: Exercise, _ workout: Workout) {
+        let allExerciseSetsInWorkout = exercise.exerciseSets.filter({ $0.workout == workout })
+
+        for exerciseSet in allExerciseSetsInWorkout {
+            exerciseSet.completed = true
+        }
+    }
+
     /// Batch deletes all workouts, exercises and sets from the Core Data context.
     func deleteAll() {
         let workoutFetchRequest: NSFetchRequest<NSFetchRequestResult> = Workout.fetchRequest()

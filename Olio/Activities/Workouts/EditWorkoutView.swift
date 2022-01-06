@@ -64,20 +64,14 @@ struct EditWorkoutView: View {
         }
     }
 
-    // Navigation bar
-
     /// Computed property to get the text displayed in the navigation title of the view.
     var navigationTitle: Text {
-        workout.template
-        ? Text(.editTemplateNavigationTitle)
-        : Text(.editWorkoutNavigationTitle)
+        workout.template ? Text(.editTemplateNavigationTitle) : Text(.editWorkoutNavigationTitle)
     }
 
     /// Button copy used in alert presented after a user completes or reschedules a workout.
     var completeScheduleWorkoutButton: LocalizedStringKey {
-        return workout.completed
-        ? Strings.rescheduleButton.localized
-        : Strings.completeButton.localized
+        return workout.completed ? Strings.rescheduleButton.localized : Strings.completeButton.localized
     }
 
     /// Toolbar button that displays a sheet containing AddExerciseToWorkoutView.
@@ -111,13 +105,9 @@ struct EditWorkoutView: View {
         }
     }
 
-    // Workout date
-
     /// Computed property to get the text displayed in the section header for the workout date.
     var workoutDateSectionHeader: Text {
-        workout.completed
-        ? Text(.completedSectionHeader)
-        : Text(.scheduledSectionHeader)
+        workout.completed ? Text(.completedSectionHeader) : Text(.scheduledSectionHeader)
     }
 
     /// Computed property to get the date string of the workout formatted to omit the time component but show the date
@@ -176,8 +166,6 @@ struct EditWorkoutView: View {
         }
     }
 
-    // Exercise list
-
     /// The list of exercises contained in the workout, as well as a button to add additional exercises.
     var workoutExerciseList: some View {
         List {
@@ -185,15 +173,30 @@ struct EditWorkoutView: View {
             ForEach(sortedExercises, id: \.self) { exercise in
                 EditWorkoutExerciseListView(workout: workout,
                                             exercise: exercise)
-            }
-            .onDelete { offsets in
-                let allExercises = sortedExercises
-
-                for offset in offsets {
-                    let exerciseToDelete = allExercises[offset]
-                    dataController.removeExerciseFromWorkout(exerciseToDelete, workout)
-                    dataController.save()
-                }
+                    .swipeActions(edge: .trailing) {
+                        Button(role: .destructive) {
+                            withAnimation {
+                                dataController.removeExerciseFromWorkout(exercise, workout)
+                                dataController.save()
+                            }
+                        } label: {
+                            Label(Strings.deleteButton.localized, systemImage: "trash")
+                                .labelStyle(.titleAndIcon)
+                        }
+                    }
+                    .swipeActions(edge: .leading) {
+                        Button {
+                            withAnimation {
+                                dataController.completeAllSetsInWorkout(exercise, workout)
+                                update()
+                                dataController.save()
+                            }
+                        } label: {
+                            Label(Strings.completeButton.localized, systemImage: "checkmark.circle")
+                                .labelStyle(.titleAndIcon)
+                        }
+                        .tint(.green)
+                    }
             }
 
             // Button to add a new exercise to the workout.
@@ -209,8 +212,6 @@ struct EditWorkoutView: View {
             }
         }
     }
-
-    // Create workout/template from template/workout
 
     /// Button enabling the user to create a template from a workout.
     var createTemplateFromWorkoutButton: some View {
@@ -253,8 +254,6 @@ struct EditWorkoutView: View {
         }
     }
 
-    // Delete workout
-
     /// Button to delete the workout.
     var deleteWorkoutButton: some View {
         Button(deleteWorkoutTemplateButtonText, role: .destructive) {
@@ -275,16 +274,12 @@ struct EditWorkoutView: View {
 
     /// Computed property to get text displayed on the button for deleting a workout.
     var deleteWorkoutTemplateButtonText: LocalizedStringKey {
-        workout.template
-        ? Strings.deleteTemplateButton.localized
-        : Strings.deleteWorkoutButton.localized
+        workout.template ? Strings.deleteTemplateButton.localized : Strings.deleteWorkoutButton.localized
     }
 
     /// Computed property to get the text displayed in the alert message shown when deleting a workout.
     var deleteWorkoutTemplateAlertMessage: Text {
-        workout.template
-        ? Text(.deleteTemplateConfirmationMessage)
-        : Text(.deleteWorkoutConfirmationMessage)
+        workout.template ? Text(.deleteTemplateConfirmationMessage) : Text(.deleteWorkoutConfirmationMessage)
     }
 
     var body: some View {
