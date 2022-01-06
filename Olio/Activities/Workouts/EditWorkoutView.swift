@@ -8,6 +8,7 @@
 import SwiftUI
 
 /// A view to edit the details of a given workout, including templates.
+// swiftlint:disable:next type_body_length
 struct EditWorkoutView: View {
     /// The workout used to construct this view.
     @ObservedObject var workout: Workout
@@ -124,7 +125,7 @@ struct EditWorkoutView: View {
     var dateString: String {
         date.formatted(date: .complete, time: .omitted)
     }
-    
+
     /// The confirmation dialog displayed when the user is scheduling a workout.
     var workoutDateConfirmationDialog: some View {
         Group {
