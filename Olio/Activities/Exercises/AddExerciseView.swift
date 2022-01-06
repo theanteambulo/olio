@@ -27,7 +27,7 @@ struct AddExerciseView: View {
     @State private var name = ""
 
     /// The exercise's category property value.
-    @State private var exerciseCategory = 1
+    @State private var exerciseCategory: Int
 
     /// The exercise's muscle group property value.
     @State private var muscleGroup = 1
@@ -35,7 +35,20 @@ struct AddExerciseView: View {
     /// Boolean to indicate whether the alert warning the user the alert already exists is displayed.
     @State private var showingExerciseAlreadyExistsAlert = false
 
-    init() {
+    init(currentlyActiveExerciseCategory: String) {
+        switch currentlyActiveExerciseCategory {
+        case "Weights":
+            _exerciseCategory = State(wrappedValue: 1)
+        case "Body":
+            _exerciseCategory = State(wrappedValue: 2)
+        case "Cardio":
+            _exerciseCategory = State(wrappedValue: 3)
+        case "Class":
+            _exerciseCategory = State(wrappedValue: 4)
+        default:
+            _exerciseCategory = State(wrappedValue: 5)
+        }
+
         exercises = FetchRequest(
             entity: Exercise.entity(),
             sortDescriptors: [NSSortDescriptor(keyPath: \Exercise.name,
@@ -147,6 +160,6 @@ struct AddExerciseView: View {
 
 struct AddExerciseView_Previews: PreviewProvider {
     static var previews: some View {
-        AddExerciseView()
+        AddExerciseView(currentlyActiveExerciseCategory: "Weights")
     }
 }

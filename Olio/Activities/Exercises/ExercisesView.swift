@@ -33,7 +33,7 @@ struct ExercisesView: View {
                 Label("Add", systemImage: "plus")
             }
             .sheet(isPresented: $showingAddExerciseSheet) {
-                AddExerciseView()
+                AddExerciseView(currentlyActiveExerciseCategory: viewModel.exerciseCategory)
             }
         }
     }
