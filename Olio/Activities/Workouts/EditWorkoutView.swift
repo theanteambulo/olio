@@ -124,6 +124,40 @@ struct EditWorkoutView: View {
     var dateString: String {
         date.formatted(date: .complete, time: .omitted)
     }
+    
+    /// The confirmation dialog displayed when the user is scheduling a workout.
+    var workoutDateConfirmationDialog: some View {
+        Group {
+            Button(Strings.today.localized) {
+                saveNewWorkoutDate(dayOffset: 0)
+
+                if workout.template {
+                    createWorkoutFromExisting(workout,
+                                              newWorkoutIsTemplate: false)
+                }
+            }
+
+            Button(Strings.tomorrow.localized) {
+                saveNewWorkoutDate(dayOffset: 1)
+
+                if workout.template {
+                    createWorkoutFromExisting(workout,
+                                              newWorkoutIsTemplate: false)
+                }
+            }
+
+            ForEach(2...7, id: \.self) { dayOffset in
+                Button("\(getDateOption(dayOffset).formatted(date: .complete, time: .omitted))") {
+                    saveNewWorkoutDate(dayOffset: Double(dayOffset))
+
+                    if workout.template {
+                        createWorkoutFromExisting(workout,
+                                                  newWorkoutIsTemplate: false)
+                    }
+                }
+            }
+        }
+    }
 
     /// Button that presents a confirmation dialog enabling the user to schedule a workout for up to 7 days in advance.
     var workoutDateButton: some View {
@@ -135,19 +169,7 @@ struct EditWorkoutView: View {
         .accessibilityIdentifier("Workout date")
         .confirmationDialog(Strings.selectWorkoutDateLabel.localized,
                             isPresented: $showingDateConfirmationDialog) {
-            Button(Strings.today.localized) {
-                saveNewWorkoutDate(dayOffset: 0)
-            }
-
-            Button(Strings.tomorrow.localized) {
-                saveNewWorkoutDate(dayOffset: 1)
-            }
-
-            ForEach(2...7, id: \.self) { dayOffset in
-                Button("\(getDateOption(dayOffset).formatted(date: .complete, time: .omitted))") {
-                    saveNewWorkoutDate(dayOffset: Double(dayOffset))
-                }
-            }
+            workoutDateConfirmationDialog
         } message: {
             Text(.selectWorkoutDateMessage)
         }
@@ -215,13 +237,18 @@ struct EditWorkoutView: View {
         .alert(Strings.createWorkoutConfirmationTitle.localized,
                isPresented: $showingCreateWorkoutConfirmation) {
             Button(Strings.confirmButton.localized) {
-                createWorkoutFromExisting(workout,
-                                          newWorkoutIsTemplate: false)
+                showingDateConfirmationDialog = true
             }
 
             Button(Strings.cancelButton.localized, role: .cancel) { }
         } message: {
             Text(.createWorkoutConfirmationMessage)
+        }
+        .confirmationDialog("Schedule workout",
+                            isPresented: $showingDateConfirmationDialog) {
+            workoutDateConfirmationDialog
+        } message: {
+            Text(.selectWorkoutDateMessage)
         }
     }
 
@@ -263,7 +290,7 @@ struct EditWorkoutView: View {
         Form {
             Section(header: Text(.basicSettings)) {
                 TextField(Strings.workoutName.localized,
-                          text: $name)
+                          text: $name.onChange(update))
             }
 
             if !workout.template {
@@ -330,7 +357,7 @@ struct EditWorkoutView: View {
         let newWorkout = Workout(context: managedObjectContext)
         newWorkout.id = UUID()
         newWorkout.name = workout.workoutName
-        newWorkout.date = Date()
+        newWorkout.date = date
         newWorkout.completed = false
 
         if newWorkoutIsTemplate {

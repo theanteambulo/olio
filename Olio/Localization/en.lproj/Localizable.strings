@@ -38,7 +38,7 @@
 "today" = "Today";
 "tomorrow" = "Tomorrow";
 "selectWorkoutDateLabel" = "Select a workout date";
-"selectWorkoutDateMessage" = "Select a date to schedule this workout on or view more date options.";
+"selectWorkoutDateMessage" = "Select a date to schedule this workout on.";
 "scheduleWorkout" = "Schedule workout";
 "completeWorkout" = "Complete workout";
 "createTemplateFromWorkoutButton" = "Create template from workout";
