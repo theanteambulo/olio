@@ -116,8 +116,7 @@ struct EditWorkoutView: View {
                 saveNewWorkoutDate(dayOffset: 0)
 
                 if workout.template {
-                    createWorkoutFromExisting(workout,
-                                              newWorkoutIsTemplate: false)
+                    createWorkoutFromExisting(workout, newWorkoutIsTemplate: false)
                 }
             }
 
@@ -125,8 +124,7 @@ struct EditWorkoutView: View {
                 saveNewWorkoutDate(dayOffset: 1)
 
                 if workout.template {
-                    createWorkoutFromExisting(workout,
-                                              newWorkoutIsTemplate: false)
+                    createWorkoutFromExisting(workout, newWorkoutIsTemplate: false)
                 }
             }
 
@@ -135,8 +133,7 @@ struct EditWorkoutView: View {
                     saveNewWorkoutDate(dayOffset: Double(dayOffset))
 
                     if workout.template {
-                        createWorkoutFromExisting(workout,
-                                                  newWorkoutIsTemplate: false)
+                        createWorkoutFromExisting(workout, newWorkoutIsTemplate: false)
                     }
                 }
             }
@@ -186,7 +183,7 @@ struct EditWorkoutView: View {
                             Label(Strings.addSet.localized, systemImage: "plus.circle")
                                 .labelStyle(.titleAndIcon)
                         }
-                        .tint(.indigo)
+                        .tint(.blue)
 
                         Button {
                             withAnimation {
@@ -219,7 +216,7 @@ struct EditWorkoutView: View {
     /// Button enabling the user to create a template from a workout.
     var createTemplateFromWorkoutButton: some View {
         Button(Strings.createTemplateFromWorkoutButton.localized) {
-            showingCreateTemplateConfirmation.toggle()
+            showingCreateTemplateConfirmation = true
         }
         .alert(Strings.createTemplateConfirmationTitle.localized,
                isPresented: $showingCreateTemplateConfirmation) {
@@ -237,7 +234,7 @@ struct EditWorkoutView: View {
     /// Button enabling the user to create a workout from a template.
     var createWorkoutFromTemplateButton: some View {
         Button(Strings.createWorkoutFromTemplateButton.localized) {
-             showingCreateWorkoutConfirmation.toggle()
+             showingCreateWorkoutConfirmation = true
         }
         .alert(Strings.createWorkoutConfirmationTitle.localized,
                isPresented: $showingCreateWorkoutConfirmation) {
@@ -260,7 +257,7 @@ struct EditWorkoutView: View {
     /// Button to delete the workout.
     var deleteWorkoutButton: some View {
         Button(deleteWorkoutTemplateButtonText, role: .destructive) {
-            showingDeleteWorkoutConfirmation.toggle()
+            showingDeleteWorkoutConfirmation = true
         }
         .tint(.red)
         .alert(Strings.areYouSureAlertTitle.localized,
