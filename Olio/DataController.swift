@@ -186,6 +186,48 @@ class DataController: ObservableObject {
         }
     }
 
+    /// Create a workout or template from a given workout or template.
+    /// - Parameters:
+    ///   - workout: The workout to use as the basis for creating a new workout.
+    ///   - newWorkoutIsTemplate: Boolean to indicate whether the workout being created is a template or not.
+    func createNewWorkoutOrTemplateFromExisting(_ workout: Workout,
+                                                isTemplate: Bool,
+                                                scheduledOn date: Date? = nil) {
+        let viewContext = container.viewContext
+
+        let newWorkout = Workout(context: viewContext)
+        newWorkout.id = UUID()
+        newWorkout.name = workout.workoutName
+        newWorkout.date = date
+        newWorkout.completed = false
+
+        if isTemplate {
+            newWorkout.template = true
+        } else {
+            newWorkout.template = false
+        }
+
+        var newWorkoutSets = [ExerciseSet]()
+
+        for exerciseSet in workout.workoutExerciseSets.sorted(by: \ExerciseSet.exerciseSetCreationDate) {
+            let exerciseSetToAdd = ExerciseSet(context: viewContext)
+            exerciseSetToAdd.id = UUID()
+            exerciseSetToAdd.workout = newWorkout
+            exerciseSetToAdd.exercise = exerciseSet.exercise
+            exerciseSetToAdd.weight = Double(exerciseSet.exerciseSetWeight)
+            exerciseSetToAdd.reps = Int16(exerciseSet.exerciseSetReps)
+            exerciseSetToAdd.distance = Double(exerciseSet.exerciseSetDistance)
+            exerciseSetToAdd.duration = Int16(exerciseSet.exerciseSetDuration)
+            exerciseSetToAdd.creationDate = Date()
+            exerciseSetToAdd.completed = false
+
+            newWorkoutSets.append(exerciseSetToAdd)
+        }
+
+        newWorkout.exercises = NSSet(array: workout.workoutExercises)
+        newWorkout.sets = NSSet(array: newWorkoutSets)
+    }
+
     func completeAllSets(forExercise exercise: Exercise, inWorkout workout: Workout) {
         let allExerciseSetsInWorkout = exercise.exerciseSets.filter({ $0.workout == workout })
 
