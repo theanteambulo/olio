@@ -8,7 +8,6 @@
 import SwiftUI
 
 /// A view to edit the details of a given workout, including templates.
-// swiftlint:disable:next type_body_length
 struct EditWorkoutView: View {
     /// The workout used to construct this view.
     @ObservedObject var workout: Workout
@@ -21,8 +20,6 @@ struct EditWorkoutView: View {
 
     /// The workout's name property value.
     @State private var name: String
-    /// The workout's date property value.
-    @State private var date: Date
 
     /// Boolean to indicate whether the sheet used for adding an exercise to the workout is displayed.
     @State private var showingAddExerciseSheet = false
@@ -43,7 +40,6 @@ struct EditWorkoutView: View {
         self.workout = workout
 
         _name = State(wrappedValue: workout.workoutName)
-        _date = State(wrappedValue: workout.workoutDate)
     }
 
     /// Computed property to sort exercises by name.
@@ -106,38 +102,7 @@ struct EditWorkoutView: View {
     /// Computed property to get the date string of the workout formatted to omit the time component but show the date
     /// in full.
     var dateString: String {
-        date.formatted(date: .complete, time: .omitted)
-    }
-
-    /// The confirmation dialog displayed when the user is scheduling a workout.
-    var workoutDateConfirmationDialog: some View {
-        Group {
-            Button(Strings.today.localized) {
-                saveNewWorkoutDate(dayOffset: 0)
-
-                if workout.template {
-                    createWorkoutFromExisting(workout, newWorkoutIsTemplate: false)
-                }
-            }
-
-            Button(Strings.tomorrow.localized) {
-                saveNewWorkoutDate(dayOffset: 1)
-
-                if workout.template {
-                    createWorkoutFromExisting(workout, newWorkoutIsTemplate: false)
-                }
-            }
-
-            ForEach(2...7, id: \.self) { dayOffset in
-                Button("\(getDateOption(dayOffset).formatted(date: .complete, time: .omitted))") {
-                    saveNewWorkoutDate(dayOffset: Double(dayOffset))
-
-                    if workout.template {
-                        createWorkoutFromExisting(workout, newWorkoutIsTemplate: false)
-                    }
-                }
-            }
-        }
+        workout.workoutDate.formatted(date: .complete, time: .omitted)
     }
 
     /// Button that presents a confirmation dialog enabling the user to schedule a workout for up to 7 days in advance.
@@ -145,12 +110,12 @@ struct EditWorkoutView: View {
         Button {
             showingDateConfirmationDialog = true
         } label: {
-            Text(dateString)
+            Text(workout.workoutDate.formatted(date: .complete, time: .omitted))
         }
         .accessibilityIdentifier("Workout date")
         .confirmationDialog(Strings.selectWorkoutDateLabel.localized,
                             isPresented: $showingDateConfirmationDialog) {
-            workoutDateConfirmationDialog
+            WorkoutDateConfirmationDialog(workout: workout)
         } message: {
             Text(.selectWorkoutDateMessage)
         }
@@ -221,8 +186,8 @@ struct EditWorkoutView: View {
         .alert(Strings.createTemplateConfirmationTitle.localized,
                isPresented: $showingCreateTemplateConfirmation) {
             Button(Strings.confirmButton.localized) {
-                createWorkoutFromExisting(workout,
-                                          newWorkoutIsTemplate: true)
+                dataController.createNewWorkoutOrTemplateFromExisting(workout,
+                                                                      isTemplate: true)
             }
 
             Button(Strings.cancelButton.localized, role: .cancel) { }
@@ -248,7 +213,7 @@ struct EditWorkoutView: View {
         }
         .confirmationDialog("Schedule workout",
                             isPresented: $showingDateConfirmationDialog) {
-            workoutDateConfirmationDialog
+            WorkoutDateConfirmationDialog(workout: workout)
         } message: {
             Text(.selectWorkoutDateMessage)
         }
@@ -320,20 +285,6 @@ struct EditWorkoutView: View {
         }
     }
 
-    /// Returns a date offset by a given number of days from today.
-    /// - Parameter dayOffset: The number of days offset from the current date the workout option will be.
-    /// - Returns: A date offset by a given number of days from today.
-    func getDateOption(_ dayOffset: Int) -> Date {
-        let dateOption = Date.now + Double(dayOffset * 86400)
-        return dateOption
-    }
-
-    /// Saves the new workout date the user selected.
-    /// - Parameter dayOffset: The number of days offset from the current date the workout is scheduled on.
-    func saveNewWorkoutDate(dayOffset: Double) {
-        date = Date.now + (dayOffset * 86400)
-    }
-
     /// Synchronise the @State properties of the view with their Core Data equivalents in whichever Workout
     /// object is being edited.
     ///
@@ -342,47 +293,6 @@ struct EditWorkoutView: View {
         workout.objectWillChange.send()
 
         workout.name = name
-        workout.date = date
-    }
-
-    /// Create a workout or template from a given workout or template.
-    /// - Parameters:
-    ///   - workout: The workout to use as the basis for creating a new workout.
-    ///   - newWorkoutIsTemplate: Boolean to indicate whether the workout being created is a template or not.
-    func createWorkoutFromExisting(_ workout: Workout, newWorkoutIsTemplate: Bool) {
-        let newWorkout = Workout(context: managedObjectContext)
-        newWorkout.id = UUID()
-        newWorkout.name = workout.workoutName
-        newWorkout.date = date
-        newWorkout.completed = false
-
-        if newWorkoutIsTemplate {
-            newWorkout.template = true
-        } else {
-            newWorkout.template = false
-        }
-
-        var newWorkoutSets = [ExerciseSet]()
-
-        for exerciseSet in workout.workoutExerciseSets.sorted(by: \ExerciseSet.exerciseSetCreationDate) {
-            let exerciseSetToAdd = ExerciseSet(context: managedObjectContext)
-            exerciseSetToAdd.id = UUID()
-            exerciseSetToAdd.workout = newWorkout
-            exerciseSetToAdd.exercise = exerciseSet.exercise
-            exerciseSetToAdd.weight = Double(exerciseSet.exerciseSetWeight)
-            exerciseSetToAdd.reps = Int16(exerciseSet.exerciseSetReps)
-            exerciseSetToAdd.distance = Double(exerciseSet.exerciseSetDistance)
-            exerciseSetToAdd.duration = Int16(exerciseSet.exerciseSetDuration)
-            exerciseSetToAdd.creationDate = Date()
-            exerciseSetToAdd.completed = false
-
-            newWorkoutSets.append(exerciseSetToAdd)
-        }
-
-        newWorkout.exercises = NSSet(array: workout.workoutExercises)
-        newWorkout.sets = NSSet(array: newWorkoutSets)
-
-        dataController.save()
     }
 }
 
