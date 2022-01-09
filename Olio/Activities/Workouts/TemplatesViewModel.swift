@@ -53,16 +53,15 @@ extension TemplatesView {
         /// Notifies TemplatesView when the underlying array of workouts changes.
         /// - Parameter controller: The controller that manages the results of the view model's Core Data fetch request.
         func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-            if let newTemplates = controller.fetchedObjects as? [Workout] {
-                templates = newTemplates
-            }
+            templates = controller.fetchedObjects as? [Workout] ?? []
         }
 
         /// Creates a new template workout.
         func addTemplate() {
             let workout = Workout(context: dataController.container.viewContext)
             workout.id = UUID()
-            workout.date = Date()
+            workout.date = Date.now
+            workout.createdDate = Date.now
             workout.completed = false
             workout.template = true
             dataController.save()
