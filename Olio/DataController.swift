@@ -199,6 +199,7 @@ class DataController: ObservableObject {
         newWorkout.id = UUID()
         newWorkout.name = workout.workoutName
         newWorkout.date = date
+        newWorkout.createdDate = Date.now
         newWorkout.completed = false
 
         if isTemplate {
@@ -228,6 +229,10 @@ class DataController: ObservableObject {
         newWorkout.sets = NSSet(array: newWorkoutSets)
     }
 
+    /// Completes all sets for a given exercise in a given workout.
+    /// - Parameters:
+    ///   - exercise: The exercise to which the sets to complete belong.
+    ///   - workout: The workout to which the sets to complete belong.
     func completeAllSets(forExercise exercise: Exercise, inWorkout workout: Workout) {
         let allExerciseSetsInWorkout = exercise.exerciseSets.filter({ $0.workout == workout })
 
@@ -236,19 +241,34 @@ class DataController: ObservableObject {
         }
     }
 
-    /// Batch deletes all workouts, exercises and sets from the Core Data context.
+    /// Performs batch delete request for a given fetch request.
+    /// - Parameter fetchRequest: A fetch request.
+    private func delete(_ fetchRequest: NSFetchRequest<NSFetchRequestResult>) {
+        // Prepare the batch delete request.
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+
+        // Ensure IDs of deleted objects are sent back as array.
+        batchDeleteRequest.resultType = .resultTypeObjectIDs
+
+        if let delete = try? container.viewContext.execute(batchDeleteRequest) as? NSBatchDeleteResult {
+            // Put array of deleted object IDs into a dictionary.
+            let changes = [NSDeletedObjectsKey: delete.result as? [NSManagedObjectID] ?? []]
+
+            // Use dictionary to update view context with changes made to the persistent store.
+            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [container.viewContext])
+        }
+    }
+
+    /// Deletes all workouts, exercises and sets from the Core Data context.
     func deleteAll() {
-        let workoutFetchRequest: NSFetchRequest<NSFetchRequestResult> = Workout.fetchRequest()
-        let workoutBatchDeleteRequest = NSBatchDeleteRequest(fetchRequest: workoutFetchRequest)
-        _ = try? container.viewContext.execute(workoutBatchDeleteRequest)
+        let workoutsFetchRequest: NSFetchRequest<NSFetchRequestResult> = Workout.fetchRequest()
+        delete(workoutsFetchRequest)
 
-        let exerciseFetchRequest: NSFetchRequest<NSFetchRequestResult> = Exercise.fetchRequest()
-        let exerciseBatchDeleteRequest = NSBatchDeleteRequest(fetchRequest: exerciseFetchRequest)
-        _ = try? container.viewContext.execute(exerciseBatchDeleteRequest)
+        let exercisesFetchRequest: NSFetchRequest<NSFetchRequestResult> = Exercise.fetchRequest()
+        delete(exercisesFetchRequest)
 
-        let exerciseSetFetchRequest: NSFetchRequest<NSFetchRequestResult> = ExerciseSet.fetchRequest()
-        let exerciseSetBatchDeleteRequest = NSBatchDeleteRequest(fetchRequest: exerciseSetFetchRequest)
-        _ = try? container.viewContext.execute(exerciseSetBatchDeleteRequest)
+        let exerciseSetsFetchRequest: NSFetchRequest<NSFetchRequestResult> = ExerciseSet.fetchRequest()
+        delete(exerciseSetsFetchRequest)
     }
 
     /// Counts the number of objects in the Core Data context for a given FetchRequest, without actually having to
