@@ -16,30 +16,28 @@ struct ContentView: View {
     var body: some View {
         TabView(selection: $selectedView) {
             // "Home" tab - displays templates and scheduled workouts.
-            WorkoutsView(dataController: dataController,
-                         showingCompletedWorkouts: false)
+            HomeView(dataController: dataController, showingCompletedWorkouts: false)
                 .tabItem {
                     Image(systemName: "house")
-                    Text("Home")
+                    Text(.homeTab)
                 }
-                .tag(WorkoutsView.homeTag)
+                .tag(HomeView.homeTag)
                 .phoneOnlyStackNavigationView()
 
             // "History" tab - displays completed workouts.
-            WorkoutsView(dataController: dataController,
-                         showingCompletedWorkouts: true)
+            HomeView(dataController: dataController, showingCompletedWorkouts: true)
                 .tabItem {
                     Image(systemName: "list.dash")
-                    Text("History")
+                    Text(.historyTab)
                 }
-                .tag(WorkoutsView.historyTag)
+                .tag(HomeView.historyTag)
                 .phoneOnlyStackNavigationView()
 
             // "Exercises" tab - displays library of added exercises.
             ExercisesView(dataController: dataController)
                 .tabItem {
                     Image(systemName: "books.vertical")
-                    Text("Exercises")
+                    Text(.exercisesTab)
                 }
                 .tag(ExercisesView.tag)
                 .phoneOnlyStackNavigationView()
