@@ -36,6 +36,7 @@ struct TemplateCardView: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text("\(template.workoutName)")
                     .foregroundColor(.primary)
+                    .font(.headline)
                     .frame(minWidth: 125,
                            alignment: .leading)
 
@@ -49,13 +50,13 @@ struct TemplateCardView: View {
                     }
                 }
 
-                Text("\(template.workoutExercises.count) exercises")
-                    .foregroundColor(.secondary)
-                    .font(.caption)
+                Group {
+                    Text("\(template.workoutExercises.count) exercises")
 
-                Text("\(template.workoutExerciseSets.count) sets")
-                    .foregroundColor(.secondary)
-                    .font(.caption)
+                    Text("\(template.workoutExerciseSets.count) sets")
+                }
+                .font(.caption)
+                .foregroundColor(.white)
             }
         }
         .padding(10)
