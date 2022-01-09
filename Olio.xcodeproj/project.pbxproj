@@ -14,6 +14,8 @@
 		2321AF18274ECF710023F099 /* EditWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2321AF17274ECF710023F099 /* EditWorkoutView.swift */; };
 		232DF17427629D83007D7B57 /* TemplatesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232DF17327629D83007D7B57 /* TemplatesView.swift */; };
 		232DF17627629D96007D7B57 /* TemplatesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232DF17527629D96007D7B57 /* TemplatesViewModel.swift */; };
+		23480AA1278ADF380041FDE8 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23480AA0278ADF380041FDE8 /* HomeView.swift */; };
+		23480AA3278AE0270041FDE8 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23480AA2278AE0270041FDE8 /* HomeViewModel.swift */; };
 		236E4A2727523A780012C4B2 /* AddExerciseToWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236E4A2627523A780012C4B2 /* AddExerciseToWorkoutView.swift */; };
 		2375DA982758F6F100B2874B /* ExerciseHistoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375DA972758F6F100B2874B /* ExerciseHistoryRowView.swift */; };
 		237E95AC275B7DB200937AAF /* ProjectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E95AB275B7DB200937AAF /* ProjectTests.swift */; };
@@ -25,7 +27,6 @@
 		237E95C9275BB32600937AAF /* OlioUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237E95C8275BB32600937AAF /* OlioUITestsLaunchTests.swift */; };
 		238C708227858F96009A6F49 /* TimedExerciseSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C708127858F96009A6F49 /* TimedExerciseSetView.swift */; };
 		2394AA6427633F45000F06B4 /* ExercisesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2394AA6327633F45000F06B4 /* ExercisesViewModel.swift */; };
-		2396430F2762868700524792 /* WorkoutsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2396430E2762868700524792 /* WorkoutsViewModel.swift */; };
 		239743D72784CC4B000F3F51 /* ExerciseSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239743D62784CC4B000F3F51 /* ExerciseSheetView.swift */; };
 		239743D92784D654000F3F51 /* BodybuildingExerciseSetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239743D82784D654000F3F51 /* BodybuildingExerciseSetView.swift */; };
 		239743DB2784DD52000F3F51 /* ExerciseSetCompletionIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239743DA2784DD52000F3F51 /* ExerciseSetCompletionIcon.swift */; };
@@ -41,11 +42,11 @@
 		23AB0649274B7CF400BCBD28 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23AB0648274B7CF400BCBD28 /* Preview Assets.xcassets */; };
 		23AB0651274B7FCE00BCBD28 /* Main.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23AB064F274B7FCE00BCBD28 /* Main.xcdatamodeld */; };
 		23AB0655274B87A600BCBD28 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AB0654274B87A600BCBD28 /* DataController.swift */; };
+		23AC94CC2788332800BC1BA3 /* WorkoutDateConfirmationDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AC94CB2788332800BC1BA3 /* WorkoutDateConfirmationDialog.swift */; };
 		23ACD59727575DE600A24E1F /* EditWorkoutExerciseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ACD59627575DE600A24E1F /* EditWorkoutExerciseListView.swift */; };
 		23AE7E822758AAB9007D24DB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 23AE7E842758AAB9007D24DB /* Localizable.strings */; };
 		23AE7E882758AB0D007D24DB /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 23AE7E872758AB0D007D24DB /* Localizable.stringsdict */; };
 		23AE7E8C2758AB45007D24DB /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AE7E8B2758AB45007D24DB /* Strings.swift */; };
-		23B20E29275A044D00215A72 /* WorkoutsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20E28275A044D00215A72 /* WorkoutsView.swift */; };
 		23B20E32275A184700215A72 /* OlioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20E31275A184700215A72 /* OlioTests.swift */; };
 		23C29B472781FD05000861D0 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C29B462781FD05000861D0 /* ArrayExtension.swift */; };
 		23C97E2E274E251F005611A3 /* EditExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E2D274E251F005611A3 /* EditExerciseView.swift */; };
@@ -89,6 +90,8 @@
 		2321AF17274ECF710023F099 /* EditWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutView.swift; sourceTree = "<group>"; };
 		232DF17327629D83007D7B57 /* TemplatesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatesView.swift; sourceTree = "<group>"; };
 		232DF17527629D96007D7B57 /* TemplatesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplatesViewModel.swift; sourceTree = "<group>"; };
+		23480AA0278ADF380041FDE8 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		23480AA2278AE0270041FDE8 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		236E4A2627523A780012C4B2 /* AddExerciseToWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseToWorkoutView.swift; sourceTree = "<group>"; };
 		2375DA972758F6F100B2874B /* ExerciseHistoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryRowView.swift; sourceTree = "<group>"; };
 		237E95AB275B7DB200937AAF /* ProjectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTests.swift; sourceTree = "<group>"; };
@@ -102,7 +105,6 @@
 		237E95C8275BB32600937AAF /* OlioUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		238C708127858F96009A6F49 /* TimedExerciseSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimedExerciseSetView.swift; sourceTree = "<group>"; };
 		2394AA6327633F45000F06B4 /* ExercisesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisesViewModel.swift; sourceTree = "<group>"; };
-		2396430E2762868700524792 /* WorkoutsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutsViewModel.swift; sourceTree = "<group>"; };
 		239743D62784CC4B000F3F51 /* ExerciseSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSheetView.swift; sourceTree = "<group>"; };
 		239743D82784D654000F3F51 /* BodybuildingExerciseSetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodybuildingExerciseSetView.swift; sourceTree = "<group>"; };
 		239743DA2784DD52000F3F51 /* ExerciseSetCompletionIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSetCompletionIcon.swift; sourceTree = "<group>"; };
@@ -119,11 +121,11 @@
 		23AB0648274B7CF400BCBD28 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		23AB0650274B7FCE00BCBD28 /* Main.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Main.xcdatamodel; sourceTree = "<group>"; };
 		23AB0654274B87A600BCBD28 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		23AC94CB2788332800BC1BA3 /* WorkoutDateConfirmationDialog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDateConfirmationDialog.swift; sourceTree = "<group>"; };
 		23ACD59627575DE600A24E1F /* EditWorkoutExerciseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWorkoutExerciseListView.swift; sourceTree = "<group>"; };
 		23AE7E832758AAB9007D24DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		23AE7E872758AB0D007D24DB /* Localizable.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; path = Localizable.stringsdict; sourceTree = "<group>"; };
 		23AE7E8B2758AB45007D24DB /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
-		23B20E28275A044D00215A72 /* WorkoutsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutsView.swift; sourceTree = "<group>"; };
 		23B20E2F275A184700215A72 /* OlioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OlioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		23B20E31275A184700215A72 /* OlioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioTests.swift; sourceTree = "<group>"; };
 		23C29B462781FD05000861D0 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
@@ -178,13 +180,14 @@
 		2321AF16274ECF460023F099 /* Workouts */ = {
 			isa = PBXGroup;
 			children = (
-				23B20E28275A044D00215A72 /* WorkoutsView.swift */,
-				2396430E2762868700524792 /* WorkoutsViewModel.swift */,
+				23480AA0278ADF380041FDE8 /* HomeView.swift */,
+				23480AA2278AE0270041FDE8 /* HomeViewModel.swift */,
 				232DF17327629D83007D7B57 /* TemplatesView.swift */,
 				232DF17527629D96007D7B57 /* TemplatesViewModel.swift */,
 				23FE12682757F3240096FDD0 /* TemplateCardView.swift */,
 				23A1BA70274F742400AA5123 /* WorkoutRowView.swift */,
 				2321AF17274ECF710023F099 /* EditWorkoutView.swift */,
+				23AC94CB2788332800BC1BA3 /* WorkoutDateConfirmationDialog.swift */,
 				236E4A2627523A780012C4B2 /* AddExerciseToWorkoutView.swift */,
 				23ACD59627575DE600A24E1F /* EditWorkoutExerciseListView.swift */,
 				239743D62784CC4B000F3F51 /* ExerciseSheetView.swift */,
@@ -381,6 +384,8 @@
 			dependencies = (
 			);
 			name = Olio;
+			packageProductDependencies = (
+			);
 			productName = Olio;
 			productReference = 23AB063E274B7CF300BCBD28 /* Olio.app */;
 			productType = "com.apple.product-type.application";
@@ -439,6 +444,8 @@
 				Base,
 			);
 			mainGroup = 23AB0635274B7CF300BCBD28;
+			packageReferences = (
+			);
 			productRefGroup = 23AB063F274B7CF300BCBD28 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -534,6 +541,7 @@
 				23C97E2E274E251F005611A3 /* EditExerciseView.swift in Sources */,
 				23AB0651274B7FCE00BCBD28 /* Main.xcdatamodeld in Sources */,
 				239743D72784CC4B000F3F51 /* ExerciseSheetView.swift in Sources */,
+				23480AA1278ADF380041FDE8 /* HomeView.swift in Sources */,
 				2375DA982758F6F100B2874B /* ExerciseHistoryRowView.swift in Sources */,
 				23C97E30274E3C25005611A3 /* ExerciseRowView.swift in Sources */,
 				232DF17427629D83007D7B57 /* TemplatesView.swift in Sources */,
@@ -547,20 +555,20 @@
 				238C708227858F96009A6F49 /* TimedExerciseSetView.swift in Sources */,
 				230E70F1274D62C6007F6232 /* ExerciseExtension.swift in Sources */,
 				232DF17627629D96007D7B57 /* TemplatesViewModel.swift in Sources */,
+				23480AA3278AE0270041FDE8 /* HomeViewModel.swift in Sources */,
 				2394AA6427633F45000F06B4 /* ExercisesViewModel.swift in Sources */,
 				23AA141D275022B400AC637D /* AddExerciseView.swift in Sources */,
+				23AC94CC2788332800BC1BA3 /* WorkoutDateConfirmationDialog.swift in Sources */,
 				23AB0655274B87A600BCBD28 /* DataController.swift in Sources */,
 				23AB0644274B7CF300BCBD28 /* ContentView.swift in Sources */,
 				23C97E32274E548A005611A3 /* BindingExtension.swift in Sources */,
 				23A1BA71274F742400AA5123 /* WorkoutRowView.swift in Sources */,
 				23AE7E8C2758AB45007D24DB /* Strings.swift in Sources */,
-				2396430F2762868700524792 /* WorkoutsViewModel.swift in Sources */,
 				2321AF15274EC3E30023F099 /* ExerciseSetExtension.swift in Sources */,
 				23ACD59727575DE600A24E1F /* EditWorkoutExerciseListView.swift in Sources */,
 				23C29B472781FD05000861D0 /* ArrayExtension.swift in Sources */,
 				239743DB2784DD52000F3F51 /* ExerciseSetCompletionIcon.swift in Sources */,
 				23A368B62750C248000725E9 /* SequenceExtension.swift in Sources */,
-				23B20E29275A044D00215A72 /* WorkoutsView.swift in Sources */,
 				23AB0642274B7CF300BCBD28 /* OlioApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
