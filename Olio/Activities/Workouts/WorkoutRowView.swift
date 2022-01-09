@@ -13,7 +13,10 @@ struct WorkoutRowView: View {
     @ObservedObject var workout: Workout
 
     /// The array of colors corresponding to unique exercise categories in this workout.
-    private var exerciseCategoryColors: [Color]
+    private var exerciseCategoryColors: [Color] = [.red, .blue, .green, .yellow, .purple]
+
+    /// An array of Boolean values indicating whether a circle should be filled or not.
+    private var fillCircle: [Bool]
 
     /// A grid with a single row.
     var rows: [GridItem] {
@@ -22,37 +25,31 @@ struct WorkoutRowView: View {
 
     init(workout: Workout) {
         self.workout = workout
-        exerciseCategoryColors = [Color]()
-
-        for exercise in workout.workoutExercises.sorted(by: \.exerciseCategory) {
-            exerciseCategoryColors.append(exercise.getExerciseCategoryColor())
-        }
-
-        exerciseCategoryColors.removeDuplicates()
+        let workoutExerciseCategoryColors = workout.workoutExercises.map({ $0.getExerciseCategoryColor() })
+        fillCircle = exerciseCategoryColors.map({ workoutExerciseCategoryColors.contains($0) })
     }
 
     var body: some View {
         NavigationLink(destination: EditWorkoutView(workout: workout)) {
             VStack(alignment: .leading, spacing: 0) {
                 Text(workout.workoutName)
+                    .font(.headline)
 
-                if !workout.workoutExercises.isEmpty {
-                    LazyHGrid(rows: rows, spacing: 7) {
-                        ForEach(exerciseCategoryColors, id: \.self) { categoryColor in
-                            Circle()
-                                .frame(width: 7)
-                                .foregroundColor(categoryColor)
-                        }
+                LazyHGrid(rows: rows, spacing: 7) {
+                    ForEach(Array(zip(exerciseCategoryColors.indices,
+                                      exerciseCategoryColors)), id: \.1) { index, categoryColor in
+                        Circle()
+                            .strokeBorder(categoryColor, lineWidth: 1)
+                            .background(Circle().fill(fillCircle[index] ? categoryColor : .clear))
+                            .frame(width: 7)
                     }
                 }
 
                 Text("\(workout.workoutExercises.count) exercises")
                     .font(.caption)
-                    .foregroundColor(.secondary)
 
                 Text("\(workout.workoutExerciseSets.count) sets")
                     .font(.caption)
-                    .foregroundColor(.secondary)
             }
             .padding(.vertical, 5)
         }
