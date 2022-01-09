@@ -23,9 +23,14 @@ extension Workout {
                                     comment: "Create a new workout")
     }
 
-    /// The unwrapped date property of a workout.
+    /// The unwrapped date property of a workout indicating the date on which the workout is scheduled.
     var workoutDate: Date {
         date ?? Date()
+    }
+
+    /// The unwrapped created date property of a workout indicating the date the workout was created.
+    var workoutCreatedOn: Date {
+        createdDate ?? Date()
     }
 
     /// The unwrapped date property of a workout formatter as a string.
