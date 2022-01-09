@@ -98,9 +98,7 @@ extension ExercisesView {
         /// Notifies ExercisesView when the underlying array of exercises changes.
         /// - Parameter controller: The controller that manages the results of the view model's Core Data fetch request.
         func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-            if let newExercises = controller.fetchedObjects as? [Exercise] {
-                exercises = newExercises
-            }
+            exercises = controller.fetchedObjects as? [Exercise] ?? []
         }
     }
 }
