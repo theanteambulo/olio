@@ -8,6 +8,7 @@
 "addExercise" = "Add Exercise";
 "basicSettings" = "Basic Settings";
 "completeButton" = "Complete";
+"incompleteButton" = "Incomplete";
 "rescheduleButton" = "Reschedule";
 
 
