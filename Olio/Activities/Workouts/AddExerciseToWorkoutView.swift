@@ -61,6 +61,16 @@ struct AddExerciseToWorkoutView: View {
                                  exercises: sortedExercises).filter { !workout.workoutExercises.contains($0) }
     }
 
+    var dismissSheetToolbarButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarLeading) {
+            Button {
+                dismiss()
+            } label: {
+                Label("Close", systemImage: "xmark")
+            }
+        }
+    }
+
     var body: some View {
         NavigationView {
             VStack {
@@ -100,6 +110,9 @@ struct AddExerciseToWorkoutView: View {
                 }
             }
             .navigationTitle(Text(.addExercise))
+            .toolbar {
+                dismissSheetToolbarButton
+            }
         }
     }
 
