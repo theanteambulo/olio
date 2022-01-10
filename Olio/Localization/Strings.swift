@@ -91,6 +91,9 @@ enum Strings: LocalizedStringKey {
     case errorAlertTitle
     case duplicationErrorAlertMessage
     case emptyNameErrorAlertMessage
+    case noExercisesYetTitle
+    case noExercisesYetMessage
+    case loadOlioExercises
 
     // EDIT EXERCISE
     case editExerciseNavigationTitle

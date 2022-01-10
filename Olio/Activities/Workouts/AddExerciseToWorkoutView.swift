@@ -73,38 +73,75 @@ struct AddExerciseToWorkoutView: View {
 
     var body: some View {
         NavigationView {
-            VStack {
-                Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory) {
-                    Text(.weights).tag("Weights")
-                    Text(.body).tag("Body")
-                    Text(.cardio).tag("Cardio")
-                    Text(.exerciseClass).tag("Class")
-                    Text(.stretch).tag("Stretch")
-                }
-                .pickerStyle(SegmentedPickerStyle())
-                .padding(.horizontal)
+            Group {
+                if !sortedExercises.isEmpty {
+                    VStack {
+                        Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory) {
+                            Text(.weights).tag("Weights")
+                            Text(.body).tag("Body")
+                            Text(.cardio).tag("Cardio")
+                            Text(.exerciseClass).tag("Class")
+                            Text(.stretch).tag("Stretch")
+                        }
+                        .pickerStyle(SegmentedPickerStyle())
+                        .padding(.horizontal)
 
-                List {
-                    ForEach(Exercise.MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
-                        Section(header: Text(muscleGroup.rawValue)) {
-                            ForEach(filterExercisesToMuscleGroup(muscleGroup.rawValue,
-                                                                 exercises: filteredExercises)) { exercise in
-                                Button {
-                                    withAnimation {
-                                        addExerciseToWorkout(exercise)
-                                        dismiss()
-                                    }
-                                } label: {
-                                    HStack {
-                                        Circle()
-                                            .frame(width: 7)
-                                            .foregroundColor(exercise.getExerciseCategoryColor())
+                        List {
+                            ForEach(Exercise.MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
+                                Section(header: Text(muscleGroup.rawValue)) {
+                                    ForEach(filterExercisesToMuscleGroup(muscleGroup.rawValue,
+                                                                         exercises: filteredExercises)) { exercise in
+                                        Button {
+                                            withAnimation {
+                                                addExerciseToWorkout(exercise)
+                                                dismiss()
+                                            }
+                                        } label: {
+                                            HStack {
+                                                Circle()
+                                                    .frame(width: 7)
+                                                    .foregroundColor(exercise.getExerciseCategoryColor())
 
-                                        Text(exercise.exerciseName)
+                                                Text(exercise.exerciseName)
+                                            }
+                                            .foregroundColor(.primary)
+                                        }
                                     }
-                                    .foregroundColor(.primary)
                                 }
                             }
+                        }
+                    }
+                } else {
+                    ScrollView {
+                        VStack(alignment: .center) {
+                            Text(.noExercisesYetTitle)
+                                .font(.headline)
+                                .padding(.vertical)
+
+                            Text(.noExercisesYetMessage)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal)
+
+                            VStack {
+                                Button {
+                                    dataController.loadExerciseLibrary()
+                                    dataController.save()
+                                } label: {
+                                    HStack {
+                                        Spacer()
+
+                                        Text(.loadOlioExercises)
+
+                                        Spacer()
+                                    }
+                                }
+                            }
+                            .frame(minHeight: 44)
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
+                            .contentShape(Rectangle())
+                            .padding()
                         }
                     }
                 }
@@ -126,6 +163,11 @@ struct AddExerciseToWorkoutView: View {
         return exercises.filter { $0.exerciseMuscleGroup == muscleGroup }
     }
 
+    /// Filters a given array of Exercise objects by a given exercise category.
+    /// - Parameters:
+    ///   - exerciseCategory: The exercise category to filter by.
+    ///   - exercises: The array of Exercise objects to filter.
+    /// - Returns: An array of Exercise objects.
     func filterByExerciseCategory(_ exerciseCategory: Exercise.ExerciseCategory.RawValue,
                                   exercises: [Exercise]) -> [Exercise] {
         return exercises.filter { $0.exerciseCategory == exerciseCategory }
