@@ -139,7 +139,7 @@ struct EditWorkoutView: View {
                                 .labelStyle(.titleAndIcon)
                         }
                     }
-                    .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                    .swipeActions(edge: .leading, allowsFullSwipe: workout.template) {
                         Button {
                             dataController.addSet(toExercise: exercise, inWorkout: workout)
                             update()
@@ -150,17 +150,19 @@ struct EditWorkoutView: View {
                         }
                         .tint(.blue)
 
-                        Button {
-                            withAnimation {
-                                dataController.completeAllSets(forExercise: exercise, inWorkout: workout)
-                                update()
-                                dataController.save()
+                        if !workout.template {
+                            Button {
+                                withAnimation {
+                                    dataController.completeAllSets(forExercise: exercise, inWorkout: workout)
+                                    update()
+                                    dataController.save()
+                                }
+                            } label: {
+                                Label(Strings.completeButton.localized, systemImage: "checkmark.circle")
+                                    .labelStyle(.titleAndIcon)
                             }
-                        } label: {
-                            Label(Strings.completeButton.localized, systemImage: "checkmark.circle")
-                                .labelStyle(.titleAndIcon)
+                            .tint(.green)
                         }
-                        .tint(.green)
                     }
             }
 
