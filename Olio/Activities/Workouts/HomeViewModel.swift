@@ -25,6 +25,8 @@ extension HomeView {
         /// An array Date objects.
         @Published var workoutDates = [Date]()
 
+        var newWorkout: Workout?
+
         init(dataController: DataController,
              showingCompletedWorkouts: Bool) {
             self.dataController = dataController
@@ -76,15 +78,25 @@ extension HomeView {
         }
 
         /// Creates a new workout.
-        func addWorkout() {
+        func addWorkout(dayOffset: Double) {
             let newWorkout = Workout(context: dataController.container.viewContext)
             newWorkout.id = UUID()
             newWorkout.name = nil
-            newWorkout.date = Date.now
+            newWorkout.date = Date.now + (dayOffset * 86400)
             newWorkout.createdDate = Date.now
             newWorkout.completed = false
             newWorkout.template = false
             dataController.save()
+
+            self.newWorkout = newWorkout
+        }
+
+        /// Returns a date offset by a given number of days from today.
+        /// - Parameter dayOffset: The number of days offset from the current date the workout option will be.
+        /// - Returns: A date offset by a given number of days from today.
+        func date(for dayOffset: Int) -> Date {
+            let dateOption = Date.now + Double(dayOffset * 86400)
+            return dateOption
         }
 
         /// Toggles the completion status of a given workout.

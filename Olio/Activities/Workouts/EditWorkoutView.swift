@@ -211,7 +211,7 @@ struct EditWorkoutView: View {
         } message: {
             Text(.createWorkoutConfirmationMessage)
         }
-        .confirmationDialog("Schedule workout",
+        .confirmationDialog(Strings.scheduleWorkout.localized,
                             isPresented: $showingDateConfirmationDialog) {
             WorkoutDateConfirmationDialog(workout: workout)
         } message: {

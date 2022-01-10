@@ -16,8 +16,8 @@ struct HomeView: View {
     /// transformations required to prepare that data for presentation.
     @StateObject var viewModel: ViewModel
 
-    /// Boolean to indicate whether a confirmation dialog is being shown. Toggled when a user swipes to reschedule.
-    @State private var showingSwipeToRescheduleDialog = false
+    /// Boolean to indicate whether the confirmation dialog used for changing the workout date is displayed.
+    @State private var showingDateConfirmationDialog = false
 
     /// Tag value for the "Home" tab.
     static let homeTag: String? = "Home"
@@ -70,11 +70,27 @@ struct HomeView: View {
                     // Add a new workout - displayed only when not viewing completed workouts.
                     if !viewModel.showingCompletedWorkouts {
                         Button {
-                            withAnimation {
-                                viewModel.addWorkout()
-                            }
+                            showingDateConfirmationDialog.toggle()
                         } label: {
                             Label(Strings.newWorkout.localized, systemImage: "plus")
+                        }
+                        .confirmationDialog(Strings.scheduleWorkout.localized,
+                                            isPresented: $showingDateConfirmationDialog) {
+                            Button(Strings.today.localized) {
+                                viewModel.addWorkout(dayOffset: 0)
+                            }
+
+                            Button(Strings.tomorrow.localized) {
+                                viewModel.addWorkout(dayOffset: 1)
+                            }
+
+                            ForEach(2...7, id: \.self) { dayOffset in
+                                Button("\(viewModel.date(for: dayOffset).formatted(date: .complete, time: .omitted))") {
+                                    viewModel.addWorkout(dayOffset: Double(dayOffset))
+                                }
+                            }
+                        } message: {
+                            Text(.selectWorkoutDateMessage)
                         }
                     }
 

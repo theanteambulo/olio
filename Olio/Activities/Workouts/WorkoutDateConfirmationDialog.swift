@@ -14,15 +14,11 @@ struct WorkoutDateConfirmationDialog: View {
     /// The environment singleton responsible for managing the Core Data stack.
     @EnvironmentObject var dataController: DataController
 
-    /// The object space in which all managed objects exist.
-    @Environment(\.managedObjectContext) var managedObjectContext
-
     /// The workout's date property value.
     @State private var date: Date
 
     init(workout: Workout) {
         self.workout = workout
-
         _date = State(wrappedValue: workout.workoutDate)
     }
 
