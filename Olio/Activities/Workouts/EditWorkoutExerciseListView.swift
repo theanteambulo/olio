@@ -51,16 +51,20 @@ struct EditWorkoutExerciseListView: View {
         Int(100 * exerciseCompletionAmountDouble)
     }
 
+    var exerciseSetCompletionCountText: Text {
+        if exerciseSetCount != 0 {
+            return Text(", \(completedExerciseSetCount) completed")
+        }
+
+        return Text("")
+    }
+
     var exerciseSetsDescriptionView: some View {
         Group {
-            if exerciseSetCount == 0 {
-                Text("No sets")
+            if workout.template {
+                Text("\(exerciseSetCount) sets")
             } else {
-                if workout.template {
-                    Text("\(exerciseSetCount) sets")
-                } else {
-                    Text("\(exerciseSetCount) sets, \(completedExerciseSetCount) completed")
-                }
+                Text("\(exerciseSetCount) sets") + exerciseSetCompletionCountText
             }
         }
         .font(.caption)
