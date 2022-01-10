@@ -44,6 +44,7 @@ struct SectionButton: ViewModifier {
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
             .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
             .foregroundColor(.white)
+            .accessibilityAddTraits(.isButton)
     }
 }
 

@@ -25,7 +25,6 @@ enum Strings: LocalizedStringKey {
     case basicSettings
     case completeButton
     case incompleteButton
-    case rescheduleButton
 
     // TABS
     case homeTab
@@ -52,6 +51,7 @@ enum Strings: LocalizedStringKey {
     case selectWorkoutDateMessage
     case scheduleWorkout
     case completeWorkout
+    case markWorkoutIncomplete
     case createTemplateFromWorkoutButton
     case createTemplateConfirmationTitle
     case createTemplateConfirmationMessage
