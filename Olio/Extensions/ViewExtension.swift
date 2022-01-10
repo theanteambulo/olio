@@ -34,6 +34,19 @@ struct ExerciseSetIntegerTextField: ViewModifier {
     }
 }
 
+/// A style for a Section to make it look like a button.
+struct SectionButton: ViewModifier {
+    /// Styles content according to the modifiers applied.
+    /// - Parameter content: Content to modify.
+    /// - Returns: Modified content as a View.
+    func body(content: Content) -> some View {
+        content
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .foregroundColor(.white)
+    }
+}
+
 extension View {
     /// Ensures that the navigation view style used by the app is stacked when the user's device is a phone.
     /// - Returns: The view with the navigationViewStyle() modifier applied.
@@ -59,6 +72,12 @@ extension View {
     /// - Returns: The styled TextField.
     func exerciseSetIntegerTextField() -> some View {
         modifier(ExerciseSetIntegerTextField())
+    }
+
+    /// Styles Section for use as a button in EditExerciseView.
+    /// - Returns: The styled Section.
+    func sectionButton() -> some View {
+        modifier(SectionButton())
     }
 
     /// Force hides any keyboard currently being displayed.

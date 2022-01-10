@@ -42,10 +42,10 @@
 "selectWorkoutDateMessage" = "Select a date to schedule this workout on.";
 "scheduleWorkout" = "Schedule workout";
 "completeWorkout" = "Complete workout";
-"createTemplateFromWorkoutButton" = "Create template from workout";
+"createTemplateFromWorkoutButton" = "Make workout template";
 "createTemplateConfirmationTitle" = "Create a template?";
 "createTemplateConfirmationMessage" = "We'll use the exercises and sets in this workout to create a new template. You can view your workout templates on the Home tab.";
-"createWorkoutFromTemplateButton" = "Create workout from template";
+"createWorkoutFromTemplateButton" = "Create workout";
 "createWorkoutConfirmationTitle" = "Create a workout?";
 "createWorkoutConfirmationMessage" = "We'll use the exercises and sets in this template to create a new workout. You can view your workouts on the Home tab.";
 "deleteWorkoutButton" = "Delete workout";

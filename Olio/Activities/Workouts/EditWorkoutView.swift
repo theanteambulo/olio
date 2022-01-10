@@ -226,7 +226,6 @@ struct EditWorkoutView: View {
         Button(deleteWorkoutTemplateButtonText, role: .destructive) {
             showingDeleteWorkoutConfirmation = true
         }
-        .tint(.red)
         .alert(Strings.areYouSureAlertTitle.localized,
                isPresented: $showingDeleteWorkoutConfirmation) {
             Button(Strings.deleteButton.localized, role: .destructive) {
@@ -267,15 +266,21 @@ struct EditWorkoutView: View {
                 workoutExerciseList
             }
 
-            Section(header: Text("")) {
+            Section {
                 if !workout.template {
                     createTemplateFromWorkoutButton
                 } else {
                     createWorkoutFromTemplateButton
                 }
+            }
+            .sectionButton()
+            .background(Color.blue)
 
+            Section {
                 deleteWorkoutButton
             }
+            .sectionButton()
+            .background(Color.red)
         }
         .navigationTitle(navigationTitle)
         .onDisappear {
