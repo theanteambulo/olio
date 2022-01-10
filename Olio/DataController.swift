@@ -189,7 +189,8 @@ class DataController: ObservableObject {
     /// Create a workout or template from a given workout or template.
     /// - Parameters:
     ///   - workout: The workout to use as the basis for creating a new workout.
-    ///   - newWorkoutIsTemplate: Boolean to indicate whether the workout being created is a template or not.
+    ///   - isTemplate: Boolean to indicate whether the workout being created is a template or not.
+    ///   - scheduledOn: The date the new workout is scheduled on.
     func createNewWorkoutOrTemplateFromExisting(_ workout: Workout,
                                                 isTemplate: Bool,
                                                 scheduledOn date: Date? = nil) {
@@ -285,5 +286,18 @@ class DataController: ObservableObject {
     /// - Returns: Boolean indicating whether the exercise set is completed or not.
     func exerciseSetComplete(exerciseSet: ExerciseSet) -> Bool {
         exerciseSet.completed
+    }
+
+    /// Loads the exercises stored in OlioExercises.json.
+    func loadExerciseLibrary() {
+        let olioExercises = OlioExercise.allOlioExercises
+
+        for exercise in olioExercises {
+            let newCoreDataExercise = Exercise(context: container.viewContext)
+            newCoreDataExercise.id = UUID()
+            newCoreDataExercise.name = exercise.name
+            newCoreDataExercise.category = exercise.category
+            newCoreDataExercise.muscleGroup = exercise.muscleGroup
+        }
     }
 }
