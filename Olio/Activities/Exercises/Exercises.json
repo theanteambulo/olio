@@ -1,7 +1,313 @@
 [
     {
-        "name": "Bench Press",
+        "name": "Bench Press (DB)",
         "category": 1,
         "muscleGroup": 1
+    },
+
+    {
+        "name": "Incline Bench Press (BB)",
+        "category": 1,
+        "muscleGroup": 1
+    },
+
+    {
+        "name": "Fly (Cable)",
+        "category": 1,
+        "muscleGroup": 1
+    },
+
+    {
+        "name": "Deadlift (BB)",
+        "category": 1,
+        "muscleGroup": 2
+    },
+
+    {
+        "name": "Bent-over Row (DB)",
+        "category": 1,
+        "muscleGroup": 2
+    },
+
+    {
+        "name": "Lat Pull-down (Machine)",
+        "category": 1,
+        "muscleGroup": 2
+    },
+
+    {
+        "name": "Military Press (BB)",
+        "category": 1,
+        "muscleGroup": 3
+    },
+
+    {
+        "name": "Lateral Raise (DB)",
+        "category": 1,
+        "muscleGroup": 3
+    },
+
+    {
+        "name": "Shrug (DB)",
+        "category": 1,
+        "muscleGroup": 3
+    },
+
+    {
+        "name": "Bicep Curl (BB)",
+        "category": 1,
+        "muscleGroup": 4
+    },
+
+    {
+        "name": "Bicep Curl (DB)",
+        "category": 1,
+        "muscleGroup": 4
+    },
+
+    {
+        "name": "Hammer Curl (BB)",
+        "category": 1,
+        "muscleGroup": 4
+    },
+
+    {
+        "name": "Tricep Extension (Cable)",
+        "category": 1,
+        "muscleGroup": 5
+    },
+
+    {
+        "name": "Skullcrusher (EZ Bar)",
+        "category": 1,
+        "muscleGroup": 5
+    },
+
+    {
+        "name": "Tricep Kickback (DB)",
+        "category": 1,
+        "muscleGroup": 5
+    },
+
+    {
+        "name": "Squat (BB)",
+        "category": 1,
+        "muscleGroup": 6
+    },
+
+    {
+        "name": "Hip Thrust (BB)",
+        "category": 1,
+        "muscleGroup": 6
+    },
+
+    {
+        "name": "Reverse Lunge (DB)",
+        "category": 1,
+        "muscleGroup": 6
+    },
+
+    {
+        "name": "Crunch (Cable)",
+        "category": 1,
+        "muscleGroup": 7
+    },
+
+    {
+        "name": "Oblique Twist (Cable)",
+        "category": 1,
+        "muscleGroup": 7
+    },
+
+    {
+        "name": "Weighted V-Sit (DB)",
+        "category": 1,
+        "muscleGroup": 7
+    },
+
+    {
+        "name": "Press Ups",
+        "category": 2,
+        "muscleGroup": 1
+    },
+
+    {
+        "name": "Incline Press Ups",
+        "category": 2,
+        "muscleGroup": 1
+    },
+
+    {
+        "name": "Decline Press Ups",
+        "category": 2,
+        "muscleGroup": 1
+    },
+
+    {
+        "name": "Pull Ups",
+        "category": 2,
+        "muscleGroup": 2
+    },
+
+    {
+        "name": "Australian Pull Ups",
+        "category": 2,
+        "muscleGroup": 2
+    },
+
+    {
+        "name": "Pike Press",
+        "category": 2,
+        "muscleGroup": 3
+    },
+
+    {
+        "name": "Chin Ups",
+        "category": 2,
+        "muscleGroup": 4
+    },
+
+    {
+        "name": "Tricep Dips",
+        "category": 2,
+        "muscleGroup": 5
+    },
+
+    {
+        "name": "Bodyweight Squat",
+        "category": 2,
+        "muscleGroup": 6
+    },
+
+    {
+        "name": "Bodyweight Reverse Lunge",
+        "category": 2,
+        "muscleGroup": 6
+    },
+
+    {
+        "name": "Sit Ups",
+        "category": 2,
+        "muscleGroup": 7
+    },
+
+    {
+        "name": "Leg Raises",
+        "category": 2,
+        "muscleGroup": 7
+    },
+
+    {
+        "name": "L-Sit",
+        "category": 2,
+        "muscleGroup": 7
+    },
+
+    {
+        "name": "Run",
+        "category": 3,
+        "muscleGroup": 8
+    },
+
+    {
+        "name": "Swim",
+        "category": 3,
+        "muscleGroup": 8
+    },
+
+    {
+        "name": "Cycle",
+        "category": 3,
+        "muscleGroup": 8
+    },
+
+    {
+        "name": "Climb",
+        "category": 3,
+        "muscleGroup": 8
+    },
+
+    {
+        "name": "Spin",
+        "category": 4,
+        "muscleGroup": 6
+    },
+
+    {
+        "name": "Legs, Bums & Tums",
+        "category": 4,
+        "muscleGroup": 6
+    },
+
+    {
+        "name": "Brazilian Jiu Jitsu",
+        "category": 4,
+        "muscleGroup": 8
+    },
+
+    {
+        "name": "Yoga",
+        "category": 4,
+        "muscleGroup": 8
+    },
+
+    {
+        "name": "Boxing",
+        "category": 4,
+        "muscleGroup": 8
+    },
+
+    {
+        "name": "Wall-assisted Chest Stretch",
+        "category": 5,
+        "muscleGroup": 1
+    },
+
+    {
+        "name": "Cat-Cow-Child's Pose Sequence",
+        "category": 5,
+        "muscleGroup": 2
+    },
+
+    {
+        "name": "Cross-body Shoulder Stretch",
+        "category": 5,
+        "muscleGroup": 3
+    },
+
+    {
+        "name": "Standing Bicep Stretch",
+        "category": 5,
+        "muscleGroup": 4
+    },
+
+    {
+        "name": "Overhead Tricep Stretch",
+        "category": 5,
+        "muscleGroup": 5
+    },
+
+    {
+        "name": "Standing Quad Stretch",
+        "category": 5,
+        "muscleGroup": 6
+    },
+
+    {
+        "name": "Supine Hamstring Stretch",
+        "category": 5,
+        "muscleGroup": 6
+    },
+
+    {
+        "name": "Stability Ball-assisted Backbend",
+        "category": 5,
+        "muscleGroup": 7
+    },
+
+    {
+        "name": "Passive Hang",
+        "category": 5,
+        "muscleGroup": 8
     }
 ]
