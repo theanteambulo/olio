@@ -82,7 +82,7 @@ struct ExercisesView: View {
                                 .font(.headline)
                                 .padding(.vertical)
 
-                            Text(.noExercisesYetMessage)
+                            Text(.noExercisesYetTabMessage)
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal)
 

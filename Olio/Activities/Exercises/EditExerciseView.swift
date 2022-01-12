@@ -68,7 +68,7 @@ struct EditExerciseView: View {
 
     var body: some View {
         Form {
-            Section(header: Text(.basicSettings)) {
+            Section(header: Text(.exerciseSettings)) {
                 TextField(Strings.exerciseName.localized, text: $name.onChange(changesMade))
 
                 Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory.onChange(changesMade)) {

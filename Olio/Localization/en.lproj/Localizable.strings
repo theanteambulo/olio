@@ -6,7 +6,7 @@
 "removeButton" = "Remove";
 "cancelButton" = "Cancel";
 "addExercise" = "Add Exercise";
-"basicSettings" = "Basic Settings";
+"exerciseSettings" = "Exercise Settings";
 "completeButton" = "Complete";
 "incompleteButton" = "Incomplete";
 
@@ -84,8 +84,9 @@
 "duplicationErrorAlertMessage" = "Looks like this exercise already exists. Try changing the name to proceed.";
 "emptyNameErrorAlertMessage" = "Looks like this exercise doesn't have a name. Try providing one to proceed.";
 "noExercisesYetTitle" = "No exercises in your library yet!";
-"noExercisesYetMessage" = "Head to the Exercises tab to add some yourself, or download the Olio exercise library for a head start.";
-"loadOlioExercises" = "Load exercises";
+"noExercisesYetMessage" = "Head to the Exercises tab to add some yourself, or load the Olio exercise library for a head start.";
+"noExercisesYetTabMessage" = "Add your own exercises using the '+' button above, or load the Olio exercise library for a head start.";
+"loadOlioExercises" = "Load exercise library";
 
 
 

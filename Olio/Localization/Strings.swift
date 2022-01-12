@@ -22,7 +22,7 @@ enum Strings: LocalizedStringKey {
     case removeButton
     case cancelButton
     case addExercise
-    case basicSettings
+    case exerciseSettings
     case completeButton
     case incompleteButton
 
@@ -93,6 +93,7 @@ enum Strings: LocalizedStringKey {
     case emptyNameErrorAlertMessage
     case noExercisesYetTitle
     case noExercisesYetMessage
+    case noExercisesYetTabMessage
     case loadOlioExercises
 
     // EDIT EXERCISE

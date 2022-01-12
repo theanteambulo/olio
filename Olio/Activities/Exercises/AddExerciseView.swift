@@ -111,7 +111,7 @@ struct AddExerciseView: View {
     var body: some View {
         NavigationView {
             Form {
-                Section(header: Text(.basicSettings)) {
+                Section(header: Text(.exerciseSettings)) {
                     TextField(Strings.exerciseName.localized, text: $name)
 
                     Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory) {

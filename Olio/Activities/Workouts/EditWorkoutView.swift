@@ -234,7 +234,7 @@ struct EditWorkoutView: View {
 
     var body: some View {
         Form {
-            Section(header: Text(.basicSettings)) {
+            Section(header: Text(.workoutName)) {
                 TextField(Strings.workoutName.localized,
                           text: $name.onChange(update))
             }
