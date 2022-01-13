@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+enum ExerciseSetError {
+    case reps, weight, repsAndWeight, distance, duration, distanceAndDuration
+}

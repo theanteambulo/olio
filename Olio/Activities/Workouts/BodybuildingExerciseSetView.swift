@@ -26,6 +26,9 @@ struct BodybuildingExerciseSetView: View {
         case reps, weight
     }
 
+    /// Boolean indicating if the current exercise set values result in an error.b
+    @State private var exerciseSetError: ExerciseSetError?
+
     /// Boolean to be toggled when an element is in focus.
     @FocusState var inputActive: FocusedField?
 
@@ -38,34 +41,122 @@ struct BodybuildingExerciseSetView: View {
         _exerciseSetCompleted = State(wrappedValue: exerciseSet.completed)
     }
 
+    var exerciseSetRepsInvalid: Bool {
+        exerciseSetReps > 999
+    }
+
+    var exerciseSetWeightInvalid: Bool {
+        exerciseSetWeight > 999
+    }
+
     var body: some View {
-        HStack {
-            ExerciseSetCompletionIcon(exerciseSet: exerciseSet)
+        Section(header: Text("Set \(exerciseSetIndex + 1)"),
+                footer: SectionFooterErrorMessage(exerciseSetError: $exerciseSetError,
+                                                  exerciseSetStretch: exerciseSet.exercise?.category == 5)) {
+            HStack {
+                ExerciseSetCompletionIcon(exerciseSet: exerciseSet)
 
-            if exerciseSet.exercise?.category == 1 {
-                HStack {
-                    TextField("Weight",
-                              value: $exerciseSetWeight.onChange(update),
-                              format: .number)
-                        .exerciseSetDecimalTextField()
-                        .focused($inputActive, equals: .weight)
+                if exerciseSet.exercise?.category == 1 {
+                    HStack {
+                        TextField("Weight",
+                                  value: $exerciseSetWeight.onChange(exerciseSetWeightOnChangeHandler),
+                                  format: .number)
+                            .exerciseSetDecimalTextField()
+                            .focused($inputActive, equals: .weight)
+                            .foregroundColor(exerciseSetWeightInvalid ? .red : .primary)
 
-                    Text("kg")
+                        Text("kg")
+                    }
+
+                    Spacer()
                 }
 
-                Spacer()
-            }
+                HStack {
+                    TextField("Reps",
+                              value: $exerciseSetReps.onChange(exerciseSetRepsOnChangeHandler),
+                              format: .number)
+                        .exerciseSetIntegerTextField()
+                        .focused($inputActive, equals: .reps)
+                        .foregroundColor(exerciseSetRepsInvalid ? .red : .primary)
 
-            HStack {
-                TextField("Reps",
-                          value: $exerciseSetReps.onChange(update),
-                          format: .number)
-                    .exerciseSetIntegerTextField()
-                    .focused($inputActive, equals: .reps)
-
-                Text("reps")
+                    Text("reps")
+                }
             }
         }
+        .onDisappear(perform: onDisappearSetExerciseSetValuesIfError)
+    }
+
+    /// Determines whether the reps for the exercise set are valid, modifies the rep count if required and calls the
+    /// update method.
+    func exerciseSetRepsOnChangeHandler() {
+        if exerciseSetReps <= 999 {
+            if exerciseSetError != nil && exerciseSetError != .reps {
+                // Set equal to .weight - the reps are valid and there's an error somewhere else
+                exerciseSetError = .weight
+            } else {
+                // Set equal to nil - may have been a reps error previously but now no errors so we should hide it
+                exerciseSetError = nil
+            }
+        } else {
+            exerciseSetReps = 1000
+
+            if exerciseSetError == .reps {
+                // Do nothing - there are no errors elsewhere and we're already correctly showing the reps error
+            } else if exerciseSetError != nil && exerciseSetError != .reps {
+                // Set equal to .repsAndWeight - there's some other error somewhere but now also a reps error
+                exerciseSetError = .repsAndWeight
+            } else {
+                // Set equal to .reps - there were no existing errors but now a reps error exists
+                exerciseSetError = .reps
+            }
+        }
+
+        update()
+    }
+
+    /// Determines whether the reps for the exercise set are valid, modifies the rep count if required and calls the
+    /// update method.
+    func exerciseSetWeightOnChangeHandler() {
+        if exerciseSetWeight <= 999 {
+            if exerciseSetError != nil && exerciseSetError != .weight {
+                // Set equal to .reps - the weight is valid and there's an error somewhere else
+                exerciseSetError = .reps
+            } else {
+                // Set equal to nil - may have been a weight error previously but now no errors so we should hide it
+                exerciseSetError = nil
+            }
+        } else {
+            exerciseSetWeight = 1000
+
+            if exerciseSetError == .weight {
+                // Do nothing - there are no errors elsewhere and we're already correctly showing the weight error
+            } else if exerciseSetError != nil && exerciseSetError != .weight {
+                // Set equal to .repsAndWeight - there's some other error somewhere but now also a weight error
+                exerciseSetError = .repsAndWeight
+            } else {
+                // Set equal to .weight - there were no existing errors but now a weight error exists
+                exerciseSetError = .weight
+            }
+        }
+
+        update()
+    }
+
+    func onDisappearSetExerciseSetValuesIfError() {
+        switch exerciseSetError {
+        case .reps:
+            exerciseSetReps = 999
+        case .weight:
+            exerciseSetWeight = 999
+        case .repsAndWeight:
+            exerciseSetReps = 999
+            exerciseSetWeight = 999
+        default:
+            exerciseSetReps = exerciseSetReps
+            exerciseSetWeight = exerciseSetWeight
+        }
+
+        update()
     }
 
     /// Synchronise the @State properties of the view with their Core Data equivalents in whichever ExerciseSet

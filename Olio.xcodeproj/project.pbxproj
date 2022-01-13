@@ -51,6 +51,8 @@
 		23AE7E882758AB0D007D24DB /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 23AE7E872758AB0D007D24DB /* Localizable.stringsdict */; };
 		23AE7E8C2758AB45007D24DB /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AE7E8B2758AB45007D24DB /* Strings.swift */; };
 		23B20E32275A184700215A72 /* OlioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20E31275A184700215A72 /* OlioTests.swift */; };
+		23B20F8B278F3291008E26CD /* SectionFooterErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20F8A278F3291008E26CD /* SectionFooterErrorMessage.swift */; };
+		23B20F8F278F33D8008E26CD /* ExerciseSetError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20F8E278F33D8008E26CD /* ExerciseSetError.swift */; };
 		23C29B472781FD05000861D0 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C29B462781FD05000861D0 /* ArrayExtension.swift */; };
 		23C97E2E274E251F005611A3 /* EditExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E2D274E251F005611A3 /* EditExerciseView.swift */; };
 		23C97E30274E3C25005611A3 /* ExerciseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E2F274E3C25005611A3 /* ExerciseRowView.swift */; };
@@ -134,6 +136,8 @@
 		23AE7E8B2758AB45007D24DB /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		23B20E2F275A184700215A72 /* OlioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OlioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		23B20E31275A184700215A72 /* OlioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioTests.swift; sourceTree = "<group>"; };
+		23B20F8A278F3291008E26CD /* SectionFooterErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionFooterErrorMessage.swift; sourceTree = "<group>"; };
+		23B20F8E278F33D8008E26CD /* ExerciseSetError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSetError.swift; sourceTree = "<group>"; };
 		23C29B462781FD05000861D0 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		23C97E2D274E251F005611A3 /* EditExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditExerciseView.swift; sourceTree = "<group>"; };
 		23C97E2F274E3C25005611A3 /* ExerciseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRowView.swift; sourceTree = "<group>"; };
@@ -199,6 +203,8 @@
 				239743D62784CC4B000F3F51 /* ExerciseSheetView.swift */,
 				239743D82784D654000F3F51 /* BodybuildingExerciseSetView.swift */,
 				238C708127858F96009A6F49 /* TimedExerciseSetView.swift */,
+				23B20F8A278F3291008E26CD /* SectionFooterErrorMessage.swift */,
+				23B20F8E278F33D8008E26CD /* ExerciseSetError.swift */,
 				239743DA2784DD52000F3F51 /* ExerciseSetCompletionIcon.swift */,
 			);
 			path = Workouts;
@@ -560,11 +566,13 @@
 				239743D92784D654000F3F51 /* BodybuildingExerciseSetView.swift in Sources */,
 				230E70F3274D62DD007F6232 /* WorkoutExtension.swift in Sources */,
 				23AA142527502ED000AC637D /* ViewExtension.swift in Sources */,
+				23B20F8B278F3291008E26CD /* SectionFooterErrorMessage.swift in Sources */,
 				2321AF18274ECF710023F099 /* EditWorkoutView.swift in Sources */,
 				236E4A2727523A780012C4B2 /* AddExerciseToWorkoutView.swift in Sources */,
 				23AA142327502E3A00AC637D /* ColorExtension.swift in Sources */,
 				238C708227858F96009A6F49 /* TimedExerciseSetView.swift in Sources */,
 				230E70F1274D62C6007F6232 /* ExerciseExtension.swift in Sources */,
+				23B20F8F278F33D8008E26CD /* ExerciseSetError.swift in Sources */,
 				232DF17627629D96007D7B57 /* TemplatesViewModel.swift in Sources */,
 				23480AA3278AE0270041FDE8 /* HomeViewModel.swift in Sources */,
 				2394AA6427633F45000F06B4 /* ExercisesViewModel.swift in Sources */,

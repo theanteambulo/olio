@@ -107,7 +107,11 @@
 
 
 
-/* EXERCISE EXTENSION */
-
-
-
+/* SETS */
+"repLimitError" = "Set rep limit is 999 reps.";
+"weightLimitError" = "Set weight limit is 999kg.";
+"repAndWeightLimitError" = "Set limits are 999 reps and 999kg.";
+"distanceLimitError" = "Set distance limit is 999km.";
+"minsDurationLimitError" = "Set duration limit is 999 mins.";
+"secsDurationLimitError" = "Set duration limit is 999 secs.";
+"distanceAndDurationLimitError" = "Set limits are 999km and 999 mins.";

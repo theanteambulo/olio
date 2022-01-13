@@ -28,6 +28,26 @@ struct ExerciseSheetView: View {
         exercise.exerciseSets.filter({ $0.workout == workout }).sorted(by: \.exerciseSetCreationDate)
     }
 
+    var repsInvalid: Bool {
+        filteredExerciseSets.compactMap({ $0.exerciseSetReps <= 999 }).contains(false)
+    }
+
+    var weightInvalid: Bool {
+        filteredExerciseSets.compactMap({ $0.exerciseSetWeight <= 999 }).contains(false)
+    }
+
+    var distanceInvalid: Bool {
+        filteredExerciseSets.compactMap({ $0.exerciseSetDistance <= 999 }).contains(false)
+    }
+
+    var durationInvalid: Bool {
+        filteredExerciseSets.compactMap({ $0.exerciseSetDuration <= 999 }).contains(false)
+    }
+
+    var exerciseSetsInvalid: Bool {
+        repsInvalid || weightInvalid || distanceInvalid || durationInvalid
+    }
+
     var keyboardDoneButton: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
             Spacer()
@@ -56,6 +76,7 @@ struct ExerciseSheetView: View {
                 update()
                 dismiss()
             }
+            .disabled(exerciseSetsInvalid)
         }
     }
 
@@ -65,17 +86,11 @@ struct ExerciseSheetView: View {
                 ForEach(Array(zip(filteredExerciseSets.indices, filteredExerciseSets)), id: \.1) { index, exerciseSet in
                     switch exercise.category {
                     case 1:
-                        Section(header: Text("Set \(index + 1)")) {
-                            BodybuildingExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
-                        }
+                        BodybuildingExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
                     case 2:
-                        Section(header: Text("Set \(index + 1)")) {
-                            BodybuildingExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
-                        }
+                        BodybuildingExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
                     default:
-                        Section(header: Text("Set \(index + 1)")) {
-                            TimedExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
-                        }
+                        TimedExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
                     }
                 }
                 .onDelete { offsets in

@@ -62,11 +62,8 @@ enum Strings: LocalizedStringKey {
     case deleteWorkoutConfirmationMessage
     case deleteTemplateButton
     case deleteTemplateConfirmationMessage
-    case addSet
     case removeExerciseButton
     case removeExerciseConfirmationMessage
-    case markSetComplete
-    case markSetIncomplete
 
     // EXERCISES
     case exerciseNavigationTitle
@@ -110,8 +107,17 @@ enum Strings: LocalizedStringKey {
     case workoutScheduledAlertTitle
     case workoutScheduledAlertMessage
 
-    // EXERCISE EXTENSION
-    case exampleExercise
+    // SETS
+    case addSet
+    case markSetComplete
+    case markSetIncomplete
+    case repLimitError
+    case weightLimitError
+    case repAndWeightLimitError
+    case distanceLimitError
+    case secsDurationLimitError
+    case minsDurationLimitError
+    case distanceAndDurationLimitError
 
     var localized: LocalizedStringKey {
         self.rawValue
