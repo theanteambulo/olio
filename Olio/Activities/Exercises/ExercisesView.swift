@@ -53,61 +53,11 @@ struct ExercisesView: View {
                         .pickerStyle(SegmentedPickerStyle())
                         .padding(.horizontal)
 
-                        List {
-                            ForEach(Exercise.MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
-                                Section(header: Text(muscleGroup.rawValue)) {
-                                    ForEach(
-                                        // swiftlint:disable:next line_length
-                                        viewModel.filterByMuscleGroup(muscleGroup.rawValue, exercises: viewModel.sortedExercises)) { exercise in
-                                        ExerciseRowView(exercise: exercise)
-                                    }
-                                    .onDelete { offsets in
-                                        // swiftlint:disable:next line_length
-                                        let allExercises = viewModel.filterByMuscleGroup(muscleGroup.rawValue, exercises: viewModel.sortedExercises)
-
-                                        for offset in offsets {
-                                            viewModel.swipeToDeleteExercise(exercises: allExercises,
-                                                                            at: offset)
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                        .listStyle(InsetGroupedListStyle())
+                        ExerciseListView(dataController: viewModel.dataController,
+                                         exercises: viewModel.sortedExercises)
                     }
                 } else {
-                    ScrollView {
-                        VStack(alignment: .center) {
-                            Text(.noExercisesYetTitle)
-                                .font(.headline)
-                                .padding(.vertical)
-
-                            Text(.noExercisesYetTabMessage)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal)
-
-                            VStack {
-                                Button {
-                                    viewModel.dataController.loadExerciseLibrary()
-                                    viewModel.dataController.save()
-                                } label: {
-                                    HStack {
-                                        Spacer()
-
-                                        Text(.loadOlioExercises)
-
-                                        Spacer()
-                                    }
-                                }
-                            }
-                            .frame(minHeight: 44)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 5))
-                            .contentShape(Rectangle())
-                            .padding()
-                        }
-                    }
+                    AddOlioLibraryView()
                 }
             }
             .navigationTitle(Text(.exercisesTab))

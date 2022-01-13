@@ -61,6 +61,12 @@ struct AddExerciseToWorkoutView: View {
                                  exercises: sortedExercises).filter { !workout.workoutExercises.contains($0) }
     }
 
+    /// The muscle groups the exercises passed in belong to.
+    var muscleGroups: [Exercise.MuscleGroup.RawValue] {
+        filteredExercises.compactMap({ $0.exerciseMuscleGroup }).removingDuplicates()
+    }
+
+    /// Toolbar button used to dismiss the sheet.
     var dismissSheetToolbarButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarLeading) {
             Button {
@@ -87,9 +93,9 @@ struct AddExerciseToWorkoutView: View {
                         .padding(.horizontal)
 
                         List {
-                            ForEach(Exercise.MuscleGroup.allCases, id: \.rawValue) { muscleGroup in
-                                Section(header: Text(muscleGroup.rawValue)) {
-                                    ForEach(filterExercisesToMuscleGroup(muscleGroup.rawValue,
+                            ForEach(muscleGroups, id: \.self) { muscleGroup in
+                                Section(header: Text(muscleGroup)) {
+                                    ForEach(filterExercisesToMuscleGroup(muscleGroup,
                                                                          exercises: filteredExercises)) { exercise in
                                         Button {
                                             withAnimation {
@@ -110,40 +116,10 @@ struct AddExerciseToWorkoutView: View {
                                 }
                             }
                         }
+                        .listStyle(InsetGroupedListStyle())
                     }
                 } else {
-                    ScrollView {
-                        VStack(alignment: .center) {
-                            Text(.noExercisesYetTitle)
-                                .font(.headline)
-                                .padding(.vertical)
-
-                            Text(.noExercisesYetMessage)
-                                .multilineTextAlignment(.center)
-                                .padding(.horizontal)
-
-                            VStack {
-                                Button {
-                                    dataController.loadExerciseLibrary()
-                                    dataController.save()
-                                } label: {
-                                    HStack {
-                                        Spacer()
-
-                                        Text(.loadOlioExercises)
-
-                                        Spacer()
-                                    }
-                                }
-                            }
-                            .frame(minHeight: 44)
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .clipShape(RoundedRectangle(cornerRadius: 5))
-                            .contentShape(Rectangle())
-                            .padding()
-                        }
-                    }
+                    AddOlioLibraryView()
                 }
             }
             .navigationTitle(Text(.addExercise))

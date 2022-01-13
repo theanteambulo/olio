@@ -53,9 +53,11 @@
 		23B20E32275A184700215A72 /* OlioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20E31275A184700215A72 /* OlioTests.swift */; };
 		23B20F8B278F3291008E26CD /* SectionFooterErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20F8A278F3291008E26CD /* SectionFooterErrorMessage.swift */; };
 		23B20F8F278F33D8008E26CD /* ExerciseSetError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20F8E278F33D8008E26CD /* ExerciseSetError.swift */; };
+		23BC8F942790988700FB9968 /* ExerciseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BC8F932790988700FB9968 /* ExerciseListView.swift */; };
+		23BC8F962790AC5300FB9968 /* AddOlioLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BC8F952790AC5300FB9968 /* AddOlioLibraryView.swift */; };
 		23C29B472781FD05000861D0 /* ArrayExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C29B462781FD05000861D0 /* ArrayExtension.swift */; };
 		23C97E2E274E251F005611A3 /* EditExerciseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E2D274E251F005611A3 /* EditExerciseView.swift */; };
-		23C97E30274E3C25005611A3 /* ExerciseRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E2F274E3C25005611A3 /* ExerciseRowView.swift */; };
+		23C97E30274E3C25005611A3 /* ExerciseRowTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E2F274E3C25005611A3 /* ExerciseRowTabView.swift */; };
 		23C97E32274E548A005611A3 /* BindingExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C97E31274E548A005611A3 /* BindingExtension.swift */; };
 		23FE12692757F3240096FDD0 /* TemplateCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23FE12682757F3240096FDD0 /* TemplateCardView.swift */; };
 /* End PBXBuildFile section */
@@ -138,9 +140,11 @@
 		23B20E31275A184700215A72 /* OlioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioTests.swift; sourceTree = "<group>"; };
 		23B20F8A278F3291008E26CD /* SectionFooterErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionFooterErrorMessage.swift; sourceTree = "<group>"; };
 		23B20F8E278F33D8008E26CD /* ExerciseSetError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSetError.swift; sourceTree = "<group>"; };
+		23BC8F932790988700FB9968 /* ExerciseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseListView.swift; sourceTree = "<group>"; };
+		23BC8F952790AC5300FB9968 /* AddOlioLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOlioLibraryView.swift; sourceTree = "<group>"; };
 		23C29B462781FD05000861D0 /* ArrayExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayExtension.swift; sourceTree = "<group>"; };
 		23C97E2D274E251F005611A3 /* EditExerciseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditExerciseView.swift; sourceTree = "<group>"; };
-		23C97E2F274E3C25005611A3 /* ExerciseRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRowView.swift; sourceTree = "<group>"; };
+		23C97E2F274E3C25005611A3 /* ExerciseRowTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseRowTabView.swift; sourceTree = "<group>"; };
 		23C97E31274E548A005611A3 /* BindingExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindingExtension.swift; sourceTree = "<group>"; };
 		23FE12682757F3240096FDD0 /* TemplateCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateCardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -310,7 +314,9 @@
 			children = (
 				230E70F6274D779A007F6232 /* ExercisesView.swift */,
 				2394AA6327633F45000F06B4 /* ExercisesViewModel.swift */,
-				23C97E2F274E3C25005611A3 /* ExerciseRowView.swift */,
+				23BC8F932790988700FB9968 /* ExerciseListView.swift */,
+				23C97E2F274E3C25005611A3 /* ExerciseRowTabView.swift */,
+				23BC8F952790AC5300FB9968 /* AddOlioLibraryView.swift */,
 				23AA141C275022B400AC637D /* AddExerciseView.swift */,
 				23C97E2D274E251F005611A3 /* EditExerciseView.swift */,
 				2375DA972758F6F100B2874B /* ExerciseHistoryRowView.swift */,
@@ -555,11 +561,12 @@
 			files = (
 				230E70F7274D779A007F6232 /* ExercisesView.swift in Sources */,
 				23C97E2E274E251F005611A3 /* EditExerciseView.swift in Sources */,
+				23BC8F962790AC5300FB9968 /* AddOlioLibraryView.swift in Sources */,
 				23AB0651274B7FCE00BCBD28 /* Main.xcdatamodeld in Sources */,
 				239743D72784CC4B000F3F51 /* ExerciseSheetView.swift in Sources */,
 				23480AA1278ADF380041FDE8 /* HomeView.swift in Sources */,
 				2375DA982758F6F100B2874B /* ExerciseHistoryRowView.swift in Sources */,
-				23C97E30274E3C25005611A3 /* ExerciseRowView.swift in Sources */,
+				23C97E30274E3C25005611A3 /* ExerciseRowTabView.swift in Sources */,
 				23AE318B278C9D81004A2EB6 /* BundleDecodableExtension.swift in Sources */,
 				232DF17427629D83007D7B57 /* TemplatesView.swift in Sources */,
 				23FE12692757F3240096FDD0 /* TemplateCardView.swift in Sources */,
@@ -579,6 +586,7 @@
 				23AA141D275022B400AC637D /* AddExerciseView.swift in Sources */,
 				23AC94CC2788332800BC1BA3 /* WorkoutDateConfirmationDialog.swift in Sources */,
 				23AB0655274B87A600BCBD28 /* DataController.swift in Sources */,
+				23BC8F942790988700FB9968 /* ExerciseListView.swift in Sources */,
 				23AB0644274B7CF300BCBD28 /* ContentView.swift in Sources */,
 				23AE318D278CAC90004A2EB6 /* OlioExercise.swift in Sources */,
 				23C97E32274E548A005611A3 /* BindingExtension.swift in Sources */,

@@ -1,5 +1,5 @@
 //
-//  ExerciseRowView.swift
+//  ExerciseRowTabView.swift
 //  Olio
 //
 //  Created by Jake King on 24/11/2021.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 /// A single row in the list of all exercises representing a given exercise.
-struct ExerciseRowView: View {
+struct ExerciseRowTabView: View {
     /// The exercise used to construct this view.
     @ObservedObject var exercise: Exercise
 
@@ -25,8 +25,8 @@ struct ExerciseRowView: View {
     }
 }
 
-struct ExerciseRowView_Previews: PreviewProvider {
+struct ExerciseTabRowView_Previews: PreviewProvider {
     static var previews: some View {
-        ExerciseRowView(exercise: Exercise.example)
+        ExerciseRowTabView(exercise: Exercise.example)
     }
 }
