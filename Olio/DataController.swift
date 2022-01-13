@@ -158,22 +158,22 @@ class DataController: ObservableObject {
     ///   - exercise: The exercise that is parent of the exercise set being created.
     ///   - workout: The workout that is parent of the exercise set being created.
     func addSet(toExercise exercise: Exercise, inWorkout workout: Workout) {
-        let setsCompleted = exercise.exerciseSets.filter({ $0.workout == workout && $0.completed == true })
+        let workoutSets = exercise.exerciseSets.filter({ $0.workout == workout })
         var setToReplicate: ExerciseSet?
 
-        if setsCompleted.isEmpty {
-            setToReplicate = exercise.exerciseSets.filter({ $0.workout == workout }).last
+        if workoutSets.isEmpty {
+            setToReplicate = exercise.exerciseSets.last
         } else {
-            setToReplicate = setsCompleted.last
+            setToReplicate = workoutSets.last
         }
 
-        if setsCompleted.count < 99 {
+        if workoutSets.count < 99 {
             let set = ExerciseSet(context: container.viewContext)
             set.id = UUID()
             set.workout = workout
             set.exercise = exercise
-            set.weight = setToReplicate?.exerciseSetWeight ?? 0
-            set.reps = Int16(setToReplicate?.exerciseSetReps ?? 10)
+            set.weight = setToReplicate?.exerciseSetWeight == 1000 ? 999 : setToReplicate?.exerciseSetWeight ?? 0
+            set.reps = Int16(setToReplicate?.exerciseSetReps == 1000 ? 999 : setToReplicate?.exerciseSetReps ?? 10)
             set.distance = setToReplicate?.exerciseSetDistance ?? 3
 
             if exercise.exerciseCategory == "Class" {
@@ -184,6 +184,8 @@ class DataController: ObservableObject {
 
             set.creationDate = Date()
         }
+
+        save()
     }
 
     /// Create a workout or template from a given workout or template.
