@@ -15,7 +15,11 @@ struct AddExerciseToWorkoutView: View {
     /// A fetch request of Exercise objects.
     let exercises: FetchRequest<Exercise>
 
+    /// The exercise category selected by the user.
     @State private var exerciseCategory = "Weights"
+
+    /// The array of Exercise objects to add to the workout.
+    @State private var exercisesToAdd = [Exercise]()
 
     /// The environment singleton responsible for managing the Core Data stack.
     @EnvironmentObject var dataController: DataController
@@ -58,12 +62,22 @@ struct AddExerciseToWorkoutView: View {
     /// Computed property to filter out any exercises which have already been added to the workout.
     var filteredExercises: [Exercise] {
         filterByExerciseCategory(exerciseCategory,
-                                 exercises: sortedExercises).filter { !workout.workoutExercises.contains($0) }
+                                 exercises: sortedExercises)
     }
 
     /// The muscle groups the exercises passed in belong to.
     var muscleGroups: [Exercise.MuscleGroup.RawValue] {
         filteredExercises.compactMap({ $0.exerciseMuscleGroup }).removingDuplicates()
+    }
+
+    /// Toolbar button used to add exercises to the workout.
+    var addExercisesToolbarButton: some ToolbarContent {
+        ToolbarItem(placement: .navigationBarTrailing) {
+            Button(Strings.addExercisesToWorkout.localized) {
+                addExerciseToWorkout()
+                dismiss()
+            }
+        }
     }
 
     /// Toolbar button used to dismiss the sheet.
@@ -98,10 +112,7 @@ struct AddExerciseToWorkoutView: View {
                                     ForEach(filterExercisesToMuscleGroup(muscleGroup,
                                                                          exercises: filteredExercises)) { exercise in
                                         Button {
-                                            withAnimation {
-                                                addExerciseToWorkout(exercise)
-                                                dismiss()
-                                            }
+                                            appendToExerciseToAdd(exercise)
                                         } label: {
                                             HStack {
                                                 Circle()
@@ -109,6 +120,13 @@ struct AddExerciseToWorkoutView: View {
                                                     .foregroundColor(exercise.getExerciseCategoryColor())
 
                                                 Text(exercise.exerciseName)
+
+                                                Spacer()
+
+                                                Image(systemName: "checkmark")
+                                                    .foregroundColor(exercisesToAdd.contains(exercise)
+                                                                     ? .primary
+                                                                     : .clear)
                                             }
                                             .foregroundColor(.primary)
                                         }
@@ -125,6 +143,10 @@ struct AddExerciseToWorkoutView: View {
             .navigationTitle(Text(.addExercise))
             .toolbar {
                 dismissSheetToolbarButton
+                addExercisesToolbarButton
+            }
+            .onAppear {
+                exercisesToAdd = sortedExercises.filter({ workout.workoutExercises.contains($0) })
             }
         }
     }
@@ -149,16 +171,19 @@ struct AddExerciseToWorkoutView: View {
         return exercises.filter { $0.exerciseCategory == exerciseCategory }
     }
 
+    /// Appends an Exercise object to an array of Exercise objects to be added to the Workout when the user dismisses
+    /// the view.
+    /// - Parameter exercise: The Exercise object to append.
+    func appendToExerciseToAdd(_ exercise: Exercise) {
+        exercisesToAdd.append(exercise)
+    }
+
     /// Updates the set of exercises that the workout is parent of to include a given exercise.
     /// - Parameter exercise: The exercise to make a child of the workout.
-    func addExerciseToWorkout(_ exercise: Exercise) {
+    func addExerciseToWorkout() {
         workout.objectWillChange.send()
 
-        var existingExercises = workout.workoutExercises
-        existingExercises.append(exercise)
-
-        workout.setValue(NSSet(array: existingExercises), forKey: "exercises")
-
+        workout.setValue(NSSet(array: exercisesToAdd), forKey: "exercises")
         dataController.save()
     }
 }

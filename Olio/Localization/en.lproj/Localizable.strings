@@ -39,6 +39,7 @@
 "tomorrow" = "Tomorrow";
 "selectWorkoutDateLabel" = "Select a workout date";
 "selectWorkoutDateMessage" = "Select a date to schedule this workout on.";
+"addExercisesToWorkout" = "Add";
 "scheduleWorkout" = "Schedule workout";
 "completeWorkout" = "Workout complete";
 "markWorkoutIncomplete" = "Workout incomplete";

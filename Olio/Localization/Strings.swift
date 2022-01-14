@@ -49,6 +49,7 @@ enum Strings: LocalizedStringKey {
     case tomorrow
     case selectWorkoutDateLabel
     case selectWorkoutDateMessage
+    case addExercisesToWorkout
     case scheduleWorkout
     case completeWorkout
     case markWorkoutIncomplete
