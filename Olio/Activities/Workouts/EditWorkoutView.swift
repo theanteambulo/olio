@@ -115,7 +115,7 @@ struct EditWorkoutView: View {
                         if !workout.template {
                             Button {
                                 withAnimation {
-                                    dataController.completeAllSets(forExercise: exercise, inWorkout: workout)
+                                    dataController.completeNextSet(forExercise: exercise, inWorkout: workout)
                                     update()
                                     dataController.save()
                                 }

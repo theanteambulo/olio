@@ -239,9 +239,17 @@ class DataController: ObservableObject {
     func completeAllSets(forExercise exercise: Exercise, inWorkout workout: Workout) {
         let allExerciseSetsInWorkout = exercise.exerciseSets.filter({ $0.workout == workout })
 
-        for exerciseSet in allExerciseSetsInWorkout {
-            exerciseSet.completed = true
-        }
+        allExerciseSetsInWorkout.forEach({ $0.completed = true })
+    }
+
+    /// Completes the next incomplete set for a given exercise in a given workout.
+    /// - Parameters:
+    ///   - exercise: The exercise to which the set to complete belongs.
+    ///   - workout: The workout to which the set to complete belongs.
+    func completeNextSet(forExercise exercise: Exercise, inWorkout workout: Workout) {
+        // swiftlint:disable:next line_length
+        let allSets = exercise.exerciseSets.filter({ $0.workout == workout && $0.completed == false }).sorted(by: \.exerciseSetCreationDate)
+        allSets.first?.completed = true
     }
 
     /// Performs batch delete request for a given fetch request.
