@@ -146,6 +146,12 @@ class DataController: ObservableObject {
         var existingExercises = workout.workoutExercises
         existingExercises.removeAll { $0.id == exercise.id }
 
+        let firstOfFilteredPlacements = exercise.exercisePlacements.filter({ $0.workout == workout }).first
+
+        if let placementToDelete = firstOfFilteredPlacements {
+            delete(placementToDelete)
+        }
+
         workout.setValue(NSSet(array: existingExercises), forKey: "exercises")
 
         for exerciseSet in exercise.exerciseSets.filter({ $0.workout == workout }) {

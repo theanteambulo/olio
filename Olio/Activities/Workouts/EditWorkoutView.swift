@@ -9,8 +9,10 @@ import SwiftUI
 
 /// A view to edit the details of a given workout, including templates.
 struct EditWorkoutView: View {
-    /// The workout used to construct this view.
+    /// The Workout object used to construct this view.
     @ObservedObject var workout: Workout
+    /// The array of Exercise objects used to construct this view.
+    @State private var exercises = [Exercise]()
 
     /// The environment singleton responsible for managing the Core Data stack.
     @EnvironmentObject var dataController: DataController
@@ -42,8 +44,11 @@ struct EditWorkoutView: View {
 
     /// Computed property to sort exercises by name.
     var sortedExercises: [Exercise] {
-        return workout.workoutExercises.sorted { first, second in
-            if first.exerciseName < second.exerciseName {
+        return exercises.sorted { first, second in
+            let firstIndex = first.exercisePlacements.filter({ $0.workout == workout }).first?.placementIndexPosition
+            let secondIndex = second.exercisePlacements.filter({ $0.workout == workout }).first?.placementIndexPosition
+
+            if  firstIndex ?? 0 < secondIndex ?? 0 {
                 return true
             } else {
                 return false
@@ -94,6 +99,7 @@ struct EditWorkoutView: View {
                         Button(role: .destructive) {
                             withAnimation {
                                 dataController.removeExercise(exercise, fromWorkout: workout)
+                                exercises.removeAll(where: { $0.exerciseId == exercise.exerciseId })
                                 dataController.save()
                             }
                         } label: {
@@ -127,6 +133,7 @@ struct EditWorkoutView: View {
                         }
                     }
             }
+//            .onMove(perform: reorderWorkouts)
 
             // Button to add a new exercise to the workout.
             Button {
@@ -136,7 +143,7 @@ struct EditWorkoutView: View {
             } label: {
                 Label(Strings.addExercise.localized, systemImage: "plus")
             }
-            .sheet(isPresented: $showingAddExerciseSheet) {
+            .sheet(isPresented: $showingAddExerciseSheet, onDismiss: setExercisesArray) {
                 AddExerciseToWorkoutView(workout: workout)
             }
         }
@@ -277,10 +284,27 @@ struct EditWorkoutView: View {
             .background(Color.red)
         }
         .navigationTitle(navigationTitle)
+//        .toolbar {
+//            EditButton()
+//        }
+        .onAppear(perform: setExercisesArray)
         .onDisappear {
             update()
             dataController.save()
         }
+    }
+
+    /// Sets the exercises array used to construct this view.
+    func setExercisesArray() {
+        exercises = workout.workoutExercises
+    }
+
+    /// Enables users to drag rows in the list of exercises to reorder them.
+    /// - Parameters:
+    ///   - source: The original placement of the row being moved in the exercises array.
+    ///   - destination: The new placement of the row being moved in the exercises array.
+    func reorderWorkouts(from source: IndexSet, to destination: Int) {
+        exercises.move(fromOffsets: source, toOffset: destination)
     }
 
     /// Synchronise the @State properties of the view with their Core Data equivalents in whichever Workout
@@ -291,6 +315,7 @@ struct EditWorkoutView: View {
         workout.objectWillChange.send()
 
         workout.name = name
+        workout.setValue(NSSet(array: exercises), forKey: "exercises")
     }
 }
 

@@ -50,6 +50,11 @@ extension Workout {
         sets?.allObjects as? [ExerciseSet] ?? []
     }
 
+    /// The unwrapped placements a workout is parent of.
+    var workoutPlacements: [Placement] {
+        placements?.allObjects as? [Placement] ?? []
+    }
+
     /// An example workout for previewing purposes.
     static var example: Workout {
         let dataController = DataController.preview

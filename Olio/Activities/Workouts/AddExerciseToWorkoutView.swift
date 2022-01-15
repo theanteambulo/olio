@@ -44,25 +44,15 @@ struct AddExerciseToWorkoutView: View {
         )
     }
 
-    /// Computed property to sort exercises by muscle group, then by name.
-    ///
-    /// Example: Bench comes before Flys in Chest, which both come before Squats in Legs.
-    var sortedExercises: [Exercise] {
-        return exercises.wrappedValue.sorted { first, second in
-            if first.muscleGroup < second.muscleGroup {
-                return true
-            } else if first.muscleGroup > second.muscleGroup {
-                return false
-            }
-
-            return first.exerciseName < second.exerciseName
-        }
+    /// An array of Exercise objects.
+    var exercisesArray: [Exercise] {
+        exercises.wrappedValue.map({ $0 })
     }
 
     /// Computed property to filter out any exercises which have already been added to the workout.
     var filteredExercises: [Exercise] {
         filterByExerciseCategory(exerciseCategory,
-                                 exercises: sortedExercises)
+                                 exercises: exercisesArray)
     }
 
     /// The muscle groups the exercises passed in belong to.
@@ -94,7 +84,7 @@ struct AddExerciseToWorkoutView: View {
     var body: some View {
         NavigationView {
             Group {
-                if !sortedExercises.isEmpty {
+                if !exercisesArray.isEmpty {
                     VStack {
                         Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory) {
                             Text(.weights).tag("Weights")
@@ -112,7 +102,11 @@ struct AddExerciseToWorkoutView: View {
                                     ForEach(filterExercisesToMuscleGroup(muscleGroup,
                                                                          exercises: filteredExercises)) { exercise in
                                         Button {
-                                            appendToExerciseToAdd(exercise)
+                                            if exercisesToAdd.contains(exercise) {
+                                                removeFromExerciseToAdd(exercise)
+                                            } else {
+                                                appendToExerciseToAdd(exercise)
+                                            }
                                         } label: {
                                             HStack {
                                                 Circle()
@@ -146,7 +140,7 @@ struct AddExerciseToWorkoutView: View {
                 addExercisesToolbarButton
             }
             .onAppear {
-                exercisesToAdd = sortedExercises.filter({ workout.workoutExercises.contains($0) })
+                exercisesToAdd = exercisesArray.filter({ workout.workoutExercises.contains($0) })
             }
         }
     }
@@ -178,12 +172,70 @@ struct AddExerciseToWorkoutView: View {
         exercisesToAdd.append(exercise)
     }
 
+    /// Removes an Exercise object from an array of Exercise objects to be added to the Workout when the user dismisses
+    /// the view.
+    /// - Parameter exercise: The Exercise object to remove.
+    func removeFromExerciseToAdd(_ exercise: Exercise) {
+        exercisesToAdd.removeAll(where: { $0.id == exercise.id })
+    }
+
     /// Updates the set of exercises that the workout is parent of to include a given exercise.
     /// - Parameter exercise: The exercise to make a child of the workout.
     func addExerciseToWorkout() {
         workout.objectWillChange.send()
 
+//        print(workout.workoutPlacements)
+//
+//        for exercise in workout.workoutExercises {
+//            print("""
+//                Exercise: \(exercise.exerciseName)
+//                Contained in exercisesToAdd array: \(exercisesToAdd.contains(exercise))
+//                Position: \(exercise.exercisePlacements.filter({ $0.workout == workout }).first?.indexPosition ?? 100)
+//                """)
+//        }
+
+        // If there are any exercises that have placements but aren't in the exercisesToAdd array then delete them
+        for placement in workout.workoutPlacements {
+            if let exercise = placement.exercise {
+                if !exercisesToAdd.contains(exercise) {
+                     // Delete the placement - this exercise is no longer in the workout, so shouldn't have a placement
+                    dataController.delete(placement)
+                    dataController.save()
+                }
+            }
+        }
+
+        for exercise in exercisesToAdd {
+            // There's either going to be a single placement object, or nothing at all in the array
+            let placementsOfExerciseInWorkout = exercise.exercisePlacements.filter({ $0.workout == workout })
+
+            if placementsOfExerciseInWorkout.isEmpty {
+                // We've not recorded the placement of this exercise in the workout yet, create a new placement object
+                let exercisePlacement = Placement(context: managedObjectContext)
+                exercisePlacement.id = UUID()
+                exercisePlacement.workout = workout
+                exercisePlacement.exercise = exercise
+                exercisePlacement.indexPosition = Int16(exercisesToAdd.firstIndex(of: exercise) ?? 0)
+            } else {
+                // We've previously recorded the placement of this exercise in the workout, update the placement index
+                placementsOfExerciseInWorkout.first?.indexPosition = Int16(exercisesToAdd.firstIndex(of: exercise) ?? 0)
+            }
+        }
+
+//        print(workout.workoutPlacements)
+
+        // Update the exercises for this workout
         workout.setValue(NSSet(array: exercisesToAdd), forKey: "exercises")
+
+//        for exercise in workout.workoutExercises {
+//            print("""
+//                Exercise: \(exercise.exerciseName)
+//                Contained in exercisesToAdd array: \(exercisesToAdd.contains(exercise))
+//                Position: \(exercise.exercisePlacements.filter({ $0.workout == workout }).first?.indexPosition ?? 100)
+//                """)
+//        }
+
+        // Save the changes in Core Data
         dataController.save()
     }
 }
