@@ -119,8 +119,14 @@ struct AddExerciseToWorkoutView: View {
 
                                                 Image(systemName: "checkmark")
                                                     .foregroundColor(exercisesToAdd.contains(exercise)
-                                                                     ? .primary
+                                                                     ? .secondary
                                                                      : .clear)
+
+                                                Text("\((exercisesToAdd.firstIndex(of: exercise) ?? -2) + 1)")
+                                                    .foregroundColor(exercisesToAdd.contains(exercise)
+                                                                     ? .secondary
+                                                                     : .clear)
+                                                    .font(.caption)
                                             }
                                             .foregroundColor(.primary)
                                         }
