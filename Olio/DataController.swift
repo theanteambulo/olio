@@ -316,4 +316,63 @@ class DataController: ObservableObject {
             newCoreDataExercise.muscleGroup = exercise.muscleGroup
         }
     }
+
+    /// Updates the set of exercises that the workout is parent of to include a given exercise.
+    /// - Parameter exercise: The exercise to make a child of the workout.
+    func addExercises(_ exercises: [Exercise], toWorkout workout: Workout) {
+        workout.objectWillChange.send()
+
+        // If there are any exercises that have placements but aren't in the exercisesToAdd array then delete them
+        for placement in workout.workoutPlacements {
+            if let exercise = placement.exercise {
+                if !exercises.contains(exercise) {
+                     // Delete the placement - this exercise is no longer in the workout, so shouldn't have a placement
+                    delete(placement)
+                    save()
+                }
+            }
+        }
+
+        // Update the order of the exercises for the workout to reflect addition of new exercise.
+        updateOrderOfExercises(toMatch: exercises, forWorkout: workout)
+    }
+
+    /// Updates the order of the exercises held by a given workout to match a given array of exercises.
+    /// - Parameters:
+    ///   - exercises: The array of exercises to match the order of.
+    ///   - workout: The workout to update.
+    func updateOrderOfExercises(toMatch exercises: [Exercise], forWorkout workout: Workout) {
+        workout.objectWillChange.send()
+
+        for exercise in exercises {
+            // There's either going to be a single placement object, or nothing at all in the array
+            let placementsOfExerciseInWorkout = exercise.exercisePlacements.filter({ $0.workout == workout })
+
+            if placementsOfExerciseInWorkout.isEmpty {
+                // We've not recorded the placement of this exercise in the workout yet, create a new placement object
+                let exercisePlacement = Placement(context: container.viewContext)
+                exercisePlacement.id = UUID()
+                exercisePlacement.workout = workout
+                exercisePlacement.exercise = exercise
+                exercisePlacement.indexPosition = Int16(exercises.firstIndex(of: exercise) ?? 0)
+            } else {
+                // We've previously recorded the placement of this exercise in the workout, update the placement index
+                placementsOfExerciseInWorkout.first?.indexPosition = Int16(exercises.firstIndex(of: exercise) ?? 0)
+            }
+        }
+
+        // Update the exercises for this workout
+        workout.setValue(NSSet(array: exercises), forKey: "exercises")
+
+        // Save the changes in Core Data
+        save()
+    }
+
+    /// Gets the positional index of a given exercise in a given workout.
+    /// - Parameters:
+    ///   - exercise: The Exercise object whose position is needed.
+    ///   - workout: A Workout in which the Exercise is contained.
+    func getPlacement(forExercise exercise: Exercise, inWorkout workout: Workout) -> Int? {
+        return exercise.exercisePlacements.filter({ $0.workout == workout }).first?.placementIndexPosition
+    }
 }

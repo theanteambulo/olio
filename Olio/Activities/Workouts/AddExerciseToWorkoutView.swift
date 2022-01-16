@@ -49,6 +49,20 @@ struct AddExerciseToWorkoutView: View {
         exercises.wrappedValue.map({ $0 })
     }
 
+    /// An array of Exercise objects.
+    var exercisesArraySortedByPosition: [Exercise] {
+        exercisesArray.sorted { first, second in
+            let firstIndex = dataController.getPlacement(forExercise: first, inWorkout: workout)
+            let secondIndex = dataController.getPlacement(forExercise: second, inWorkout: workout)
+
+            if  firstIndex ?? 0 < secondIndex ?? 0 {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
+
     /// Computed property to filter out any exercises which have already been added to the workout.
     var filteredExercises: [Exercise] {
         filterByExerciseCategory(exerciseCategory,
@@ -64,7 +78,7 @@ struct AddExerciseToWorkoutView: View {
     var addExercisesToolbarButton: some ToolbarContent {
         ToolbarItem(placement: .navigationBarTrailing) {
             Button(Strings.addExercisesToWorkout.localized) {
-                addExerciseToWorkout()
+                dataController.addExercises(exercisesToAdd, toWorkout: workout)
                 dismiss()
             }
         }
@@ -146,7 +160,7 @@ struct AddExerciseToWorkoutView: View {
                 addExercisesToolbarButton
             }
             .onAppear {
-                exercisesToAdd = exercisesArray.filter({ workout.workoutExercises.contains($0) })
+                exercisesToAdd = exercisesArraySortedByPosition.filter({ workout.workoutExercises.contains($0) })
             }
         }
     }
@@ -183,66 +197,6 @@ struct AddExerciseToWorkoutView: View {
     /// - Parameter exercise: The Exercise object to remove.
     func removeFromExerciseToAdd(_ exercise: Exercise) {
         exercisesToAdd.removeAll(where: { $0.id == exercise.id })
-    }
-
-    /// Updates the set of exercises that the workout is parent of to include a given exercise.
-    /// - Parameter exercise: The exercise to make a child of the workout.
-    func addExerciseToWorkout() {
-        workout.objectWillChange.send()
-
-//        print(workout.workoutPlacements)
-//
-//        for exercise in workout.workoutExercises {
-//            print("""
-//                Exercise: \(exercise.exerciseName)
-//                Contained in exercisesToAdd array: \(exercisesToAdd.contains(exercise))
-//                Position: \(exercise.exercisePlacements.filter({ $0.workout == workout }).first?.indexPosition ?? 100)
-//                """)
-//        }
-
-        // If there are any exercises that have placements but aren't in the exercisesToAdd array then delete them
-        for placement in workout.workoutPlacements {
-            if let exercise = placement.exercise {
-                if !exercisesToAdd.contains(exercise) {
-                     // Delete the placement - this exercise is no longer in the workout, so shouldn't have a placement
-                    dataController.delete(placement)
-                    dataController.save()
-                }
-            }
-        }
-
-        for exercise in exercisesToAdd {
-            // There's either going to be a single placement object, or nothing at all in the array
-            let placementsOfExerciseInWorkout = exercise.exercisePlacements.filter({ $0.workout == workout })
-
-            if placementsOfExerciseInWorkout.isEmpty {
-                // We've not recorded the placement of this exercise in the workout yet, create a new placement object
-                let exercisePlacement = Placement(context: managedObjectContext)
-                exercisePlacement.id = UUID()
-                exercisePlacement.workout = workout
-                exercisePlacement.exercise = exercise
-                exercisePlacement.indexPosition = Int16(exercisesToAdd.firstIndex(of: exercise) ?? 0)
-            } else {
-                // We've previously recorded the placement of this exercise in the workout, update the placement index
-                placementsOfExerciseInWorkout.first?.indexPosition = Int16(exercisesToAdd.firstIndex(of: exercise) ?? 0)
-            }
-        }
-
-//        print(workout.workoutPlacements)
-
-        // Update the exercises for this workout
-        workout.setValue(NSSet(array: exercisesToAdd), forKey: "exercises")
-
-//        for exercise in workout.workoutExercises {
-//            print("""
-//                Exercise: \(exercise.exerciseName)
-//                Contained in exercisesToAdd array: \(exercisesToAdd.contains(exercise))
-//                Position: \(exercise.exercisePlacements.filter({ $0.workout == workout }).first?.indexPosition ?? 100)
-//                """)
-//        }
-
-        // Save the changes in Core Data
-        dataController.save()
     }
 }
 

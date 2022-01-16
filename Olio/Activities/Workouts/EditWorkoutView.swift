@@ -42,20 +42,6 @@ struct EditWorkoutView: View {
         _name = State(wrappedValue: workout.workoutName)
     }
 
-    /// Computed property to sort exercises by name.
-    var sortedExercises: [Exercise] {
-        return exercises.sorted { first, second in
-            let firstIndex = first.exercisePlacements.filter({ $0.workout == workout }).first?.placementIndexPosition
-            let secondIndex = second.exercisePlacements.filter({ $0.workout == workout }).first?.placementIndexPosition
-
-            if  firstIndex ?? 0 < secondIndex ?? 0 {
-                return true
-            } else {
-                return false
-            }
-        }
-    }
-
     /// Computed property to get the text displayed in the navigation title of the view.
     var navigationTitle: Text {
         workout.template ? Text(.editTemplateNavigationTitle) : Text(.editWorkoutNavigationTitle)
@@ -92,7 +78,7 @@ struct EditWorkoutView: View {
     var workoutExerciseList: some View {
         List {
             // List of exercises the workout is parent of.
-            ForEach(sortedExercises, id: \.self) { exercise in
+            ForEach(exercises, id: \.self) { exercise in
                 EditWorkoutExerciseListView(workout: workout,
                                             exercise: exercise)
                     .swipeActions(edge: .trailing) {
@@ -133,7 +119,8 @@ struct EditWorkoutView: View {
                         }
                     }
             }
-//            .onMove(perform: reorderWorkouts)
+            .onDelete(perform: removeExerciseFromWorkout)
+            .onMove(perform: reorderExercises)
 
             // Button to add a new exercise to the workout.
             Button {
@@ -284,9 +271,9 @@ struct EditWorkoutView: View {
             .background(Color.red)
         }
         .navigationTitle(navigationTitle)
-//        .toolbar {
-//            EditButton()
-//        }
+        .toolbar {
+            EditButton()
+        }
         .onAppear(perform: setExercisesArray)
         .onDisappear {
             update()
@@ -296,15 +283,42 @@ struct EditWorkoutView: View {
 
     /// Sets the exercises array used to construct this view.
     func setExercisesArray() {
-        exercises = workout.workoutExercises
+        exercises = workout.workoutExercises.sorted { first, second in
+            let firstIndex = dataController.getPlacement(forExercise: first, inWorkout: workout)
+            let secondIndex = dataController.getPlacement(forExercise: second, inWorkout: workout)
+
+            if  firstIndex ?? 0 < secondIndex ?? 0 {
+                return true
+            } else {
+                return false
+            }
+        }
     }
 
     /// Enables users to drag rows in the list of exercises to reorder them.
     /// - Parameters:
     ///   - source: The original placement of the row being moved in the exercises array.
     ///   - destination: The new placement of the row being moved in the exercises array.
-    func reorderWorkouts(from source: IndexSet, to destination: Int) {
+    func reorderExercises(from source: IndexSet, to destination: Int) {
         exercises.move(fromOffsets: source, toOffset: destination)
+        dataController.updateOrderOfExercises(toMatch: exercises, forWorkout: workout)
+    }
+
+    /// Removes an exercise from a workout using its position in the list displayed to the user.
+    ///
+    /// Should only be used within this view in the onDelete modifier for the workout list. The swipe action delete
+    /// button uses a DataController method to remove the exercise from the workout.
+    /// - Parameters:
+    ///   - offsets: The position of the exercise in the list displayed to the user.
+    ///   - workout: The workout from which the exercise should be deleted.
+    func removeExerciseFromWorkout(at offsets: IndexSet) {
+        exercises.remove(atOffsets: offsets)
+
+        if let offset = offsets.first {
+            let exerciseToRemove = exercises[offset]
+            dataController.removeExercise(exerciseToRemove, fromWorkout: workout)
+            dataController.save()
+        }
     }
 
     /// Synchronise the @State properties of the view with their Core Data equivalents in whichever Workout
