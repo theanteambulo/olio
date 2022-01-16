@@ -234,8 +234,23 @@ class DataController: ObservableObject {
             newWorkoutSets.append(exerciseSetToAdd)
         }
 
+        var newWorkoutExercisePlacements = [Placement]()
+
+        for exercisePlacement in workout.workoutPlacements {
+            let exercisePlacementToAdd = Placement(context: viewContext)
+            exercisePlacementToAdd.id = UUID()
+            exercisePlacementToAdd.workout = workout
+            exercisePlacementToAdd.exercise = exercisePlacement.exercise
+            exercisePlacementToAdd.indexPosition = Int16(exercisePlacement.placementIndexPosition)
+
+            newWorkoutExercisePlacements.append(exercisePlacementToAdd)
+        }
+
         newWorkout.exercises = NSSet(array: workout.workoutExercises)
         newWorkout.sets = NSSet(array: newWorkoutSets)
+        newWorkout.placements = NSSet(array: newWorkoutExercisePlacements)
+
+        save()
     }
 
     /// Completes all sets for a given exercise in a given workout.

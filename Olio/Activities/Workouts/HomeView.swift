@@ -130,9 +130,9 @@ struct HomeView: View {
             }
             .padding(.bottom)
             .navigationTitle(navigationTitleLocalizedStringKey)
-            .toolbar {
-                deleteAllDataToolbarItem
-            }
+//            .toolbar {
+//                deleteAllDataToolbarItem
+//            }
         }
     }
 }
