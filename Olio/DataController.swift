@@ -246,9 +246,9 @@ class DataController: ObservableObject {
             newWorkoutExercisePlacements.append(exercisePlacementToAdd)
         }
 
-        newWorkout.exercises = NSSet(array: workout.workoutExercises)
-        newWorkout.sets = NSSet(array: newWorkoutSets)
-        newWorkout.placements = NSSet(array: newWorkoutExercisePlacements)
+        newWorkout.setValue(NSSet(array: workout.workoutExercises), forKey: "exercises")
+        newWorkout.setValue(NSSet(array: newWorkoutSets), forKey: "sets")
+        newWorkout.setValue(NSSet(array: newWorkoutExercisePlacements), forKey: "placements")
 
         save()
     }

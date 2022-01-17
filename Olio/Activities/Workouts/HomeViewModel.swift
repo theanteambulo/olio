@@ -103,13 +103,13 @@ extension HomeView {
         /// - Parameter workout: The workout whose completion status will be toggle.
         func toggleCompletionStatusForWorkout(_ workout: Workout) {
             workout.completed.toggle()
+            dataController.save()
         }
 
         /// Deletes a given workout from the Core Data context.
         /// - Parameter workout: The workout to delete.
         func deleteWorkout(_ workout: Workout) {
             dataController.delete(workout)
-            workout.objectWillChange.send()
             dataController.save()
         }
 
@@ -120,6 +120,7 @@ extension HomeView {
 
         func deleteAll() {
             dataController.deleteAll()
+            dataController.save()
         }
     }
 }
