@@ -41,7 +41,7 @@ struct ExercisesView: View {
     var body: some View {
         NavigationView {
             Group {
-                if !viewModel.sortedExercises.isEmpty {
+                if !viewModel.exercises.isEmpty {
                     VStack {
                         Picker(Strings.exerciseCategory.localized, selection: $viewModel.exerciseCategory) {
                             Text(.weights).tag("Weights")
