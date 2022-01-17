@@ -116,6 +116,7 @@ extension Exercise {
 
         let exercise = Exercise(context: viewContext)
         exercise.name = "Example Exercise"
+        exercise.category = 0
         exercise.muscleGroup = Int16.random(in: 1...7)
         exercise.sets = [ExerciseSet.example]
 

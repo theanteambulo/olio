@@ -46,7 +46,10 @@ extension ExerciseSet {
         let exerciseSet = ExerciseSet(context: viewContext)
         exerciseSet.reps = 10
         exerciseSet.weight = 0
+        exerciseSet.distance = 0
+        exerciseSet.duration = 0
         exerciseSet.completed = false
+        exerciseSet.creationDate = Date.now
 
         return exerciseSet
     }

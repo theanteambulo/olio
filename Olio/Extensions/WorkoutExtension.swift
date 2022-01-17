@@ -62,8 +62,10 @@ extension Workout {
 
         let workout = Workout(context: viewContext)
         workout.name = "Example Workout"
-        workout.date = Date()
+        workout.date = Date.now
+        workout.createdDate = Date.now
         workout.completed = true
+        workout.template = false
 
         return workout
     }

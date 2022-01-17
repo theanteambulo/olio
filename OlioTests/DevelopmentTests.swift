@@ -69,8 +69,8 @@ class DevelopmentTests: BaseTestCase {
         let exercise = Exercise.example
 
         XCTAssert(
-            exercise.bodyweight,
-            "Example exercise should be bodyweight by default."
+            exercise.category == 0,
+            "Example exercise category should be 0 ('Weights') by default."
         )
     }
 
