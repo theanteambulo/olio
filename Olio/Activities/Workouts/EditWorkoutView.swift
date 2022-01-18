@@ -191,6 +191,7 @@ struct EditWorkoutView: View {
                isPresented: $showingCompleteConfirmation) {
             Button(Strings.confirmButton.localized) {
                 workout.completed.toggle()
+                dataController.save()
             }
 
             Button(Strings.cancelButton.localized, role: .cancel, action: { })
