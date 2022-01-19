@@ -190,8 +190,6 @@ class DataController: ObservableObject {
 
             set.creationDate = Date()
         }
-
-        save()
     }
 
     /// Create a workout or template from a given workout or template.
@@ -249,8 +247,6 @@ class DataController: ObservableObject {
         newWorkout.setValue(NSSet(array: workout.workoutExercises), forKey: "exercises")
         newWorkout.setValue(NSSet(array: newWorkoutSets), forKey: "sets")
         newWorkout.setValue(NSSet(array: newWorkoutExercisePlacements), forKey: "placements")
-
-        save()
     }
 
     /// Completes all sets for a given exercise in a given workout.

@@ -25,8 +25,6 @@ extension HomeView {
         /// An array Date objects.
         @Published var workoutDates = [Date]()
 
-        var newWorkout: Workout?
-
         init(dataController: DataController,
              showingCompletedWorkouts: Bool) {
             self.dataController = dataController
@@ -86,9 +84,6 @@ extension HomeView {
             newWorkout.createdDate = Date.now
             newWorkout.completed = false
             newWorkout.template = false
-            dataController.save()
-
-            self.newWorkout = newWorkout
         }
 
         /// Returns a date offset by a given number of days from today.
@@ -102,7 +97,6 @@ extension HomeView {
         /// Toggles the completion status of a given workout.
         /// - Parameter workout: The workout whose completion status will be toggle.
         func toggleCompletionStatusForWorkout(_ workout: Workout) {
-            workout.objectWillChange.send()
             workout.completed.toggle()
             dataController.save()
         }
@@ -110,7 +104,6 @@ extension HomeView {
         /// Deletes a given workout from the Core Data context.
         /// - Parameter workout: The workout to delete.
         func deleteWorkout(_ workout: Workout) {
-            workout.objectWillChange.send()
             dataController.delete(workout)
             dataController.save()
         }

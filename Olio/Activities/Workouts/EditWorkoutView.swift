@@ -278,7 +278,6 @@ struct EditWorkoutView: View {
         .onAppear(perform: setExercisesArray)
         .onDisappear {
             update()
-            dataController.save()
         }
     }
 

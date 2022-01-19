@@ -60,11 +60,11 @@ extension TemplatesView {
         func addTemplate() {
             let workout = Workout(context: dataController.container.viewContext)
             workout.id = UUID()
+            workout.name = nil
             workout.date = Date.now
             workout.createdDate = Date.now
             workout.completed = false
             workout.template = true
-            dataController.save()
         }
     }
 }
