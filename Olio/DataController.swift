@@ -49,6 +49,9 @@ class DataController: ObservableObject {
                 fatalError("Failed to load storage: \(error.localizedDescription)")
             }
 
+            // Ensure the persistent container remains up to date with changes made elsewhere.
+            self.container.viewContext.automaticallyMergesChangesFromParent = true
+
             // Ensure each test is started with no prior data and UI tests run without animations.
             #if DEBUG
             if CommandLine.arguments.contains("enable-testing") {
@@ -128,7 +131,14 @@ class DataController: ObservableObject {
     /// This silently ignores errors caused by saving, but this should be fine given all entity attributes are optional.
     func save() {
         if container.viewContext.hasChanges {
-            try? container.viewContext.save()
+            print("The context has unsaved changes that have been made...")
+            do {
+                print("Attempting to save changes to context...")
+                try container.viewContext.save()
+                print("Changes saved.")
+            } catch {
+                print("There was a problem saving the Core Data context: \(error.localizedDescription)")
+            }
         }
     }
 
@@ -215,8 +225,6 @@ class DataController: ObservableObject {
             newWorkout.template = false
         }
 
-        var newWorkoutSets = [ExerciseSet]()
-
         for exerciseSet in workout.workoutExerciseSets.sorted(by: \ExerciseSet.exerciseSetCreationDate) {
             let exerciseSetToAdd = ExerciseSet(context: viewContext)
             exerciseSetToAdd.id = UUID()
@@ -229,10 +237,9 @@ class DataController: ObservableObject {
             exerciseSetToAdd.creationDate = Date()
             exerciseSetToAdd.completed = false
 
-            newWorkoutSets.append(exerciseSetToAdd)
+            newWorkout.addToSets(exerciseSetToAdd)
+            save()
         }
-
-        var newWorkoutExercisePlacements = [Placement]()
 
         for exercisePlacement in workout.workoutPlacements {
             let exercisePlacementToAdd = Placement(context: viewContext)
@@ -241,12 +248,10 @@ class DataController: ObservableObject {
             exercisePlacementToAdd.exercise = exercisePlacement.exercise
             exercisePlacementToAdd.indexPosition = Int16(exercisePlacement.placementIndexPosition)
 
-            newWorkoutExercisePlacements.append(exercisePlacementToAdd)
+            newWorkout.addToPlacements(exercisePlacementToAdd)
+            save()
         }
-
-        newWorkout.setValue(NSSet(array: workout.workoutExercises), forKey: "exercises")
-        newWorkout.setValue(NSSet(array: newWorkoutSets), forKey: "sets")
-        newWorkout.setValue(NSSet(array: newWorkoutExercisePlacements), forKey: "placements")
+        newWorkout.addToExercises(NSSet(array: workout.workoutExercises))
     }
 
     /// Completes all sets for a given exercise in a given workout.
