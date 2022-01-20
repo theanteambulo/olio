@@ -23,17 +23,6 @@ class BaseTestCase: XCTestCase {
     }
 }
 
-// testCreatingSampleData ***
-// testDeleteAllRemovesAllDataFromStorage
-// testExampleWorkoutIsCompleted
-// testExampleExerciseIsBodyWeight???
-// testExamplePlacementIsIndexZero???
-// testExampleExerciseSetIsIncomplete
-
-// testSequenceKeyPathSortingSelf
-// testSequenceKeyPathSortingCustom
-// testBindingCallsFunctionOnChange
-
 // testNewUserHasNoWorkoutsExercisesOrExerciseSets???
 // testCreatingWorkoutsExercisesAndSets
 // testDeletingWorkoutCascadeDeletesSetsAndPlacementsNotExercises???

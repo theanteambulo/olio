@@ -10,20 +10,30 @@ import XCTest
 @testable import Olio
 
 class ProjectTests: BaseTestCase {
-    func testNewUserHasNoWorkoutsExercisesOrExerciseSets() {
+    /// Tests that there are no entity objects already existing when a new user opens the app.
+    func testNewUserHasNoWorkoutsExercisesPlacementsOrExerciseSets() {
         XCTAssertEqual(
             dataController.count(for: Workout.fetchRequest()),
-            0
+            0,
+            "There should be 0 existing workouts."
         )
 
         XCTAssertEqual(
             dataController.count(for: Exercise.fetchRequest()),
-            0
+            0,
+            "There should be 0 existing exercises."
+        )
+
+        XCTAssertEqual(
+            dataController.count(for: Placement.fetchRequest()),
+            0,
+            "There should be 0 existing placements."
         )
 
         XCTAssertEqual(
             dataController.count(for: ExerciseSet.fetchRequest()),
-            0
+            0,
+            "There should be 0 existing exercise sets."
         )
     }
 
