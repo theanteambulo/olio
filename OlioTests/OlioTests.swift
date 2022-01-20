@@ -23,7 +23,7 @@ class BaseTestCase: XCTestCase {
     }
 }
 
-// testCreatingSampleData
+// testCreatingSampleData ***
 // testDeleteAllRemovesAllDataFromStorage
 // testExampleWorkoutIsCompleted
 // testExampleExerciseIsBodyWeight???
