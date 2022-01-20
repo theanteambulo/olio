@@ -23,12 +23,6 @@ class BaseTestCase: XCTestCase {
     }
 }
 
-// testNewUserHasNoWorkoutsExercisesOrExerciseSets???
-// testCreatingWorkoutsExercisesAndSets
-// testDeletingWorkoutCascadeDeletesSetsAndPlacementsNotExercises???
-// testDeletingExercisesCascadeDeletesSetsAndPlacementsNotExercises???
-// testDeletingExerciseSetsNoCascadeDeleteExerciseOrWorkouts???
-
 // create a single workout
 // with two exercises
 // (and therefore two placements)
