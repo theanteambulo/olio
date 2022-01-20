@@ -22,3 +22,20 @@ class BaseTestCase: XCTestCase {
         managedObjectContext = dataController.container.viewContext
     }
 }
+
+// testCreatingSampleData
+// testDeleteAllRemovesAllDataFromStorage
+// testExampleWorkoutIsCompleted
+// testExampleExerciseIsBodyWeight???
+// testExamplePlacementIsIndexZero???
+// testExampleExerciseSetIsIncomplete
+
+// testSequenceKeyPathSortingSelf
+// testSequenceKeyPathSortingCustom
+// testBindingCallsFunctionOnChange
+
+// testNewUserHasNoWorkoutsExercisesOrExerciseSets???
+// testCreatingWorkoutsExercisesAndSets
+// testDeletingWorkoutCascadeDeletesSetsAndPlacementsNotExercises???
+// testDeletingExercisesCascadeDeletesSetsAndPlacementsNotExercises???
+// testDeletingExerciseSetsNoCascadeDeleteExerciseOrWorkouts???

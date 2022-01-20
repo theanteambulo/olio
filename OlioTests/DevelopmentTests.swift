@@ -26,6 +26,12 @@ class DevelopmentTests: BaseTestCase {
         )
 
         XCTAssertEqual(
+            dataController.count(for: Placement.fetchRequest()),
+            5,
+            "There should be 5 sample placements."
+        )
+
+        XCTAssertEqual(
             dataController.count(for: ExerciseSet.fetchRequest()),
             15,
             "There should be 15 sample exercise sets."

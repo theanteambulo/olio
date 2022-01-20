@@ -72,11 +72,16 @@ class DataController: ObservableObject {
         for workoutCount in 1...5 {
             let workout = Workout(context: viewContext)
             let exercise = Exercise(context: viewContext)
+            let placement = Placement(context: viewContext)
             workout.id = UUID()
             exercise.id = UUID()
+            placement.id = UUID()
+            placement.indexPosition = 0
             workout.name = "Workout - \(workoutCount)"
+            workout.placements = [placement]
             exercise.name = "Exercise - \(workoutCount)"
             exercise.workouts = [workout]
+            exercise.placements = [placement]
 
             // Create a sample template.
             if workoutCount == 1 {
