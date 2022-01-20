@@ -28,3 +28,17 @@ class BaseTestCase: XCTestCase {
 // testDeletingWorkoutCascadeDeletesSetsAndPlacementsNotExercises???
 // testDeletingExercisesCascadeDeletesSetsAndPlacementsNotExercises???
 // testDeletingExerciseSetsNoCascadeDeleteExerciseOrWorkouts???
+
+
+// create a single workout
+// with two exercises
+// (and therefore two placements)
+// each with 3 sets
+
+
+// test that when an exercise is deleted
+// there is only one exercise remaining in the workout
+// there is are only three sets remaining in the workout
+// all sets belong to the correct exercise
+// there is only one placement belonging to the correct exercise
+

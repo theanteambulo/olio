@@ -81,7 +81,9 @@ class ProjectTests: BaseTestCase {
         )
     }
 
-    func testDeletingWorkoutCascadeDeletesSetsNotExercises() throws {
+    /// Tests that when a workout is deleted its placements and sets are also deleted, but the number of exercises is
+    /// unaffected.
+    func testDeletingWorkoutCascadeDeletesPlacementsAndSetsNotExercises() throws {
         try dataController.createSampleData()
 
         let request = NSFetchRequest<Workout>(entityName: "Workout")
@@ -91,17 +93,26 @@ class ProjectTests: BaseTestCase {
 
         XCTAssertEqual(
             dataController.count(for: Workout.fetchRequest()),
-            4
+            4,
+            "1 workout deleted - there should be 4 workouts remaining."
         )
 
         XCTAssertEqual(
             dataController.count(for: Exercise.fetchRequest()),
-            5
+            5,
+            "Deleting a workout does not delete the exercise - there should be 5 exercises remaining."
+        )
+
+        XCTAssertEqual(
+            dataController.count(for: Placement.fetchRequest()),
+            4,
+            "Deleting a workout deletes its placements - there should be 4 placements remaining."
         )
 
         XCTAssertEqual(
             dataController.count(for: ExerciseSet.fetchRequest()),
-            12
+            12,
+            "Deleting a workout deletes its sets - there should be 12 placements remaining."
         )
     }
 
