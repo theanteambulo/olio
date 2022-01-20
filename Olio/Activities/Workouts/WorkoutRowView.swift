@@ -29,6 +29,26 @@ struct WorkoutRowView: View {
         fillCircle = exerciseCategoryColors.map({ workoutExerciseCategoryColors.contains($0) })
     }
 
+    var upcomingWorkoutLabel: some View {
+        let workoutDate = Calendar.current.startOfDay(for: workout.workoutDate)
+        let today = Calendar.current.startOfDay(for: .now)
+        let tomorrow = Calendar.current.startOfDay(for: .now.addingTimeInterval(86400))
+
+        return Group {
+            if workoutDate == today {
+                Text(.today)
+                    .foregroundColor(.green)
+            } else if workoutDate == tomorrow {
+                Text(.tomorrow)
+                    .foregroundColor(.orange)
+            } else {
+                Text("")
+            }
+        }
+        .font(.body.bold())
+        .textCase(.uppercase)
+    }
+
     var body: some View {
         NavigationLink(destination: EditWorkoutView(workout: workout)) {
             VStack(alignment: .leading, spacing: 0) {
@@ -45,11 +65,19 @@ struct WorkoutRowView: View {
                     }
                 }
 
-                Text("\(workout.workoutExercises.count) exercises")
-                    .font(.caption)
+                HStack {
+                    VStack(alignment: .leading) {
+                        Text("\(workout.workoutExercises.count) exercises")
+                            .font(.caption)
 
-                Text("\(workout.workoutExerciseSets.count) sets")
-                    .font(.caption)
+                        Text("\(workout.workoutExerciseSets.count) sets")
+                            .font(.caption)
+                    }
+
+                    Spacer()
+
+                    upcomingWorkoutLabel
+                }
             }
             .padding(.vertical, 5)
         }
