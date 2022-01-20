@@ -29,12 +29,10 @@ class BaseTestCase: XCTestCase {
 // testDeletingExercisesCascadeDeletesSetsAndPlacementsNotExercises???
 // testDeletingExerciseSetsNoCascadeDeleteExerciseOrWorkouts???
 
-
 // create a single workout
 // with two exercises
 // (and therefore two placements)
 // each with 3 sets
-
 
 // test that when an exercise is deleted
 // there is only one exercise remaining in the workout
@@ -42,3 +40,4 @@ class BaseTestCase: XCTestCase {
 // all sets belong to the correct exercise
 // there is only one placement belonging to the correct exercise
 
+// really, we want to test the array of exercises etc. owned by the workout is correct
