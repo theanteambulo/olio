@@ -10,6 +10,8 @@ import XCTest
 @testable import Olio
 
 class DevelopmentTests: BaseTestCase {
+    /// Tests the createSampleData() method of the DataController class to ensure that when called the correct number
+    /// of Workout, Exercise, Placement and ExerciseSet objects are created.
     func testCreatingSampleData() throws {
         try dataController.createSampleData()
 
@@ -38,6 +40,8 @@ class DevelopmentTests: BaseTestCase {
         )
     }
 
+    /// Tests the deleteAll() method of the DataController class to ensure that when called no Workout, Exercise,
+    /// Placement or ExerciseSet objects remain.
     func testDeleteAllRemovesAllDataFromStorage() throws {
         try dataController.createSampleData()
 
@@ -67,6 +71,7 @@ class DevelopmentTests: BaseTestCase {
         )
     }
 
+    /// Tests example workouts are completed by default.
     func testExampleWorkoutIsCompleted() {
         let workout = Workout.example
 
@@ -76,7 +81,8 @@ class DevelopmentTests: BaseTestCase {
         )
     }
 
-    func testExampleExerciseIsBodyWeight() {
+    /// Tests example exercises are weighted by default.
+    func testExampleExerciseIsWeighted() {
         let exercise = Exercise.example
 
         XCTAssert(
@@ -85,6 +91,17 @@ class DevelopmentTests: BaseTestCase {
         )
     }
 
+    /// Tests example placements have the index position 0 by default.
+    func testExamplePlacementHasIndexZero() {
+        let placement = Placement.example
+
+        XCTAssert(
+            placement.indexPosition == 0,
+            "Example placement index position should be 0 by default."
+        )
+    }
+
+    /// Tests example exercise sets are incomplete by default.
     func testExampleExerciseSetIsIncomplete() {
         let exerciseSet = ExerciseSet.example
 
