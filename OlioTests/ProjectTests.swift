@@ -37,12 +37,16 @@ class ProjectTests: BaseTestCase {
         )
     }
 
-    func testCreatingWorkoutsExercisesAndSets() {
+    /// Tests the correct number of entity objects are created given a target count.
+    func testCreatingWorkoutsExercisesPlacementsAndSets() {
         let targetCount = 5
 
         for _ in 0..<targetCount {
             let workout = Workout(context: managedObjectContext)
             let exercise = Exercise(context: managedObjectContext)
+            let placement = Placement(context: managedObjectContext)
+            placement.workout = workout
+            placement.exercise = exercise
             exercise.workouts = [workout]
 
             for _ in 0..<targetCount {
@@ -54,17 +58,26 @@ class ProjectTests: BaseTestCase {
 
         XCTAssertEqual(
             dataController.count(for: Workout.fetchRequest()),
-            targetCount
+            targetCount,
+            "There should be \(targetCount) workouts."
         )
 
         XCTAssertEqual(
             dataController.count(for: Exercise.fetchRequest()),
-            targetCount
+            targetCount,
+            "There should be \(targetCount) exercises."
+        )
+
+        XCTAssertEqual(
+            dataController.count(for: Placement.fetchRequest()),
+            targetCount,
+            "There should be \(targetCount) placements."
         )
 
         XCTAssertEqual(
             dataController.count(for: ExerciseSet.fetchRequest()),
-            targetCount * targetCount
+            targetCount * targetCount,
+            "There should be \(targetCount * targetCount) exercise sets."
         )
     }
 
