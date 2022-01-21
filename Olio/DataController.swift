@@ -10,6 +10,7 @@ import SwiftUI
 
 /// An environment singleton responsible for managing our Core Data stack, including handling saving, counting fetch
 /// requests and dealing with sample data.
+// swiftlint:disable:next type_body_length
 class DataController: ObservableObject {
     /// The lone CloudKit container used to store all our data.
     let container: NSPersistentCloudKitContainer
@@ -207,6 +208,24 @@ class DataController: ObservableObject {
         }
     }
 
+    /// Creates a new workout or template.
+    func createNewWorkoutOrTemplate(isTemplate: Bool, daysOffset: Double?) {
+        let newWorkout = Workout(context: container.viewContext)
+        newWorkout.id = UUID()
+        newWorkout.name = nil
+        newWorkout.date = Date.now + ((daysOffset ?? 0) * 86400)
+        newWorkout.createdDate = Date.now
+        newWorkout.completed = false
+
+        if isTemplate {
+            newWorkout.template = true
+        } else {
+            newWorkout.template = false
+        }
+
+        save()
+    }
+
     /// Create a workout or template from a given workout or template.
     /// - Parameters:
     ///   - workout: The workout to use as the basis for creating a new workout.
@@ -396,4 +415,5 @@ class DataController: ObservableObject {
     func getPlacement(forExercise exercise: Exercise, inWorkout workout: Workout) -> Int? {
         return exercise.exercisePlacements.filter({ $0.workout == workout }).first?.placementIndexPosition
     }
+// swiftlint:disable:next file_length
 }

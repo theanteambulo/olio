@@ -77,13 +77,7 @@ extension HomeView {
 
         /// Creates a new workout.
         func addWorkout(dayOffset: Double) {
-            let newWorkout = Workout(context: dataController.container.viewContext)
-            newWorkout.id = UUID()
-            newWorkout.name = nil
-            newWorkout.date = Date.now + (dayOffset * 86400)
-            newWorkout.createdDate = Date.now
-            newWorkout.completed = false
-            newWorkout.template = false
+            dataController.createNewWorkoutOrTemplate(isTemplate: false, daysOffset: dayOffset)
         }
 
         /// Returns a date offset by a given number of days from today.
