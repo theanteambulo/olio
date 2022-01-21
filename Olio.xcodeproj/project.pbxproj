@@ -53,6 +53,8 @@
 		23B20E32275A184700215A72 /* OlioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20E31275A184700215A72 /* OlioTests.swift */; };
 		23B20F8B278F3291008E26CD /* SectionFooterErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20F8A278F3291008E26CD /* SectionFooterErrorMessage.swift */; };
 		23B20F8F278F33D8008E26CD /* ExerciseSetError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20F8E278F33D8008E26CD /* ExerciseSetError.swift */; };
+		23B6E293279A99AF00F09A5C /* DecodableDictionary.json in Resources */ = {isa = PBXBuildFile; fileRef = 23B6E292279A99AF00F09A5C /* DecodableDictionary.json */; };
+		23B6E295279A99EE00F09A5C /* DecodableString.json in Resources */ = {isa = PBXBuildFile; fileRef = 23B6E294279A99EE00F09A5C /* DecodableString.json */; };
 		23BC8F942790988700FB9968 /* ExerciseListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BC8F932790988700FB9968 /* ExerciseListView.swift */; };
 		23BC8F962790AC5300FB9968 /* AddOlioLibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23BC8F952790AC5300FB9968 /* AddOlioLibraryView.swift */; };
 		23C25F3427931CFF006CEF85 /* PlacementExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C25F3327931CFF006CEF85 /* PlacementExtension.swift */; };
@@ -141,6 +143,8 @@
 		23B20E31275A184700215A72 /* OlioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioTests.swift; sourceTree = "<group>"; };
 		23B20F8A278F3291008E26CD /* SectionFooterErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionFooterErrorMessage.swift; sourceTree = "<group>"; };
 		23B20F8E278F33D8008E26CD /* ExerciseSetError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSetError.swift; sourceTree = "<group>"; };
+		23B6E292279A99AF00F09A5C /* DecodableDictionary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DecodableDictionary.json; sourceTree = "<group>"; };
+		23B6E294279A99EE00F09A5C /* DecodableString.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DecodableString.json; sourceTree = "<group>"; };
 		23BC8F932790988700FB9968 /* ExerciseListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseListView.swift; sourceTree = "<group>"; };
 		23BC8F952790AC5300FB9968 /* AddOlioLibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddOlioLibraryView.swift; sourceTree = "<group>"; };
 		23C25F3327931CFF006CEF85 /* PlacementExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacementExtension.swift; sourceTree = "<group>"; };
@@ -284,12 +288,22 @@
 		23B20E30275A184700215A72 /* OlioTests */ = {
 			isa = PBXGroup;
 			children = (
+				23B6E291279A996500F09A5C /* TestFixtures */,
 				23B20E31275A184700215A72 /* OlioTests.swift */,
 				237E95AB275B7DB200937AAF /* ProjectTests.swift */,
 				237E95AD275B891200937AAF /* DevelopmentTests.swift */,
 				237E95AF275BA20B00937AAF /* ExtensionTests.swift */,
 			);
 			path = OlioTests;
+			sourceTree = "<group>";
+		};
+		23B6E291279A996500F09A5C /* TestFixtures */ = {
+			isa = PBXGroup;
+			children = (
+				23B6E292279A99AF00F09A5C /* DecodableDictionary.json */,
+				23B6E294279A99EE00F09A5C /* DecodableString.json */,
+			);
+			path = TestFixtures;
 			sourceTree = "<group>";
 		};
 		23D55F1D274CD7F1002B0105 /* Configuration */ = {
@@ -513,6 +527,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23B6E295279A99EE00F09A5C /* DecodableString.json in Resources */,
+				23B6E293279A99AF00F09A5C /* DecodableDictionary.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
