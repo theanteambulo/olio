@@ -184,4 +184,33 @@ class ProjectTests: BaseTestCase {
             "1 exercise set deleted -  there should be 14 exercise sets remaining."
         )
     }
+
+    /// Tests that the Olio exercise library is created successfully.
+    func testLoadingOlioExerciseLibrary() {
+        dataController.loadExerciseLibrary()
+
+        XCTAssertEqual(
+            dataController.count(for: Workout.fetchRequest()),
+            0,
+            "Loading the exercise library should create 0 workouts."
+        )
+
+        XCTAssertEqual(
+            dataController.count(for: Exercise.fetchRequest()),
+            52,
+            "Loading the exercise library should create 52 exercises."
+        )
+
+        XCTAssertEqual(
+            dataController.count(for: Placement.fetchRequest()),
+            0,
+            "Loading the exercise library should create 0 placements."
+        )
+
+        XCTAssertEqual(
+            dataController.count(for: ExerciseSet.fetchRequest()),
+            0,
+            "Loading the exercise library should create 0 exercise sets."
+        )
+    }
 }
