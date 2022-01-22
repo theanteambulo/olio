@@ -38,20 +38,31 @@ class OlioUITests: XCTestCase {
     }
 
     func testHomeTabAddsWorkout() throws {
+        let addWorkoutButton = app.tables.cells.buttons["Add new workout"]
+
         XCTAssertEqual(
             app.tables.cells.count,
-            0,
-            "There should be no workouts initially."
+            1,
+            "There should be one cell in the table initially."
+        )
+
+        XCTAssertTrue(
+            addWorkoutButton.exists,
+            "The one cell that exists should be a button to add a new workout."
         )
 
         for workoutCount in 1...5 {
-            app.buttons["Add"].tap()
-            app.buttons["Add New Workout"].tap()
+            XCTAssertTrue(
+                addWorkoutButton.waitForExistence(timeout: 2),
+                "The button to add a new workout should exist before attempting to tap it."
+            )
+            addWorkoutButton.tap()
+            app.buttons["Today"].tap()
 
             XCTAssertEqual(
                 app.tables.cells.count,
-                workoutCount,
-                "There should be \(workoutCount) row(s) in the list."
+                workoutCount + 1,
+                "There should be \(workoutCount) row(s) in the list, plus one cell containing the add workout button."
             )
         }
     }

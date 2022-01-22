@@ -74,6 +74,7 @@ struct HomeView: View {
                         } label: {
                             Label(Strings.newWorkout.localized, systemImage: "plus")
                         }
+                        .accessibilityIdentifier("Add new workout")
                         .confirmationDialog(Strings.scheduleWorkout.localized,
                                             isPresented: $showingDateConfirmationDialog) {
                             Button(Strings.today.localized) {
