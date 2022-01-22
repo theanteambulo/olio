@@ -5,6 +5,7 @@
 //  Created by Jake King on 04/12/2021.
 //
 
+import Foundation
 import XCTest
 
 extension XCUIElement {
@@ -29,6 +30,7 @@ class OlioUITests: XCTestCase {
         app.launch()
     }
 
+    /// Tests that the app has three tabs; Home, History and Exercises.
     func testAppHasThreeTabs() throws {
         XCTAssertEqual(
             app.tabBars.buttons.count,
@@ -37,8 +39,13 @@ class OlioUITests: XCTestCase {
         )
     }
 
+    /// Tests the "New Workout" button on the Home tab correctly adds workouts scheduled on multiple days.
     func testHomeTabAddsWorkout() throws {
         let addWorkoutButton = app.tables.cells.buttons["Add new workout"]
+        let today = Calendar.current.startOfDay(for: .now).formatted(date: .complete,
+                                                                     time: .omitted)
+        let tomorrow = Calendar.current.startOfDay(for: .now.addingTimeInterval(86400)).formatted(date: .complete,
+                                                                                                  time: .omitted)
 
         XCTAssertEqual(
             app.tables.cells.count,
@@ -56,14 +63,32 @@ class OlioUITests: XCTestCase {
                 addWorkoutButton.waitForExistence(timeout: 2),
                 "The button to add a new workout should exist before attempting to tap it."
             )
+
             addWorkoutButton.tap()
-            app.buttons["Today"].tap()
+
+            if workoutCount.isMultiple(of: 2) {
+                app.buttons["Tomorrow"].tap()
+            } else {
+                app.buttons["Today"].tap()
+            }
 
             XCTAssertEqual(
                 app.tables.cells.count,
                 workoutCount + 1,
                 "There should be \(workoutCount) row(s) in the list, plus one cell containing the add workout button."
             )
+
+            XCTAssertTrue(
+                app.tables.staticTexts[today].exists,
+                "The section header should be today's date."
+            )
+
+            if workoutCount > 1 {
+                XCTAssertTrue(
+                    app.tables.staticTexts[tomorrow].exists,
+                    "The section header should be tomorrow's date."
+                )
+            }
         }
     }
 
