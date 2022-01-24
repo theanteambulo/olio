@@ -111,7 +111,7 @@ class OlioUITests: XCTestCase {
             XCTAssertEqual(
                 app.tables.cells.count,
                 workoutCount + 1,
-                "There should be \(workoutCount) workout(s), plus 1 cell containing the 'New Template' button."
+                "There should be \(workoutCount) workout(s), plus 1 cell containing the 'New Workout' button."
             )
 
             XCTAssertTrue(
@@ -218,70 +218,29 @@ class OlioUITests: XCTestCase {
         )
     }
 
-    // swiftlint:disable:next function_body_length
-    func testEditingWorkoutDate() {
-        XCTAssertEqual(
-            app.tables.cells.count,
-            0,
-            "There should be 0 workouts initially."
-        )
+    /// Tests editing the date of a workout results in an instant change and the new date being correct displayed on
+    /// the Home tab.
+    func testEditingWorkoutDate() throws {
+        try testHomeTabAddsSingleWorkout()
 
-        app.buttons["Add"].tap()
-        app.buttons["Add New Workout"].tap()
-
-        XCTAssertEqual(
-            app.tables.cells.count,
-            1,
-            "There should be 1 workout in the list."
-        )
-
-        let labelFormatter = DateFormatter()
-        labelFormatter.dateFormat = "EEEE, MMMM d, y"
-
-        XCTAssertTrue(
-            app.tables.otherElements.staticTexts[labelFormatter.string(from: .now)].exists,
-            "A section with a header matching the current date should exist."
-        )
-
-        var dateToPick: Date
-        var components = DateComponents()
-        components.day = 1
-
-        if .now == Calendar.current.date(from: components) {
-            dateToPick = Calendar.current.date(byAdding: DateComponents.init(day: 1), to: .now) ?? .now
-        } else {
-            dateToPick = Calendar.current.date(byAdding: DateComponents.init(day: -1), to: .now) ?? .now
-        }
-
-        let buttonFormatter = DateFormatter()
-        buttonFormatter.dateFormat = "EEEE, MMMM d"
-
-        XCTAssertTrue(
-            app.tables.cells.buttons["New Workout"].waitForExistence(timeout: 1),
-            "The 'New Workout' button should exist in the view before attempting to tap it."
-        )
+        let tomorrow = Calendar.current.startOfDay(for: .now.addingTimeInterval(86400)).formatted(date: .complete,
+                                                                                                  time: .omitted)
+        let tomorrowText = app.tables.staticTexts[tomorrow]
+        let tomorrowButton = app.sheets.scrollViews.otherElements.buttons["Tomorrow"]
 
         app.tables.cells.buttons["New Workout"].tap()
         app.tables.cells.buttons["Workout Date"].tap()
-        app.datePickers.element.buttons[buttonFormatter.string(from: dateToPick)].tap()
+        tomorrowButton.tap()
 
         XCTAssertTrue(
-            app.alerts.element.exists,
-            "An alert should be displayed after the user selects a date."
+            tomorrowText.waitForExistence(timeout: 1),
+            "The section header should be tomorrow's date."
         )
 
         XCTAssertEqual(
-            app.alerts.element.label,
-            labelFormatter.string(from: dateToPick),
-            "The alert title should match the date the user selected."
-        )
-
-        app.alerts.buttons["OK"].tap()
-        app.tabBars.buttons["Home"].tap()
-
-        XCTAssertTrue(
-            app.tables.otherElements.staticTexts[labelFormatter.string(from: dateToPick)].exists,
-            "A section with a header matching the user's selected date should exist."
+            app.tables.cells.count,
+            2,
+            "There should be 1 workout, plus 1 cell containing the 'New Workout' button."
         )
     }
 
