@@ -39,9 +39,45 @@ class OlioUITests: XCTestCase {
         )
     }
 
-    /// Tests the "New Workout" button on the Home tab correctly adds workouts scheduled on multiple days.
-    func testHomeTabAddsWorkout() throws {
+    /// Tests the "New Workout" button on the Home tab correctly adds a single workout scheduled for today.
+    func testHomeTabAddsSingleWorkout() throws {
         let addWorkoutButton = app.tables.cells.buttons["Add new workout"]
+        let todayButton = app.sheets.scrollViews.otherElements.buttons["Today"]
+        let todayDate = Calendar.current.startOfDay(for: .now).formatted(date: .complete,
+                                                                     time: .omitted)
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 1 cell in the table initially."
+        )
+
+        XCTAssertTrue(
+            addWorkoutButton.exists,
+            "The 1 cell that exists should contain the 'New Workout' button."
+        )
+
+        addWorkoutButton.tap()
+        todayButton.tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            2,
+            "There should be 1 workout, plus 1 cell containing the 'New Workout' button."
+        )
+
+        XCTAssertTrue(
+            app.tables.staticTexts[todayDate].exists,
+            "The section header should be today's date."
+        )
+
+    }
+
+    /// Tests the "New Workout" button on the Home tab correctly adds workouts scheduled on multiple days.
+    func testHomeTabAddsMultipleWorkouts() throws {
+        let addWorkoutButton = app.tables.cells.buttons["Add new workout"]
+        let todayButton = app.sheets.scrollViews.otherElements.buttons["Today"]
+        let tomorrowButton = app.sheets.scrollViews.otherElements.buttons["Tomorrow"]
         let today = Calendar.current.startOfDay(for: .now).formatted(date: .complete,
                                                                      time: .omitted)
         let tomorrow = Calendar.current.startOfDay(for: .now.addingTimeInterval(86400)).formatted(date: .complete,
@@ -50,32 +86,32 @@ class OlioUITests: XCTestCase {
         XCTAssertEqual(
             app.tables.cells.count,
             1,
-            "There should be one cell in the table initially."
+            "There should be 1 cell in the table initially."
         )
 
         XCTAssertTrue(
             addWorkoutButton.exists,
-            "The one cell that exists should be a button to add a new workout."
+            "The 1 cell that exists should contain the 'New Workout' button."
         )
 
         for workoutCount in 1...5 {
             XCTAssertTrue(
                 addWorkoutButton.waitForExistence(timeout: 2),
-                "The button to add a new workout should exist before attempting to tap it."
+                "The 'New Workout' button should exist before attempting to tap it."
             )
 
             addWorkoutButton.tap()
 
             if workoutCount.isMultiple(of: 2) {
-                app.buttons["Tomorrow"].tap()
+                tomorrowButton.tap()
             } else {
-                app.buttons["Today"].tap()
+                todayButton.tap()
             }
 
             XCTAssertEqual(
                 app.tables.cells.count,
                 workoutCount + 1,
-                "There should be \(workoutCount) row(s) in the list, plus one cell containing the add workout button."
+                "There should be \(workoutCount) workout(s), plus 1 cell containing the 'New Workout' button."
             )
 
             XCTAssertTrue(
@@ -93,7 +129,7 @@ class OlioUITests: XCTestCase {
     }
 
     /// Tests the "New Template" button on the Home tab correct adds templates.
-    func testHomeTabAddsTemplate() throws {
+    func testHomeTabAddsMultipleTemplates() throws {
         let addTemplateButton = app.scrollViews.buttons["Add new template"]
 
         XCTAssertEqual(
@@ -104,7 +140,7 @@ class OlioUITests: XCTestCase {
 
         XCTAssertTrue(
             addTemplateButton.exists,
-            "The one cell that exists should be a button to add a new template."
+            "The 1 template card that exists should contain the 'New Template' button."
         )
 
         for templateCount in 1...5 {
@@ -113,21 +149,17 @@ class OlioUITests: XCTestCase {
             XCTAssertEqual(
                 app.scrollViews.buttons.count,
                 templateCount + 1,
-                "There should be \(templateCount + 1) templates in the scroll view."
+                "There should be \(templateCount) template(s), plus 1 cell containing the 'New Workout' button."
             )
         }
     }
-
+    
     func testEditingWorkoutName() throws {
-        XCTAssertEqual(
-            app.tables.cells.count,
-            0,
-            "There should be 0 workouts initially."
-        )
-
-        app.buttons["Add"].tap()
-        app.buttons["Add New Workout"].tap()
-
+        
+        
+        
+        
+        
         XCTAssertEqual(
             app.tables.cells.count,
             1,
@@ -756,7 +788,7 @@ class OlioUITests: XCTestCase {
     }
 
     func testSwipeToDeleteWorkout() throws {
-        try testHomeTabAddsWorkout()
+        try testHomeTabAddsMultipleWorkouts()
 
         app.tables.cells.firstMatch.swipeLeft()
         app.tables.cells.firstMatch.buttons["Delete"].tap()
