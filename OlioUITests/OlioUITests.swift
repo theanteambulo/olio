@@ -92,21 +92,28 @@ class OlioUITests: XCTestCase {
         }
     }
 
+    /// Tests the "New Template" button on the Home tab correct adds templates.
     func testHomeTabAddsTemplate() throws {
+        let addTemplateButton = app.scrollViews.buttons["Add new template"]
+
         XCTAssertEqual(
             app.scrollViews.buttons.count,
-            0,
-            "There should be 0 templates in the scroll view initially."
+            1,
+            "There should be 1 template card in the scroll view initially."
+        )
+
+        XCTAssertTrue(
+            addTemplateButton.exists,
+            "The one cell that exists should be a button to add a new template."
         )
 
         for templateCount in 1...5 {
-            app.buttons["Add"].tap()
-            app.buttons["Add New Template"].tap()
+            app.buttons["Add new template"].tap()
 
             XCTAssertEqual(
                 app.scrollViews.buttons.count,
-                templateCount,
-                "There should be \(templateCount) templates in the scroll view."
+                templateCount + 1,
+                "There should be \(templateCount + 1) templates in the scroll view."
             )
         }
     }

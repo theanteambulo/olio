@@ -41,6 +41,7 @@ struct TemplatesView: View {
                             Text(.newTemplate)
                         }
                     }
+                    .accessibilityIdentifier("Add new template")
                     .padding(10)
                     .frame(maxHeight: .infinity)
                     .background(Color.secondarySystemGroupedBackground)
