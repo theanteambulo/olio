@@ -80,8 +80,9 @@ struct WorkoutRowView: View {
                 }
             }
             .padding(.vertical, 5)
+            .accessibilityElement(children: .ignore)
+            .accessibilityIdentifier(workout.workoutName)
         }
-        .accessibilityIdentifier(workout.workoutName)
     }
 }
 

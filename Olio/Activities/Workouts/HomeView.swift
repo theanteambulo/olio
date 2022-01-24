@@ -72,7 +72,7 @@ struct HomeView: View {
                         Button {
                             showingDateConfirmationDialog.toggle()
                         } label: {
-                            Label(Strings.newWorkout.localized, systemImage: "plus")
+                            Label(Strings.addNewWorkout.localized, systemImage: "plus")
                         }
                         .accessibilityIdentifier("Add new workout")
                         .confirmationDialog(Strings.scheduleWorkout.localized,

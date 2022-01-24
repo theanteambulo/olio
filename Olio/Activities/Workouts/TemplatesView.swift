@@ -38,7 +38,7 @@ struct TemplatesView: View {
                             Image(systemName: "plus")
                                 .padding(.bottom, 5)
 
-                            Text(.newTemplate)
+                            Text(.addNewTemplate)
                         }
                     }
                     .accessibilityIdentifier("Add new template")

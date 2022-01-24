@@ -37,6 +37,8 @@ enum Strings: LocalizedStringKey {
     case selectOption
     case newTemplate
     case newWorkout
+    case addNewTemplate
+    case addNewWorkout
 
     // EDITING WORKOUTS
     case editWorkoutNavigationTitle

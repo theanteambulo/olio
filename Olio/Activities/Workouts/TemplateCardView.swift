@@ -58,6 +58,8 @@ struct TemplateCardView: View {
                 .font(.caption)
                 .foregroundColor(.white)
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityIdentifier(template.workoutName)
         }
         .padding(10)
         .frame(maxHeight: .infinity)
@@ -65,7 +67,6 @@ struct TemplateCardView: View {
         .cornerRadius(5)
         .shadow(color: Color.black.opacity(0.2),
                 radius: 5)
-        .accessibilityIdentifier(template.workoutName)
     }
 }
 

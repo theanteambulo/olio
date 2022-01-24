@@ -96,7 +96,7 @@ class OlioUITests: XCTestCase {
 
         for workoutCount in 1...5 {
             XCTAssertTrue(
-                addWorkoutButton.waitForExistence(timeout: 2),
+                addWorkoutButton.waitForExistence(timeout: 1),
                 "The 'New Workout' button should exist before attempting to tap it."
             )
 
@@ -111,7 +111,7 @@ class OlioUITests: XCTestCase {
             XCTAssertEqual(
                 app.tables.cells.count,
                 workoutCount + 1,
-                "There should be \(workoutCount) workout(s), plus 1 cell containing the 'New Workout' button."
+                "There should be \(workoutCount) workout(s), plus 1 cell containing the 'New Template' button."
             )
 
             XCTAssertTrue(
@@ -126,6 +126,30 @@ class OlioUITests: XCTestCase {
                 )
             }
         }
+    }
+
+    /// Tests the "New Template" button on the Home tab correctly adds a single template.
+    func testHomeTabAddsSingleTemplate() throws {
+        let addTemplateButton = app.scrollViews.buttons["Add new template"]
+
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            1,
+            "There should be 1 template card in the scroll view initially."
+        )
+
+        XCTAssertTrue(
+            addTemplateButton.exists,
+            "The 1 template card that exists should contain the 'New Template' button."
+        )
+
+        addTemplateButton.tap()
+
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            2,
+            "There should be 1 template, plus 1 cell containing the 'New Template' button."
+        )
     }
 
     /// Tests the "New Template" button on the Home tab correct adds templates.
@@ -144,7 +168,7 @@ class OlioUITests: XCTestCase {
         )
 
         for templateCount in 1...5 {
-            app.buttons["Add new template"].tap()
+            addTemplateButton.tap()
 
             XCTAssertEqual(
                 app.scrollViews.buttons.count,
@@ -153,76 +177,44 @@ class OlioUITests: XCTestCase {
             )
         }
     }
-    
-    func testEditingWorkoutName() throws {
-        
-        
-        
-        
-        
-        XCTAssertEqual(
-            app.tables.cells.count,
-            1,
-            "There should be 1 workout in the list."
-        )
 
-        XCTAssertTrue(
-            app.tables.cells.buttons["New Workout"].waitForExistence(timeout: 1),
-            "The 'New Workout' button should exist in the view before attempting to tap it."
-        )
+    /// Tests editing the name of a workout results in an instant change and the new name being correctly displayed
+    /// on the Home tab.
+    func testEditingWorkoutName() throws {
+        try testHomeTabAddsSingleWorkout()
 
         app.tables.cells.buttons["New Workout"].tap()
-
         app.textFields["New Workout"].tap()
         app.keys["more"].tap()
         app.keys["space"].tap()
         app.keys["more"].tap()
         app.keys["2"].tap()
         app.buttons["Return"].tap()
-
         app.navigationBars.buttons["Home"].tap()
 
         XCTAssertTrue(
             app.tables.cells.buttons["New Workout 2"].exists,
-            "The new workout name should be visible in the list."
+            "The new workout name should be visible in the list of workouts."
         )
     }
 
+    /// Tests editing the name of a template results in an instant change and the new name being correctly displayed
+    /// on the Home tab.
     func testEditingTemplateName() throws {
-        XCTAssertEqual(
-            app.scrollViews.buttons.count,
-            0,
-            "There should be 0 templates in the scroll view initially."
-        )
-
-        app.buttons["Add"].tap()
-        app.buttons["Add New Template"].tap()
-
-        XCTAssertEqual(
-            app.scrollViews.buttons.count,
-            1,
-            "There should be 1 template in the scroll view."
-        )
-
-        XCTAssertTrue(
-            app.scrollViews.buttons["New Template"].waitForExistence(timeout: 1),
-            "The 'New Template' button should exist in the view before attempting to tap it."
-        )
+        try testHomeTabAddsSingleTemplate()
 
         app.scrollViews.buttons["New Template"].tap()
-
         app.textFields["New Template"].tap()
         app.keys["more"].tap()
         app.keys["space"].tap()
         app.keys["more"].tap()
         app.keys["2"].tap()
         app.buttons["Return"].tap()
-
         app.navigationBars.buttons["Home"].tap()
 
         XCTAssertTrue(
             app.scrollViews.buttons["New Template 2"].exists,
-            "The new template name should be visible in the list."
+            "The new template name should be visible in the list of templates."
         )
     }
 
