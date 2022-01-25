@@ -39,12 +39,22 @@ class OlioUITests: XCTestCase {
         )
     }
 
-    /// Tests the "New Workout" button on the Home tab correctly adds a single workout scheduled for today.
-    func testHomeTabAddsSingleWorkout() throws {
+    /// Tests when the app is first launched that on the Home tab there are no workouts or templates and the correct
+    /// buttons exist.
+    func testHomeTabSetUp() throws {
         let addWorkoutButton = app.tables.cells.buttons["Add new workout"]
-        let todayButton = app.sheets.scrollViews.otherElements.buttons["Today"]
-        let todayDate = Calendar.current.startOfDay(for: .now).formatted(date: .complete,
-                                                                     time: .omitted)
+        let addTemplateButton = app.scrollViews.buttons["Add new template"]
+
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            1,
+            "There should be 1 template card in the scroll view initially."
+        )
+
+        XCTAssertTrue(
+            addTemplateButton.exists,
+            "The 1 template card that exists should contain the 'New Template' button."
+        )
 
         XCTAssertEqual(
             app.tables.cells.count,
@@ -56,6 +66,55 @@ class OlioUITests: XCTestCase {
             addWorkoutButton.exists,
             "The 1 cell that exists should contain the 'New Workout' button."
         )
+    }
+
+    /// Tests when the app is first launched that on the History tab there are no workouts.
+    func testHistoryTabSetUp() throws {
+        app.tabBars.buttons["History"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            0,
+            "There should be 0 cell in the table initially."
+        )
+    }
+
+    /// Tests when the app is first launched that on the Exercises tab there are no exercises, the exercise category
+    /// segmented control is not showing and the correct buttons are exist.
+    func testExercisesTabSetUp() throws {
+        app.tabBars.buttons["Exercises"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            0,
+            "There should be 0 exercises in the list initially."
+        )
+
+        XCTAssertTrue(
+            app.navigationBars.buttons["Add new exercise"].exists,
+            "There should be a button to add a new exercise in the navigation bar."
+        )
+
+        XCTAssertTrue(
+            app.buttons["Load exercise library"].exists,
+            "When there are 0 exercises, 'Load exercise library' button should be visible for all exercise categories."
+        )
+
+        XCTAssertEqual(
+            app.segmentedControls.count,
+            0,
+            "When there are 0 exercises, the exercise category segmented control should not be visible."
+        )
+    }
+
+    /// Tests the "New Workout" button on the Home tab correctly adds a single workout scheduled for today.
+    func testHomeTabAddsSingleWorkout() throws {
+        let addWorkoutButton = app.tables.cells.buttons["Add new workout"]
+        let todayButton = app.sheets.scrollViews.otherElements.buttons["Today"]
+        let todayDate = Calendar.current.startOfDay(for: .now).formatted(date: .complete,
+                                                                     time: .omitted)
+
+        try testHomeTabSetUp()
 
         addWorkoutButton.tap()
         todayButton.tap()
@@ -83,16 +142,7 @@ class OlioUITests: XCTestCase {
         let tomorrow = Calendar.current.startOfDay(for: .now.addingTimeInterval(86400)).formatted(date: .complete,
                                                                                                   time: .omitted)
 
-        XCTAssertEqual(
-            app.tables.cells.count,
-            1,
-            "There should be 1 cell in the table initially."
-        )
-
-        XCTAssertTrue(
-            addWorkoutButton.exists,
-            "The 1 cell that exists should contain the 'New Workout' button."
-        )
+        try testHomeTabSetUp()
 
         for workoutCount in 1...5 {
             XCTAssertTrue(
@@ -132,16 +182,7 @@ class OlioUITests: XCTestCase {
     func testHomeTabAddsSingleTemplate() throws {
         let addTemplateButton = app.scrollViews.buttons["Add new template"]
 
-        XCTAssertEqual(
-            app.scrollViews.buttons.count,
-            1,
-            "There should be 1 template card in the scroll view initially."
-        )
-
-        XCTAssertTrue(
-            addTemplateButton.exists,
-            "The 1 template card that exists should contain the 'New Template' button."
-        )
+        try testHomeTabSetUp()
 
         addTemplateButton.tap()
 
@@ -156,16 +197,7 @@ class OlioUITests: XCTestCase {
     func testHomeTabAddsMultipleTemplates() throws {
         let addTemplateButton = app.scrollViews.buttons["Add new template"]
 
-        XCTAssertEqual(
-            app.scrollViews.buttons.count,
-            1,
-            "There should be 1 template card in the scroll view initially."
-        )
-
-        XCTAssertTrue(
-            addTemplateButton.exists,
-            "The 1 template card that exists should contain the 'New Template' button."
-        )
+        try testHomeTabSetUp()
 
         for templateCount in 1...5 {
             addTemplateButton.tap()
@@ -244,16 +276,14 @@ class OlioUITests: XCTestCase {
         )
     }
 
-    func testAddingAnExercise() {
-        app.tabBars.buttons["Exercises"].tap()
+    /// Tests adding a single exercise results in that exercise being displayed in ExercisesView correctly and the
+    /// 'Load exercise library' button disappearing.
+    func testAddingAnExercise() throws {
+        let exerciseCategories = ["Weights", "Body", "Cardio", "Class", "Stretch"]
 
-        XCTAssertEqual(
-            app.tables.cells.count,
-            0,
-            "There should be 0 exercises in the list initially."
-        )
+        try testExercisesTabSetUp()
 
-        app.navigationBars.buttons["Add"].tap()
+        app.navigationBars.buttons["Add new exercise"].tap()
 
         app.textFields["Exercise Name"].tap()
 
@@ -270,6 +300,11 @@ class OlioUITests: XCTestCase {
         app.buttons["Return"].tap()
         app.buttons["Save"].tap()
 
+        XCTAssertTrue(
+            app.navigationBars.staticTexts["Exercises"].waitForExistence(timeout: 1),
+            "The navigation bar title should be 'Exercises'."
+        )
+
         XCTAssertEqual(
             app.tables.cells.count,
             1,
@@ -280,10 +315,82 @@ class OlioUITests: XCTestCase {
             app.tables.cells.buttons["Bench"].exists,
             "The exercise that the user created should be available as a button in the list."
         )
+
+        XCTAssertEqual(
+            app.segmentedControls.count,
+            1,
+            "When there is >= 1 exercises, the exercise category segmented control should be visible."
+        )
+
+        for category in exerciseCategories {
+            app.segmentedControls.buttons[category].tap()
+
+            XCTAssertTrue(
+                !app.buttons["Load exercise library"].exists,
+                "When there is >= 1 exercise(s) in any category, 'Load exercise library' button should not be visible."
+            )
+        }
     }
 
-    func testAddingExerciseToWorkout() {
-        testAddingAnExercise()
+    /// Tests loading the exercise library results in the correct number of exercises being added to each category.
+    func testLoadingExerciseLibrary() throws {
+        // Also consider testing whether the muscle groups displayed are correct.
+        let exerciseCategories = ["Weights", "Body", "Cardio", "Class", "Stretch"]
+
+        try testExercisesTabSetUp()
+
+        app.buttons["Load exercise library"].tap()
+
+        XCTAssertEqual(
+            app.segmentedControls.count,
+            1,
+            "When there is >= 1 exercises, the exercise category segmented control should be visible."
+        )
+
+        for category in exerciseCategories {
+            app.segmentedControls.buttons[category].tap()
+
+            XCTAssertTrue(
+                !app.buttons["Load exercise library"].exists,
+                "When there is >= 1 exercise(s) in any category, 'Load exercise library' button should not be visible."
+            )
+
+            if category == "Weights" {
+                XCTAssertEqual(
+                    app.tables.cells.count,
+                    21,
+                    "There should be 21 exercises in the list for the \(category) exercise category."
+                )
+            } else if category == "Body" {
+                XCTAssertEqual(
+                    app.tables.cells.count,
+                    13,
+                    "There should be 13 exercises in the list for the \(category) exercise category."
+                )
+            } else if category == "Cardio" {
+                XCTAssertEqual(
+                    app.tables.cells.count,
+                    4,
+                    "There should be 5 exercises in the list for the \(category) exercise category."
+                )
+            } else if category == "Class" {
+                XCTAssertEqual(
+                    app.tables.cells.count,
+                    5,
+                    "There should be 5 exercises in the list for the \(category) exercise category."
+                )
+            } else {
+                XCTAssertEqual(
+                    app.tables.cells.count,
+                    9,
+                    "There should be 13 exercises in the list for the \(category) exercise category."
+                )
+            }
+        }
+    }
+
+    func testAddingExerciseToWorkout() throws {
+        try testAddingAnExercise()
 
         app.tabBars.buttons["Home"].tap()
 
@@ -335,8 +442,8 @@ class OlioUITests: XCTestCase {
         )
     }
 
-    func testAddingExerciseToTemplate() {
-        testAddingAnExercise()
+    func testAddingExerciseToTemplate() throws {
+        try testAddingAnExercise()
 
         app.tabBars.buttons["Home"].tap()
 
@@ -388,8 +495,8 @@ class OlioUITests: XCTestCase {
         )
     }
 
-    func testAddingSetToExerciseInWorkout() {
-        testAddingExerciseToWorkout()
+    func testAddingSetToExerciseInWorkout() throws {
+        try testAddingExerciseToWorkout()
 
         app.tables.cells.buttons["New Workout"].tap()
 
@@ -425,8 +532,8 @@ class OlioUITests: XCTestCase {
         app.navigationBars.buttons["Exercises"].tap()
     }
 
-    func testAddingSetToExerciseInTemplate() {
-        testAddingExerciseToTemplate()
+    func testAddingSetToExerciseInTemplate() throws {
+        try testAddingExerciseToTemplate()
 
         app.scrollViews.buttons["New Template"].forceTapElement()
 
@@ -514,8 +621,8 @@ class OlioUITests: XCTestCase {
         )
     }
 
-    func testCreatingWorkoutFromTemplate() {
-        testAddingSetToExerciseInTemplate()
+    func testCreatingWorkoutFromTemplate() throws {
+        try testAddingSetToExerciseInTemplate()
 
         app.tabBars.buttons["Home"].tap()
         app.scrollViews.buttons["New Template"].forceTapElement()
@@ -581,8 +688,8 @@ class OlioUITests: XCTestCase {
         )
     }
 
-    func testCreatingTemplateFromWorkout() {
-        testAddingSetToExerciseInWorkout()
+    func testCreatingTemplateFromWorkout() throws {
+        try testAddingSetToExerciseInWorkout()
 
         app.tabBars.buttons["Home"].tap()
         app.tables.buttons["New Workout"].forceTapElement()
@@ -752,7 +859,7 @@ class OlioUITests: XCTestCase {
     }
 
     func testCompletingWorkoutExerciseSet() throws {
-        testAddingSetToExerciseInWorkout()
+        try testAddingSetToExerciseInWorkout()
 
         app.tabBars.buttons["Home"].tap()
 
@@ -866,7 +973,7 @@ class OlioUITests: XCTestCase {
     }
 
     func testRenamingAnExercise() throws {
-        testAddingExerciseToWorkout()
+        try testAddingExerciseToWorkout()
 
         app.tabBars.buttons["Exercises"].tap()
         app.tables.cells.buttons["Bench"].tap()
@@ -902,7 +1009,7 @@ class OlioUITests: XCTestCase {
     }
 
     func testRegroupingAnExercise() throws {
-        testAddingExerciseToWorkout()
+        try testAddingExerciseToWorkout()
 
         app.tabBars.buttons["Exercises"].tap()
         app.tables.cells.buttons["Bench"].tap()
@@ -981,8 +1088,8 @@ class OlioUITests: XCTestCase {
         app.navigationBars.buttons["Exercises"].tap()
     }
 
-    func testDeletingAnExercise() {
-        testAddingExerciseToWorkout()
+    func testDeletingAnExercise() throws {
+        try testAddingExerciseToWorkout()
 
         app.tabBars.buttons["Exercises"].tap()
         app.tables.cells.buttons["Bench"].tap()

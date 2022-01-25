@@ -30,8 +30,9 @@ struct ExercisesView: View {
             Button {
                 showingAddExerciseSheet.toggle()
             } label: {
-                Label("Add", systemImage: "plus")
+                Label(Strings.addExercise.localized, systemImage: "plus")
             }
+            .accessibilityIdentifier("Add new exercise")
             .sheet(isPresented: $showingAddExerciseSheet) {
                 AddExerciseView(currentlyActiveExerciseCategory: viewModel.exerciseCategory)
             }
