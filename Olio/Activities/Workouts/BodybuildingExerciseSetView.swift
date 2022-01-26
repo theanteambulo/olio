@@ -49,8 +49,24 @@ struct BodybuildingExerciseSetView: View {
         exerciseSetWeight > 999
     }
 
+    var setCount: String {
+        return "Set \(exerciseSetIndex + 1)"
+    }
+
+    var accessibilityIdentifier: String {
+        let weightString = "\(exerciseSet.exerciseSetWeight) kilograms"
+        let repsString = "\(exerciseSet.exerciseSetReps)"
+        let usageInstructions = "Swipe right to complete, left to delete."
+
+        if exerciseSet.exercise?.exerciseCategory == "Weights" {
+            return setCount + ": " + weightString + ", " + repsString + ". " + usageInstructions
+        } else {
+            return setCount + ": " + repsString + ". " + usageInstructions + "."
+        }
+    }
+
     var body: some View {
-        Section(header: Text("Set \(exerciseSetIndex + 1)"),
+        Section(header: Text(setCount),
                 footer: SectionFooterErrorMessage(exerciseSetError: $exerciseSetError,
                                                   exerciseSetStretch: exerciseSet.exercise?.category == 5)) {
             HStack {
@@ -82,6 +98,8 @@ struct BodybuildingExerciseSetView: View {
                     Text("reps")
                 }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityIdentifier(accessibilityIdentifier)
         }
         .onDisappear(perform: onDisappearSetExerciseSetValuesIfError)
     }

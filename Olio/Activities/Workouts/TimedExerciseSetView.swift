@@ -49,8 +49,27 @@ struct TimedExerciseSetView: View {
         exerciseSetDuration > 999
     }
 
+    var setCount: String {
+        return "Set \(exerciseSetIndex + 1)"
+    }
+
+    var accessibilityIdentifier: String {
+        let durationUnit = "\(exerciseSet.exercise?.category == 5 ? "seconds" : "minutes")"
+        let durationString = "\(exerciseSet.exerciseSetDuration) \(durationUnit)"
+        let distanceString = "\(exerciseSet.exerciseSetDistance) kilometres"
+        let usageInstructions = "Swipe right to complete, left to delete."
+        
+        if exerciseSet.exercise?.exerciseCategory == "Cardio" {
+            return setCount + ": " + durationString + ", " + distanceString + ". " + usageInstructions
+        } else if exerciseSet.exercise?.exerciseCategory == "Class" {
+            return setCount + ": " + durationString + ". " + usageInstructions
+        } else {
+            return setCount + ": " + durationString + ". " + usageInstructions + "."
+        }
+    }
+
     var body: some View {
-        Section(header: Text("Set \(exerciseSetIndex + 1)"),
+        Section(header: Text(setCount),
                 footer: SectionFooterErrorMessage(exerciseSetError: $exerciseSetError,
                                                   exerciseSetStretch: exerciseSet.exercise?.category == 5)) {
             HStack {
@@ -82,6 +101,8 @@ struct TimedExerciseSetView: View {
                     Text(exerciseSet.exercise?.category == 5 ? "secs" : "mins")
                 }
             }
+            .accessibilityElement(children: .ignore)
+            .accessibilityIdentifier(accessibilityIdentifier)
         }
         .onDisappear(perform: onDisappearSetExerciseSetValuesIfError)
     }
