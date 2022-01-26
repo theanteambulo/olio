@@ -445,46 +445,48 @@ class OlioUITests: XCTestCase {
         )
     }
 
+    /// Tests adding an exercise results in the correct UI being displayed for both EditWorkoutView and on the Home tab.
     func testAddingExerciseToTemplate() throws {
+        try testHomeTabAddsSingleTemplate()
         try testAddingAnExercise()
 
         app.tabBars.buttons["Home"].tap()
-
-        XCTAssertEqual(
-            app.scrollViews.buttons.count,
-            0,
-            "There should be 0 templates in the scroll view initially."
-        )
-
-        app.navigationBars.buttons["Add"].forceTapElement()
-        app.buttons["Add New Template"].tap()
-
-        XCTAssertEqual(
-            app.scrollViews.buttons.count,
-            1,
-            "There should be 1 template in the scroll view."
-        )
-
-        XCTAssertTrue(
-            app.scrollViews.buttons["New Template"].waitForExistence(timeout: 1),
-            "The 'New Template' button should exist in the view before attempting to tap it."
-        )
-
-        app.scrollViews.buttons["New Template"].forceTapElement()
-        app.navigationBars.buttons["Add"].forceTapElement()
-        app.tables.cells.buttons["Bench"].tap()
+        app.scrollViews.buttons["New Template"].tap()
+        app.tables.cells.buttons["Add Exercise"].tap()
+        app.tables.cells.otherElements["Bench"].tap()
+        app.navigationBars.buttons["Add"].tap()
 
         XCTAssertTrue(
             app.tables.otherElements.staticTexts["Bench"].exists,
-            "A section with a header matching the added exercise's should exist."
+            "A single cell with static text matching the added exercise's name should exist."
+        )
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["Weights"].exists,
+            "A single cell with static text matching the added exercise's category should exist."
+        )
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["No sets"].exists,
+            "A single cell with static text stating there are currently no sets for the exercise should exist."
+        )
+
+        XCTAssertTrue(
+            !app.tables.otherElements.staticTexts["Completed"].exists,
+            "Since there should be no sets for the exercise, there should be no mention of sets being completed."
+        )
+
+        XCTAssertTrue(
+            !app.tables.otherElements.progressIndicators.firstMatch.exists,
+            "There should be no progress bar for exercises in a template."
         )
 
         app.navigationBars.buttons["Home"].tap()
 
         XCTAssertEqual(
             app.scrollViews.buttons.count,
-            1,
-            "There should be 1 template in the scroll view."
+            2,
+            "There should still only be 1 template, plus the 'New Template' button in the scroll view."
         )
 
         XCTAssertTrue(
