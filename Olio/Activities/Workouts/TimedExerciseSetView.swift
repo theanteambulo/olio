@@ -58,7 +58,7 @@ struct TimedExerciseSetView: View {
         let durationString = "\(exerciseSet.exerciseSetDuration) \(durationUnit)"
         let distanceString = "\(exerciseSet.exerciseSetDistance) kilometres"
         let usageInstructions = "Swipe right to complete, left to delete."
-        
+
         if exerciseSet.exercise?.exerciseCategory == "Cardio" {
             return setCount + ": " + durationString + ", " + distanceString + ". " + usageInstructions
         } else if exerciseSet.exercise?.exerciseCategory == "Class" {
