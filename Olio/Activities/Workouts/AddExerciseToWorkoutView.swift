@@ -144,6 +144,8 @@ struct AddExerciseToWorkoutView: View {
                                             }
                                             .foregroundColor(.primary)
                                         }
+                                        .accessibilityElement(children: .ignore)
+                                        .accessibility(identifier: exercise.exerciseName)
                                     }
                                 }
                             }

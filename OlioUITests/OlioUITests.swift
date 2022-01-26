@@ -389,46 +389,49 @@ class OlioUITests: XCTestCase {
         }
     }
 
+    /// Tests adding an exercise results in the correct UI being displayed for both EditWorkoutView and on the Home tab.
     func testAddingExerciseToWorkout() throws {
+        try testHomeTabAddsSingleWorkout()
         try testAddingAnExercise()
 
         app.tabBars.buttons["Home"].tap()
-
-        XCTAssertEqual(
-            app.tables.cells.count,
-            0,
-            "There should be no workouts initially."
-        )
-
-        app.navigationBars.buttons["Add"].forceTapElement()
-        app.buttons["Add New Workout"].tap()
-
-        XCTAssertEqual(
-            app.tables.cells.count,
-            1,
-            "There should be 1 workout in the list."
-        )
-
-        XCTAssertTrue(
-            app.tables.cells.buttons["New Workout"].waitForExistence(timeout: 1),
-            "The 'New Workout' button should exist in the view before attempting to tap it."
-        )
-
-        app.tables.cells.buttons["New Workout"].forceTapElement()
-        app.navigationBars.buttons["Add"].forceTapElement()
-        app.tables.cells.buttons["Bench"].tap()
+        app.tables.cells.buttons["New Workout"].tap()
+        app.tables.cells.buttons["Add Exercise"].tap()
+        app.tables.cells.otherElements["Bench"].tap()
+        app.navigationBars.buttons["Add"].tap()
 
         XCTAssertTrue(
             app.tables.otherElements.staticTexts["Bench"].exists,
-            "A section with a header matching the added exercise's should exist."
+            "A single cell with static text matching the added exercise's name should exist."
+        )
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["Weights"].exists,
+            "A single cell with static text matching the added exercise's category should exist."
+        )
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["No sets"].exists,
+            "A single cell with static text stating there are currently no sets for the exercise should exist."
+        )
+
+        XCTAssertTrue(
+            !app.tables.otherElements.staticTexts["Completed"].exists,
+            "Since there should be no sets for the exercise, there should be no mention of sets being completed."
+        )
+
+        XCTAssertEqual(
+            app.tables.otherElements.progressIndicators.firstMatch.value as? Int,
+            nil,
+            "With no sets for the exercise none can be completed and the progress bar value should be 0."
         )
 
         app.navigationBars.buttons["Home"].tap()
 
         XCTAssertEqual(
             app.tables.cells.count,
-            1,
-            "There should be 1 workout in the list."
+            2,
+            "There should still only be 1 workout, plus the 'New Workout' button in the list."
         )
 
         XCTAssertTrue(
@@ -438,7 +441,7 @@ class OlioUITests: XCTestCase {
 
         XCTAssertTrue(
             app.tables.cells.staticTexts["No sets"].exists,
-            "There should be 1 workout in the scroll view with caption text reading 'No sets'."
+            "There should be 1 workout in the list with caption text reading 'No sets'."
         )
     }
 
