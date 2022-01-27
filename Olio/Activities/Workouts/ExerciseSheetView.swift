@@ -80,25 +80,57 @@ struct ExerciseSheetView: View {
         }
     }
 
+    func deleteExerciseSetSwipeActionButton(_ exerciseSet: ExerciseSet) -> some View {
+        // Delete workout
+        Button {
+            withAnimation {
+                deleteExerciseSet(exerciseSet: exerciseSet)
+            }
+        } label: {
+            Label(Strings.deleteButton.localized, systemImage: "trash")
+                .labelStyle(.titleAndIcon)
+        }
+        .tint(.red)
+    }
+
+    func toggleCompletionStatusForExerciseSetSwipeActionButton(_ exerciseSet: ExerciseSet) -> some View {
+        // Complete/incomplete exerciseSet
+        Button {
+            withAnimation {
+                toggleCompletionStatusForExerciseSet(exerciseSet)
+                update()
+            }
+        } label: {
+            if exerciseSet.completed {
+                Label(Strings.incompleteButton.localized, systemImage: "xmark.circle")
+                    .labelStyle(.titleAndIcon)
+            } else {
+                Label(Strings.completeButton.localized, systemImage: "checkmark.circle")
+                    .labelStyle(.titleAndIcon)
+            }
+        }
+        .tint(exerciseSet.completed ? .orange : .green)
+    }
+
     var body: some View {
         NavigationView {
             List {
                 ForEach(Array(zip(filteredExerciseSets.indices, filteredExerciseSets)), id: \.1) { index, exerciseSet in
-                    switch exercise.category {
-                    case 1:
-                        BodybuildingExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
-                    case 2:
-                        BodybuildingExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
-                    default:
-                        TimedExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
+                    Group {
+                        switch exercise.category {
+                        case 1:
+                            BodybuildingExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
+                        case 2:
+                            BodybuildingExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
+                        default:
+                            TimedExerciseSetView(exerciseSet: exerciseSet, exerciseSetIndex: index)
+                        }
                     }
-                }
-                .onDelete { offsets in
-                    let allExerciseSets = filteredExerciseSets
-
-                    for offset in offsets {
-                        let exerciseSetToDelete = allExerciseSets[offset]
-                        deleteExerciseSet(exerciseSet: exerciseSetToDelete)
+                    .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                        toggleCompletionStatusForExerciseSetSwipeActionButton(exerciseSet)
+                    }
+                    .swipeActions(edge: .trailing) {
+                        deleteExerciseSetSwipeActionButton(exerciseSet)
                     }
                 }
 
@@ -137,6 +169,13 @@ struct ExerciseSheetView: View {
     /// - Parameter exerciseSet: The exercise set to delete.
     func deleteExerciseSet(exerciseSet: ExerciseSet) {
         dataController.delete(exerciseSet)
+        dataController.save()
+    }
+
+    /// Toggles the completion status of a given exercise set.
+    /// - Parameter exerciseSet: The exercise set whose completion status will be toggle.
+    func toggleCompletionStatusForExerciseSet(_ exerciseSet: ExerciseSet) {
+        exerciseSet.completed.toggle()
         dataController.save()
     }
 }
