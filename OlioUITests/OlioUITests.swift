@@ -129,7 +129,6 @@ class OlioUITests: XCTestCase {
             app.tables.staticTexts[todayDate].exists,
             "The section header should be today's date."
         )
-
     }
 
     /// Tests the "New Workout" button on the Home tab correctly adds workouts scheduled on multiple days.
@@ -668,58 +667,46 @@ class OlioUITests: XCTestCase {
         app.navigationBars.buttons["Exercises"].tap()
     }
 
-//    func testCompletingWorkoutMovesItToHistoryTab() {
-//        XCTAssertEqual(
-//            app.tables.cells.count,
-//            0,
-//            "There should be 0 workouts initially."
-//        )
-//
-//        app.buttons["Add"].tap()
-//        app.buttons["Add New Workout"].tap()
-//
-//        XCTAssertEqual(
-//            app.tables.cells.count,
-//            1,
-//            "There should be 1 workout in the list."
-//        )
-//
-//        XCTAssertTrue(
-//            app.tables.cells.buttons["New Workout"].waitForExistence(timeout: 1),
-//            "The 'New Workout' button should exist in the view before attempting to tap it."
-//        )
-//
-//        app.tables.cells.buttons["New Workout"].forceTapElement()
-//        app.tables.cells.buttons["Complete workout"].tap()
-//
-//        XCTAssertTrue(
-//            app.alerts.element.exists,
-//            "An alert should be displayed after the user completes a workout."
-//        )
-//
-//        XCTAssertEqual(
-//            app.alerts.element.label,
-//            "Workout Complete",
-//            "The alert title should read 'Workout Complete'."
-//        )
-//
-//        app.alerts.buttons["OK"].tap()
-//        app.tabBars.buttons["Home"].tap()
-//
-//        XCTAssertEqual(
-//            app.tables.cells.count,
-//            0,
-//            "There should be 0 workouts on the Home tab after the workout has been marked as completed."
-//        )
-//
-//        app.tabBars.buttons["History"].tap()
-//
-//        XCTAssertEqual(
-//            app.tables.cells.count,
-//            1,
-//            "There should be 1 workout on the History tab after the workout has been marked as completed."
-//        )
-//    }
+    /// Tests that using the 'Workout complete' button in EditWorkoutView displays an alert and then moves the workout
+    /// to the History tab.
+    func testCompletingWorkoutMovesItToHistoryTab() throws {
+        try testHomeTabAddsSingleWorkout()
+
+        app.tables.cells.buttons["New Workout"].tap()
+        app.tables.cells.buttons["Workout complete"].tap()
+
+        XCTAssertTrue(
+            app.alerts.element.exists,
+            "An alert should be displayed after the user completes a workout."
+        )
+
+        XCTAssertEqual(
+            app.alerts.element.label,
+            "Complete workout?",
+            "The alert title should read 'Complete workout?'."
+        )
+
+        app.alerts.buttons["Confirm"].tap()
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Add Workout"].waitForExistence(timeout: 1),
+            "The home screen should be visible prior to doing a count of the cells in the table."
+        )
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 0 workouts, but 1 cell containing the 'New Workout' button after the workout is completed."
+        )
+
+        app.tabBars.buttons["History"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 1 workout on the History tab after the workout is completed."
+        )
+    }
 //
 //    func testCreatingWorkoutFromTemplate() throws {
 //        try testAddingSetToExerciseInTemplate()
