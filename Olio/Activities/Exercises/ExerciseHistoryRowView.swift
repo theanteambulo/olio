@@ -48,7 +48,7 @@ struct ExerciseHistoryRowView: View {
 
     /// The accessibility label used for the view.
     var accessibilityLabel: Text {
-        exerciseSetWorkoutName + Text(" ,") + exerciseSetWorkoutDate + Text(" ,") + exerciseSetDetail
+        exerciseSetWorkoutName + Text(", ") + exerciseSetWorkoutDate + Text(", ") + exerciseSetDetail
     }
 
     var body: some View {
