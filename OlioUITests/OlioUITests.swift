@@ -909,96 +909,94 @@ class OlioUITests: XCTestCase {
             "An exercise history should not yet exist for this exercise since no sets have been completed."
         )
     }
-//
-//    func testDeletingWorkout() {
-//        XCTAssertEqual(
-//            app.tables.cells.count,
-//            0,
-//            "There should be 0 workouts initially."
-//        )
-//
-//        app.buttons["Add"].tap()
-//        app.buttons["Add New Workout"].tap()
-//
-//        XCTAssertEqual(
-//            app.tables.cells.count,
-//            1,
-//            "There should be 1 workout in the list."
-//        )
-//
-//        XCTAssertTrue(
-//            app.tables.cells.buttons["New Workout"].waitForExistence(timeout: 1),
-//            "The 'New Workout' button should exist in the view before attempting to tap it."
-//        )
-//
-//        app.tables.cells.buttons["New Workout"].tap()
-//        app.tables.cells.buttons["Delete workout"].tap()
-//
-//        XCTAssertTrue(
-//            app.alerts.element.exists,
-//            "An alert should be displayed after the user taps to delete a workout."
-//        )
-//
-//        XCTAssertEqual(
-//            app.alerts.element.label,
-//            "Are you sure?",
-//            "The alert title should read 'Are you sure?'."
-//        )
-//
-//        app.alerts.buttons["Delete"].tap()
-//        app.tabBars.buttons["Home"].tap()
-//
-//        XCTAssertEqual(
-//            app.tables.cells.count,
-//            0,
-//            "There should be 0 workouts in the list."
-//        )
-//    }
-//
-//    func testDeletingTemplate() {
-//        XCTAssertEqual(
-//            app.scrollViews.buttons.count,
-//            0,
-//            "There should be 0 templates in the scroll view initially."
-//        )
-//
-//        app.buttons["Add"].tap()
-//        app.buttons["Add New Template"].tap()
-//
-//        XCTAssertEqual(
-//            app.scrollViews.buttons.count,
-//            1,
-//            "There should be 1 template in the scroll view."
-//        )
-//
-//        XCTAssertTrue(
-//            app.scrollViews.buttons["New Template"].waitForExistence(timeout: 1),
-//            "The 'New Template' button should exist in the view before attempting to tap it."
-//        )
-//
-//        app.scrollViews.buttons["New Template"].tap()
-//        app.tables.cells.buttons["Delete template"].tap()
-//
-//        XCTAssertTrue(
-//            app.alerts.element.exists,
-//            "An alert should be displayed after the user taps to delete a template."
-//        )
-//
-//        XCTAssertEqual(
-//            app.alerts.element.label,
-//            "Are you sure?",
-//            "The alert title should read 'Are you sure?'."
-//        )
-//
-//        app.alerts.buttons["Delete"].tap()
-//        app.tabBars.buttons["Home"].tap()
-//
-//        XCTAssertEqual(
-//            app.scrollViews.buttons.count,
-//            0,
-//            "There should be 0 templates in the scroll view."
-//        )
-//    }
+
+    /// Tests that the 'Delete Workout' button in EditWorkoutView deletes the workout and any exercise sets it
+    /// contains, without deleting the exercise itself.
+    func testDeletingWorkout() throws {
+        try testAddingSetToExerciseInWorkout()
+
+        app.tabBars.buttons["Home"].tap()
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["New Workout"].waitForExistence(timeout: 1),
+            "The 'New Workout' button should exist in the view before attempting to tap it."
+        )
+
+        app.tables.cells.buttons["New Workout"].tap()
+        app.tables.cells.buttons["Delete workout"].tap()
+
+        XCTAssertTrue(
+            app.alerts.element.exists,
+            "An alert should be displayed after the user taps to delete a workout."
+        )
+
+        XCTAssertEqual(
+            app.alerts.element.label,
+            "Are you sure?",
+            "The alert title should read 'Are you sure?'."
+        )
+
+        app.alerts.buttons["Delete"].tap()
+        app.tabBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 0 workouts, plus 1 cell containing the 'New Workout' button."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            !app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should not yet exist for this exercise since no sets have been completed."
+        )
+    }
+
+    /// Tests that the 'Delete Workout' button in EditWorkoutView deletes the workout and any exercise sets it
+    /// contains, without deleting the exercise itself.
+    func testDeletingTemplate() throws {
+        try testAddingSetToExerciseInTemplate()
+
+        app.tabBars.buttons["Home"].tap()
+
+        XCTAssertTrue(
+            app.scrollViews.buttons["New Template"].waitForExistence(timeout: 1),
+            "The 'New Template' button should exist in the view before attempting to tap it."
+        )
+
+        app.scrollViews.buttons["New Template"].tap()
+        app.tables.cells.buttons["Delete template"].tap()
+
+        XCTAssertTrue(
+            app.alerts.element.exists,
+            "An alert should be displayed after the user taps to delete a template."
+        )
+
+        XCTAssertEqual(
+            app.alerts.element.label,
+            "Are you sure?",
+            "The alert title should read 'Are you sure?'."
+        )
+
+        app.alerts.buttons["Delete"].tap()
+        app.tabBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.scrollViews.buttons.count,
+            1,
+            "There should be 0 templates, plus 1 cell containing the 'New Template' button."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            !app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should not yet exist for this exercise since no sets have been completed."
+        )
+    }
 //
 //    func testSwipeToDeleteWorkout() throws {
 //        try testHomeTabAddsMultipleWorkouts()
