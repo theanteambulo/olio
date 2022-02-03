@@ -997,19 +997,31 @@ class OlioUITests: XCTestCase {
             "An exercise history should not yet exist for this exercise since no sets have been completed."
         )
     }
-//
-//    func testSwipeToDeleteWorkout() throws {
-//        try testHomeTabAddsMultipleWorkouts()
-//
-//        app.tables.cells.firstMatch.swipeLeft()
-//        app.tables.cells.firstMatch.buttons["Delete"].tap()
-//
-//        XCTAssertEqual(
-//            app.tables.cells.count,
-//            4,
-//            "There should be four workouts remaining in the list."
-//        )
-//    }
+
+    /// Tests swipe to delete functionality of workouts on the home tab, ensuring it deletes the workout and any
+    /// exercise sets it contains, without deleting the exercise itself.
+    func testSwipeToDeleteWorkout() throws {
+        try testAddingSetToExerciseInWorkout()
+        app.tabBars.buttons["Home"].tap()
+
+        let workoutToDelete = app.tables.cells.element(boundBy: 1)
+        workoutToDelete.swipeLeft()
+        workoutToDelete.buttons["Delete"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            1,
+            "There should be 0 workouts, plus 1 cell containing the 'New Template' button."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            !app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should not yet exist for this exercise since no sets have been completed."
+        )
+    }
 //
 //    func testCompletingWorkoutExerciseSet() throws {
 //        try testAddingSetToExerciseInWorkout()
