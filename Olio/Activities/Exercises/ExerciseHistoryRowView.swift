@@ -34,7 +34,7 @@ struct ExerciseHistoryRowView: View {
     var exerciseSetDetail: Text {
         switch exerciseSet.exercise?.exerciseCategory {
         case "Weights":
-            return Text("\(exerciseSet.exerciseSetWeight, specifier: "%.2f") kg, \(exerciseSet.exerciseSetReps) reps")
+            return Text("\(exerciseSet.exerciseSetWeight, specifier: "%.2f")kg, \(exerciseSet.exerciseSetReps) reps")
         case "Body":
             return Text("\(exerciseSet.exerciseSetReps) reps")
         case "Cardio":

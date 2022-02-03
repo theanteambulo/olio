@@ -1030,7 +1030,7 @@ class OlioUITests: XCTestCase {
         try testAddingSetToExerciseInWorkout()
         let todayDate = Calendar.current.startOfDay(for: .now).formatted(date: .abbreviated,
                                                                      time: .omitted)
-        let exerciseHistoryLabel = "New Workout, \(todayDate), 0.00 kg, 10 reps"
+        let exerciseHistoryLabel = "New Workout, \(todayDate), 0.00kg, 10 reps"
 
         app.tabBars.buttons["Home"].tap()
 
@@ -1112,30 +1112,33 @@ class OlioUITests: XCTestCase {
 
         app.navigationBars.buttons["Exercises"].tap()
     }
-//
-//    func testIncreasingWorkoutExerciseSetReps() throws {
-//        try testCompletingWorkoutExerciseSet()
-//
-//        app.tabBars.buttons["Home"].tap()
-//        app.tables.cells.buttons["New Workout"].tap()
-//        app.tables.steppers["10 reps"].buttons["Increment"].tap()
-//
-//        app.navigationBars.buttons["Home"].tap()
-//        app.tabBars.buttons["Exercises"].tap()
-//        app.tables.cells.buttons["Bench"].tap()
-//
-//        XCTAssertTrue(
-//            app.tables.otherElements.staticTexts["Exercise History"].exists,
-//            "An exercise history should exist for this exercise since a set has been completed."
-//        )
-//
-//        XCTAssertTrue(
-//            app.tables.cells.staticTexts["11 reps"].exists,
-//            "A row should exist in the exercise history with containing static text that reads '11 reps'."
-//        )
-//
-//        app.navigationBars.buttons["Exercises"].tap()
-//    }
+
+    /// Tests increasing the rep count of an ExerciseSet results in the correct change in the exercise's history.
+    func testIncreasingWorkoutExerciseSetReps() throws {
+        try testCompletingWorkoutExerciseSet()
+
+        app.tabBars.buttons["Home"].tap()
+        app.tables.cells.buttons["New Workout"].tap()
+        app.tables.cells["Bench, progress: 100%"].tap()
+        app.tables.cells.firstMatch.textFields["Reps"].tap()
+        app.keys["1"].tap()
+        app.navigationBars.buttons["Save"].tap()
+        app.navigationBars.buttons["Home"].tap()
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should exist for this exercise since a set has been completed."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["0.00kg, 101 reps"].exists,
+            "A row should exist in the exercise history with containing static text that reads '101 reps'."
+        )
+
+        app.navigationBars.buttons["Exercises"].tap()
+    }
 //
 //    func testRemovingExerciseFromWorkout() throws {
 //        try testCompletingWorkoutExerciseSet()
