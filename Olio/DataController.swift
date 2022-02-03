@@ -238,14 +238,15 @@ class DataController: ObservableObject {
 
         let newWorkout = Workout(context: viewContext)
         newWorkout.id = UUID()
-        newWorkout.name = workout.workoutName
         newWorkout.date = date
         newWorkout.createdDate = Date.now
         newWorkout.completed = false
 
         if isTemplate {
+            newWorkout.name = "New Template (\(workout.workoutName))"
             newWorkout.template = true
         } else {
+            newWorkout.name = "New Workout (\(workout.workoutName))"
             newWorkout.template = false
         }
 
