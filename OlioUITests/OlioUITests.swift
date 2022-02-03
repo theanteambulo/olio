@@ -792,7 +792,7 @@ class OlioUITests: XCTestCase {
 
         XCTAssertEqual(
             app.tables.otherElements.progressIndicators.firstMatch.value as? String,
-            nil,
+            "0%",
             "With no sets for the exercise none can be completed and the progress bar value should be 0%."
         )
 
@@ -1071,7 +1071,7 @@ class OlioUITests: XCTestCase {
             app.tables.otherElements["Bench, progress: 100%"].exists,
             "The cell should now indicate that 100% of the exercise sets have been completed."
         )
-        
+
         XCTAssertEqual(
             app.tables.otherElements.progressIndicators.firstMatch.value as? String,
             "100%",

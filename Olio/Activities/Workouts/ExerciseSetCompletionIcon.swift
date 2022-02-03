@@ -10,9 +10,6 @@ import SwiftUI
 struct ExerciseSetCompletionIcon: View {
     /// The exercise set used to construct this view.
     @ObservedObject var exerciseSet: ExerciseSet
-    
-    /// The environment singleton used to managed the Core Data stack.
-    @EnvironmentObject var dataController: DataController
 
     init(exerciseSet: ExerciseSet) {
         self.exerciseSet = exerciseSet
@@ -66,8 +63,6 @@ struct ExerciseSetCompletionIcon: View {
         exerciseSet.objectWillChange.send()
         exerciseSet.exercise?.objectWillChange.send()
         exerciseSet.workout?.objectWillChange.send()
-
-        dataController.save()
     }
 }
 
