@@ -67,6 +67,7 @@ enum Strings: LocalizedStringKey {
     case deleteTemplateConfirmationMessage
     case removeExerciseButton
     case removeExerciseConfirmationMessage
+    case completeNextSetButton
 
     // EXERCISES
     case exerciseNavigationTitle

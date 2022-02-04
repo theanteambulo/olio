@@ -112,7 +112,7 @@ struct EditWorkoutView: View {
                                     dataController.save()
                                 }
                             } label: {
-                                Label(Strings.completeButton.localized, systemImage: "checkmark.circle")
+                                Label(Strings.completeNextSetButton.localized, systemImage: "checkmark.circle")
                                     .labelStyle(.titleAndIcon)
                             }
                             .tint(.green)

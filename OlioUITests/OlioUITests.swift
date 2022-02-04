@@ -1063,13 +1063,13 @@ class OlioUITests: XCTestCase {
         app.navigationBars["Bench"].buttons["Save"].tap()
 
         XCTAssertTrue(
-            app.tables.otherElements.staticTexts["1 set, 1 completed"].exists,
-            "A single cell with static text stating there is currently 1 incomplete set for the exercise should exist."
+            app.tables.otherElements["Bench, progress: 100%"].exists,
+            "The cell should now indicate that 100% of the exercise sets have been completed."
         )
 
         XCTAssertTrue(
-            app.tables.otherElements["Bench, progress: 100%"].exists,
-            "The cell should now indicate that 100% of the exercise sets have been completed."
+            app.tables.otherElements.staticTexts["1 set, 1 completed"].exists,
+            "A single cell with static text stating there is currently 1 incomplete set for the exercise should exist."
         )
 
         XCTAssertEqual(
@@ -1102,7 +1102,7 @@ class OlioUITests: XCTestCase {
 
         XCTAssertTrue(
             app.tables.otherElements.staticTexts["Exercise History"].exists,
-            "An exercise history should not yet exist for this exercise since no sets have been completed."
+            "An exercise history should exist for this exercise since no sets have been completed."
         )
 
         XCTAssertTrue(
@@ -1184,63 +1184,178 @@ class OlioUITests: XCTestCase {
 
         app.navigationBars.buttons["Exercises"].tap()
     }
-//
-//    func testRenamingAnExercise() throws {
-//        try testAddingExerciseToWorkout()
-//
-//        app.tabBars.buttons["Exercises"].tap()
-//        app.tables.cells.buttons["Bench"].tap()
-//        app.textFields["Bench"].tap()
-//
-//        XCTAssertTrue(
-//            app.keys["space"].waitForExistence(timeout: 1),
-//            "The keyboard must be visible on screen before being used."
-//        )
-//
-//        app.keys["space"].tap()
-//        app.keys["more"].tap()
-//        app.keys["2"].tap()
-//        app.buttons["Return"].tap()
-//
-//        app.tabBars.buttons["Home"].tap()
-//        app.tables.cells.buttons["New Workout"].tap()
-//
-//        XCTAssertTrue(
-//            app.tables.otherElements.staticTexts["Bench 2"].exists,
-//            "The exercise name should have been updated."
-//        )
-//
-//        app.tabBars.buttons["Exercises"].tap()
-//        app.navigationBars.buttons["Exercises"].tap()
-//
-//        XCTAssertTrue(
-//            app.tables.cells.buttons["Bench 2"].exists,
-//            "The exercise should be displayed with its new name."
-//        )
-//
-//        app.tabBars.buttons["Home"].tap()
-//    }
-//
-//    func testRegroupingAnExercise() throws {
-//        try testAddingExerciseToWorkout()
-//
-//        app.tabBars.buttons["Exercises"].tap()
-//        app.tables.cells.buttons["Bench"].tap()
-//        app.tables.cells.buttons["Muscle Group"].tap()
-//        app.tables.switches["Back"].tap()
-//        app.navigationBars.buttons["Exercises"].tap()
-//        app.tables.cells.buttons["Bench"].tap()
-//
-//        XCTAssertEqual(
-//            app.tables.cells.buttons["Muscle Group"].value as? String ?? "",
-//            "Back",
-//            "The exercise name should have been updated."
-//        )
-//
-//        app.navigationBars.buttons["Exercises"].tap()
-//        app.tabBars.buttons["Home"].tap()
-//    }
-//
+
+    /// Tests that swipe to add a set to an exercise in a workout correctly updates the UI in EditWorkoutView, HomeView
+    /// and EditExerciseView.
+    // swiftlint:disable:next function_body_length
+    func testSwipeToAddSetToExerciseInWorkout() throws {
+        try testCompletingWorkoutExerciseSet()
+        let todayDate = Calendar.current.startOfDay(for: .now).formatted(date: .abbreviated,
+                                                                     time: .omitted)
+        let exerciseHistoryLabel = "New Workout, \(todayDate), 0.00kg, 10 reps"
+
+        app.tabBars.buttons["Home"].tap()
+        app.tables.cells.buttons["New Workout"].tap()
+        app.tables.cells["Bench, progress: 100%"].swipeRight()
+        app.tables.cells["Bench, progress: 100%"].buttons["Add set"].tap()
+
+        XCTAssertTrue(
+            app.tables.otherElements["Bench, progress: 50%"].exists,
+            "The cell should now indicate that 50% of the exercise sets have been completed."
+        )
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["2 sets, 1 completed"].exists,
+            "A single cell with static text stating there are 2 sets with 1 completed for the exercise should exist."
+        )
+
+        XCTAssertEqual(
+            app.tables.otherElements.progressIndicators.firstMatch.value as? String,
+            "50%",
+            "1 of the 2 sets for the exercise is completed and the progress bar value should therefore be 50%."
+        )
+
+        app.tables.cells["Bench, progress: 50%"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.firstMatch.otherElements.firstMatch.otherElements.count,
+            2,
+            "There should be 2 sets, plus the 'Add Set'."
+        )
+
+        XCTAssertEqual(
+            app.tables.cells.element(boundBy: 1).textFields["Weight"].value as? Double,
+            nil,
+            "The new set's weight should be nil."
+        )
+
+        XCTAssertEqual(
+            app.tables.cells.element(boundBy: 1).textFields["Reps"].value as? Int,
+            nil,
+            "The new set's rep count should be nil."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.element(boundBy: 1).otherElements.firstMatch.buttons["Mark set complete"].exists,
+            "The set should initially be incomplete."
+        )
+
+        app.navigationBars.buttons["Save"].tap()
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            2,
+            "There should still only be 1 workout, plus the 'New Workout' button in the list."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["1 exercise"].exists,
+            "There should be 1 workout in the list with caption text reading '1 exercise'."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["2 sets"].exists,
+            "There should be 1 workout in the list with caption text reading '2 set'."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.segmentedControls.buttons["Weights"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should exist for this exercise since sets have been completed."
+        )
+
+        XCTAssertTrue(
+            app.tables.otherElements[exerciseHistoryLabel].exists,
+            "The exercise history should contain 1 set."
+        )
+
+        app.navigationBars.buttons["Exercises"].tap()
+    }
+
+    /// Tests that swipe to complete the next for an exercise in a workout correctly updates the UI in EditWorkoutView,
+    /// HomeView and EditExerciseView.
+    // swiftlint:disable:next function_body_length
+    func testSwipeToCompleteNextSetIncompleteSetInWorkout() throws {
+        try testAddingSetToExerciseInWorkout()
+        let todayDate = Calendar.current.startOfDay(for: .now).formatted(date: .abbreviated,
+                                                                     time: .omitted)
+        let exerciseHistoryLabel = "New Workout, \(todayDate), 0.00kg, 10 reps"
+
+        app.tabBars.buttons["Home"].tap()
+        app.tables.cells.buttons["New Workout"].tap()
+        app.tables.cells["Bench, progress: 0%"].tap()
+        app.tables.cells.buttons["Add set"].tap()
+        app.navigationBars.buttons["Save"].tap()
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["2 sets, 0 completed"].exists,
+            "A single cell with static text stating there are 2 incomplete sets for the exercise should exist."
+        )
+
+        XCTAssertEqual(
+            app.tables.otherElements.progressIndicators.firstMatch.value as? String,
+            "0%",
+            "The single exercise is incomplete and the progress bar value should therefore be 0%."
+        )
+
+        app.tables.cells["Bench, progress: 0%"].swipeRight()
+        app.tables.cells["Bench, progress: 0%"].buttons["Complete next set"].tap()
+
+        XCTAssertTrue(
+            app.tables.otherElements["Bench, progress: 50%"].exists,
+            "The cell should now indicate that 50% of the exercise sets have been completed."
+        )
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["2 sets, 1 completed"].exists,
+            "A single cell with static text stating there are 2 sets with 1 completed for the exercise should exist."
+        )
+
+        XCTAssertEqual(
+            app.tables.otherElements.progressIndicators.firstMatch.value as? String,
+            "50%",
+            "1 of the 2 sets for the exercise is complete and the progress bar value should therefore be 50%."
+        )
+
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            2,
+            "There should still only be 1 workout, plus the 'New Workout' button in the list."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["1 exercise"].exists,
+            "There should be 1 workout in the list with caption text reading '1 exercise'."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["2 sets"].exists,
+            "There should be 1 workout in the list with caption text reading '2 set'."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.segmentedControls.buttons["Weights"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should exist for this exercise since sets have been completed."
+        )
+
+        XCTAssertTrue(
+            app.tables.otherElements[exerciseHistoryLabel].exists,
+            "The exercise history should contain 1 set."
+        )
+
+        app.navigationBars.buttons["Exercises"].tap()
+    }
+
 //    func testSwipeToDeleteExerciseSetFromWorkoutExercise() throws {
 //        app.navigationBars.buttons["Sample Data"].tap()
 //
@@ -1301,6 +1416,122 @@ class OlioUITests: XCTestCase {
 //        app.navigationBars.buttons["Exercises"].tap()
 //    }
 //
+//    func testSwipeToDeleteExercise() throws {
+//        app.navigationBars.buttons["Sample Data"].tap()
+//
+//        XCTAssertTrue(
+//            app.tables.buttons.firstMatch.staticTexts["1 exercise"].exists,
+//            "There should be 2 workouts in the list and the first should have caption text reading '1 exercise'."
+//        )
+//
+//        XCTAssertTrue(
+//            app.tables.cells.staticTexts["3 sets"].exists,
+//            "There should be 2 workouts in the list and the first should have caption text reading '3 sets'."
+//        )
+//
+//        app.tables.cells.buttons["Workout - 3"].tap()
+//
+//        XCTAssertTrue(
+//            app.tables.cells.count > 5,
+//            "There should be at least 5 cells visible since a workout has been added to the exercise."
+//        )
+//
+//        app.tabBars.buttons["Exercises"].tap()
+//        app.tables.cells.buttons["Exercise - 3"].swipeLeft()
+//        app.tables.cells.buttons["Delete"].tap()
+//
+//        XCTAssertEqual(
+//            app.tables.cells.count,
+//            4,
+//            "There should be four exercises remaining in the list."
+//        )
+//
+//        XCTAssertTrue(
+//            !app.tables.cells.buttons["Exercise - 3"].exists,
+//            "There should be no exercise named 'Exercise - 3' in the list."
+//        )
+//
+//        app.tabBars.buttons["Home"].tap()
+//
+//        XCTAssertEqual(
+//            app.tables.cells.count,
+//            5,
+//            "There should only be 5 cells remaining in the table since the exercise has been deleted."
+//        )
+//
+//        app.navigationBars.buttons["Home"].tap()
+//
+//        XCTAssertTrue(
+//            app.tables.cells.buttons["Workout - 3"].staticTexts["No exercises"].exists,
+//            "'Workout - 3' should contain no exercises."
+//        )
+//
+//        XCTAssertTrue(
+//            app.tables.cells.buttons["Workout - 3"].staticTexts["No sets"].exists,
+//            "'Workout - 3' should contain no sets."
+//        )
+//    }
+//
+
+    
+    
+    
+//    func testRenamingAnExercise() throws {
+//        try testAddingExerciseToWorkout()
+//
+//        app.tabBars.buttons["Exercises"].tap()
+//        app.tables.cells.buttons["Bench"].tap()
+//        app.textFields["Bench"].tap()
+//
+//        XCTAssertTrue(
+//            app.keys["space"].waitForExistence(timeout: 1),
+//            "The keyboard must be visible on screen before being used."
+//        )
+//
+//        app.keys["space"].tap()
+//        app.keys["more"].tap()
+//        app.keys["2"].tap()
+//        app.buttons["Return"].tap()
+//
+//        app.tabBars.buttons["Home"].tap()
+//        app.tables.cells.buttons["New Workout"].tap()
+//
+//        XCTAssertTrue(
+//            app.tables.otherElements.staticTexts["Bench 2"].exists,
+//            "The exercise name should have been updated."
+//        )
+//
+//        app.tabBars.buttons["Exercises"].tap()
+//        app.navigationBars.buttons["Exercises"].tap()
+//
+//        XCTAssertTrue(
+//            app.tables.cells.buttons["Bench 2"].exists,
+//            "The exercise should be displayed with its new name."
+//        )
+//
+//        app.tabBars.buttons["Home"].tap()
+//    }
+//
+//    func testRegroupingAnExercise() throws {
+//        try testAddingExerciseToWorkout()
+//
+//        app.tabBars.buttons["Exercises"].tap()
+//        app.tables.cells.buttons["Bench"].tap()
+//        app.tables.cells.buttons["Muscle Group"].tap()
+//        app.tables.switches["Back"].tap()
+//        app.navigationBars.buttons["Exercises"].tap()
+//        app.tables.cells.buttons["Bench"].tap()
+//
+//        XCTAssertEqual(
+//            app.tables.cells.buttons["Muscle Group"].value as? String ?? "",
+//            "Back",
+//            "The exercise name should have been updated."
+//        )
+//
+//        app.navigationBars.buttons["Exercises"].tap()
+//        app.tabBars.buttons["Home"].tap()
+//    }
+//
 //    func testDeletingAnExercise() throws {
 //        try testAddingExerciseToWorkout()
 //
@@ -1355,62 +1586,6 @@ class OlioUITests: XCTestCase {
 //            app.tables.cells.count,
 //            5,
 //            "There should only be 5 cells in the list."
-//        )
-//    }
-//
-//    func testSwipeToDeleteExercise() throws {
-//        app.navigationBars.buttons["Sample Data"].tap()
-//
-//        XCTAssertTrue(
-//            app.tables.buttons.firstMatch.staticTexts["1 exercise"].exists,
-//            "There should be 2 workouts in the list and the first should have caption text reading '1 exercise'."
-//        )
-//
-//        XCTAssertTrue(
-//            app.tables.cells.staticTexts["3 sets"].exists,
-//            "There should be 2 workouts in the list and the first should have caption text reading '3 sets'."
-//        )
-//
-//        app.tables.cells.buttons["Workout - 3"].tap()
-//
-//        XCTAssertTrue(
-//            app.tables.cells.count > 5,
-//            "There should be at least 5 cells visible since a workout has been added to the exercise."
-//        )
-//
-//        app.tabBars.buttons["Exercises"].tap()
-//        app.tables.cells.buttons["Exercise - 3"].swipeLeft()
-//        app.tables.cells.buttons["Delete"].tap()
-//
-//        XCTAssertEqual(
-//            app.tables.cells.count,
-//            4,
-//            "There should be four exercises remaining in the list."
-//        )
-//
-//        XCTAssertTrue(
-//            !app.tables.cells.buttons["Exercise - 3"].exists,
-//            "There should be no exercise named 'Exercise - 3' in the list."
-//        )
-//
-//        app.tabBars.buttons["Home"].tap()
-//
-//        XCTAssertEqual(
-//            app.tables.cells.count,
-//            5,
-//            "There should only be 5 cells remaining in the table since the exercise has been deleted."
-//        )
-//
-//        app.navigationBars.buttons["Home"].tap()
-//
-//        XCTAssertTrue(
-//            app.tables.cells.buttons["Workout - 3"].staticTexts["No exercises"].exists,
-//            "'Workout - 3' should contain no exercises."
-//        )
-//
-//        XCTAssertTrue(
-//            app.tables.cells.buttons["Workout - 3"].staticTexts["No sets"].exists,
-//            "'Workout - 3' should contain no sets."
 //        )
 //    }
 //
