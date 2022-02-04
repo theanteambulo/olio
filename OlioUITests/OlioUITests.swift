@@ -1458,63 +1458,6 @@ class OlioUITests: XCTestCase {
         )
     }
 
-    /// Tests that renaming an exercise correctly updates the UI in ExercisesView and EditWorkoutView.
-    func testRenamingAnExercise() throws {
-        try testAddingExerciseToWorkout()
-
-        app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
-        app.tables.cells.buttons["Bench"].tap()
-        app.textFields["Bench"].tap()
-
-        XCTAssertTrue(
-            app.keys["space"].waitForExistence(timeout: 1),
-            "The keyboard must be visible on screen before being used."
-        )
-
-        app.keys["space"].tap()
-        app.keys["more"].tap()
-        app.keys["2"].tap()
-        app.buttons["Return"].tap()
-        app.tables.cells.buttons["Save Changes"].tap()
-        app.navigationBars.buttons["Exercises"].tap()
-        app.tabBars.buttons["Home"].tap()
-        app.tables.cells.buttons["New Workout"].tap()
-
-        XCTAssertTrue(
-            app.tables.otherElements.staticTexts["Bench 2"].exists,
-            "The exercise name should have been updated."
-        )
-
-        app.tabBars.buttons["Exercises"].tap()
-
-        XCTAssertTrue(
-            app.tables.cells.buttons["Bench 2"].exists,
-            "The exercise should be displayed with its new name."
-        )
-
-        app.tabBars.buttons["Home"].tap()
-    }
-//
-//    func testRegroupingAnExercise() throws {
-//        try testAddingExerciseToWorkout()
-//
-//        app.tabBars.buttons["Exercises"].tap()
-//        app.tables.cells.buttons["Bench"].tap()
-//        app.tables.cells.buttons["Muscle Group"].tap()
-//        app.tables.switches["Back"].tap()
-//        app.navigationBars.buttons["Exercises"].tap()
-//        app.tables.cells.buttons["Bench"].tap()
-//
-//        XCTAssertEqual(
-//            app.tables.cells.buttons["Muscle Group"].value as? String ?? "",
-//            "Back",
-//            "The exercise name should have been updated."
-//        )
-//
-//        app.navigationBars.buttons["Exercises"].tap()
-//        app.tabBars.buttons["Home"].tap()
-//    }
 //
 //    func testDeletingAnExercise() throws {
 //        try testAddingExerciseToWorkout()
@@ -1573,6 +1516,81 @@ class OlioUITests: XCTestCase {
 //        )
 //    }
 //
+
+    /// Tests that renaming an exercise correctly updates the UI in ExercisesView and EditWorkoutView.
+    func testRenamingAnExercise() throws {
+        try testAddingExerciseToWorkout()
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.segmentedControls.buttons["Weights"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+        app.textFields["Bench"].tap()
+
+        XCTAssertTrue(
+            app.keys["space"].waitForExistence(timeout: 1),
+            "The keyboard must be visible on screen before being used."
+        )
+
+        app.keys["space"].tap()
+        app.keys["more"].tap()
+        app.keys["2"].tap()
+        app.buttons["Return"].tap()
+        app.tables.cells.buttons["Save Changes"].tap()
+        app.navigationBars.buttons["Exercises"].tap()
+        app.tabBars.buttons["Home"].tap()
+        app.tables.cells.buttons["New Workout"].tap()
+
+        XCTAssertTrue(
+            app.tables.otherElements.staticTexts["Bench 2"].exists,
+            "The exercise name should have been updated."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+
+        XCTAssertTrue(
+            app.tables.cells.buttons["Bench 2"].exists,
+            "The exercise should be displayed with its new name."
+        )
+
+        app.tabBars.buttons["Home"].tap()
+    }
+
+    func testRegroupingAnExercise() throws {
+        try testAddingExerciseToWorkout()
+        
+        // regroup exercise
+        // save changes
+        // check the section header the exercise is in has changed
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+        app.tables.cells.buttons["Muscle Group"].tap()
+        app.tables.switches["Back"].tap()
+        app.navigationBars.buttons["Exercises"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.buttons["Muscle Group"].value as? String ?? "",
+            "Back",
+            "The exercise name should have been updated."
+        )
+
+        app.navigationBars.buttons["Exercises"].tap()
+        app.tabBars.buttons["Home"].tap()
+    }
+
+    func testRecategorisingAnExercise() throws {
+        try testAddingExerciseToWorkout()
+
+        // recategorise exercise
+        // save changes
+        // check the segmented control section the exercise is in has changed
+        // check there's a blue filled in dot on the home tab?
+        // go into the workout
+        // check that the exercise category label reads correctly
+
+    }
+
 //    func testEditingTemplateNameIndependentOfWorkout() {
 //        app.navigationBars.buttons["Sample Data"].tap()
 //        app.scrollViews.buttons.firstMatch.tap()
