@@ -1139,59 +1139,51 @@ class OlioUITests: XCTestCase {
 
         app.navigationBars.buttons["Exercises"].tap()
     }
-//
-//    func testRemovingExerciseFromWorkout() throws {
-//        try testCompletingWorkoutExerciseSet()
-//
-//        app.tabBars.buttons["Home"].tap()
-//        app.tables.cells.buttons["New Workout"].tap()
-//        app.tables.cells.buttons["Remove exercise"].tap()
-//
-//        XCTAssertTrue(
-//            app.alerts.element.exists,
-//            "An alert should be displayed after the user taps to remove an exercise."
-//        )
-//
-//        XCTAssertEqual(
-//            app.alerts.element.label,
-//            "Are you sure?",
-//            "The alert title should read 'Are you sure?'."
-//        )
-//
-//        app.alerts.buttons["Remove"].tap()
-//
-//        XCTAssertEqual(
-//            app.tables.cells.count,
-//            5,
-//            "There should only be 5 cells in the list."
-//        )
-//
-//        app.navigationBars.buttons["Home"].tap()
-//
-//        XCTAssertEqual(
-//            app.tables.cells.count,
-//            1,
-//            "There should be 1 workout in the list."
-//        )
-//
-//        XCTAssertTrue(
-//            app.tables.buttons.staticTexts["No exercises"].exists,
-//            "There should be 1 workout in the list with caption text reading 'No exercises'."
-//        )
-//
-//        XCTAssertTrue(
-//            app.tables.buttons.staticTexts["No sets"].exists,
-//            "There should be 1 workout in the list with caption text reading 'No sets'."
-//        )
-//
-//        app.tabBars.buttons["Exercises"].tap()
-//        app.tables.cells.buttons["Bench"].tap()
-//
-//        XCTAssertTrue(
-//            !app.tables.otherElements.staticTexts["Exercise History"].exists,
-//            "An exercise history should not yet exist for this exercise since no sets have been completed."
-//        )
-//    }
+
+    /// Tests that swipe to delete an exercise from a workout correctly updates the UI in EditWorkoutView, HomeView
+    /// and EditExerciseView.
+    func testSwipeToDeleteExerciseFromWorkout() throws {
+        try testCompletingWorkoutExerciseSet()
+
+        app.tabBars.buttons["Home"].tap()
+        app.tables.cells.buttons["New Workout"].tap()
+        app.tables.cells["Bench, progress: 100%"].swipeLeft()
+        app.tables.cells.element(boundBy: 2).buttons["Delete"].tap()
+
+        XCTAssertTrue(
+            !app.tables.cells["Bench, progress: 0%"].exists,
+            "The deleted exercise should no longer be visible in the workout."
+        )
+
+        app.navigationBars.buttons["Home"].tap()
+
+        XCTAssertEqual(
+            app.tables.cells.count,
+            2,
+            "There should still only be 1 workout, plus the 'New Workout' button in the list."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["No exercises"].exists,
+            "There should be 1 workout in the list with caption text reading 'No exercises'."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.staticTexts["No sets"].exists,
+            "There should be 1 workout in the list with caption text reading 'No sets'."
+        )
+
+        app.tabBars.buttons["Exercises"].tap()
+        app.segmentedControls.buttons["Weights"].tap()
+        app.tables.cells.buttons["Bench"].tap()
+
+        XCTAssertTrue(
+            !app.tables.otherElements.staticTexts["Exercise History"].exists,
+            "An exercise history should not yet exist for this exercise since no sets have been completed."
+        )
+
+        app.navigationBars.buttons["Exercises"].tap()
+    }
 //
 //    func testRenamingAnExercise() throws {
 //        try testAddingExerciseToWorkout()
