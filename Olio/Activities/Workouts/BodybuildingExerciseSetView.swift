@@ -55,7 +55,7 @@ struct BodybuildingExerciseSetView: View {
 
     var accessibilityIdentifier: String {
         let weightString = "\(exerciseSet.exerciseSetWeight) kilograms"
-        let repsString = "\(exerciseSet.exerciseSetReps)"
+        let repsString = "\(exerciseSet.exerciseSetReps) reps"
         let usageInstructions = "Swipe right to complete, left to delete."
 
         if exerciseSet.exercise?.exerciseCategory == "Weights" {
