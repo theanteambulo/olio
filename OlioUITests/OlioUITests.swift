@@ -1321,6 +1321,19 @@ class OlioUITests: XCTestCase {
             "1 of the 2 sets for the exercise is complete and the progress bar value should therefore be 50%."
         )
 
+        app.tables.cells["Bench, progress: 50%"].tap()
+
+        XCTAssertTrue(
+            app.tables.cells.element(boundBy: 0).otherElements.firstMatch.buttons["Mark set incomplete"].exists,
+            "The completed set should have the option to be marked incomplete."
+        )
+
+        XCTAssertTrue(
+            app.tables.cells.element(boundBy: 1).otherElements.firstMatch.buttons["Mark set complete"].exists,
+            "The other set should have the option to be marked complete."
+        )
+
+        app.navigationBars.buttons["Save"].tap()
         app.navigationBars.buttons["Home"].tap()
 
         XCTAssertEqual(
