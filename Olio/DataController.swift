@@ -212,14 +212,15 @@ class DataController: ObservableObject {
     func createNewWorkoutOrTemplate(isTemplate: Bool, daysOffset: Double?) {
         let newWorkout = Workout(context: container.viewContext)
         newWorkout.id = UUID()
-        newWorkout.name = nil
         newWorkout.date = Date.now + ((daysOffset ?? 0) * 86400)
         newWorkout.createdDate = Date.now
         newWorkout.completed = false
 
         if isTemplate {
+            newWorkout.name = "New Template"
             newWorkout.template = true
         } else {
+            newWorkout.name = "New Workout"
             newWorkout.template = false
         }
 
