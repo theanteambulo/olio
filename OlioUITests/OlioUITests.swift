@@ -1753,8 +1753,8 @@ class OlioUITests: XCTestCase {
         )
 
         app.scrollViews.buttons["New Template"].tap()
-        app.tables.cells["Bench, progress: 100%"].swipeLeft()
-        app.tables.cells.element(boundBy: 2).buttons["Delete"].tap()
+        app.tables.cells["Bench, progress: 0%"].swipeLeft()
+        app.tables.cells["Bench, progress: 0%"].buttons["Delete"].tap()
 
         XCTAssertTrue(
             !app.tables.cells["Bench, progress: 0%"].exists,
@@ -1786,8 +1786,8 @@ class OlioUITests: XCTestCase {
         app.tables.cells.buttons["New Workout (New Template)"].tap()
 
         XCTAssertTrue(
-            !app.tables.cells["Bench, progress: 0%"].exists,
-            "The deleted exercise should no longer be visible in the workout."
+            app.tables.cells["Bench, progress: 0%"].exists,
+            "The deleted exercise should  be visible in the workout."
         )
     }
 
