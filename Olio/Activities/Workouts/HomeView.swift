@@ -95,7 +95,7 @@ struct HomeView: View {
                         }
                     }
 
-                    ForEach(viewModel.workoutDates.sorted(), id: \.self) { date in
+                    ForEach(viewModel.workoutDates, id: \.self) { date in
                         Section(header: Text("\(date.formatted(date: .complete, time: .omitted))")) {
                             // Display list of workouts, if any exist.
                             ForEach(viewModel.filterWorkouts(viewModel.workouts, by: date), id: \.self) { workout in
@@ -129,7 +129,6 @@ struct HomeView: View {
                 }
                 .listStyle(InsetGroupedListStyle())
             }
-            .padding(.bottom)
             .navigationTitle(navigationTitleLocalizedStringKey)
 //            .toolbar {
 //                deleteAllDataToolbarItem

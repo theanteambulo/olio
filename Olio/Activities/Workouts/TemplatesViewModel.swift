@@ -27,8 +27,8 @@ extension TemplatesView {
             // Get all the templates.
             let templatesRequest: NSFetchRequest<Workout> = Workout.fetchRequest()
             templatesRequest.predicate = NSPredicate(format: "template = true")
-            templatesRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Workout.name,
-                                                                 ascending: true)]
+            templatesRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Workout.createdDate,
+                                                                 ascending: false)]
 
             templatesController = NSFetchedResultsController(
                 fetchRequest: templatesRequest,

@@ -7,6 +7,7 @@
 
 import CoreData
 import Foundation
+import SwiftUI
 
 extension HomeView {
     /// A presentation model representing the state of WorkoutsListView capable of reading model data and carrying out
@@ -39,13 +40,10 @@ extension HomeView {
             workoutsRequest.predicate = NSCompoundPredicate(type: .and,
                                                             subpredicates: [templatePredicate,
                                                                             completionPredicate])
-            // Sort workouts by date, then by name.
-            workoutsRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Workout.date, ascending: true)]
 
-            // Limit scheduled workouts displayed to 99.
-            if !showingCompletedWorkouts {
-                workoutsRequest.fetchLimit = 10
-            }
+            // Sort workouts with ascending value corresponding to showingCompletedWorkouts
+            workoutsRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Workout.date,
+                                                                ascending: !showingCompletedWorkouts)]
 
             workoutsController = NSFetchedResultsController(
                 fetchRequest: workoutsRequest,
@@ -62,7 +60,13 @@ extension HomeView {
             do {
                 try workoutsController.performFetch()
                 workouts = workoutsController.fetchedObjects?.sorted(by: \.workoutDate) ?? []
-                workoutDates = workouts.map({ Calendar.current.startOfDay(for: $0.workoutDate) }).removingDuplicates()
+                if showingCompletedWorkouts {
+                    // swiftlint:disable:next line_length
+                    workoutDates = workouts.map({ Calendar.current.startOfDay(for: $0.workoutDate) }).removingDuplicates().sorted().reversed()
+                } else {
+                    // swiftlint:disable:next line_length
+                    workoutDates = workouts.map({ Calendar.current.startOfDay(for: $0.workoutDate) }).removingDuplicates().sorted()
+                }
             } catch {
                 print("Failed to fetch workouts: \(error.localizedDescription)")
             }
@@ -72,7 +76,13 @@ extension HomeView {
         /// - Parameter controller: The controller that manages the results of the view model's Core Data fetch request.
         func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
             workouts = workoutsController.fetchedObjects?.sorted(by: \.workoutDate) ?? []
-            workoutDates = workouts.map({ Calendar.current.startOfDay(for: $0.workoutDate) }).removingDuplicates()
+            if showingCompletedWorkouts {
+                // swiftlint:disable:next line_length
+                workoutDates = workouts.map({ Calendar.current.startOfDay(for: $0.workoutDate) }).removingDuplicates().sorted().reversed()
+            } else {
+                // swiftlint:disable:next line_length
+                workoutDates = workouts.map({ Calendar.current.startOfDay(for: $0.workoutDate) }).removingDuplicates().sorted()
+            }
         }
 
         /// Creates a new workout.
