@@ -5,9 +5,11 @@
 //  Created by Jake King on 24/11/2021.
 //
 
+import CoreHaptics
 import SwiftUI
 
 /// A view to edit the details of a given workout, including templates.
+// swiftlint:disable:next type_body_length
 struct EditWorkoutView: View {
     /// The Workout object used to construct this view.
     @ObservedObject var workout: Workout
@@ -35,6 +37,9 @@ struct EditWorkoutView: View {
     @State private var showingCreateWorkoutConfirmation = false
     /// Boolean to indicate whether the alert warning the user about deleting an exercise is displayed.
     @State private var showingDeleteWorkoutConfirmation = false
+
+    /// The instance of CHHapticEngine responsible for spinning up the Taptic Engine.
+    @State private var engine = try? CHHapticEngine()
 
     init(workout: Workout) {
         self.workout = workout
@@ -189,10 +194,7 @@ struct EditWorkoutView: View {
         }
         .alert(workout.getConfirmationAlertTitle(workout: workout),
                isPresented: $showingCompleteConfirmation) {
-            Button(Strings.confirmButton.localized) {
-                workout.completed.toggle()
-                dataController.save()
-            }
+            Button(Strings.confirmButton.localized, action: toggleCompletionStatus)
 
             Button(Strings.cancelButton.localized, role: .cancel, action: { })
         } message: {
@@ -204,6 +206,8 @@ struct EditWorkoutView: View {
     var deleteWorkoutButton: some View {
         Button(deleteWorkoutTemplateButtonText, role: .destructive) {
             showingDeleteWorkoutConfirmation = true
+
+            UINotificationFeedbackGenerator().notificationOccurred(.warning)
         }
         .alert(Strings.areYouSureAlertTitle.localized,
                isPresented: $showingDeleteWorkoutConfirmation) {
@@ -302,6 +306,52 @@ struct EditWorkoutView: View {
     func reorderExercises(from source: IndexSet, to destination: Int) {
         exercises.move(fromOffsets: source, toOffset: destination)
         dataController.updateOrderOfExercises(toMatch: exercises, forWorkout: workout)
+    }
+
+    /// Responsible for toggling the completion status of the workout and generating haptic feedback.
+    func toggleCompletionStatus() {
+        workout.completed.toggle()
+        dataController.save()
+
+        if workout.completed {
+            do {
+                try engine?.start()
+
+                let sharpness = CHHapticEventParameter(parameterID: .hapticSharpness, value: 0)
+                let intensity = CHHapticEventParameter(parameterID: .hapticIntensity, value: 1)
+
+                let start = CHHapticParameterCurve.ControlPoint(relativeTime: 0, value: 1)
+                let end = CHHapticParameterCurve.ControlPoint(relativeTime: 1, value: 0)
+
+                let parameterCurve = CHHapticParameterCurve(
+                    parameterID: .hapticIntensityControl,
+                    controlPoints: [start, end],
+                    relativeTime: 0
+                )
+
+                let transientEvent = CHHapticEvent(
+                    eventType: .hapticTransient,
+                    parameters: [intensity, sharpness],
+                    relativeTime: 0
+                )
+
+                let continuousEvent = CHHapticEvent(
+                    eventType: .hapticContinuous,
+                    parameters: [intensity, sharpness],
+                    relativeTime: 0.125,
+                    duration: 1
+                )
+
+                let pattern = try CHHapticPattern(
+                    events: [transientEvent, continuousEvent],
+                    parameterCurves: [parameterCurve])
+
+                let player = try engine?.makePlayer(with: pattern)
+                try player?.start(atTime: 0)
+            } catch {
+                // Playing haptics didn't work, but that's ok.
+            }
+        }
     }
 
     /// Removes an exercise from a workout using its position in the list displayed to the user.
