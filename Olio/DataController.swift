@@ -6,6 +6,7 @@
 //
 
 import CoreData
+import CoreSpotlight
 import SwiftUI
 
 /// An environment singleton responsible for managing our Core Data stack, including handling saving, counting fetch
@@ -148,9 +149,16 @@ class DataController: ObservableObject {
         }
     }
 
-    /// Deletes a given object from the Core Data context.
-    /// - Parameter object: The NSManagedObject to delete from the Core Data context.
+    /// Deletes a given object from the Core Data context and Spotlight.
+    /// - Parameter object: The NSManagedObject to delete from the Core Data context and Spotlight.
     func delete(_ object: NSManagedObject) {
+        let id = object.objectID.uriRepresentation().absoluteString
+
+        if object is Workout {
+            // If the object is a Workout then make sure it's deleted from Spotlight too
+            CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [id])
+        }
+
         container.viewContext.delete(object)
     }
 
@@ -416,6 +424,47 @@ class DataController: ObservableObject {
     ///   - workout: A Workout in which the Exercise is contained.
     func getPlacement(forExercise exercise: Exercise, inWorkout workout: Workout) -> Int? {
         return exercise.exercisePlacements.filter({ $0.workout == workout }).first?.placementIndexPosition
+    }
+
+    /// Writes a Workout's information to Spotlight and calls save() method to ensure Core Data is updated too.
+    /// - Parameter workout: The workout to be updated and saved.
+    func updateWorkout(_ workout: Workout) {
+        // Create a unique identifier for the workout being saved
+        let workoutId = workout.objectID.uriRepresentation().absoluteString
+
+        // Define the attributes of the workout to be stored in Spotlight
+        let attributeSet = CSSearchableItemAttributeSet(contentType: .text)
+        attributeSet.title = workout.name
+
+        // Wrap the identifier and attributes in a Spotlight record, optionally passing in a domain identifier
+        let searchableItem = CSSearchableItem(
+            uniqueIdentifier: workoutId,
+            domainIdentifier: nil,
+            attributeSet: attributeSet
+        )
+
+        // Send the Spotlight record to Spotlight for indexing
+        CSSearchableIndex.default().indexSearchableItems([searchableItem])
+
+        save()
+    }
+
+    /// Fetches a Workout indexed within Spotlight using a given unique identifier.
+    /// - Parameter uniqueIdentifier: The unique identifier of the Workout to fetch.
+    /// - Returns: The fetched Workout object if it exists.
+    func fetchSpotlightWorkout(withId uniqueIdentifier: String) -> Workout? {
+        // Convert the unique identifier for the object ID in Spotlight into a URL
+        guard let url = URL(string: uniqueIdentifier) else {
+            return nil
+        }
+
+        // Get the object id for the object at that URL
+        guard let id = container.persistentStoreCoordinator.managedObjectID(forURIRepresentation: url) else {
+            return nil
+        }
+
+        // Return the object for that id as a workout
+        return try? container.viewContext.existingObject(with: id) as? Workout
     }
 // swiftlint:disable:next file_length
 }

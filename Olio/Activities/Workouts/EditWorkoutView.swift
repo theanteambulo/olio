@@ -21,6 +21,8 @@ struct EditWorkoutView: View {
 
     /// The object space in which all managed objects exist.
     @Environment(\.managedObjectContext) var managedObjectContext
+    /// Allows for the view to be dismissed programmatically.
+    @Environment(\.dismiss) var dismiss
 
     /// The workout's name property value.
     @State private var name: String
@@ -91,7 +93,7 @@ struct EditWorkoutView: View {
                             withAnimation {
                                 dataController.removeExercise(exercise, fromWorkout: workout)
                                 exercises.removeAll(where: { $0.exerciseId == exercise.exerciseId })
-                                dataController.save()
+                                save()
                             }
                         } label: {
                             Label(Strings.deleteButton.localized, systemImage: "trash")
@@ -102,7 +104,7 @@ struct EditWorkoutView: View {
                         Button {
                             dataController.addSet(toExercise: exercise, inWorkout: workout)
                             update()
-                            dataController.save()
+                            save()
                         } label: {
                             Label(Strings.addSet.localized, systemImage: "plus.circle")
                                 .labelStyle(.titleAndIcon)
@@ -114,7 +116,7 @@ struct EditWorkoutView: View {
                                 withAnimation {
                                     dataController.completeNextSet(forExercise: exercise, inWorkout: workout)
                                     update()
-                                    dataController.save()
+                                    save()
                                 }
                             } label: {
                                 Label(Strings.completeNextSetButton.localized, systemImage: "checkmark.circle")
@@ -213,6 +215,7 @@ struct EditWorkoutView: View {
                isPresented: $showingDeleteWorkoutConfirmation) {
             Button(Strings.deleteButton.localized, role: .destructive) {
                 dataController.delete(workout)
+                dismiss()
             }
 
             Button(Strings.cancelButton.localized, role: .cancel) { }
@@ -282,6 +285,7 @@ struct EditWorkoutView: View {
         .onAppear(perform: setExercisesArray)
         .onDisappear {
             update()
+            save()
         }
     }
 
@@ -311,7 +315,7 @@ struct EditWorkoutView: View {
     /// Responsible for toggling the completion status of the workout and generating haptic feedback.
     func toggleCompletionStatus() {
         workout.completed.toggle()
-        dataController.save()
+        save()
 
         if workout.completed {
             do {
@@ -367,7 +371,7 @@ struct EditWorkoutView: View {
         if let offset = offsets.first {
             let exerciseToRemove = exercises[offset]
             dataController.removeExercise(exerciseToRemove, fromWorkout: workout)
-            dataController.save()
+            save()
         }
     }
 
@@ -380,6 +384,10 @@ struct EditWorkoutView: View {
 
         workout.name = name
         workout.setValue(NSSet(array: exercises), forKey: "exercises")
+    }
+
+    func save() {
+        dataController.updateWorkout(workout)
     }
 }
 

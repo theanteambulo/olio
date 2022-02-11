@@ -5,6 +5,7 @@
 //  Created by Jake King on 09/01/2022.
 //
 
+import CoreSpotlight
 import SwiftUI
 
 /// A view to display the user's workouts and, conditionally, templates.
@@ -61,6 +62,17 @@ struct HomeView: View {
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
+                // Create programmatic NavigationLink showing the selected Workout when Spotlight activates the app
+                if let workout = viewModel.selectedWorkout {
+                    NavigationLink(
+                        destination: EditWorkoutView(workout: workout),
+                        tag: workout,
+                        selection: $viewModel.selectedWorkout,
+                        label: EmptyView.init
+                    )
+                    .id(workout)
+                }
+
                 // Display templates if on the "Home" tab.
                 if !viewModel.showingCompletedWorkouts {
                     TemplatesView(dataController: viewModel.dataController)
@@ -130,9 +142,19 @@ struct HomeView: View {
                 .listStyle(InsetGroupedListStyle())
             }
             .navigationTitle(navigationTitleLocalizedStringKey)
+            .onContinueUserActivity(CSSearchableItemActionType, perform: loadSpotlightWorkout)
 //            .toolbar {
 //                deleteAllDataToolbarItem
 //            }
+        }
+    }
+
+    /// Searches within NSUserActivity data to find the unique identifier of the Spotlight workout selected, then passes
+    /// this to HomeViewModel to select it.
+    /// - Parameter userActivity: The user activity that was detected.
+    func loadSpotlightWorkout(_ userActivity: NSUserActivity) {
+        if let uniqueIdentifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
+            viewModel.selectWorkout(withId: uniqueIdentifier)
         }
     }
 }

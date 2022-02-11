@@ -25,6 +25,8 @@ extension HomeView {
         @Published var workouts = [Workout]()
         /// An array Date objects.
         @Published var workoutDates = [Date]()
+        /// Tracks the currently selected workout.
+        @Published var selectedWorkout: Workout?
 
         init(dataController: DataController,
              showingCompletedWorkouts: Bool) {
@@ -112,14 +114,28 @@ extension HomeView {
             dataController.save()
         }
 
+        /// Filters workouts by date.
+        /// - Parameters:
+        ///   - workouts: The array of workouts to filter.
+        ///   - date: The date to filter by.
+        /// - Returns: An array of workouts matching the date to filter by.
         func filterWorkouts(_ workouts: [Workout], by date: Date) -> [Workout] {
             let filteredWorkouts = workouts.filter({ Calendar.current.startOfDay(for: $0.workoutDate) == date })
             return filteredWorkouts
         }
 
+        /// Deletes all data from Core Data.
         func deleteAll() {
             dataController.deleteAll()
             dataController.save()
+        }
+
+        /// Selects a Workout to view using it's object id.
+        ///
+        /// Used when launching the app from Spotlight.
+        /// - Parameter id: The object id of the Workout to view.
+        func selectWorkout(withId id: String) {
+            selectedWorkout = dataController.fetchSpotlightWorkout(withId: id)
         }
     }
 }
