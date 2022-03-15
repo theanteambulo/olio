@@ -81,6 +81,11 @@ struct EditWorkoutView: View {
         }
     }
 
+    /// Boolean value indicating whether a full swipe is permitted for the exercise row view.
+    var allowsFullSwipe: Bool {
+        return (workout.template || workout.workoutExerciseSets.filter({ !$0.completed }).isEmpty) ? true : false
+    }
+
     /// The list of exercises contained in the workout, as well as a button to add additional exercises.
     var workoutExerciseList: some View {
         List {
@@ -100,7 +105,7 @@ struct EditWorkoutView: View {
                                 .labelStyle(.titleAndIcon)
                         }
                     }
-                    .swipeActions(edge: .leading, allowsFullSwipe: workout.template) {
+                    .swipeActions(edge: .leading, allowsFullSwipe: allowsFullSwipe) {
                         Button {
                             dataController.addSet(toExercise: exercise, inWorkout: workout)
                             update()
@@ -111,7 +116,7 @@ struct EditWorkoutView: View {
                         }
                         .tint(.blue)
 
-                        if !workout.template {
+                        if !allowsFullSwipe {
                             Button {
                                 withAnimation {
                                     dataController.completeNextSet(forExercise: exercise, inWorkout: workout)
@@ -395,4 +400,5 @@ struct EditWorkoutView_Previews: PreviewProvider {
     static var previews: some View {
         EditWorkoutView(workout: Workout.example)
     }
+// swiftlint:disable:next file_length
 }

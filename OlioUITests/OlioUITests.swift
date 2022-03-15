@@ -814,7 +814,7 @@ class OlioUITests: XCTestCase {
             "There should be 1 template in the scroll view with caption text reading '1 set'."
         )
 
-        app.tables.cells.buttons["New Workout (New Template)"].tap()
+        app.tables.cells.buttons["New Template"].tap()
 
         XCTAssertTrue(
             app.tables.otherElements.staticTexts["Bench"].exists,
@@ -1705,7 +1705,7 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.tables.cells.staticTexts["New Workout (New Template)"].exists,
+            app.tables.cells.staticTexts["New Template"].exists,
             "There should be 1 workout in the list with caption text reading '1 exercise'."
         )
 
@@ -1723,7 +1723,7 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.tables.cells.buttons["New Workout (New Template)"].exists,
+            app.tables.cells.buttons["New Template"].exists,
             "The workout name should have remained the same despite the template name changing."
         )
 
@@ -1748,16 +1748,16 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.tables.cells.staticTexts["New Workout (New Template)"].exists,
+            app.tables.cells.staticTexts["New Template"].exists,
             "There should be 1 workout in the list with caption text reading '1 exercise'."
         )
 
         app.scrollViews.buttons["New Template"].tap()
-        app.tables.cells["Bench, progress: 0%"].swipeLeft()
-        app.tables.cells["Bench, progress: 0%"].buttons["Delete"].tap()
+        app.tables.cells["Bench, progress: 100%"].swipeLeft()
+        app.tables.cells["Bench, progress: 100%"].buttons["Delete"].tap()
 
         XCTAssertTrue(
-            !app.tables.cells["Bench, progress: 0%"].exists,
+            !app.tables.cells["Bench, progress: 100%"].exists,
             "The deleted exercise should no longer be visible in the workout."
         )
 
@@ -1774,16 +1774,16 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.tables.cells.buttons["New Workout (New Template)"].staticTexts["1 exercise"].exists,
+            app.tables.cells.buttons["New Template"].staticTexts["1 exercise"].exists,
             "The workout created from the template should have 1 exercise"
         )
 
         XCTAssertTrue(
-            app.tables.cells.buttons["New Workout (New Template)"].staticTexts["1 set"].exists,
+            app.tables.cells.buttons["New Template"].staticTexts["1 set"].exists,
             "The workout created from the template should have 1 set"
         )
 
-        app.tables.cells.buttons["New Workout (New Template)"].tap()
+        app.tables.cells.buttons["New Template"].tap()
 
         XCTAssertTrue(
             app.tables.cells["Bench, progress: 0%"].exists,
@@ -1799,12 +1799,12 @@ class OlioUITests: XCTestCase {
         app.navigationBars.buttons["Exercises"].tap()
         app.tabBars.buttons["Home"].tap()
         app.scrollViews.buttons["New Template"].tap()
-        app.tables.cells["Bench, progress: 0%"].tap()
+        app.tables.cells["Bench, progress: 100%"].tap()
         app.tables.cells.firstMatch.textFields["Reps"].tap()
         app.keys["1"].tap()
         app.navigationBars.buttons["Save"].tap()
         app.navigationBars.buttons["Home"].tap()
-        app.tables.cells.buttons["New Workout (New Template)"].tap()
+        app.tables.cells.buttons["New Template"].tap()
         app.tables.cells["Bench, progress: 0%"].tap()
 
         XCTAssertEqual(

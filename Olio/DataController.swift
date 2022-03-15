@@ -213,6 +213,7 @@ class DataController: ObservableObject {
             }
 
             set.creationDate = Date()
+            set.completed = workout.template ? true : false
         }
     }
 
@@ -269,7 +270,7 @@ class DataController: ObservableObject {
             exerciseSetToAdd.distance = Double(exerciseSet.exerciseSetDistance)
             exerciseSetToAdd.duration = Int16(exerciseSet.exerciseSetDuration)
             exerciseSetToAdd.creationDate = Date()
-            exerciseSetToAdd.completed = false
+            exerciseSetToAdd.completed = isTemplate ? true : false
 
             newWorkout.addToSets(exerciseSetToAdd)
             save()
