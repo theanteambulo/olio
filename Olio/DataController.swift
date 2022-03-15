@@ -255,7 +255,7 @@ class DataController: ObservableObject {
             newWorkout.name = "New Template (\(workout.workoutName))"
             newWorkout.template = true
         } else {
-            newWorkout.name = "New Workout (\(workout.workoutName))"
+            newWorkout.name = "\(workout.workoutName)"
             newWorkout.template = false
         }
 
