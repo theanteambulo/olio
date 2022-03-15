@@ -127,7 +127,11 @@ struct ExerciseSheetView: View {
                         }
                     }
                     .swipeActions(edge: .leading, allowsFullSwipe: false) {
-                        toggleCompletionStatusForExerciseSetSwipeActionButton(exerciseSet)
+                        if workout.template {
+
+                        } else {
+                            toggleCompletionStatusForExerciseSetSwipeActionButton(exerciseSet)
+                        }
                     }
                     .swipeActions(edge: .trailing) {
                         deleteExerciseSetSwipeActionButton(exerciseSet)
