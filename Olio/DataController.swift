@@ -8,6 +8,7 @@
 import CoreData
 import CoreSpotlight
 import SwiftUI
+import UserNotifications
 
 /// An environment singleton responsible for managing our Core Data stack, including handling saving, counting fetch
 /// requests and dealing with sample data.
@@ -466,6 +467,106 @@ class DataController: ObservableObject {
 
         // Return the object for that id as a workout
         return try? container.viewContext.existingObject(with: id) as? Workout
+    }
+
+    /// Adds a reminder for a workout.
+    /// - Parameters:
+    ///   - workout: The workout the reminder is being added for.
+    ///   - completion: A closure to be called on completion.
+    func addReminders(for workout: Workout, completion: @escaping (Bool) -> Void) {
+        let center = UNUserNotificationCenter.current()
+
+        center.getNotificationSettings { settings in
+            switch settings.authorizationStatus {
+            case .notDetermined:
+                self.requestNotifications { success in
+                    if success {
+                        self.placeReminders(for: workout, completion: completion)
+                    } else {
+                        DispatchQueue.main.async {
+                            completion(false)
+                        }
+                    }
+                }
+            case .authorized:
+                self.placeReminders(for: workout, completion: completion)
+            default:
+                DispatchQueue.main.async {
+                    completion(false)
+                }
+            }
+        }
+    }
+
+    /// Removes a reminder for a workout.
+    /// - Parameter workout: The workout the reminder is being removed from.
+    func removeReminders(for workout: Workout) {
+        let center = UNUserNotificationCenter.current()
+        let id = workout.objectID.uriRepresentation().absoluteString
+        center.removePendingNotificationRequests(withIdentifiers: [id])
+    }
+
+    /// Requests notification privileges from the user.
+    /// - Parameter completion: A closure to be called on completion.
+    private func requestNotifications(completion: @escaping (Bool) -> Void) {
+        let center = UNUserNotificationCenter.current()
+
+        center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
+            completion(granted)
+        }
+    }
+
+    /// Places a single notification for a workout.
+    /// - Parameters:
+    ///   - workout: The workout for which the notification is being placed.
+    ///   - completion: A closure to be called on completion.
+    private func placeReminders(for workout: Workout, completion: @escaping (Bool) -> Void) {
+        let content = UNMutableNotificationContent()
+        content.sound = .default
+        content.title = workout.workoutName
+
+        // Pluralisation doesn't seem to work in local notifications in iOS 15, so manual pluralisation has been done.
+        var exercisesString = ""
+        var setsString = ""
+
+        switch workout.workoutExercises.count {
+        case 0:
+            exercisesString = "No exercises, "
+        case 1:
+            exercisesString = "1 exercise, "
+        default:
+            exercisesString = "\(workout.workoutExercises.count) exercises, "
+        }
+
+        switch workout.workoutExerciseSets.count {
+        case 0:
+            setsString = "no sets"
+        case 1:
+            setsString = "1 set"
+        default:
+            setsString = "\(workout.workoutExercises.count) set"
+        }
+
+        content.subtitle = exercisesString + setsString
+
+        let components = Calendar.current.dateComponents([.hour, .minute],
+                                                         from: workout.reminderTime ?? Date())
+        let trigger = UNCalendarNotificationTrigger(dateMatching: components,
+                                                    repeats: false)
+        let id = workout.objectID.uriRepresentation().absoluteString
+        let request = UNNotificationRequest(identifier: id,
+                                            content: content,
+                                            trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            DispatchQueue.main.async {
+                if error == nil {
+                    completion(true)
+                } else {
+                    completion(false)
+                }
+            }
+        }
     }
 // swiftlint:disable:next file_length
 }

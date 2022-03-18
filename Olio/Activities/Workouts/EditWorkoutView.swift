@@ -26,7 +26,6 @@ struct EditWorkoutView: View {
 
     /// The workout's name property value.
     @State private var name: String
-
     /// Boolean to indicate whether the sheet used for adding an exercise to the workout is displayed.
     @State private var showingAddExerciseSheet = false
     /// Boolean to indicate whether the confirmation dialog used for changing the workout date is displayed.
@@ -39,6 +38,12 @@ struct EditWorkoutView: View {
     @State private var showingCreateWorkoutConfirmation = false
     /// Boolean to indicate whether the alert warning the user about deleting an exercise is displayed.
     @State private var showingDeleteWorkoutConfirmation = false
+    /// Boolean to indicate whether the time picker is currently showing.
+    @State private var remindUser: Bool
+    /// The currently selected reminder time for the workout.
+    @State private var reminderTime: Date
+    /// Boolean to indicate whether the alert for error scheduling notifications is displayed.
+    @State private var showingNotificationsAlert = false
 
     /// The instance of CHHapticEngine responsible for spinning up the Taptic Engine.
     @State private var engine = try? CHHapticEngine()
@@ -47,6 +52,14 @@ struct EditWorkoutView: View {
         self.workout = workout
 
         _name = State(wrappedValue: workout.workoutName)
+
+        if let workoutReminderTime = workout.reminderTime {
+            _reminderTime = State(wrappedValue: workoutReminderTime)
+            _remindUser = State(wrappedValue: true)
+        } else {
+            _reminderTime = State(wrappedValue: Date())
+            _remindUser = State(wrappedValue: false)
+        }
     }
 
     /// Computed property to get the text displayed in the navigation title of the view.
@@ -253,6 +266,28 @@ struct EditWorkoutView: View {
                 .accessibilityIdentifier("Workout Date")
             }
 
+            if !workout.template && !workout.completed {
+                Section(header: Text(.workoutReminderTimeSectionHeader)) {
+                    Toggle(Strings.showReminders.localized, isOn: $remindUser.animation().onChange(update))
+                        .alert(isPresented: $showingNotificationsAlert) {
+                            Alert(
+                                title: Text(.oops),
+                                message: Text(.enableNotifications),
+                                primaryButton: .default(Text(.settings), action: showingAppNotificationsSettings),
+                                secondaryButton: .cancel()
+                            )
+                        }
+
+                    if remindUser {
+                        DatePicker(
+                            Strings.reminderTime.localized,
+                            selection: $reminderTime.onChange(update),
+                            displayedComponents: .hourAndMinute
+                        )
+                    }
+                }
+            }
+
             Section(header: Text(.exercisesTab)) {
                 workoutExerciseList
             }
@@ -389,10 +424,48 @@ struct EditWorkoutView: View {
 
         workout.name = name
         workout.setValue(NSSet(array: exercises), forKey: "exercises")
+
+        if remindUser {
+            var dateComponents = DateComponents()
+            let dateScheduled = Calendar.current.dateComponents([.year, .month, .day],
+                                                                from: workout.workoutDate)
+            let reminderTimeSet = Calendar.current.dateComponents([.hour, .minute],
+                                                                  from: reminderTime)
+
+            dateComponents.year = dateScheduled.year
+            dateComponents.month = dateScheduled.month
+            dateComponents.day = dateScheduled.day
+            dateComponents.hour = reminderTimeSet.hour
+            dateComponents.minute = reminderTimeSet.minute
+
+            workout.reminderTime = Calendar.current.date(from: dateComponents)
+
+            dataController.addReminders(for: workout) { success in
+                if success == false {
+                    workout.reminderTime = nil
+                    remindUser = false
+
+                    showingNotificationsAlert = true
+                }
+            }
+        } else {
+            workout.reminderTime = nil
+            dataController.removeReminders(for: workout)
+        }
     }
 
     func save() {
         dataController.updateWorkout(workout)
+    }
+
+    func showingAppNotificationsSettings() {
+        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else {
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(settingsURL) {
+            UIApplication.shared.open(settingsURL)
+        }
     }
 }
 

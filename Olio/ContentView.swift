@@ -44,10 +44,17 @@ struct ContentView: View {
                 .phoneOnlyStackNavigationView()
         }
         .onContinueUserActivity(CSSearchableItemActionType, perform: moveToHome)
+        .onOpenURL(perform: openURL)
     }
 
     func moveToHome(_ input: Any) {
         selectedView = HomeView.homeTag
+    }
+
+    func openURL(url: URL) {
+        selectedView = HomeView.homeTag
+        dataController.createNewWorkoutOrTemplate(isTemplate: false,
+                                                  daysOffset: 0)
     }
 }
 

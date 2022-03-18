@@ -1189,7 +1189,7 @@ class OlioUITests: XCTestCase {
         app.tabBars.buttons["Home"].tap()
         app.tables.cells.buttons["New Workout"].tap()
         app.tables.cells["Bench, progress: 100%"].swipeLeft()
-        app.tables.cells.element(boundBy: 2).buttons["Delete"].tap()
+        app.tables.cells.element(boundBy: 3).buttons["Delete"].tap()
 
         XCTAssertTrue(
             !app.tables.cells["Bench, progress: 0%"].exists,
@@ -1553,8 +1553,8 @@ class OlioUITests: XCTestCase {
 
         XCTAssertEqual(
             app.tables.cells.count,
-            6,
-            "There should be 6 cells visible in the table."
+            7,
+            "There should be 7 cells visible in the table."
         )
 
         XCTAssertTrue(
@@ -1680,8 +1680,8 @@ class OlioUITests: XCTestCase {
 
         XCTAssertEqual(
             app.tables.cells.count,
-            7,
-            "There should be 7 cells visible in the table."
+            8,
+            "There should be 8 cells visible in the table."
         )
 
         XCTAssertTrue(

@@ -12,6 +12,8 @@ struct OlioApp: App {
     /// App creates and owns the data controller, ensuring it stays alive for the duration of the app's runtime.
     @StateObject var dataController: DataController
 
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+
     init() {
         let dataController = DataController()
         _dataController = StateObject(wrappedValue: dataController)

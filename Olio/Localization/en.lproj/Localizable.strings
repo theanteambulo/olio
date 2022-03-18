@@ -9,6 +9,9 @@
 "exerciseSettings" = "Exercise Settings";
 "completeButton" = "Complete";
 "incompleteButton" = "Incomplete";
+"oops" = "Oops!";
+"enableNotifications" = "Something went wrong. Please check you have notifications enabled.";
+"settings" = "Settings";
 
 
 
@@ -41,6 +44,9 @@
 "tomorrow" = "Tomorrow";
 "selectWorkoutDateLabel" = "Select a workout date";
 "selectWorkoutDateMessage" = "Select a date to schedule this workout on.";
+"workoutReminderTimeSectionHeader" = "Reminder";
+"showReminders" = "Show reminders";
+"reminderTime" = "Reminder time";
 "addExercisesToWorkout" = "Add";
 "scheduleWorkout" = "Schedule workout";
 "completeWorkout" = "Workout complete";

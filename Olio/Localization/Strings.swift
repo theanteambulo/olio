@@ -25,6 +25,9 @@ enum Strings: LocalizedStringKey {
     case exerciseSettings
     case completeButton
     case incompleteButton
+    case oops
+    case enableNotifications
+    case settings
 
     // TABS
     case homeTab
@@ -51,6 +54,9 @@ enum Strings: LocalizedStringKey {
     case tomorrow
     case selectWorkoutDateLabel
     case selectWorkoutDateMessage
+    case workoutReminderTimeSectionHeader
+    case showReminders
+    case reminderTime
     case addExercisesToWorkout
     case scheduleWorkout
     case completeWorkout
