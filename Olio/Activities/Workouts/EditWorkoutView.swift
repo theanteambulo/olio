@@ -232,7 +232,9 @@ struct EditWorkoutView: View {
         .alert(Strings.areYouSureAlertTitle.localized,
                isPresented: $showingDeleteWorkoutConfirmation) {
             Button(Strings.deleteButton.localized, role: .destructive) {
+                remindUser = false
                 dataController.delete(workout)
+                update()
                 dismiss()
             }
 

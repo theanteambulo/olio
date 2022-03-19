@@ -110,6 +110,7 @@ extension HomeView {
         /// Deletes a given workout from the Core Data context.
         /// - Parameter workout: The workout to delete.
         func deleteWorkout(_ workout: Workout) {
+            dataController.removeReminders(for: workout)
             dataController.delete(workout)
             dataController.save()
         }
