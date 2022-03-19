@@ -14,6 +14,8 @@ struct ContentView: View {
     /// The environment singleton responsible for managing the Core Data stack.
     @EnvironmentObject var dataController: DataController
 
+    private let newWorkoutActivity = "com.theanteambulo.newWorkout"
+
     var body: some View {
         TabView(selection: $selectedView) {
             // "Home" tab - displays templates and scheduled workouts.
@@ -44,6 +46,11 @@ struct ContentView: View {
                 .phoneOnlyStackNavigationView()
         }
         .onContinueUserActivity(CSSearchableItemActionType, perform: moveToHome)
+        .onContinueUserActivity(newWorkoutActivity, perform: createWorkout)
+        .userActivity(newWorkoutActivity) { activity in
+            activity.isEligibleForPrediction = true
+            activity.title = "New Workout"
+        }
         .onOpenURL(perform: openURL)
     }
 
@@ -52,6 +59,12 @@ struct ContentView: View {
     }
 
     func openURL(url: URL) {
+        selectedView = HomeView.homeTag
+        dataController.createNewWorkoutOrTemplate(isTemplate: false,
+                                                  daysOffset: 0)
+    }
+
+    func createWorkout(_ userActivity: NSUserActivity) {
         selectedView = HomeView.homeTag
         dataController.createNewWorkoutOrTemplate(isTemplate: false,
                                                   daysOffset: 0)
