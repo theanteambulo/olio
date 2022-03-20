@@ -360,6 +360,8 @@ struct EditWorkoutView: View {
         save()
 
         if workout.completed {
+            remindUser = false
+
             do {
                 try engine?.start()
 

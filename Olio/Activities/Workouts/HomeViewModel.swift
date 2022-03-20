@@ -104,6 +104,11 @@ extension HomeView {
         /// - Parameter workout: The workout whose completion status will be toggle.
         func toggleCompletionStatusForWorkout(_ workout: Workout) {
             workout.completed.toggle()
+
+            if workout.completed {
+                dataController.removeReminders(for: workout)
+            }
+
             dataController.save()
         }
 
