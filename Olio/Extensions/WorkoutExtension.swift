@@ -5,8 +5,10 @@
 //  Created by Jake King on 23/11/2021.
 //
 
+import CloudKit
 import Foundation
 import SwiftUI
+import CoreHaptics
 
 extension Workout {
     /// The unwrapped id property of a workout.
@@ -102,5 +104,68 @@ extension Workout {
         workoutColors.removeDuplicates()
 
         return workoutColors
+    }
+
+    /// Converts all workout data into CloudKit records.
+    /// - Returns: An array of CloudKit records.
+    func prepareCloudRecords() -> [CKRecord] {
+        var allRecords = [CKRecord]()
+
+        // Create a parent record (Workout)
+        let workoutRecordName = objectID.uriRepresentation().absoluteString
+        let workoutRecordID = CKRecord.ID(recordName: workoutRecordName)
+        let workoutRecord = CKRecord(recordType: "Workout", recordID: workoutRecordID)
+        workoutRecord["name"] = workoutName
+        workoutRecord["date"] = workoutDate
+        workoutRecord["owner"] = "theAnteambulo"
+        workoutRecord["template"] = template
+
+        workoutExercises.forEach { exercise in
+            // Create parent records (Exercise)
+            let exerciseRecordName = exercise.objectID.uriRepresentation().absoluteString
+            let exerciseRecordID = CKRecord.ID(recordName: exerciseRecordName)
+            let exerciseRecord = CKRecord(recordType: "Exercise", recordID: exerciseRecordID)
+            exerciseRecord["name"] = exercise.exerciseName
+            exerciseRecord["category"] = exercise.category
+            exerciseRecord["muscleGroup"] = exercise.muscleGroup
+
+            // Create child records (WorkoutExercise)
+            let workoutExerciseRecordName = workoutRecordName + exerciseRecordName
+            let workoutExerciseRecordID = CKRecord.ID(recordName: workoutExerciseRecordName)
+            let workoutExerciseRecord = CKRecord(recordType: "WorkoutExercise", recordID: workoutExerciseRecordID)
+            workoutExerciseRecord["workout"] = CKRecord.Reference(recordID: workoutRecordID, action: .none)
+            workoutExerciseRecord["exercise"] = CKRecord.Reference(recordID: exerciseRecord.recordID, action: .none)
+
+            if let workoutExercisePlacement = exercise.exercisePlacements.filter({ $0.workout == self }).first {
+                workoutExerciseRecord["exercisePlacement"] = workoutExercisePlacement.placementIndexPosition
+            }
+
+            allRecords.append(exerciseRecord)
+            allRecords.append(workoutExerciseRecord)
+
+            // Create a child record (Exercise Sets)
+            exercise.exerciseSets.forEach { exerciseSet in
+                let exerciseSetRecordName = exerciseSet.objectID.uriRepresentation().absoluteString
+                let exerciseSetRecordID = CKRecord.ID(recordName: exerciseSetRecordName)
+                let exerciseSetRecord = CKRecord(recordType: "ExerciseSet", recordID: exerciseSetRecordID)
+                exerciseSetRecord["workout"] = CKRecord.Reference(recordID: workoutRecordID, action: .deleteSelf)
+                exerciseSetRecord["exercise"] = CKRecord.Reference(recordID: exerciseRecordID, action: .deleteSelf)
+                exerciseSetRecord["weight"] = exerciseSet.exerciseSetWeight
+                exerciseSetRecord["reps"] = exerciseSet.exerciseSetReps
+                exerciseSetRecord["distance"] = exerciseSet.exerciseSetDistance
+                exerciseSetRecord["duration"] = exerciseSet.exerciseSetDuration
+                exerciseSetRecord["completed"] = exerciseSet.completed
+
+                allRecords.append(exerciseSetRecord)
+            }
+        }
+
+        allRecords.append(workoutRecord)
+
+        allRecords.forEach { record in
+            print("\(record)\n")
+        }
+
+        return allRecords
     }
 }

@@ -5,6 +5,7 @@
 //  Created by Jake King on 24/11/2021.
 //
 
+import CloudKit
 import CoreHaptics
 import SwiftUI
 
@@ -65,6 +66,29 @@ struct EditWorkoutView: View {
     /// Computed property to get the text displayed in the navigation title of the view.
     var navigationTitle: Text {
         workout.template ? Text(.editTemplateNavigationTitle) : Text(.editWorkoutNavigationTitle)
+    }
+
+    /// Button that uploads the workout to iCloud.
+    var uploadWorkoutToCloudToolbarButton: some View {
+        Button {
+            let records = workout.prepareCloudRecords()
+            let operation = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
+            operation.savePolicy = .allKeys
+
+            operation.modifyRecordsResultBlock = { result in
+                switch result {
+                case .success:
+                    // This is adding a workout to the public cloud - does it make more sense to upload to private?
+                    print("Success.")
+                case .failure(let error):
+                    print("Error: \(error.localizedDescription)")
+                }
+            }
+
+            CKContainer.default().publicCloudDatabase.add(operation)
+        } label: {
+            Label("Upload to iCloud", systemImage: "icloud.and.arrow.up")
+        }
     }
 
     /// Computed property to get the text displayed in the section header for the workout date.
@@ -322,7 +346,10 @@ struct EditWorkoutView: View {
         }
         .navigationTitle(navigationTitle)
         .toolbar {
-            EditButton()
+            ToolbarItemGroup(placement: .navigationBarTrailing) {
+                EditButton()
+                uploadWorkoutToCloudToolbarButton
+            }
         }
         .onAppear(perform: setExercisesArray)
         .onDisappear {
