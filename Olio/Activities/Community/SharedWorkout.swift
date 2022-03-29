@@ -11,6 +11,10 @@ struct SharedWorkout: Identifiable {
     let id: String
     let name: String
     let owner: String
-    
-    static let example = SharedWorkout(id: "1", name: "Example Workout", owner: "theAnteambulo")
+
+    static let example = SharedWorkout(
+        id: "1",
+        name: "Example Workout",
+        owner: "theAnteambulo"
+    )
 }

@@ -8,5 +8,5 @@
 import Foundation
 
 enum LoadState {
-    case inactive, loading, active, noResults
+    case inactive, loading, success, noResults
 }

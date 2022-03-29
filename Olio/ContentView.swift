@@ -44,6 +44,14 @@ struct ContentView: View {
                 }
                 .tag(ExercisesView.tag)
                 .phoneOnlyStackNavigationView()
+
+            // "Community" tab - displays workouts users have shared with the community.
+            SharedWorkoutsView()
+                .tabItem {
+                    Image(systemName: "person.3")
+                    Text("Community")
+                }
+                .tag(SharedWorkoutsView.tag)
         }
         .onContinueUserActivity(CSSearchableItemActionType, perform: moveToHome)
         .onContinueUserActivity(newWorkoutActivity, perform: createWorkout)
