@@ -74,9 +74,9 @@ struct EditExerciseView: View {
                 Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory.onChange(changesMade)) {
                     Text(.weights).tag(1)
                     Text(.body).tag(2)
-                    Text(.cardio).tag(3)
-                    Text(.exerciseClass).tag(4)
-                    Text(.stretch).tag(5)
+//                    Text(.cardio).tag(3)
+//                    Text(.exerciseClass).tag(4)
+//                    Text(.stretch).tag(5)
                 }
 
                 Picker(Strings.muscleGroup.localized, selection: $muscleGroup.onChange(changesMade)) {

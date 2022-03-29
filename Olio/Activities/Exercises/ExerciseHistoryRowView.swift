@@ -33,9 +33,9 @@ struct ExerciseHistoryRowView: View {
     /// The weight and number of reps completed in the exercise set.
     var exerciseSetDetail: Text {
         switch exerciseSet.exercise?.exerciseCategory {
-        case "Weights":
+        case "Free Weights":
             return Text("\(exerciseSet.exerciseSetWeight, specifier: "%.2f")kg, \(exerciseSet.exerciseSetReps) reps")
-        case "Body":
+        case "Bodyweight":
             return Text("\(exerciseSet.exerciseSetReps) reps")
         case "Cardio":
             return Text("\(exerciseSet.exerciseSetDistance, specifier: "%.2f")km / duration")

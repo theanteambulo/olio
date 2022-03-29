@@ -37,9 +37,9 @@ struct AddExerciseView: View {
 
     init(currentlyActiveExerciseCategory: String) {
         switch currentlyActiveExerciseCategory {
-        case "Weights":
+        case "Free Weights":
             _exerciseCategory = State(wrappedValue: 1)
-        case "Body":
+        case "Bodyweight":
             _exerciseCategory = State(wrappedValue: 2)
         case "Cardio":
             _exerciseCategory = State(wrappedValue: 3)
@@ -117,9 +117,9 @@ struct AddExerciseView: View {
                     Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory) {
                         Text(.weights).tag(1)
                         Text(.body).tag(2)
-                        Text(.cardio).tag(3)
-                        Text(.exerciseClass).tag(4)
-                        Text(.stretch).tag(5)
+//                        Text(.cardio).tag(3)
+//                        Text(.exerciseClass).tag(4)
+//                        Text(.stretch).tag(5)
                     }
 
                     Picker(Strings.muscleGroup.localized, selection: $muscleGroup) {
@@ -160,6 +160,6 @@ struct AddExerciseView: View {
 
 struct AddExerciseView_Previews: PreviewProvider {
     static var previews: some View {
-        AddExerciseView(currentlyActiveExerciseCategory: "Weights")
+        AddExerciseView(currentlyActiveExerciseCategory: "Free Weights")
     }
 }

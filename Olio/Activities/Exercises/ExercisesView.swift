@@ -45,11 +45,11 @@ struct ExercisesView: View {
                 if !viewModel.exercises.isEmpty {
                     VStack {
                         Picker(Strings.exerciseCategory.localized, selection: $viewModel.exerciseCategory) {
-                            Text(.weights).tag("Weights")
-                            Text(.body).tag("Body")
-                            Text(.cardio).tag("Cardio")
-                            Text(.exerciseClass).tag("Class")
-                            Text(.stretch).tag("Stretch")
+                            Text(.weights).tag("Free Weights")
+                            Text(.body).tag("Bodyweight")
+//                            Text(.cardio).tag("Cardio")
+//                            Text(.exerciseClass).tag("Class")
+//                            Text(.stretch).tag("Stretch")
                         }
                         .pickerStyle(SegmentedPickerStyle())
                         .padding(.horizontal)

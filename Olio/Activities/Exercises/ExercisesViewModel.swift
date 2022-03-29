@@ -26,7 +26,7 @@ extension ExercisesView {
 
         init(dataController: DataController) {
             self.dataController = dataController
-            self.exerciseCategory = "Weights"
+            self.exerciseCategory = "Free Weights"
 
             // Get all the exercises.
             let exercisesRequest: NSFetchRequest<Exercise> = Exercise.fetchRequest()
