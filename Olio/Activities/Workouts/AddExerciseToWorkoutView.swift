@@ -16,7 +16,7 @@ struct AddExerciseToWorkoutView: View {
     let exercises: FetchRequest<Exercise>
 
     /// The exercise category selected by the user.
-    @State private var exerciseCategory = "Weights"
+    @State private var exerciseCategory = "Free Weights"
 
     /// The array of Exercise objects to add to the workout.
     @State private var exercisesToAdd = [Exercise]()
@@ -101,11 +101,11 @@ struct AddExerciseToWorkoutView: View {
                 if !exercisesArray.isEmpty {
                     VStack {
                         Picker(Strings.exerciseCategory.localized, selection: $exerciseCategory) {
-                            Text(.weights).tag("Weights")
-                            Text(.body).tag("Body")
-                            Text(.cardio).tag("Cardio")
-                            Text(.exerciseClass).tag("Class")
-                            Text(.stretch).tag("Stretch")
+                            Text(.weights).tag("Free Weights")
+                            Text(.body).tag("Bodyweight")
+//                            Text(.cardio).tag("Cardio")
+//                            Text(.exerciseClass).tag("Class")
+//                            Text(.stretch).tag("Stretch")
                         }
                         .pickerStyle(SegmentedPickerStyle())
                         .padding(.horizontal)
