@@ -34,8 +34,8 @@ class OlioUITests: XCTestCase {
     func testAppHasThreeTabs() throws {
         XCTAssertEqual(
             app.tabBars.buttons.count,
-            3,
-            "There should be 3 tabs in the app."
+            4,
+            "There should be 4 tabs in the app."
         )
     }
 
@@ -278,7 +278,7 @@ class OlioUITests: XCTestCase {
     /// Tests adding a single exercise results in that exercise being displayed in ExercisesView correctly and the
     /// 'Load exercise library' button disappearing.
     func testAddingAnExercise() throws {
-        let exerciseCategories = ["Weights", "Body", "Cardio", "Class", "Stretch"]
+        let exerciseCategories = ["Free Weights", "Bodyweight"]
 
         try testExercisesTabSetUp()
 
@@ -343,7 +343,7 @@ class OlioUITests: XCTestCase {
     /// Tests loading the exercise library results in the correct number of exercises being added to each category.
     func testLoadingExerciseLibrary() throws {
         // Also consider testing whether the muscle groups displayed are correct.
-        let exerciseCategories = ["Weights", "Body", "Cardio", "Class", "Stretch"]
+        let exerciseCategories = ["Free Weights", "Bodyweight"]
 
         try testExercisesTabSetUp()
 
@@ -363,13 +363,13 @@ class OlioUITests: XCTestCase {
                 "When there is >= 1 exercise(s) in any category, 'Load exercise library' button should not be visible."
             )
 
-            if category == "Weights" {
+            if category == "Free Weights" {
                 XCTAssertEqual(
                     app.tables.cells.count,
                     21,
                     "There should be 21 exercises in the list for the \(category) exercise category."
                 )
-            } else if category == "Body" {
+            } else if category == "Bodyweight" {
                 XCTAssertEqual(
                     app.tables.cells.count,
                     13,
@@ -414,7 +414,7 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.tables.otherElements.staticTexts["Weights"].exists,
+            app.tables.otherElements.staticTexts["Free Weights"].exists,
             "A single cell with static text matching the added exercise's category should exist."
         )
 
@@ -470,7 +470,7 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.tables.otherElements.staticTexts["Weights"].exists,
+            app.tables.otherElements.staticTexts["Free Weights"].exists,
             "A single cell with static text matching the added exercise's category should exist."
         )
 
@@ -579,7 +579,7 @@ class OlioUITests: XCTestCase {
         )
 
         app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
+        app.segmentedControls.buttons["Free Weights"].tap()
         app.tables.cells.buttons["Bench"].tap()
 
         XCTAssertTrue(
@@ -656,7 +656,7 @@ class OlioUITests: XCTestCase {
         )
 
         app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
+        app.segmentedControls.buttons["Free Weights"].tap()
         app.tables.cells.buttons["Bench"].tap()
 
         XCTAssertTrue(
@@ -822,7 +822,7 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.tables.otherElements.staticTexts["Weights"].exists,
+            app.tables.otherElements.staticTexts["Free Weights"].exists,
             "A single cell with static text matching the added exercise's category should exist."
         )
 
@@ -917,7 +917,7 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.tables.otherElements.staticTexts["Weights"].exists,
+            app.tables.otherElements.staticTexts["Free Weights"].exists,
             "A single cell with static text matching the added exercise's category should exist."
         )
 
@@ -1138,7 +1138,7 @@ class OlioUITests: XCTestCase {
         )
 
         app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
+        app.segmentedControls.buttons["Free Weights"].tap()
         app.tables.cells.buttons["Bench"].tap()
 
         XCTAssertTrue(
@@ -1215,7 +1215,7 @@ class OlioUITests: XCTestCase {
         )
 
         app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
+        app.segmentedControls.buttons["Free Weights"].tap()
         app.tables.cells.buttons["Bench"].tap()
 
         XCTAssertTrue(
@@ -1301,7 +1301,7 @@ class OlioUITests: XCTestCase {
         )
 
         app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
+        app.segmentedControls.buttons["Free Weights"].tap()
         app.tables.cells.buttons["Bench"].tap()
 
         XCTAssertTrue(
@@ -1394,7 +1394,7 @@ class OlioUITests: XCTestCase {
         )
 
         app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
+        app.segmentedControls.buttons["Free Weights"].tap()
         app.tables.cells.buttons["Bench"].tap()
 
         XCTAssertTrue(
@@ -1456,7 +1456,7 @@ class OlioUITests: XCTestCase {
         )
 
         app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
+        app.segmentedControls.buttons["Free Weights"].tap()
         app.tables.cells.buttons["Bench"].tap()
 
         XCTAssertTrue(
@@ -1473,7 +1473,7 @@ class OlioUITests: XCTestCase {
         try testAddingExerciseToWorkout()
 
         app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
+        app.segmentedControls.buttons["Free Weights"].tap()
         app.tables.cells.buttons["Bench"].swipeLeft()
         app.tables.buttons["Delete"].tap()
 
@@ -1504,7 +1504,7 @@ class OlioUITests: XCTestCase {
         try testAddingExerciseToWorkout()
 
         app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
+        app.segmentedControls.buttons["Free Weights"].tap()
         app.tables.cells.buttons["Bench"].tap()
         app.navigationBars.buttons["Delete"].tap()
 
@@ -1568,7 +1568,7 @@ class OlioUITests: XCTestCase {
         try testAddingExerciseToWorkout()
 
         app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
+        app.segmentedControls.buttons["Free Weights"].tap()
         app.tables.cells.buttons["Bench"].tap()
         app.textFields["Bench"].tap()
 
@@ -1607,7 +1607,7 @@ class OlioUITests: XCTestCase {
         try testAddingExerciseToWorkout()
 
         app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
+        app.segmentedControls.buttons["Free Weights"].tap()
         app.tables.cells.buttons["Bench"].tap()
         app.tables.cells.buttons["Muscle Group"].tap()
         app.tables.switches["Back"].tap()
@@ -1637,36 +1637,36 @@ class OlioUITests: XCTestCase {
         try testAddingExerciseToWorkout()
 
         app.tabBars.buttons["Exercises"].tap()
-        app.segmentedControls.buttons["Weights"].tap()
+        app.segmentedControls.buttons["Free Weights"].tap()
         app.tables.cells.buttons["Bench"].tap()
         app.tables.cells.buttons["Exercise Category"].tap()
-        app.tables.switches["Body"].tap()
+        app.tables.switches["Bodyweight"].tap()
         app.tables.cells.buttons["Save Changes"].tap()
 
         XCTAssertEqual(
             app.tables.cells.count,
             0,
-            "The exercise category changed and no exercises should be visible in the 'Weights' category."
+            "The exercise category changed and no exercises should be visible in the 'Free Weights' category."
         )
 
-        app.segmentedControls.buttons["Body"].tap()
+        app.segmentedControls.buttons["Bodyweight"].tap()
 
         XCTAssertTrue(
             app.tables.cells.buttons["Bench"].exists,
-            "The exercise category changed and 'Bench' should now be visible in the 'Body' category."
+            "The exercise category changed and 'Bench' should now be visible in the 'Bodyweight' category."
         )
 
         XCTAssertEqual(
             app.tables.cells.count,
             1,
-            "There should be no other exercises visible in the 'Body' category."
+            "There should be no other exercises visible in the 'Bodyweight' category."
         )
 
         app.tables.cells.buttons["Bench"].tap()
 
         XCTAssertEqual(
             app.tables.cells.buttons["Exercise Category"].value as? String ?? "",
-            "Body",
+            "Bodyweight",
             "The exercise category should have been updated."
         )
         app.navigationBars.buttons["Exercises"].tap()
@@ -1685,7 +1685,7 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.tables.cells["Bench, progress: 0%"].staticTexts["Body"].exists,
+            app.tables.cells["Bench, progress: 0%"].staticTexts["Bodyweight"].exists,
             "The exercise category text should have been updated."
         )
     }
