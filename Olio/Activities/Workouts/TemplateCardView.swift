@@ -15,6 +15,9 @@ struct TemplateCardView: View {
     /// The array of colors corresponding to unique exercise categories in this workout.
     private var exerciseCategoryColors: [Color]
 
+    /// An array of Boolean values indicating whether a circle should be filled or not.
+    private var fillCircle: [Bool]
+
     /// A grid with a single row.
     var rows: [GridItem] {
         Array(repeating: GridItem(.fixed(7)), count: 1)
@@ -22,13 +25,13 @@ struct TemplateCardView: View {
 
     init(template: Workout) {
         self.template = template
-        exerciseCategoryColors = [Color]()
+        exerciseCategoryColors = Exercise.allExerciseCategoryColors.map({ $0.value })
 
-        for exercise in template.workoutExercises.sorted(by: \.exerciseCategory) {
-            exerciseCategoryColors.append(exercise.getExerciseCategoryColor())
-        }
+        let workoutExerciseCategoryColors = template.workoutExercises.sorted(by: \.exerciseCategory).map({
+            $0.getExerciseCategoryColor()
+        })
 
-        exerciseCategoryColors.removeDuplicates()
+        fillCircle = exerciseCategoryColors.map({ workoutExerciseCategoryColors.contains($0) })
     }
 
     var body: some View {
@@ -42,10 +45,12 @@ struct TemplateCardView: View {
 
                 if !template.workoutExercises.isEmpty {
                     LazyHGrid(rows: rows, spacing: 7) {
-                        ForEach(exerciseCategoryColors, id: \.self) { categoryColor in
+                        ForEach(Array(zip(exerciseCategoryColors.indices,
+                                          exerciseCategoryColors)), id: \.1) { index, categoryColor in
                             Circle()
+                                .strokeBorder(categoryColor, lineWidth: 1)
+                                .background(Circle().fill(fillCircle[index] ? categoryColor : .clear))
                                 .frame(width: 7)
-                                .foregroundColor(categoryColor)
                         }
                     }
                 }

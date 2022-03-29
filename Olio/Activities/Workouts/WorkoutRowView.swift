@@ -12,21 +12,8 @@ struct WorkoutRowView: View {
     /// The workout used to construct this view.
     @ObservedObject var workout: Workout
 
-    /// The array of colors corresponding to unique exercise categories in this workout.
-    private var exerciseCategoryColors: [Color] = [.red, .blue, .green, .yellow, .purple]
-
-    /// An array of Boolean values indicating whether a circle should be filled or not.
-    private var fillCircle: [Bool]
-
-    /// A grid with a single row.
-    var rows: [GridItem] {
-        Array(repeating: GridItem(), count: 1)
-    }
-
     init(workout: Workout) {
         self.workout = workout
-        let workoutExerciseCategoryColors = workout.workoutExercises.map({ $0.getExerciseCategoryColor() })
-        fillCircle = exerciseCategoryColors.map({ workoutExerciseCategoryColors.contains($0) })
     }
 
     var upcomingWorkoutLabel: some View {
@@ -51,19 +38,11 @@ struct WorkoutRowView: View {
 
     var body: some View {
         NavigationLink(destination: EditWorkoutView(workout: workout)) {
-            VStack(alignment: .leading, spacing: 0) {
+            VStack(alignment: .leading, spacing: 3) {
                 Text(workout.workoutName)
                     .font(.headline)
 
-                LazyHGrid(rows: rows, spacing: 7) {
-                    ForEach(Array(zip(exerciseCategoryColors.indices,
-                                      exerciseCategoryColors)), id: \.1) { index, categoryColor in
-                        Circle()
-                            .strokeBorder(categoryColor, lineWidth: 1)
-                            .background(Circle().fill(fillCircle[index] ? categoryColor : .clear))
-                            .frame(width: 7)
-                    }
-                }
+                WorkoutExerciseCategoriesLabelView(workout: workout)
 
                 HStack {
                     VStack(alignment: .leading) {
