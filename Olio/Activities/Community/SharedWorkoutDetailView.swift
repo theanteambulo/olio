@@ -6,72 +6,127 @@
 //
 
 import CloudKit
+import CoreData
 import SwiftUI
 
 struct SharedWorkoutDetailView: View {
     let workout: SharedWorkout
 
+    /// The environment singleton responsible for managing the Core Data stack.
+    @EnvironmentObject var dataController: DataController
+
+    /// The object space in which all managed objects exist.
+    @Environment(\.managedObjectContext) var managedObjectContext
+    /// Allows for the view to be dismissed programmatically.
+    @Environment(\.dismiss) var dismiss
+
     @State private var exercises = [SharedExercise]()
     @State private var exercisesLoadState = LoadState.inactive
 
-    var body: some View {
-        // Make this similar to EditWorkoutView?
-        List {
-            Section {
-                switch exercisesLoadState {
-                case .inactive, .loading:
-                    ProgressView()
-                case .noResults:
-                    Text("No exercises")
-                case .success:
-                    ForEach(exercises) { exercise in
-                        VStack(alignment: .leading) {
-                            VStack(alignment: .leading) {
-                                Text("\(exercise.category) | \(exercise.muscleGroup)")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                    .padding(.bottom, 2)
+    var downloadToolbarButton: some View {
+        Button {
+            // Display an alert asking if the user wants to download this workout as a template
+            // On confirmation
+            // Get all exercises from the user's library
 
-                                Text("\(exercise.name)")
-                                    .font(.headline)
-                            }
+            let existingExercises = getExistingExercises()
 
-                            HStack {
-                                Spacer()
+            let exercisesToDownloadIDs = exercises.map({ $0.id })
+            let exercisesToDownload = transformStrings(exercises.map({ $0.name }))
 
-                                VStack {
-                                    Text("Target Reps: \(exercise.targetReps)")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
+            var exercisesToDownloadDictionary: [String: String] = Dictionary(
+                uniqueKeysWithValues: zip(exercisesToDownloadIDs, exercisesToDownload))
 
-                                    Text("Target Weight: \(bodyweightExerciseWeight(forExercise: exercise))")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
+            exercisesToDownloadDictionary["-1"] = "TESTEXERCISENAMEREMOVETHISAFTERDEV"
 
-                                    Text("Target Sets: \(exercise.setCount)")
-                                        .font(.caption)
-                                        .foregroundColor(.secondary)
-                                }
-                            }
-                        }
-                        .padding(.vertical, 5)
-                    }
-                }
-            }
-        }
-        .listStyle(InsetGroupedListStyle())
-        .navigationTitle(workout.name)
-        .onAppear {
-            fetchSharedExercises(workout: workout)
+            let diff = exercisesToDownloadDictionary.values.filter({ !existingExercises.values.contains($0) })
+
+            print(exercisesToDownloadDictionary.first(where: { $0.value == diff[0] }) ?? "1")
+
+            // If diff is not empty...
+                // Find the key associated with that value
+                // Find the exercise in the exercisesToDownload array whose ID matches that key
+                // Get the details about the exercise to download
+                    // category
+                    // muscleGroup
+                    // setCount
+                    // targetReps
+                    // targetWeight
+                // Create a new Core Data exercise
+
+            // If diff is empty...
+                // All good! Crack on.
+
+            // Create a workout
+            // Add exercises to that workout - HOW?!?!?!
+            // Create sets for that workout - HOW?!?!?!
+            // Confirm to the user that the download is complete - start simple and show an alert
+
+        } label: {
+            Label(Strings.downloadWorkout.localized, systemImage: "icloud.and.arrow.down")
         }
     }
 
-    func bodyweightExerciseWeight(forExercise exercise: SharedExercise) -> Text {
-        if exercise.category == "Body" {
-            return Text("N/A")
-        } else {
-            return Text("\(exercise.targetWeight, specifier: "%.2f")kg")
+    var sharedExerciseList: some View {
+        List {
+            ForEach(exercises) { exercise in
+                SharedExerciseRowView(sharedExercise: exercise)
+            }
+            .listStyle(InsetGroupedListStyle())
         }
+    }
+
+    var body: some View {
+        VStack {
+            Form {
+                Section(header: Text(.creator)) {
+                    Text("\(workout.owner)")
+                        .font(.headline)
+                }
+
+                Section(header: Text(.exercisesTab)) {
+                    switch exercisesLoadState {
+                    case .inactive, .loading:
+                        ProgressView()
+                    case .noResults:
+                        Text(.noExercises)
+                    case .success:
+                        sharedExerciseList
+                    }
+                }
+            }
+            .navigationTitle(workout.name)
+            .toolbar {
+                downloadToolbarButton
+            }
+            .onAppear {
+                fetchSharedExercises(workout: workout)
+            }
+        }
+    }
+
+    func getExistingExercises() -> [String: String] {
+        let existingExercisesRequest: NSFetchRequest<Exercise> = Exercise.fetchRequest()
+        existingExercisesRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Exercise.name, ascending: true)]
+
+        do {
+            let existingExercises = try managedObjectContext.fetch(existingExercisesRequest)
+            let existingExerciseIDs = existingExercises.map({ $0.exerciseId })
+            let existingExerciseNames = existingExercises.map({ $0.exerciseName })
+
+            let existingExercisesDictionary: [String: String] = Dictionary(
+                uniqueKeysWithValues: zip(existingExerciseIDs, transformStrings(existingExerciseNames)))
+
+            return existingExercisesDictionary
+        } catch {
+            return ["": ""]
+        }
+    }
+
+    func transformStrings(_ stringArray: [String]) -> [String] {
+        Array(stringArray.map({
+            $0.filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".contains).uppercased()
+        }).removingDuplicates())
     }
 
     // swiftlint:disable:next function_body_length
@@ -106,9 +161,9 @@ struct SharedWorkoutDetailView: View {
             switch result {
             case .success(let record):
                 let id = record.recordID.recordName
-                let name = record["exerciseName"] as? String ?? "Unknown Exercise"
-                let category = record["category"] as? String ?? "Unknown Category"
-                let muscleGroup = record["muscleGroup"] as? String ?? "Unknown Muscle Group"
+                let name = record["exerciseName"] as? String ?? Strings.unknownExercise.localized.stringKey
+                let category = record["category"] as? String ?? Strings.unknownCategory.localized.stringKey
+                let muscleGroup = record["muscleGroup"] as? String ?? Strings.unknownMuscleGroup.localized.stringKey
                 let placement = record["exercisePlacement"] as? Int ?? 0
                 let setCount = record["setCount"] as? Int ?? 0
                 let targetReps = record["targetReps"] as? Int ?? 0

@@ -42,6 +42,10 @@ enum Strings: LocalizedStringKey {
     case newWorkout
     case addNewTemplate
     case addNewWorkout
+    case noExercises
+    case creator
+    case uploadWorkout
+    case downloadWorkout
 
     // EDITING WORKOUTS
     case editWorkoutNavigationTitle
@@ -103,6 +107,11 @@ enum Strings: LocalizedStringKey {
     case noExercisesYetMessage
     case noExercisesYetTabMessage
     case loadOlioExercises
+    case targetWeight
+    case notApplicable
+    case unknownExercise
+    case unknownCategory
+    case unknownMuscleGroup
 
     // EDIT EXERCISE
     case editExerciseNavigationTitle

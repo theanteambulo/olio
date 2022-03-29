@@ -30,6 +30,10 @@
 "newWorkout" = "New Workout";
 "addNewTemplate" = "Add Template";
 "addNewWorkout" = "Add Workout";
+"noExercises" = "No Exercises";
+"creator" = "Creator";
+"uploadWorkout" = "Upload to iCloud";
+"downloadWorkout" = "Download workout";
 
 
 
@@ -98,6 +102,11 @@
 "noExercisesYetMessage" = "Head to the Exercises tab to add some yourself, or load the Olio exercise library for a head start.";
 "noExercisesYetTabMessage" = "Add your own exercises using the '+' button above, or load the Olio exercise library for a head start.";
 "loadOlioExercises" = "Load exercise library";
+"targetWeight" = "Target Weight: ";
+"notApplicable" = "N/A";
+"unknownExercise" = "Unknown Exercise";
+"unknownCategory" = "Unknown Category";
+"unknownMuscleGroup" = "Unknown Muscle Group";
 
 
 

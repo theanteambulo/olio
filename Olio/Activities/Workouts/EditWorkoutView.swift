@@ -78,7 +78,6 @@ struct EditWorkoutView: View {
             operation.modifyRecordsResultBlock = { result in
                 switch result {
                 case .success:
-                    // This is adding a workout to the public cloud - does it make more sense to upload to private?
                     print("Success.")
                 case .failure(let error):
                     print("Error: \(error.localizedDescription)")
@@ -87,7 +86,7 @@ struct EditWorkoutView: View {
 
             CKContainer.default().publicCloudDatabase.add(operation)
         } label: {
-            Label("Upload to iCloud", systemImage: "icloud.and.arrow.up")
+            Label(Strings.uploadWorkout.localized, systemImage: "icloud.and.arrow.up")
         }
     }
 
