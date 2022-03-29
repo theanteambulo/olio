@@ -58,7 +58,7 @@ struct BodybuildingExerciseSetView: View {
         let repsString = "\(exerciseSet.exerciseSetReps) reps"
         let usageInstructions = "Swipe right to complete, left to delete."
 
-        if exerciseSet.exercise?.exerciseCategory == "Weights" {
+        if exerciseSet.exercise?.exerciseCategory == "Free Weights" {
             return setCount + ": " + weightString + ", " + repsString + ". " + usageInstructions
         } else {
             return setCount + ": " + repsString + ". " + usageInstructions + "."
