@@ -92,6 +92,7 @@ enum Strings: LocalizedStringKey {
     case fullBody
     case weights
     case body
+    case weightsAndBody
     case cardio
     case exerciseClass
     case stretch

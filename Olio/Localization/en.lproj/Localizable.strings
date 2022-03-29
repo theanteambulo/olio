@@ -85,8 +85,9 @@
 "legs" = "Legs";
 "abs" = "Abs";
 "fullBody" = "Full Body";
-"weights" = "Weights";
-"body" = "Body";
+"weights" = "Free Weights";
+"body" = "Bodyweight";
+"weightsAndBody" = "Free Weights | Bodyweight";
 "cardio" = "Cardio";
 "exerciseClass" = "Class";
 "stretch" = "Stretch";
