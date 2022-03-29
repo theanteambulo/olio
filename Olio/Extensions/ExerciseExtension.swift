@@ -24,9 +24,9 @@ extension Exercise {
     var exerciseCategory: String {
         switch category {
         case Int16(1):
-            return "Weights"
+            return "Free Weights"
         case Int16(2):
-            return "Body"
+            return "Bodyweight"
         case Int16(3):
             return "Cardio"
         case Int16(4):
@@ -36,18 +36,25 @@ extension Exercise {
         }
     }
 
+    static let allExerciseCategoryColors: [String: Color] = [
+        "Free Weights": .red,
+        "Bodyweight": .blue
+    ]
+
     func getExerciseCategoryColor() -> Color {
         switch exerciseCategory {
-        case "Weights":
-            return .red
-        case "Body":
-            return .blue
-        case "Cardio":
-            return .green
-        case "Class":
-            return .yellow
+        case "Free Weights":
+            return Exercise.allExerciseCategoryColors["Free Weights"] ?? .clear
+        case "Bodyweight":
+            return Exercise.allExerciseCategoryColors["Bodyweight"] ?? .clear
+//        case "Cardio":
+//            return .green
+//        case "Class":
+//            return .yellow
+//        default:
+//            return .purple
         default:
-            return .purple
+            return .clear
         }
     }
 
@@ -55,9 +62,9 @@ extension Exercise {
     enum ExerciseCategory: String, CaseIterable {
         case weighted = "Weights"
         case bodyweight = "Body"
-        case cardio = "Cardio"
-        case exerciseClass = "Class"
-        case stretch = "Stretch"
+//        case cardio = "Cardio"
+//        case exerciseClass = "Class"
+//        case stretch = "Stretch"
     }
 
     /// The unwrapped muscle group property of an exercise.
