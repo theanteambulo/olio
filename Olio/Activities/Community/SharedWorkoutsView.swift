@@ -32,11 +32,13 @@ struct SharedWorkoutsView: View {
                                     .foregroundColor(.secondary)
                             }
                         }
+                        .padding(.vertical, 5)
                     }
                     .listStyle(InsetGroupedListStyle())
                 }
             }
             .navigationTitle("Shared Workouts")
+            .navigationBarTitleDisplayMode(.large)
         }
         .onAppear(perform: fetchSharedWorkouts)
     }
