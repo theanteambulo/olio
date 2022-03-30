@@ -62,6 +62,7 @@ struct ExercisesView: View {
                 }
             }
             .navigationTitle(Text(.exercisesTab))
+            .navigationBarTitleDisplayMode(.large)
             .toolbar {
                 addExerciseToolbarItem
             }
