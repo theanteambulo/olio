@@ -142,10 +142,11 @@ struct HomeView: View {
                 .listStyle(InsetGroupedListStyle())
             }
             .navigationTitle(navigationTitleLocalizedStringKey)
+            .navigationBarTitleDisplayMode(.large)
             .onContinueUserActivity(CSSearchableItemActionType, perform: loadSpotlightWorkout)
-//            .toolbar {
-//                deleteAllDataToolbarItem
-//            }
+            .toolbar {
+                deleteAllDataToolbarItem
+            }
         }
     }
 
