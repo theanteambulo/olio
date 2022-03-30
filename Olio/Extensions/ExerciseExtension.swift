@@ -60,8 +60,8 @@ extension Exercise {
 
     /// An enum containing all possible cases for an exercise category.
     enum ExerciseCategory: String, CaseIterable {
-        case weighted = "Weights"
-        case bodyweight = "Body"
+        case weighted = "Free Weights"
+        case bodyweight = "Bodyweight"
 //        case cardio = "Cardio"
 //        case exerciseClass = "Class"
 //        case stretch = "Stretch"
