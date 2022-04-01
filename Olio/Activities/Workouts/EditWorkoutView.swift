@@ -45,6 +45,8 @@ struct EditWorkoutView: View {
     @State private var reminderTime: Date
     /// Boolean to indicate whether the alert for error scheduling notifications is displayed.
     @State private var showingNotificationsAlert = false
+    /// Boolean to indicate whether the alert for uploading a workout to iCloud.
+    @State private var showingUploadWorkoutToiCloudAlert = false
 
     /// The instance of CHHapticEngine responsible for spinning up the Taptic Engine.
     @State private var engine = try? CHHapticEngine()
@@ -71,22 +73,19 @@ struct EditWorkoutView: View {
     /// Button that uploads the workout to iCloud.
     var uploadWorkoutToCloudToolbarButton: some View {
         Button {
-            let records = workout.prepareCloudRecords()
-            let operation = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
-            operation.savePolicy = .allKeys
-
-            operation.modifyRecordsResultBlock = { result in
-                switch result {
-                case .success:
-                    print("Success.")
-                case .failure(let error):
-                    print("Error: \(error.localizedDescription)")
-                }
-            }
-
-            CKContainer.default().publicCloudDatabase.add(operation)
+            showingUploadWorkoutToiCloudAlert = true
         } label: {
             Label(Strings.uploadWorkout.localized, systemImage: "icloud.and.arrow.up")
+        }
+        .alert(Strings.uploadWorkout.localized,
+               isPresented: $showingUploadWorkoutToiCloudAlert) {
+            Button(Strings.confirmButton.localized) {
+                uploadWorkoutToiCloud()
+            }
+
+            Button(Strings.cancelButton.localized, role: .cancel) { }
+        } message: {
+            Text(.uploadWorkoutMessage)
         }
     }
 
@@ -355,6 +354,24 @@ struct EditWorkoutView: View {
             update()
             save()
         }
+    }
+
+    /// Uploads the workout to iCloud
+    func uploadWorkoutToiCloud() {
+        let records = workout.prepareCloudRecords()
+        let operation = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
+        operation.savePolicy = .allKeys
+
+        operation.modifyRecordsResultBlock = { result in
+            switch result {
+            case .success:
+                print("Success.")
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+
+        CKContainer.default().publicCloudDatabase.add(operation)
     }
 
     /// Sets the exercises array used to construct this view.
