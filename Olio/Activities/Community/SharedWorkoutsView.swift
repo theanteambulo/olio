@@ -35,6 +35,14 @@ struct SharedWorkoutsView: View {
                         .padding(.vertical, 5)
                     }
                     .listStyle(InsetGroupedListStyle())
+                    .refreshable {
+                        print("Refreshing community workouts...")
+                        withAnimation {
+                            loadState = .inactive
+                            workouts = []
+                            fetchSharedWorkouts()
+                        }
+                    }
                 }
             }
             .navigationTitle("Shared Workouts")
