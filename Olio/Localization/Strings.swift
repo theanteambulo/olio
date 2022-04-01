@@ -45,7 +45,10 @@ enum Strings: LocalizedStringKey {
     case noExercises
     case creator
     case uploadWorkout
+    case uploadWorkoutMessage
     case downloadWorkout
+    case downloadWorkoutMessage
+    case downloadComplete
 
     // EDITING WORKOUTS
     case editWorkoutNavigationTitle
