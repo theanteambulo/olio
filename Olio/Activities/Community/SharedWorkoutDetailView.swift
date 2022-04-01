@@ -9,6 +9,7 @@ import CloudKit
 import CoreData
 import SwiftUI
 
+// swiftlint:disable:next type_body_length
 struct SharedWorkoutDetailView: View {
     let workout: SharedWorkout
 
@@ -22,48 +23,28 @@ struct SharedWorkoutDetailView: View {
 
     @State private var exercises = [SharedExercise]()
     @State private var exercisesLoadState = LoadState.inactive
+    @State private var showingDownloadWorkoutAlert = false
+    @State private var showingDownloadCompleteAlert = false
 
     var downloadToolbarButton: some View {
         Button {
-            // Display an alert asking if the user wants to download this workout as a template
-            // On confirmation
-            // Get all exercises from the user's library
-
-            let existingExercises = getExistingExercises()
-
-            let exercisesToDownloadIDs = exercises.map({ $0.id })
-            let exercisesToDownload = transformStrings(exercises.map({ $0.name }))
-
-            var exercisesToDownloadDictionary: [String: String] = Dictionary(
-                uniqueKeysWithValues: zip(exercisesToDownloadIDs, exercisesToDownload))
-
-            exercisesToDownloadDictionary["-1"] = "TESTEXERCISENAMEREMOVETHISAFTERDEV"
-
-            let diff = exercisesToDownloadDictionary.values.filter({ !existingExercises.values.contains($0) })
-
-            print(exercisesToDownloadDictionary.first(where: { $0.value == diff[0] }) ?? "1")
-
-            // If diff is not empty...
-                // Find the key associated with that value
-                // Find the exercise in the exercisesToDownload array whose ID matches that key
-                // Get the details about the exercise to download
-                    // category
-                    // muscleGroup
-                    // setCount
-                    // targetReps
-                    // targetWeight
-                // Create a new Core Data exercise
-
-            // If diff is empty...
-                // All good! Crack on.
-
-            // Create a workout
-            // Add exercises to that workout - HOW?!?!?!
-            // Create sets for that workout - HOW?!?!?!
-            // Confirm to the user that the download is complete - start simple and show an alert
-
+            showingDownloadWorkoutAlert = true
         } label: {
             Label(Strings.downloadWorkout.localized, systemImage: "icloud.and.arrow.down")
+        }
+        .alert(Strings.downloadWorkout.localized,
+               isPresented: $showingDownloadWorkoutAlert) {
+            Button(Strings.confirmButton.localized) {
+                downloadWorkoutAsTemplate()
+            }
+
+            Button(Strings.cancelButton.localized, role: .cancel) { }
+        } message: {
+            Text(.downloadWorkoutMessage)
+        }
+        .alert(Strings.downloadComplete.localized,
+               isPresented: $showingDownloadCompleteAlert) {
+            Button(Strings.okButton.localized) { }
         }
     }
 
@@ -105,28 +86,19 @@ struct SharedWorkoutDetailView: View {
         }
     }
 
-    func getExistingExercises() -> [String: String] {
+    /// Performs a fetch request to return all the Exercise objects existing in the user's library.
+    /// - Returns: An array of Exercise objects.
+    func getExistingExercises() -> [Exercise] {
         let existingExercisesRequest: NSFetchRequest<Exercise> = Exercise.fetchRequest()
         existingExercisesRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Exercise.name, ascending: true)]
 
         do {
             let existingExercises = try managedObjectContext.fetch(existingExercisesRequest)
-            let existingExerciseIDs = existingExercises.map({ $0.exerciseId })
-            let existingExerciseNames = existingExercises.map({ $0.exerciseName })
 
-            let existingExercisesDictionary: [String: String] = Dictionary(
-                uniqueKeysWithValues: zip(existingExerciseIDs, transformStrings(existingExerciseNames)))
-
-            return existingExercisesDictionary
+            return existingExercises
         } catch {
-            return ["": ""]
+            return []
         }
-    }
-
-    func transformStrings(_ stringArray: [String]) -> [String] {
-        Array(stringArray.map({
-            $0.filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".contains).uppercased()
-        }).removingDuplicates())
     }
 
     // swiftlint:disable:next function_body_length
@@ -202,6 +174,187 @@ struct SharedWorkoutDetailView: View {
 
         // Send operation to CloudKit
         CKContainer.default().publicCloudDatabase.add(operation)
+    }
+
+    // swiftlint:disable:next function_body_length
+    func downloadWorkoutAsTemplate() {
+        var CDExercises = getExistingExercises()
+        var CDExerciseDictionary = transformExercises(CDExercises)
+
+        let CKExerciseDictionary: [String: String] = Dictionary(
+            uniqueKeysWithValues: zip(
+                exercises.map({ $0.id }),
+                removeAllNonAlphabeticCharactersForEachElement(exercises.map({ $0.name }))
+            )
+        )
+
+        // Filter CDExerciseDictionary and return any pairs whose equivalent CD exercises already exist
+        let noNeedToDownload = CKExerciseDictionary.filter({ CDExerciseDictionary.values.contains($0.value) })
+
+        // Filter CDExerciseDictionary and return any pairs whose equivalent CD exercises don't already exist
+        let needToDownload = CKExerciseDictionary.filter({ !CDExerciseDictionary.values.contains($0.value) })
+
+        // Create a dictionary with pairs consisting of the CD exerciseId and the CK exerciseId with matching names
+        var CDCKExerciseMapping = [String: String]()
+
+        noNeedToDownload.forEach { pair in
+            if let CDExerciseID = CDExerciseDictionary.first(where: { $0.value == pair.value })?.key {
+                CDCKExerciseMapping[CDExerciseID] = pair.key
+            }
+        }
+
+        if !needToDownload.isEmpty {
+            needToDownload.forEach { pair in
+                // Find the SharedExercise instance with the CK exercise key
+                guard let sharedExercise = exercises.first(where: { $0.id == pair.key }) else {
+                    return
+                }
+
+                // Create a new CD exercise
+                let newExercise = Exercise(context: dataController.container.viewContext)
+                newExercise.id = UUID()
+                newExercise.name = sharedExercise.name
+                newExercise.category = getExerciseCategory(sharedExercise.category)
+                newExercise.muscleGroup = getExerciseMuscleGroup(sharedExercise.muscleGroup)
+
+                // Add the CD exercise to helper arrays/dictionaries
+                CDExercises.append(newExercise)
+                CDExerciseDictionary[newExercise.exerciseId] = newExercise.exerciseName
+                CDCKExerciseMapping[newExercise.exerciseId] = pair.key
+            }
+        }
+
+        // Create a workout
+        let newWorkout = Workout(context: dataController.container.viewContext)
+        newWorkout.id = UUID()
+        newWorkout.name = workout.name
+        newWorkout.date = Date.now
+        newWorkout.createdDate = Date.now
+        newWorkout.completed = false
+        newWorkout.template = true
+
+        // Create an array of CD exercises to be added to the workout later
+        let workoutExerciseIDs = CDExerciseDictionary.filter({
+            let exerciseNameNormalized = removeAllNonAlphabeticCharactersFromString($0.value)
+            return CKExerciseDictionary.values.contains(exerciseNameNormalized)
+        })
+
+        let workoutExercises = CDExercises.filter({ workoutExerciseIDs.keys.contains($0.exerciseId) })
+
+        // Create sets and placements for each exercise
+        CDCKExerciseMapping.forEach { pair in
+            // Get the SharedExercise object
+            let sharedExercise = exercises.filter({ $0.id == pair.value }).first
+
+            // Get the CD exercise object
+            let newExercise = workoutExercises.filter({ $0.exerciseId == pair.key }).first
+
+            // Use properties of the SharedExercise object to create exercise sets with the desired attributes
+            let targetSets = sharedExercise?.setCount ?? 3
+
+            for _ in 0..<targetSets {
+                // Create a new ExerciseSet
+                let newExerciseSet = ExerciseSet(context: dataController.container.viewContext)
+                newExerciseSet.reps = Int16(sharedExercise?.targetReps ?? 10)
+                newExerciseSet.weight = Double(sharedExercise?.targetWeight ?? 10)
+                newExerciseSet.workout = newWorkout
+                newExerciseSet.exercise = newExercise
+
+                // Add the new ExerciseSet
+                newWorkout.addToSets(newExerciseSet)
+            }
+
+            // Create a new Placement
+            let newPlacement = Placement(context: dataController.container.viewContext)
+            newPlacement.id = UUID()
+            newPlacement.workout = newWorkout
+            newPlacement.exercise = newExercise
+            newPlacement.indexPosition = Int16(sharedExercise?.placement ?? 0)
+
+            // Add the new Placement
+            newWorkout.addToPlacements(newPlacement)
+        }
+
+        // Add the Exercises
+        newWorkout.addToExercises(NSSet(array: workoutExercises))
+
+        // Save all changes
+        dataController.save()
+
+        showingDownloadCompleteAlert = true
+    }
+
+    /// Creates a dictionary where key-value pairs consist of an Exercise object's ID and name, each as a string.
+    /// - Parameter exerciseArray: The array of Exercise objects to transform.
+    /// - Returns: A dictionary where keys and values are both strings.
+    func transformExercises(_ exerciseArray: [Exercise]) -> [String: String] {
+        let existingExerciseIDs = exerciseArray.map({ $0.exerciseId })
+        let existingExerciseNames = exerciseArray.map({ $0.exerciseName })
+
+        let exerciseDictionary: [String: String] = Dictionary(
+            uniqueKeysWithValues: zip(
+                existingExerciseIDs,
+                removeAllNonAlphabeticCharactersForEachElement(existingExerciseNames)
+            )
+        )
+
+        return exerciseDictionary
+    }
+
+    /// Transforms each element of an array of strings by removing any non-alphabetic character.
+    /// - Parameter stringArray: The array of strings to be transformed.
+    /// - Returns: The transformed array of strings.
+    func removeAllNonAlphabeticCharactersForEachElement(_ stringArray: [String]) -> [String] {
+        Array(stringArray.map({
+            removeAllNonAlphabeticCharactersFromString($0)
+        }).removingDuplicates())
+    }
+
+    /// Transforms a string by removing any non-alphabetic character.
+    /// - Parameter string: The string to be transformed.
+    /// - Returns: The transformed string.
+    func removeAllNonAlphabeticCharactersFromString(_ string: String) -> String {
+        return string.filter("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".contains).uppercased()
+    }
+
+    /// Gets the corresponding numeric value for a given exercise category for compatibility with the Core Data.
+    /// - Parameter category: An exercise category expressed as a string.
+    /// - Returns: An integer corresponding to the exercise category.
+    func getExerciseCategory(_ category: String) -> Int16 {
+        switch category {
+        case "Free Weights":
+            return 1
+        case "Bodyweight":
+            return 2
+        default:
+            return -1
+        }
+    }
+
+    /// Gets the corresponding numeric value for a given muscle group for compatibility with Core Data.
+    /// - Parameter muscleGroup: A muscle group expressed as a string.
+    /// - Returns: An integer corresponding to the muscle group.
+    func getExerciseMuscleGroup(_ muscleGroup: String) -> Int16 {
+        switch muscleGroup {
+        case "Chest":
+            return 1
+        case "Back":
+            return 2
+        case "Shoulders":
+            return 3
+        case "Biceps":
+            return 4
+        case "Triceps":
+            return 5
+        case "Legs":
+            return 6
+        case "Abs":
+            return 7
+        case "Full Body":
+            return 8
+        default:
+            return -1
+        }
     }
 }
 
