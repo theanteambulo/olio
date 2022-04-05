@@ -49,15 +49,17 @@ struct EditWorkoutView: View {
     /// Boolean to indicate whether the alert for error scheduling notifications is displayed.
     @State private var showingNotificationsAlert = false
     /// Boolean to indicate whether the alert for uploading a workout to iCloud is displayed.
-    @State private var showingUploadWorkoutToiCloudAlert = false
+    @State private var showingUploadWorkoutToCloudAlert = false
     /// Boolean to indicate whether the alert for removing a workout from iCloud is displayed.
-    @State private var showingRemoveWorkoutFromiCloudAlert = false
+    @State private var showingRemoveWorkoutFromCloudAlert = false
     /// Boolean to indicate whether the SIWA sheet is currently being displayed.
     @State private var showingSignInWithAppleSheet = false
     /// The instance of CHHapticEngine responsible for spinning up the Taptic Engine.
     @State private var engine = try? CHHapticEngine()
     /// Indicates whether the workout is currently stored in CloudKit or not.
     @State private var cloudStatus = CloudStatus.checking
+    /// Stores any potential CloudKit error that has occurred.
+    @State private var cloudError: CloudError?
 
     init(workout: Workout) {
         self.workout = workout
@@ -85,39 +87,42 @@ struct EditWorkoutView: View {
     /// Button that uploads the workout to iCloud.
     var uploadWorkoutToCloudToolbarButton: some View {
         Button {
-            showingUploadWorkoutToiCloudAlert = true
+//            showingUploadWorkoutToCloudAlert = true
+            uploadWorkoutToCloud()
         } label: {
             Label(Strings.uploadWorkout.localized, systemImage: "icloud.and.arrow.up")
         }
-        .alert(Strings.uploadWorkout.localized,
-               isPresented: $showingUploadWorkoutToiCloudAlert) {
-            Button(Strings.confirmButton.localized) {
-                uploadWorkoutToiCloud()
-            }
-
-            Button(Strings.cancelButton.localized, role: .cancel) { }
-        } message: {
-            Text(.uploadWorkoutMessage)
-        }
+//        .alert(Strings.uploadWorkout.localized,
+//               isPresented: $showingUploadWorkoutToCloudAlert) {
+//            Button(Strings.confirmButton.localized) {
+//                uploadWorkoutToCloud()
+//            }
+//
+//            Button(Strings.cancelButton.localized, role: .cancel) { }
+//        } message: {
+//            Text(.uploadWorkoutMessage)
+//        }
     }
 
     /// Button that removes the workout from iCloud.
     var removeWorkoutFromCloudToolbarButton: some View {
         Button {
-            showingRemoveWorkoutFromiCloudAlert = true
+//            showingRemoveWorkoutFromCloudAlert = true
+            removeWorkoutFromCloud(deleteLocal: false)
+
         } label: {
             Label(Strings.removeWorkout.localized, systemImage: "icloud.slash")
         }
-        .alert(Strings.removeWorkout.localized,
-               isPresented: $showingRemoveWorkoutFromiCloudAlert) {
-            Button(Strings.removeButton.localized) {
-                removeWorkoutFromiCloud()
-            }
-
-            Button(Strings.cancelButton.localized, role: .cancel) { }
-        } message: {
-            Text(.removeWorkoutMessage)
-        }
+//        .alert(Strings.removeWorkout.localized,
+//               isPresented: $showingRemoveWorkoutFromCloudAlert) {
+//            Button(Strings.removeButton.localized) {
+//                removeWorkoutFromCloud(deleteLocal: false)
+//            }
+//
+//            Button(Strings.cancelButton.localized, role: .cancel) { }
+//        } message: {
+//            Text(.removeWorkoutMessage)
+//        }
     }
 
     /// Computed property to get the text displayed in the section header for the workout date.
@@ -285,8 +290,13 @@ struct EditWorkoutView: View {
         .alert(Strings.areYouSureAlertTitle.localized,
                isPresented: $showingDeleteWorkoutConfirmation) {
             Button(Strings.deleteButton.localized, role: .destructive) {
+                if cloudStatus == .exists {
+                    removeWorkoutFromCloud(deleteLocal: true)
+                } else {
+                    dataController.delete(workout)
+                }
+
                 remindUser = false
-                dataController.delete(workout)
                 update()
                 dismiss()
             }
@@ -399,7 +409,7 @@ struct EditWorkoutView: View {
     }
 
     /// Uploads the workout to iCloud
-    func uploadWorkoutToiCloud() {
+    func uploadWorkoutToCloud() {
         if let username = username {
             let records = workout.prepareCloudRecords(owner: username)
             let operation = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
@@ -410,7 +420,7 @@ struct EditWorkoutView: View {
                 case .success:
                     print("Success.")
                 case .failure(let error):
-                    print("Error: \(error.localizedDescription)")
+                    cloudError = error.getCloudKitError()
                 }
 
                 updateCloudStatus()
@@ -435,7 +445,7 @@ struct EditWorkoutView: View {
     }
 
     /// Removes a workout from CloudKit storage.
-    func removeWorkoutFromiCloud() {
+    func removeWorkoutFromCloud(deleteLocal: Bool) {
         let name = workout.objectID.uriRepresentation().absoluteString
         let id = CKRecord.ID(recordName: name)
 
@@ -445,10 +455,14 @@ struct EditWorkoutView: View {
         operation.modifyRecordsResultBlock = { result in
             switch result {
             case .success:
-                updateCloudStatus()
+                if deleteLocal {
+                    dataController.delete(workout)
+                }
             case .failure(let error):
-                print("Error: \(error.localizedDescription)")
+                cloudError = error.getCloudKitError()
             }
+
+            updateCloudStatus()
         }
 
         cloudStatus = .checking
