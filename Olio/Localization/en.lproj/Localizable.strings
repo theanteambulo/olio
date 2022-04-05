@@ -12,6 +12,12 @@
 "oops" = "Oops!";
 "enableNotifications" = "Something went wrong. Please check you have notifications enabled.";
 "settings" = "Settings";
+"error" = "Error";
+"noResults" = "No results";
+"sendButton" = "Send";
+"oopsError" = "Oops, there was an error and that's all we know :(";
+"allSet" = "You're all set!";
+"signIn" = "Sign In";
 
 
 
@@ -140,3 +146,18 @@
 "minsDurationLimitError" = "Set duration limit is 999 mins.";
 "secsDurationLimitError" = "Set duration limit is 999 secs.";
 "distanceAndDurationLimitError" = "Set limits are 999km and 999 mins.";
+
+
+
+/* COMMUNITY */
+"sharedWorkouts" = "Shared Workouts";
+"signInToComment" = "Sign in to comment";
+"enterYourMessage" = "Enter your message";
+"discussion" = "Discussion";
+"communitySafetyMessage" = "In order to keep our community safe, we ask you to sign in before posting comments.\n\nWe don't track your personal information; your name is only used for display purposes.\n\nPlease note: offensive and inappropriate messages will be removed.";
+
+/* ERROR HANDLING */
+"communicatingWithCloud" = "There was a problem communicating with iCloud; please check your network connection and try again.";
+"cloudAccount" = "There was a problem with your iCloud account; please check that you're logged in to iCloud.";
+"rateLimit" = "You've hit iCloud's rate limit; please wait a moment then try again.";
+"quotaExceeded" = "You've exceeded your iCloud quota; please clear up some space then try again.";

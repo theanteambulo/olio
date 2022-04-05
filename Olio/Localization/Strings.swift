@@ -28,6 +28,12 @@ enum Strings: LocalizedStringKey {
     case oops
     case enableNotifications
     case settings
+    case error
+    case noResults
+    case sendButton
+    case oopsError
+    case allSet
+    case signIn
 
     // TABS
     case homeTab
@@ -143,6 +149,19 @@ enum Strings: LocalizedStringKey {
     case secsDurationLimitError
     case minsDurationLimitError
     case distanceAndDurationLimitError
+
+    // COMMUNITY
+    case sharedWorkouts
+    case signInToComment
+    case enterYourMessage
+    case discussion
+    case communitySafetyMessage
+
+    // ERROR HANDLING
+    case communicatingWithCloud
+    case cloudAccount
+    case rateLimit
+    case quotaExceeded
 
     var localized: LocalizedStringKey {
         self.rawValue
