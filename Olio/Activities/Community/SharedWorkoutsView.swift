@@ -13,6 +13,7 @@ struct SharedWorkoutsView: View {
 
     @State private var workouts = [SharedWorkout]()
     @State private var loadState = LoadState.inactive
+    @State private var cloudError: CloudError?
 
     var body: some View {
         NavigationView {
@@ -21,7 +22,7 @@ struct SharedWorkoutsView: View {
                 case .inactive, .loading:
                     ProgressView()
                 case .noResults:
-                    Text("No results")
+                    Text(.noResults)
                 case .success:
                     List(workouts) { workout in
                         NavigationLink(destination: SharedWorkoutDetailView(workout: workout)) {
@@ -36,7 +37,6 @@ struct SharedWorkoutsView: View {
                     }
                     .listStyle(InsetGroupedListStyle())
                     .refreshable {
-                        print("Refreshing community workouts...")
                         withAnimation {
                             loadState = .inactive
                             workouts = []
@@ -45,7 +45,13 @@ struct SharedWorkoutsView: View {
                     }
                 }
             }
-            .navigationTitle("Shared Workouts")
+            .alert(item: $cloudError) { error in
+                Alert(
+                    title: Text(.error),
+                    message: Text(error.localizedMessage)
+                )
+            }
+            .navigationTitle(Strings.sharedWorkouts.localized)
             .navigationBarTitleDisplayMode(.large)
         }
         .onAppear(perform: fetchSharedWorkouts)
@@ -79,7 +85,7 @@ struct SharedWorkoutsView: View {
                 workouts.append(sharedWorkout)
                 loadState = .success
             case .failure(let error):
-                print("Error: \(error.localizedDescription)")
+                cloudError = error.getCloudKitError()
             }
         }
 
@@ -91,7 +97,7 @@ struct SharedWorkoutsView: View {
                     loadState = .noResults
                 }
             case .failure(let error):
-                print("Error: \(error.localizedDescription)")
+                cloudError = error.getCloudKitError()
             }
         }
 

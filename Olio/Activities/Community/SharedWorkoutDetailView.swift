@@ -33,6 +33,7 @@ struct SharedWorkoutDetailView: View {
     @State private var showingDownloadWorkoutAlert = false
     @State private var showingDownloadCompleteAlert = false
     @State private var showingSignInWithAppleSheet = false
+    @State private var cloudError: CloudError?
 
     var downloadToolbarButton: some View {
         Button {
@@ -54,6 +55,12 @@ struct SharedWorkoutDetailView: View {
                isPresented: $showingDownloadCompleteAlert) {
             Button(Strings.okButton.localized) { }
         }
+        .alert(item: $cloudError) { error in
+            Alert(
+                title: Text(.error),
+                message: Text(error.localizedMessage)
+            )
+        }
     }
 
     var sharedExerciseList: some View {
@@ -67,17 +74,18 @@ struct SharedWorkoutDetailView: View {
 
     @ViewBuilder var messagesFooter: some View {
         if username == nil {
-            Button("Sign in to comment", action: signIn)
+            Button(Strings.signInToComment.localized, action: signIn)
                 .frame(maxWidth: .infinity)
         } else {
             VStack {
-                TextField("Enter your message", text: $newChatMessageText)
+                TextField(Strings.enterYourMessage.localized,
+                          text: $newChatMessageText)
                     .frame(maxWidth: .infinity, minHeight: 104)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .textCase(nil)
 
                 Button(action: sendChatMessage) {
-                    Text("Send")
+                    Text(.sendButton)
                         .frame(maxWidth: .infinity, minHeight: 44)
                         .background(Color.blue)
                         .foregroundColor(.white)
@@ -107,7 +115,7 @@ struct SharedWorkoutDetailView: View {
                     }
                 }
 
-                Section(header: Text("Discussion"),
+                Section(header: Text(.discussion),
                         footer: messagesFooter) {
                     if messagesLoadState == .success {
                         ForEach(messages) { message in
@@ -182,7 +190,7 @@ struct SharedWorkoutDetailView: View {
 
         CKContainer.default().publicCloudDatabase.save(message) { record, error in
             if let error = error {
-                print("Error: \(error.localizedDescription)")
+                cloudError = error.getCloudKitError()
                 newChatMessageText = backupText
             } else if let record = record {
                 let message = ChatMessage(from: record)
@@ -212,7 +220,7 @@ struct SharedWorkoutDetailView: View {
                 messages.append(message)
                 messagesLoadState = .success
             case .failure(let error):
-                print("Error: \(error.localizedDescription)")
+                cloudError = error.getCloudKitError()
             }
         }
 
@@ -223,7 +231,7 @@ struct SharedWorkoutDetailView: View {
                     messagesLoadState = .noResults
                 }
             case .failure(let error):
-                print("Error: \(error.localizedDescription)")
+                cloudError = error.getCloudKitError()
             }
         }
 
@@ -298,9 +306,8 @@ struct SharedWorkoutDetailView: View {
 
                 exercises.append(sharedExercise)
                 exercisesLoadState = .success
-                print("Success: \(sharedExercise)")
             case .failure(let error):
-                print("Error: \(error.localizedDescription)")
+                cloudError = error.getCloudKitError()
             }
         }
 
@@ -312,7 +319,7 @@ struct SharedWorkoutDetailView: View {
                     exercisesLoadState = .noResults
                 }
             case .failure(let error):
-                print("Error: \(error.localizedDescription)")
+                cloudError = error.getCloudKitError()
             }
         }
 

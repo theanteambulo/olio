@@ -27,13 +27,7 @@ struct SignInView: View {
                 case .unknown:
                     VStack(alignment: .leading) {
                         ScrollView {
-                            Text("""
-                            In order to keep our community safe, we ask you to sign in before posting comments.
-
-                            We don't track your personal information; your name is only used for display purposes.
-
-                            Please note: offensive and inappropriate messages will be removed.
-                            """)
+                            Text(.communitySafetyMessage)
                         }
 
                         Spacer()
@@ -48,17 +42,17 @@ struct SignInView: View {
                             .padding()
                     }
                 case .authorised:
-                    Text("You're all set!")
+                    Text(.allSet)
                 case .failure(let error):
                     if let error = error {
-                        Text("Oops, there was an error: \(error.localizedDescription)")
+                        Text("\(error.localizedDescription)")
                     }
 
-                    Text("Oops, there was an error and that's all we know :(")
+                    Text(.oopsError)
                 }
             }
             .padding()
-            .navigationTitle("Sign In")
+            .navigationTitle(Strings.signIn.localized)
         }
     }
 
