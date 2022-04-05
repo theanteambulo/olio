@@ -21,10 +21,18 @@ struct SharedWorkoutDetailView: View {
     /// Allows for the view to be dismissed programmatically.
     @Environment(\.dismiss) var dismiss
 
+    /// Stores the user's username.
+    @AppStorage("username") var username: String?
+
+    @State private var messages = [ChatMessage]()
+    @State private var newChatMessageText = ""
+
     @State private var exercises = [SharedExercise]()
     @State private var exercisesLoadState = LoadState.inactive
+    @State private var messagesLoadState = LoadState.inactive
     @State private var showingDownloadWorkoutAlert = false
     @State private var showingDownloadCompleteAlert = false
+    @State private var showingSignInWithAppleSheet = false
 
     var downloadToolbarButton: some View {
         Button {
@@ -57,6 +65,29 @@ struct SharedWorkoutDetailView: View {
         }
     }
 
+    @ViewBuilder var messagesFooter: some View {
+        if username == nil {
+            Button("Sign in to comment", action: signIn)
+                .frame(maxWidth: .infinity)
+        } else {
+            VStack {
+                TextField("Enter your message", text: $newChatMessageText)
+                    .frame(maxWidth: .infinity, minHeight: 104)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .textCase(nil)
+
+                Button(action: sendChatMessage) {
+                    Text("Send")
+                        .frame(maxWidth: .infinity, minHeight: 44)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .clipShape(Capsule())
+                        .contentShape(Capsule())
+                }
+            }
+        }
+    }
+
     var body: some View {
         VStack {
             Form {
@@ -75,15 +106,128 @@ struct SharedWorkoutDetailView: View {
                         sharedExerciseList
                     }
                 }
+
+                Section(header: Text("Discussion"),
+                        footer: messagesFooter) {
+                    if messagesLoadState == .success {
+                        ForEach(messages) { message in
+                            VStack(alignment: .leading) {
+                                Text("\(message.from)")
+                                    .font(.caption.bold())
+                                    .foregroundColor(.secondary)
+                                    .padding(.bottom, 2)
+
+                                Text("\(message.text)")
+                                    .multilineTextAlignment(.leading)
+
+                                HStack {
+                                    Spacer()
+
+                                    VStack(alignment: .trailing) {
+                                        Text("\(messageSendTime(message))")
+                                            .font(.caption)
+
+                                        Text("\(message.date.formatted(date: .abbreviated, time: .omitted))")
+                                            .font(.caption)
+                                    }
+                                }
+                            }
+                            .padding(.vertical, 5)
+                        }
+                    }
+                }
             }
+            .sheet(isPresented: $showingSignInWithAppleSheet, content: SignInView.init)
             .navigationTitle(workout.name)
             .toolbar {
                 downloadToolbarButton
             }
             .onAppear {
                 fetchSharedExercises(workout: workout)
+                fetchChatMessages()
             }
         }
+    }
+
+    /// Starts the Sign In With Apple process.
+    func signIn() {
+        showingSignInWithAppleSheet = true
+    }
+
+    /// Formats a message send time depending on whether it was send today or not.
+    /// - Parameter message: The message whose time needs to be formatted.
+    /// - Returns: The formatted time as a string.
+    func messageSendTime(_ message: ChatMessage) -> String {
+        let sendTime = message.date
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm"
+        return dateFormatter.string(from: sendTime)
+    }
+
+    /// Sends a chat message to iCloud.
+    func sendChatMessage() {
+        let text = newChatMessageText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard text.count > 2 else { return }
+        guard let username = username else { return }
+
+        let message = CKRecord(recordType: "Message")
+        message["from"] = username
+        message["text"] = text
+
+        let workoutID = CKRecord.ID(recordName: workout.id)
+        message["workout"] = CKRecord.Reference(recordID: workoutID, action: .deleteSelf)
+
+        let backupText = newChatMessageText
+        newChatMessageText = ""
+
+        CKContainer.default().publicCloudDatabase.save(message) { record, error in
+            if let error = error {
+                print("Error: \(error.localizedDescription)")
+                newChatMessageText = backupText
+            } else if let record = record {
+                let message = ChatMessage(from: record)
+                messages.append(message)
+            }
+        }
+    }
+
+    func fetchChatMessages() {
+        guard messagesLoadState == .inactive else { return }
+        messagesLoadState = .loading
+
+        let workoutRecordID = CKRecord.ID(recordName: workout.id)
+        let reference = CKRecord.Reference(recordID: workoutRecordID, action: .none)
+        let predicate = NSPredicate(format: "workout == %@", reference)
+        let sortDescriptor = NSSortDescriptor(key: "creationDate", ascending: true)
+        let query = CKQuery(recordType: "message", predicate: predicate)
+        query.sortDescriptors = [sortDescriptor]
+
+        let operation = CKQueryOperation(query: query)
+        operation.desiredKeys = ["from", "text"]
+
+        operation.recordMatchedBlock = { _, result in
+            switch result {
+            case .success(let record):
+                let message = ChatMessage(from: record)
+                messages.append(message)
+                messagesLoadState = .success
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+
+        operation.queryResultBlock = { result in
+            switch result {
+            case .success:
+                if messages.isEmpty {
+                    messagesLoadState = .noResults
+                }
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+
+        CKContainer.default().publicCloudDatabase.add(operation)
     }
 
     /// Performs a fetch request to return all the Exercise objects existing in the user's library.
@@ -362,4 +506,5 @@ struct SharedWorkoutDetailView_Previews: PreviewProvider {
     static var previews: some View {
         SharedWorkoutDetailView(workout: SharedWorkout.example)
     }
+// swiftlint:disable:next file_length
 }

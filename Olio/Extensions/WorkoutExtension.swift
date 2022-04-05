@@ -108,14 +108,14 @@ extension Workout {
 
     /// Combines workout and exercise data to create CloudKit records.
     /// - Returns: An array of CloudKit records.
-    func prepareCloudRecords() -> [CKRecord] {
+    func prepareCloudRecords(owner: String) -> [CKRecord] {
         var allRecords = [CKRecord]()
 
         let workoutRecordName = objectID.uriRepresentation().absoluteString
         let workoutRecordID = CKRecord.ID(recordName: workoutRecordName)
         let workoutRecord = CKRecord(recordType: "Workout", recordID: workoutRecordID)
         workoutRecord["workoutName"] = workoutName
-        workoutRecord["owner"] = "theAnteambulo"
+        workoutRecord["owner"] = owner
 
         workoutExercises.forEach { exercise in
             let exerciseRecordName = exercise.objectID.uriRepresentation().absoluteString

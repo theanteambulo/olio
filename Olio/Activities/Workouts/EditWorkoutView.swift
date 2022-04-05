@@ -25,6 +25,9 @@ struct EditWorkoutView: View {
     /// Allows for the view to be dismissed programmatically.
     @Environment(\.dismiss) var dismiss
 
+    /// Checks for a valid username.
+    @AppStorage("username") var username: String?
+
     /// The workout's name property value.
     @State private var name: String
     /// Boolean to indicate whether the sheet used for adding an exercise to the workout is displayed.
@@ -47,7 +50,8 @@ struct EditWorkoutView: View {
     @State private var showingNotificationsAlert = false
     /// Boolean to indicate whether the alert for uploading a workout to iCloud.
     @State private var showingUploadWorkoutToiCloudAlert = false
-
+    /// Boolean to indicate whether the SIWA sheet is currently being displayed.
+    @State private var showingSignInWithAppleSheet = false
     /// The instance of CHHapticEngine responsible for spinning up the Taptic Engine.
     @State private var engine = try? CHHapticEngine()
 
@@ -342,6 +346,7 @@ struct EditWorkoutView: View {
             .sectionButton()
             .background(Color.red)
         }
+        .sheet(isPresented: $showingSignInWithAppleSheet, content: SignInView.init)
         .navigationTitle(navigationTitle)
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
@@ -358,20 +363,24 @@ struct EditWorkoutView: View {
 
     /// Uploads the workout to iCloud
     func uploadWorkoutToiCloud() {
-        let records = workout.prepareCloudRecords()
-        let operation = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
-        operation.savePolicy = .allKeys
+        if let username = username {
+            let records = workout.prepareCloudRecords(owner: username)
+            let operation = CKModifyRecordsOperation(recordsToSave: records, recordIDsToDelete: nil)
+            operation.savePolicy = .allKeys
 
-        operation.modifyRecordsResultBlock = { result in
-            switch result {
-            case .success:
-                print("Success.")
-            case .failure(let error):
-                print("Error: \(error.localizedDescription)")
+            operation.modifyRecordsResultBlock = { result in
+                switch result {
+                case .success:
+                    print("Success.")
+                case .failure(let error):
+                    print("Error: \(error.localizedDescription)")
+                }
             }
-        }
 
-        CKContainer.default().publicCloudDatabase.add(operation)
+            CKContainer.default().publicCloudDatabase.add(operation)
+        } else {
+            showingSignInWithAppleSheet = true
+        }
     }
 
     /// Sets the exercises array used to construct this view.
