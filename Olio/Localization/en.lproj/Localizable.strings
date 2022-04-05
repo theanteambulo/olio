@@ -34,6 +34,8 @@
 "creator" = "Creator";
 "uploadWorkout" = "Upload workout to iCloud?";
 "uploadWorkoutMessage" = "Details of the workout, its exercises and sets, as well as your username, will be shared with the Olio community.";
+"removeWorkout" = "Remove workout from iCloud?";
+"removeWorkoutMessage" = "Anyone who's already downloaded this workout will still have access to it. Nobody new will be able to download it anymore.";
 "downloadWorkout" = "Download workout from iCloud?";
 "downloadWorkoutMessage" = "Details of this workout, its exercises and sets will be saved as a template in your library.";
 "downloadComplete" = "Download complete";

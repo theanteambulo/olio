@@ -46,6 +46,8 @@ enum Strings: LocalizedStringKey {
     case creator
     case uploadWorkout
     case uploadWorkoutMessage
+    case removeWorkout
+    case removeWorkoutMessage
     case downloadWorkout
     case downloadWorkoutMessage
     case downloadComplete

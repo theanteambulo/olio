@@ -144,4 +144,39 @@ extension Workout {
 
         return allRecords
     }
+
+    /// Returns whether a particular workout exists in CloudKit already or not.
+    /// - Parameter completion: Completion closure to be run when value is returned.
+    func checkCloudStatus(_ completion: @escaping (Bool) -> Void) {
+        let workoutName = objectID.uriRepresentation().absoluteString
+        let workoutID = CKRecord.ID(recordName: workoutName)
+        let predicate = NSPredicate(format: "recordID == %@", workoutID)
+        let workoutQuery = CKQuery(recordType: "Workout", predicate: predicate)
+        workoutQuery.sortDescriptors = []
+
+        let operation = CKQueryOperation(query: workoutQuery)
+        operation.desiredKeys = ["recordID"]
+
+        var returnedRecords = [CKRecord]()
+
+        operation.recordMatchedBlock = { _, result in
+            switch result {
+            case .success(let record):
+                returnedRecords.append(record)
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+
+        operation.queryResultBlock = { result in
+            switch result {
+            case .success:
+                completion(returnedRecords.count == 1)
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+
+        CKContainer.default().publicCloudDatabase.add(operation)
+    }
 }

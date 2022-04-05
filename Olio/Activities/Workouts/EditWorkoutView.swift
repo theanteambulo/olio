@@ -48,12 +48,16 @@ struct EditWorkoutView: View {
     @State private var reminderTime: Date
     /// Boolean to indicate whether the alert for error scheduling notifications is displayed.
     @State private var showingNotificationsAlert = false
-    /// Boolean to indicate whether the alert for uploading a workout to iCloud.
+    /// Boolean to indicate whether the alert for uploading a workout to iCloud is displayed.
     @State private var showingUploadWorkoutToiCloudAlert = false
+    /// Boolean to indicate whether the alert for removing a workout from iCloud is displayed.
+    @State private var showingRemoveWorkoutFromiCloudAlert = false
     /// Boolean to indicate whether the SIWA sheet is currently being displayed.
     @State private var showingSignInWithAppleSheet = false
     /// The instance of CHHapticEngine responsible for spinning up the Taptic Engine.
     @State private var engine = try? CHHapticEngine()
+    /// Indicates whether the workout is currently stored in CloudKit or not.
+    @State private var cloudStatus = CloudStatus.checking
 
     init(workout: Workout) {
         self.workout = workout
@@ -67,6 +71,10 @@ struct EditWorkoutView: View {
             _reminderTime = State(wrappedValue: Date())
             _remindUser = State(wrappedValue: false)
         }
+    }
+
+    enum CloudStatus {
+        case checking, exists, absent
     }
 
     /// Computed property to get the text displayed in the navigation title of the view.
@@ -90,6 +98,25 @@ struct EditWorkoutView: View {
             Button(Strings.cancelButton.localized, role: .cancel) { }
         } message: {
             Text(.uploadWorkoutMessage)
+        }
+    }
+
+    /// Button that removes the workout from iCloud.
+    var removeWorkoutFromCloudToolbarButton: some View {
+        Button {
+            showingRemoveWorkoutFromiCloudAlert = true
+        } label: {
+            Label(Strings.removeWorkout.localized, systemImage: "icloud.slash")
+        }
+        .alert(Strings.removeWorkout.localized,
+               isPresented: $showingRemoveWorkoutFromiCloudAlert) {
+            Button(Strings.removeButton.localized) {
+                removeWorkoutFromiCloud()
+            }
+
+            Button(Strings.cancelButton.localized, role: .cancel) { }
+        } message: {
+            Text(.removeWorkoutMessage)
         }
     }
 
@@ -351,10 +378,20 @@ struct EditWorkoutView: View {
         .toolbar {
             ToolbarItemGroup(placement: .navigationBarTrailing) {
                 EditButton()
-                uploadWorkoutToCloudToolbarButton
+                switch cloudStatus {
+                case .checking:
+                    ProgressView()
+                case .exists:
+                    removeWorkoutFromCloudToolbarButton
+                case .absent:
+                    uploadWorkoutToCloudToolbarButton
+                }
             }
         }
-        .onAppear(perform: setExercisesArray)
+        .onAppear {
+            setExercisesArray()
+            updateCloudStatus()
+        }
         .onDisappear {
             update()
             save()
@@ -375,12 +412,47 @@ struct EditWorkoutView: View {
                 case .failure(let error):
                     print("Error: \(error.localizedDescription)")
                 }
+
+                updateCloudStatus()
             }
 
+            cloudStatus = .checking
             CKContainer.default().publicCloudDatabase.add(operation)
         } else {
             showingSignInWithAppleSheet = true
         }
+    }
+
+    /// Updates the cloud status property depending on the whether the workout is currently stored in CloudKit or not.
+    func updateCloudStatus() {
+        workout.checkCloudStatus { exists in
+            if exists {
+                cloudStatus = .exists
+            } else {
+                cloudStatus = .absent
+            }
+        }
+    }
+
+    /// Removes a workout from CloudKit storage.
+    func removeWorkoutFromiCloud() {
+        let name = workout.objectID.uriRepresentation().absoluteString
+        let id = CKRecord.ID(recordName: name)
+
+        let operation = CKModifyRecordsOperation(recordsToSave: nil,
+                                                 recordIDsToDelete: [id])
+
+        operation.modifyRecordsResultBlock = { result in
+            switch result {
+            case .success:
+                updateCloudStatus()
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+
+        cloudStatus = .checking
+        CKContainer.default().publicCloudDatabase.add(operation)
     }
 
     /// Sets the exercises array used to construct this view.
