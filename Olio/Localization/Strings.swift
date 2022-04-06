@@ -35,11 +35,25 @@ enum Strings: LocalizedStringKey {
     case allSet
     case signIn
     case takeAction
+    case noThanks
+
+    // ONBOARDING
+    case olio
+    case olioSubtitle
+    case exercisesSubtitle
+    case templatesSubtitle
+    case notifications
+    case notificationsSubtitle
+    case enableNotificationsButton
+    case notificationsEnabled
+    case historySubtitle
+    case communitySubtitle
 
     // TABS
     case homeTab
     case historyTab
     case exercisesTab
+    case communityTab
 
     // WORKOUTS
     case workoutTemplates

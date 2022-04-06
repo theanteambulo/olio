@@ -14,6 +14,8 @@ struct ContentView: View {
     /// The environment singleton responsible for managing the Core Data stack.
     @EnvironmentObject var dataController: DataController
 
+    @AppStorage("userOnboarded") private var showingOnboardingJourney = true
+
     private let newWorkoutActivity = "com.theanteambulo.newWorkout"
 
     var body: some View {
@@ -49,9 +51,12 @@ struct ContentView: View {
             SharedWorkoutsView()
                 .tabItem {
                     Image(systemName: "person.3")
-                    Text("Community")
+                    Text(.communityTab)
                 }
                 .tag(SharedWorkoutsView.tag)
+        }
+        .fullScreenCover(isPresented: $showingOnboardingJourney) {
+            OnboardingView(showingOnboardingJourney: $showingOnboardingJourney)
         }
         .onContinueUserActivity(CSSearchableItemActionType, perform: moveToHome)
         .onContinueUserActivity(newWorkoutActivity, perform: createWorkout)

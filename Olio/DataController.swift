@@ -508,7 +508,7 @@ class DataController: ObservableObject {
 
     /// Requests notification privileges from the user.
     /// - Parameter completion: A closure to be called on completion.
-    private func requestNotifications(completion: @escaping (Bool) -> Void) {
+    func requestNotifications(completion: @escaping (Bool) -> Void) {
         let center = UNUserNotificationCenter.current()
 
         center.requestAuthorization(options: [.alert, .sound]) { granted, _ in

@@ -66,6 +66,8 @@
 		23B20E32275A184700215A72 /* OlioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20E31275A184700215A72 /* OlioTests.swift */; };
 		23B20F8B278F3291008E26CD /* SectionFooterErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20F8A278F3291008E26CD /* SectionFooterErrorMessage.swift */; };
 		23B20F8F278F33D8008E26CD /* ExerciseSetError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20F8E278F33D8008E26CD /* ExerciseSetError.swift */; };
+		23B3F6DF27FDC3C500C8FAE9 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B3F6DE27FDC3C500C8FAE9 /* OnboardingView.swift */; };
+		23B3F6E127FDD82400C8FAE9 /* OnboardingPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B3F6E027FDD82400C8FAE9 /* OnboardingPageView.swift */; };
 		23B582DA27FC760100B03070 /* ErrorCloudKitMessages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B582D927FC760100B03070 /* ErrorCloudKitMessages.swift */; };
 		23B582DC27FC7A3500B03070 /* CloudError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B582DB27FC7A3500B03070 /* CloudError.swift */; };
 		23B6E293279A99AF00F09A5C /* DecodableDictionary.json in Resources */ = {isa = PBXBuildFile; fileRef = 23B6E292279A99AF00F09A5C /* DecodableDictionary.json */; };
@@ -171,6 +173,8 @@
 		23B20E31275A184700215A72 /* OlioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioTests.swift; sourceTree = "<group>"; };
 		23B20F8A278F3291008E26CD /* SectionFooterErrorMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionFooterErrorMessage.swift; sourceTree = "<group>"; };
 		23B20F8E278F33D8008E26CD /* ExerciseSetError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSetError.swift; sourceTree = "<group>"; };
+		23B3F6DE27FDC3C500C8FAE9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		23B3F6E027FDD82400C8FAE9 /* OnboardingPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageView.swift; sourceTree = "<group>"; };
 		23B582D927FC760100B03070 /* ErrorCloudKitMessages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorCloudKitMessages.swift; sourceTree = "<group>"; };
 		23B582DB27FC7A3500B03070 /* CloudError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CloudError.swift; path = Olio/Activities/Community/CloudError.swift; sourceTree = SOURCE_ROOT; };
 		23B6E292279A99AF00F09A5C /* DecodableDictionary.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = DecodableDictionary.json; sourceTree = "<group>"; };
@@ -346,6 +350,15 @@
 			path = OlioTests;
 			sourceTree = "<group>";
 		};
+		23B3F6DD27FDC3B200C8FAE9 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				23B3F6DE27FDC3C500C8FAE9 /* OnboardingView.swift */,
+				23B3F6E027FDD82400C8FAE9 /* OnboardingPageView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		23B6E291279A996500F09A5C /* TestFixtures */ = {
 			isa = PBXGroup;
 			children = (
@@ -368,6 +381,7 @@
 		23D55F1E274CD83F002B0105 /* Activities */ = {
 			isa = PBXGroup;
 			children = (
+				23B3F6DD27FDC3B200C8FAE9 /* Onboarding */,
 				2321AF16274ECF460023F099 /* Workouts */,
 				23D55F21274CD85C002B0105 /* Exercises */,
 				238E9FDB27EA27B900B6B0B6 /* Community */,
@@ -644,7 +658,9 @@
 				2377D16327F35DE9000292B4 /* LocalizedStringKeyExtension.swift in Sources */,
 				2375DA982758F6F100B2874B /* ExerciseHistoryRowView.swift in Sources */,
 				23C97E30274E3C25005611A3 /* ExerciseRowTabView.swift in Sources */,
+				23B3F6DF27FDC3C500C8FAE9 /* OnboardingView.swift in Sources */,
 				23AE318B278C9D81004A2EB6 /* BundleDecodableExtension.swift in Sources */,
+				23B3F6E127FDD82400C8FAE9 /* OnboardingPageView.swift in Sources */,
 				232DF17427629D83007D7B57 /* TemplatesView.swift in Sources */,
 				23FE12692757F3240096FDD0 /* TemplateCardView.swift in Sources */,
 				238E9FE527EA2AE100B6B0B6 /* SharedWorkoutsView.swift in Sources */,

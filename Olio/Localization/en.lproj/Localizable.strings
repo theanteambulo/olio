@@ -19,6 +19,21 @@
 "allSet" = "You're all set!";
 "signIn" = "Sign In";
 "takeAction" = "What would you like to do?";
+"noThanks" = "No thanks";
+
+
+
+/* ONBOARDING */
+"olio" = "Welcome to Olio";
+"olioSubtitle" = "Plan workouts and track exercise performance over time.";
+"exercisesSubtitle" = "Start by adding exercises to your library, or download the Olio library.";
+"templatesSubtitle" = "Create template workouts containing your favourite exercises.";
+"notifications" = "Notifications";
+"notificationsSubtitle" = "Schedule workouts and get reminders to stay on track.";
+"enableNotificationsButton" = "Enable notifications";
+"notificationsEnabled" = "Notifications enabled";
+"historySubtitle" = "View your workout and exercise history to track your performance.";
+"communitySubtitle" = "Share and download workouts with the Olio community.";
 
 
 
@@ -26,6 +41,7 @@
 "homeTab" = "Home";
 "historyTab" = "History";
 "exercisesTab" = "Exercises";
+"communityTab" = "Community";
 
 
 
