@@ -44,6 +44,16 @@ struct EditExerciseView: View {
         exercise.exerciseSets.filter({ $0.completed == true && $0.workout?.template == false })
     }
 
+    var keyboardDoneButton: some ToolbarContent {
+        ToolbarItemGroup(placement: .keyboard) {
+            Spacer()
+
+            Button("Done") {
+                hideKeyboard()
+            }
+        }
+    }
+
     /// A toolbar button used for deleting the exercise.
     var deleteExerciseToolbarItem: some ToolbarContent {
         ToolbarItem {
@@ -110,12 +120,16 @@ struct EditExerciseView: View {
             }
         }
         .navigationTitle(Text(.editExerciseNavigationTitle))
+        .onAppear {
+            hideKeyboard()
+        }
         .onDisappear {
             withAnimation {
                 dataController.save()
             }
         }
         .toolbar {
+            keyboardDoneButton
             deleteExerciseToolbarItem
         }
     }

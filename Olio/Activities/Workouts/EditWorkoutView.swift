@@ -84,6 +84,16 @@ struct EditWorkoutView: View {
         workout.template ? Text(.editTemplateNavigationTitle) : Text(.editWorkoutNavigationTitle)
     }
 
+    var keyboardDoneButton: some ToolbarContent {
+        ToolbarItemGroup(placement: .keyboard) {
+            Spacer()
+
+            Button("Done") {
+                hideKeyboard()
+            }
+        }
+    }
+
     /// Button that uploads the workout to iCloud.
     var uploadWorkoutToCloudToolbarButton: some View {
         Button {
@@ -140,6 +150,7 @@ struct EditWorkoutView: View {
     var workoutDateButton: some View {
         Button {
             showingDateConfirmationDialog = true
+            hideKeyboard()
         } label: {
             Text(workout.workoutDate.formatted(date: .complete, time: .omitted))
         }
@@ -160,7 +171,6 @@ struct EditWorkoutView: View {
     /// The list of exercises contained in the workout, as well as a button to add additional exercises.
     var workoutExerciseList: some View {
         List {
-            // List of exercises the workout is parent of.
             ForEach(exercises, id: \.self) { exercise in
                 EditWorkoutExerciseListView(workout: workout,
                                             exercise: exercise)
@@ -333,15 +343,18 @@ struct EditWorkoutView: View {
 
             if !workout.template && !workout.completed {
                 Section(header: Text(.workoutReminderTimeSectionHeader)) {
-                    Toggle(Strings.showReminders.localized, isOn: $remindUser.animation().onChange(update))
-                        .alert(isPresented: $showingNotificationsAlert) {
-                            Alert(
-                                title: Text(.oops),
-                                message: Text(.enableNotifications),
-                                primaryButton: .default(Text(.settings), action: showingAppNotificationsSettings),
-                                secondaryButton: .cancel()
-                            )
-                        }
+                    Toggle(Strings.showReminders.localized, isOn: $remindUser.animation().onChange {
+                        update()
+                        hideKeyboard()
+                    })
+                    .alert(isPresented: $showingNotificationsAlert) {
+                        Alert(
+                            title: Text(.oops),
+                            message: Text(.enableNotifications),
+                            primaryButton: .default(Text(.settings), action: showingAppNotificationsSettings),
+                            secondaryButton: .cancel()
+                        )
+                    }
 
                     if remindUser {
                         DatePicker(
@@ -386,21 +399,28 @@ struct EditWorkoutView: View {
         .sheet(isPresented: $showingSignInWithAppleSheet, content: SignInView.init)
         .navigationTitle(navigationTitle)
         .toolbar {
+            keyboardDoneButton
+
             ToolbarItemGroup(placement: .navigationBarTrailing) {
-                EditButton()
-                switch cloudStatus {
-                case .checking:
-                    ProgressView()
-                case .exists:
-                    removeWorkoutFromCloudToolbarButton
-                case .absent:
-                    uploadWorkoutToCloudToolbarButton
+                if !exercises.isEmpty {
+                    EditButton()
+
+                    switch cloudStatus {
+                    case .checking:
+                        ProgressView()
+                    case .exists:
+                        removeWorkoutFromCloudToolbarButton
+                    case .absent:
+                        uploadWorkoutToCloudToolbarButton
+                    }
                 }
             }
         }
         .onAppear {
             setExercisesArray()
             updateCloudStatus()
+
+            UIScrollView.appearance().keyboardDismissMode = .onDrag
         }
         .onDisappear {
             update()

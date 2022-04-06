@@ -40,8 +40,9 @@ struct SharedWorkoutsView: View {
                         withAnimation {
                             loadState = .inactive
                             workouts = []
-                            fetchSharedWorkouts()
                         }
+
+                        await fetchSharedWorkouts()
                     }
                 }
             }
@@ -54,10 +55,12 @@ struct SharedWorkoutsView: View {
             .navigationTitle(Strings.sharedWorkouts.localized)
             .navigationBarTitleDisplayMode(.large)
         }
-        .onAppear(perform: fetchSharedWorkouts)
+        .task {
+            await fetchSharedWorkouts()
+        }
     }
 
-    func fetchSharedWorkouts() {
+    func fetchSharedWorkouts() async {
         // Ensure the method is only run once
         guard loadState == .inactive else { return }
         loadState = .loading
