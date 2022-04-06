@@ -34,6 +34,7 @@ enum Strings: LocalizedStringKey {
     case oopsError
     case allSet
     case signIn
+    case takeAction
 
     // TABS
     case homeTab
