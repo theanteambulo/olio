@@ -406,10 +406,13 @@ struct SharedWorkoutDetailView: View {
             for _ in 0..<targetSets {
                 // Create a new ExerciseSet
                 let newExerciseSet = ExerciseSet(context: dataController.container.viewContext)
-                newExerciseSet.reps = Int16(sharedExercise?.targetReps ?? 10)
-                newExerciseSet.weight = Double(sharedExercise?.targetWeight ?? 10)
+                newExerciseSet.id = UUID()
+                newExerciseSet.creationDate = Date()
+                newExerciseSet.completed = true
                 newExerciseSet.workout = newWorkout
                 newExerciseSet.exercise = newExercise
+                newExerciseSet.reps = Int16(sharedExercise?.targetReps ?? 10)
+                newExerciseSet.weight = Double(sharedExercise?.targetWeight ?? 10)
 
                 // Add the new ExerciseSet
                 newWorkout.addToSets(newExerciseSet)
