@@ -27,6 +27,7 @@ enum Strings: LocalizedStringKey {
     case incompleteButton
     case oops
     case enableNotifications
+    case enableNotificationsError
     case settings
     case error
     case noResults
@@ -41,6 +42,7 @@ enum Strings: LocalizedStringKey {
     case olio
     case olioSubtitle
     case exercisesSubtitle
+    case exercisesDownloaded
     case templatesSubtitle
     case notifications
     case notificationsSubtitle

@@ -20,13 +20,28 @@ struct OnboardingPageView: View {
     let imageName: String
     let imageColor: Color
     let buttonEnabled: Bool
+    let buttonType: ButtonType?
     let dismissEnabled: Bool
     @Binding var showingOnboardingJourney: Bool
     @Binding var selectedPage: String?
     @State private var showingSignInWithAppleSheet = false
     @State private var notificationsEnabled = false
+    @State private var exercisesDownloaded = false
 
     @EnvironmentObject var dataController: DataController
+
+    var buttonCopy: LocalizedStringKey {
+        switch buttonType {
+        case .exercises:
+            return exercisesDownloaded ? Strings.exercisesDownloaded.localized : Strings.loadOlioExercises.localized
+        case .notifications:
+            return Strings.enableNotifications.localized
+        case .community:
+            return Strings.signIn.localized
+        default:
+            return ""
+        }
+    }
 
     var body: some View {
         VStack {
@@ -49,26 +64,33 @@ struct OnboardingPageView: View {
                 .padding(.horizontal)
 
             Button {
-                if buttonEnabled && !dismissEnabled {
-                    requestNotifications()
-                } else {
+                switch buttonType {
+                case .exercises:
+                    withAnimation {
+                        dataController.loadExerciseLibrary()
+                        exercisesDownloaded = true
+                        selectedPage = "templates"
+                    }
+                case .notifications:
+                    withAnimation {
+                        requestNotifications()
+                    }
+                default:
                     showingSignInWithAppleSheet = true
                 }
             } label: {
                 if notificationsEnabled {
                     Text(.notificationsEnabled)
-                            .frame(width: 250, height: 44)
-                            .foregroundColor(.white)
-                            .background(Color.green)
-                            .clipShape(Capsule())
-                            .padding(.vertical, 5)
+                        .conditionTrueCapsuleButton()
+                } else if exercisesDownloaded {
+                    Text(.exercisesDownloaded)
+                        .conditionTrueCapsuleButton()
+                } else if buttonEnabled {
+                    Text(buttonCopy)
+                        .defaultCapsuleButton()
                 } else {
-                    Text(buttonEnabled && !dismissEnabled ? .enableNotifications : .signIn)
-                        .frame(width: 250, height: 44)
-                        .foregroundColor(buttonEnabled ? .white : .clear)
-                        .background(buttonEnabled ? Color.blue : .clear)
-                        .clipShape(Capsule())
-                        .padding(.vertical, 5)
+                    Text(buttonCopy)
+                        .hiddenCapsuleButton()
                 }
             }
             .sheet(isPresented: $showingSignInWithAppleSheet, content: SignInView.init)
@@ -88,7 +110,9 @@ struct OnboardingPageView: View {
         dataController.requestNotifications { success in
             if success {
                 notificationsEnabled = true
-                selectedPage = "history"
+                withAnimation {
+                    selectedPage = "history"
+                }
             } else {
                 print("Permission denied.")
             }

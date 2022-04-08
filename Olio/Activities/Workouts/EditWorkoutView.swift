@@ -350,7 +350,7 @@ struct EditWorkoutView: View {
                     .alert(isPresented: $showingNotificationsAlert) {
                         Alert(
                             title: Text(.oops),
-                            message: Text(.enableNotifications),
+                            message: Text(.enableNotificationsError),
                             primaryButton: .default(Text(.settings), action: showingAppNotificationsSettings),
                             secondaryButton: .cancel()
                         )

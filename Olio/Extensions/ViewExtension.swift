@@ -34,6 +34,51 @@ struct ExerciseSetIntegerTextField: ViewModifier {
     }
 }
 
+/// A style for a button in the onboarding journey.
+struct ConditionTrueCapsuleButton: ViewModifier {
+    /// Styles content according to the modifiers applied.
+    /// - Parameter content: Content to modify.
+    /// - Returns: Modified content as a View.
+    func body(content: Content) -> some View {
+        content
+            .frame(width: 250, height: 44)
+            .foregroundColor(.white)
+            .background(Color.green)
+            .clipShape(Capsule())
+            .padding(.vertical, 5)
+    }
+}
+
+/// A style for a button in the onboarding journey.
+struct DefaultCapsuleButton: ViewModifier {
+    /// Styles content according to the modifiers applied.
+    /// - Parameter content: Content to modify.
+    /// - Returns: Modified content as a View.
+    func body(content: Content) -> some View {
+        content
+            .frame(width: 250, height: 44)
+            .foregroundColor(.white)
+            .background(Color.blue)
+            .clipShape(Capsule())
+            .padding(.vertical, 5)
+    }
+}
+
+/// A style for a button in the onboarding journey.
+struct HiddenCapsuleButton: ViewModifier {
+    /// Styles content according to the modifiers applied.
+    /// - Parameter content: Content to modify.
+    /// - Returns: Modified content as a View.
+    func body(content: Content) -> some View {
+        content
+            .frame(width: 250, height: 44)
+            .foregroundColor(.clear)
+            .background(Color.clear)
+            .clipShape(Capsule())
+            .padding(.vertical, 5)
+    }
+}
+
 /// A style for a Section to make it look like a button.
 struct SectionButton: ViewModifier {
     /// Styles content according to the modifiers applied.
@@ -79,6 +124,24 @@ extension View {
     /// - Returns: The styled Section.
     func sectionButton() -> some View {
         modifier(SectionButton())
+    }
+
+    /// Styles Text for use as a button in OnboardingPageView.
+    /// - Returns: The styled Text.
+    func conditionTrueCapsuleButton() -> some View {
+        modifier(ConditionTrueCapsuleButton())
+    }
+
+    /// Styles Text for use as a button in OnboardingPageView.
+    /// - Returns: The styled Text.
+    func defaultCapsuleButton() -> some View {
+        modifier(DefaultCapsuleButton())
+    }
+
+    /// Styles Text for use as a button in OnboardingPageView.
+    /// - Returns: The styled Text.
+    func hiddenCapsuleButton() -> some View {
+        modifier(HiddenCapsuleButton())
     }
 
     /// Force hides any keyboard currently being displayed.

@@ -7,6 +7,10 @@
 
 import SwiftUI
 
+enum ButtonType {
+    case exercises, notifications, community
+}
+
 struct OnboardingView: View {
     @Binding var showingOnboardingJourney: Bool
     @SceneStorage("selectedPage") var selectedPage: String?
@@ -19,6 +23,7 @@ struct OnboardingView: View {
                 imageName: "heart.circle.fill",
                 imageColor: .red,
                 buttonEnabled: false,
+                buttonType: nil,
                 dismissEnabled: false,
                 showingOnboardingJourney: $showingOnboardingJourney,
                 selectedPage: $selectedPage
@@ -30,7 +35,8 @@ struct OnboardingView: View {
                 subtitle: Strings.exercisesSubtitle.localized,
                 imageName: "books.vertical",
                 imageColor: .blue,
-                buttonEnabled: false,
+                buttonEnabled: true,
+                buttonType: .exercises,
                 dismissEnabled: false,
                 showingOnboardingJourney: $showingOnboardingJourney,
                 selectedPage: $selectedPage
@@ -43,6 +49,7 @@ struct OnboardingView: View {
                 imageName: "doc.text.below.ecg",
                 imageColor: .green,
                 buttonEnabled: false,
+                buttonType: nil,
                 dismissEnabled: false,
                 showingOnboardingJourney: $showingOnboardingJourney,
                 selectedPage: $selectedPage
@@ -55,6 +62,7 @@ struct OnboardingView: View {
                 imageName: "bell",
                 imageColor: .orange,
                 buttonEnabled: true,
+                buttonType: .notifications,
                 dismissEnabled: false,
                 showingOnboardingJourney: $showingOnboardingJourney,
                 selectedPage: $selectedPage
@@ -67,6 +75,7 @@ struct OnboardingView: View {
                 imageName: "list.dash",
                 imageColor: .purple,
                 buttonEnabled: false,
+                buttonType: nil,
                 dismissEnabled: false,
                 showingOnboardingJourney: $showingOnboardingJourney,
                 selectedPage: $selectedPage
@@ -79,6 +88,7 @@ struct OnboardingView: View {
                 imageName: "person.3",
                 imageColor: .yellow,
                 buttonEnabled: true,
+                buttonType: .community,
                 dismissEnabled: true,
                 showingOnboardingJourney: $showingOnboardingJourney,
                 selectedPage: $selectedPage
