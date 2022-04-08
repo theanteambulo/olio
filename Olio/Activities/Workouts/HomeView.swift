@@ -59,6 +59,72 @@ struct HomeView: View {
         }
     }
 
+    /// The list of workouts scheduled or completed.
+    var workoutsList: some View {
+        List {
+            // Add a new workout - displayed only when not viewing completed workouts.
+            if !viewModel.showingCompletedWorkouts {
+                Button {
+                    showingDateConfirmationDialog.toggle()
+                } label: {
+                    Label(Strings.addNewWorkout.localized, systemImage: "plus")
+                }
+                .accessibilityIdentifier("Add new workout")
+                .confirmationDialog(Strings.scheduleWorkout.localized,
+                                    isPresented: $showingDateConfirmationDialog) {
+                    Button(Strings.today.localized) {
+                        viewModel.addWorkout(dayOffset: 0)
+                    }
+
+                    Button(Strings.tomorrow.localized) {
+                        viewModel.addWorkout(dayOffset: 1)
+                    }
+
+                    ForEach(2...7, id: \.self) { dayOffset in
+                        Button("\(viewModel.date(for: dayOffset).formatted(date: .complete, time: .omitted))") {
+                            viewModel.addWorkout(dayOffset: Double(dayOffset))
+                        }
+                    }
+                } message: {
+                    Text(.selectWorkoutDateMessage)
+                }
+            }
+
+            ForEach(viewModel.workoutDates, id: \.self) { date in
+                Section(header: Text("\(date.formatted(date: .complete, time: .omitted))")) {
+                    // Display list of workouts, if any exist.
+                    ForEach(viewModel.filterWorkouts(viewModel.workouts, by: date), id: \.self) { workout in
+                        WorkoutRowView(workout: workout)
+                        .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                            // Complete/incomplete workout
+                            Button {
+                                withAnimation {
+                                    viewModel.toggleCompletionStatusForWorkout(workout)
+                                }
+                            } label: {
+                                swipeToToggleCompletionStatusLabel
+                            }
+                            .tint(workout.completed ? .orange : .green)
+                        }
+                        .swipeActions(edge: .trailing) {
+                            // Delete workout
+                            Button {
+                                withAnimation {
+                                    viewModel.deleteWorkout(workout)
+                                }
+                            } label: {
+                                Label(Strings.deleteButton.localized, systemImage: "trash")
+                                    .labelStyle(.titleAndIcon)
+                            }
+                            .tint(.red)
+                        }
+                    }
+                }
+            }
+        }
+        .listStyle(InsetGroupedListStyle())
+    }
+
     var body: some View {
         NavigationView {
             VStack(alignment: .leading) {
@@ -76,70 +142,15 @@ struct HomeView: View {
                 // Display templates if on the "Home" tab.
                 if !viewModel.showingCompletedWorkouts {
                     TemplatesView(dataController: viewModel.dataController)
-                }
 
-                List {
-                    // Add a new workout - displayed only when not viewing completed workouts.
-                    if !viewModel.showingCompletedWorkouts {
-                        Button {
-                            showingDateConfirmationDialog.toggle()
-                        } label: {
-                            Label(Strings.addNewWorkout.localized, systemImage: "plus")
-                        }
-                        .accessibilityIdentifier("Add new workout")
-                        .confirmationDialog(Strings.scheduleWorkout.localized,
-                                            isPresented: $showingDateConfirmationDialog) {
-                            Button(Strings.today.localized) {
-                                viewModel.addWorkout(dayOffset: 0)
-                            }
-
-                            Button(Strings.tomorrow.localized) {
-                                viewModel.addWorkout(dayOffset: 1)
-                            }
-
-                            ForEach(2...7, id: \.self) { dayOffset in
-                                Button("\(viewModel.date(for: dayOffset).formatted(date: .complete, time: .omitted))") {
-                                    viewModel.addWorkout(dayOffset: Double(dayOffset))
-                                }
-                            }
-                        } message: {
-                            Text(.selectWorkoutDateMessage)
-                        }
-                    }
-
-                    ForEach(viewModel.workoutDates, id: \.self) { date in
-                        Section(header: Text("\(date.formatted(date: .complete, time: .omitted))")) {
-                            // Display list of workouts, if any exist.
-                            ForEach(viewModel.filterWorkouts(viewModel.workouts, by: date), id: \.self) { workout in
-                                WorkoutRowView(workout: workout)
-                                    .swipeActions(edge: .leading, allowsFullSwipe: false) {
-                                        // Complete/incomplete workout
-                                        Button {
-                                            withAnimation {
-                                                viewModel.toggleCompletionStatusForWorkout(workout)
-                                            }
-                                        } label: {
-                                            swipeToToggleCompletionStatusLabel
-                                        }
-                                        .tint(workout.completed ? .orange : .green)
-                                    }
-                                    .swipeActions(edge: .trailing) {
-                                        // Delete workout
-                                        Button {
-                                            withAnimation {
-                                                viewModel.deleteWorkout(workout)
-                                            }
-                                        } label: {
-                                            Label(Strings.deleteButton.localized, systemImage: "trash")
-                                                .labelStyle(.titleAndIcon)
-                                        }
-                                        .tint(.red)
-                                    }
-                            }
-                        }
+                    workoutsList
+                } else {
+                    if viewModel.workouts.isEmpty {
+                        Text("No workouts completed yet!")
+                    } else {
+                        workoutsList
                     }
                 }
-                .listStyle(InsetGroupedListStyle())
             }
             .background(Color.systemGroupedBackground)
             .navigationTitle(navigationTitleLocalizedStringKey)
