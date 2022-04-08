@@ -93,11 +93,15 @@ struct OnboardingPageView: View {
                         .hiddenCapsuleButton()
                 }
             }
-            .sheet(isPresented: $showingSignInWithAppleSheet, content: SignInView.init)
+            .sheet(isPresented: $showingSignInWithAppleSheet) {
+                SignInView(showingOnboardingJourney: $showingOnboardingJourney)
+            }
             .disabled(!buttonEnabled)
 
             Button {
-                showingOnboardingJourney = false
+                withAnimation {
+                    showingOnboardingJourney = false
+                }
             } label: {
                 Text(.noThanks)
                     .foregroundColor(dismissEnabled ? .secondary : .clear)

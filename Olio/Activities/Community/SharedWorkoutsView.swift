@@ -22,7 +22,17 @@ struct SharedWorkoutsView: View {
                 case .inactive, .loading:
                     ProgressView()
                 case .noResults:
-                    Text(.noResults)
+                    List {
+                        Text(.noResults)
+                    }
+                    .refreshable {
+                        withAnimation {
+                            loadState = .inactive
+                            workouts = []
+                        }
+
+                        await fetchSharedWorkouts()
+                    }
                 case .success:
                     List(workouts) { workout in
                         NavigationLink(destination: SharedWorkoutDetailView(workout: workout)) {

@@ -24,6 +24,11 @@ struct SharedWorkoutDetailView: View {
     /// Stores the user's username.
     @AppStorage("username") var username: String?
 
+    /// Checks whether the onboarding journey should be showing.
+    ///
+    /// Should always be false in this view. Used in onboarding journey for showing SIWA sheet.
+    @AppStorage("userOnboarded") var showingOnboardingJourney: Bool = false
+
     @State private var messages = [ChatMessage]()
     @State private var newChatMessageText = ""
 
@@ -145,7 +150,9 @@ struct SharedWorkoutDetailView: View {
                     }
                 }
             }
-            .sheet(isPresented: $showingSignInWithAppleSheet, content: SignInView.init)
+            .sheet(isPresented: $showingSignInWithAppleSheet) {
+                SignInView(showingOnboardingJourney: $showingOnboardingJourney)
+            }
             .navigationTitle(workout.name)
             .toolbar {
                 downloadToolbarButton

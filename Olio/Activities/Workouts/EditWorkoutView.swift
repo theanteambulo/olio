@@ -28,6 +28,11 @@ struct EditWorkoutView: View {
     /// Checks for a valid username.
     @AppStorage("username") var username: String?
 
+    /// Checks whether the onboarding journey should be showing.
+    ///
+    /// Should always be false in this view. Used in onboarding journey for showing SIWA sheet.
+    @AppStorage("userOnboarded") var showingOnboardingJourney: Bool = false
+
     /// The workout's name property value.
     @State private var name: String
     /// Boolean to indicate whether the sheet used for adding an exercise to the workout is displayed.
@@ -396,7 +401,9 @@ struct EditWorkoutView: View {
             .sectionButton()
             .background(Color.red)
         }
-        .sheet(isPresented: $showingSignInWithAppleSheet, content: SignInView.init)
+        .sheet(isPresented: $showingSignInWithAppleSheet) {
+            SignInView(showingOnboardingJourney: $showingOnboardingJourney)
+        }
         .navigationTitle(navigationTitle)
         .toolbar {
             keyboardDoneButton

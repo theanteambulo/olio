@@ -15,6 +15,7 @@ enum SignInStatus {
 }
 
 struct SignInView: View {
+    @Binding var showingOnboardingJourney: Bool
     @State private var signInStatus = SignInStatus.unknown
 
     @Environment(\.presentationMode) var presentationMode
@@ -94,11 +95,6 @@ struct SignInView: View {
 
     func closeView() {
         presentationMode.wrappedValue.dismiss()
-    }
-}
-
-struct SignInView_Previews: PreviewProvider {
-    static var previews: some View {
-        SignInView()
+        showingOnboardingJourney = false
     }
 }
