@@ -37,6 +37,7 @@ enum Strings: LocalizedStringKey {
     case signIn
     case takeAction
     case noThanks
+    case noCompleteWorkoutsYet
 
     // ONBOARDING
     case olio

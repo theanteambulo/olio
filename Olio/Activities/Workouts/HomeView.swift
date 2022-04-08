@@ -146,7 +146,7 @@ struct HomeView: View {
                     workoutsList
                 } else {
                     if viewModel.workouts.isEmpty {
-                        Text("No workouts completed yet!")
+                        Text(.noCompleteWorkoutsYet)
                     } else {
                         workoutsList
                     }
