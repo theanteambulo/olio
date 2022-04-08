@@ -11,41 +11,41 @@ struct SharedExerciseRowView: View {
     var sharedExercise: SharedExercise
 
     var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text("\(sharedExercise.name)")
-                    .font(.headline)
+        VStack(alignment: .leading) {
+            Text("\(sharedExercise.name)")
+                .font(.headline)
 
+            HStack {
                 Text("\(sharedExercise.category) | \(sharedExercise.muscleGroup)")
                     .font(.caption)
                     .foregroundColor(
                         Exercise.allExerciseCategoryColors[sharedExercise.category] ?? .secondary
                     )
                     .padding(.bottom, 2)
-            }
 
-            Spacer()
+                Spacer()
 
-            VStack(alignment: .leading) {
-                HStack {
-                    Spacer()
+                VStack(alignment: .leading) {
+                    HStack {
+                        Spacer()
 
-                    combinedSetRepsInformation(forExercise: sharedExercise)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
+                        combinedSetRepsInformation(forExercise: sharedExercise)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
 
-                HStack {
-                    Spacer()
+                    HStack {
+                        Spacer()
 
-                    Text(.targetWeight)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                        .padding(.trailing, 3)
+                        Text(.targetWeight)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                            .padding(.trailing, 3)
 
-                    getBodyweightExerciseWeightString(forExercise: sharedExercise)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                        getBodyweightExerciseWeightString(forExercise: sharedExercise)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
         }
