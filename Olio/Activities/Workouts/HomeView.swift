@@ -141,6 +141,7 @@ struct HomeView: View {
                 }
                 .listStyle(InsetGroupedListStyle())
             }
+            .background(Color.systemGroupedBackground)
             .navigationTitle(navigationTitleLocalizedStringKey)
             .navigationBarTitleDisplayMode(.large)
             .onContinueUserActivity(CSSearchableItemActionType, perform: loadSpotlightWorkout)
