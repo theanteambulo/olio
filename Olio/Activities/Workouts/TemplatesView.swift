@@ -46,14 +46,12 @@ struct TemplatesView: View {
                     .frame(maxHeight: .infinity)
                     .background(Color.secondarySystemGroupedBackground)
                     .cornerRadius(5)
-                    .shadow(color: Color.black.opacity(0.2),
-                            radius: 5)
 
                     ForEach(viewModel.templates) { template in
                         TemplateCardView(template: template)
                     }
                 }
-                .padding(.horizontal)
+                .padding(10)
                 .fixedSize(horizontal: false,
                            vertical: true)
             }
