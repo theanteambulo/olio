@@ -77,6 +77,11 @@ struct TemplateCardView: View {
             .font(.caption)
             .foregroundColor(.white)
         }
+        .padding(10)
+        .frame(maxHeight: .infinity)
+        .background(Color.secondarySystemGroupedBackground)
+        .cornerRadius(5)
+        .contentShape(RoundedRectangle(cornerRadius: 5))
         .background(
             NavigationLink(
                 "",
@@ -89,7 +94,7 @@ struct TemplateCardView: View {
         .onTapGesture {
             navigationLinkIsActive = true
         }
-        .onLongPressGesture(minimumDuration: 0.5) {
+        .onLongPressGesture(minimumDuration: 0.3) {
             showingTakeActionAlert = true
 
             UINotificationFeedbackGenerator().notificationOccurred(.success)
@@ -118,10 +123,6 @@ struct TemplateCardView: View {
         } message: {
             Text(.selectWorkoutDateMessage)
         }
-        .padding(10)
-        .frame(maxHeight: .infinity)
-        .background(Color.secondarySystemGroupedBackground)
-        .cornerRadius(5)
     }
 }
 
