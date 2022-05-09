@@ -86,11 +86,6 @@ struct EditWorkoutView: View {
         case checking, exists, absent
     }
 
-    /// Computed property to get the text displayed in the navigation title of the view.
-    var navigationTitle: Text {
-        workout.template ? Text(.editTemplateNavigationTitle) : Text(.editWorkoutNavigationTitle)
-    }
-
     var keyboardDoneButton: some ToolbarContent {
         ToolbarItemGroup(placement: .keyboard) {
             Spacer()
@@ -408,7 +403,7 @@ struct EditWorkoutView: View {
         .sheet(isPresented: $showingSignInWithAppleSheet) {
             SignInView(showingOnboardingJourney: $showingOnboardingJourney)
         }
-        .navigationTitle(navigationTitle)
+        .navigationTitle(workout.workoutName)
         .toolbar {
             keyboardDoneButton
 
