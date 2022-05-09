@@ -75,7 +75,7 @@ struct TemplateCardView: View {
                 Text("\(template.workoutExerciseSets.count) sets")
             }
             .font(.caption)
-            .foregroundColor(.white)
+            .foregroundColor(.secondary)
         }
         .padding(10)
         .frame(maxHeight: .infinity)
@@ -84,13 +84,14 @@ struct TemplateCardView: View {
         .contentShape(RoundedRectangle(cornerRadius: 5))
         .background(
             NavigationLink(
-                "",
+                "\(template.workoutName)",
                 destination: EditWorkoutView(workout: template),
                 isActive: $navigationLinkIsActive
             )
+            .accessibilityHidden(true)
         )
         .accessibilityElement(children: .ignore)
-        .accessibilityIdentifier(template.workoutName)
+        .accessibilityLabel(template.workoutName)
         .onTapGesture {
             navigationLinkIsActive = true
         }

@@ -234,7 +234,7 @@ class OlioUITests: XCTestCase {
     func testEditingTemplateName() throws {
         try testHomeTabAddsSingleTemplate()
 
-        app.scrollViews.buttons["New Template"].tap()
+        app.scrollViews.buttons["New Template"].forceTapElement()
         app.textFields["New Template"].tap()
         app.keys["more"].tap()
         app.keys["space"].tap()
@@ -459,7 +459,7 @@ class OlioUITests: XCTestCase {
         try testAddingAnExercise()
 
         app.tabBars.buttons["Home"].tap()
-        app.scrollViews.buttons["New Template"].tap()
+        app.buttons["New Template"].tap()
         app.tables.cells.buttons["Add Exercise"].tap()
         app.tables.cells.otherElements["Bench"].tap()
         app.navigationBars.buttons["Add"].tap()
@@ -498,12 +498,12 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.scrollViews.buttons.staticTexts["1 exercise"].exists,
+            app.staticTexts["1 exercise"].exists,
             "There should be 1 template in the scroll view with caption text reading '1 exercise'."
         )
 
         XCTAssertTrue(
-            app.scrollViews.buttons.staticTexts["No sets"].exists,
+            app.staticTexts["No sets"].exists,
             "There should be 1 template in the scroll view with caption text reading 'No sets'."
         )
     }
@@ -646,12 +646,12 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.scrollViews.buttons.staticTexts["1 exercise"].exists,
+            app.staticTexts["1 exercise"].exists,
             "There should be 1 template in the scroll view with caption text reading '1 exercise'."
         )
 
         XCTAssertTrue(
-            app.scrollViews.buttons.staticTexts["1 set"].exists,
+            app.staticTexts["1 set"].exists,
             "There should be 1 template in the scroll view with caption text reading 'No sets'."
         )
 
@@ -805,12 +805,12 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.scrollViews.buttons.staticTexts["1 exercise"].exists,
+            app.staticTexts["1 exercise"].exists,
             "There should be 1 template in the scroll view with caption text reading '1 exercise'."
         )
 
         XCTAssertTrue(
-            app.scrollViews.buttons.staticTexts["1 set"].exists,
+            app.staticTexts["1 set"].exists,
             "There should be 1 template in the scroll view with caption text reading '1 set'."
         )
 
@@ -900,12 +900,12 @@ class OlioUITests: XCTestCase {
         )
 
         XCTAssertTrue(
-            app.scrollViews.buttons.staticTexts["1 exercise"].exists,
+            app.staticTexts["1 exercise"].exists,
             "There should be 1 template in the scroll view with caption text reading '1 exercise'."
         )
 
         XCTAssertTrue(
-            app.scrollViews.buttons.staticTexts["1 set"].exists,
+            app.staticTexts["1 set"].exists,
             "There should be 1 template in the scroll view with caption text reading '1 set'."
         )
 

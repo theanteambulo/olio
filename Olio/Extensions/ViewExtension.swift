@@ -93,6 +93,27 @@ struct SectionButton: ViewModifier {
     }
 }
 
+struct TextFieldClearButton: ViewModifier {
+    @FocusState var isActive: Bool
+    @Binding var text: String
+
+    func body(content: Content) -> some View {
+        HStack {
+            content
+
+            if !text.isEmpty && isActive {
+                Button {
+                    self.text = ""
+                } label: {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+            }
+        }
+    }
+}
+
 extension View {
     /// Ensures that the navigation view style used by the app is stacked when the user's device is a phone.
     /// - Returns: The view with the navigationViewStyle() modifier applied.
@@ -142,6 +163,12 @@ extension View {
     /// - Returns: The styled Text.
     func hiddenCapsuleButton() -> some View {
         modifier(HiddenCapsuleButton())
+    }
+
+    /// Styles TextField for use as a button in EditWorkoutView.
+    /// - Returns: The styled TextField.
+    func clearTextFieldButton(isActive: FocusState<Bool>, text: Binding<String>) -> some View {
+        modifier(TextFieldClearButton(isActive: isActive, text: text))
     }
 
     /// Force hides any keyboard currently being displayed.

@@ -66,6 +66,8 @@ struct EditWorkoutView: View {
     /// Stores any potential CloudKit error that has occurred.
     @State private var cloudError: CloudError?
 
+    @FocusState private var isWorkoutNameFocused: Bool
+
     init(workout: Workout) {
         self.workout = workout
 
@@ -337,6 +339,8 @@ struct EditWorkoutView: View {
             Section(header: Text(.workoutName)) {
                 TextField(Strings.workoutName.localized,
                           text: $name.onChange(update))
+                .focused($isWorkoutNameFocused)
+                .clearTextFieldButton(isActive: _isWorkoutNameFocused, text: $name.onChange(update))
             }
 
             if !workout.template {
