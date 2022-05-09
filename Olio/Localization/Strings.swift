@@ -155,6 +155,7 @@ enum Strings: LocalizedStringKey {
     case exampleWorkout
     case workoutCompletedAlertTitle
     case workoutCompletedAlertMessage
+    case workoutHasIncompleteSetsAlertMessage
     case workoutScheduledAlertTitle
     case workoutScheduledAlertMessage
 

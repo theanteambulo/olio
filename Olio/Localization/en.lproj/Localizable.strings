@@ -155,6 +155,7 @@
 /* WORKOUT EXTENSION */
 "workoutCompletedAlertTitle" = "Complete workout?";
 "workoutCompletedAlertMessage" = "When you've finished this workout, complete it to move it to your workout history.";
+"workoutHasIncompleteSetsAlertMessage" = "Some sets remain incomplete. Completing the workout will automatically mark these sets as complete.";
 "workoutScheduledAlertTitle" = "Not quite done?";
 "workoutScheduledAlertMessage" = "If you haven't finished this workout, mark it as incomplete to move it back to your scheduled workouts.";
 

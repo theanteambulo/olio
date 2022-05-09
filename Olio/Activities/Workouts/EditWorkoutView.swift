@@ -526,6 +526,11 @@ struct EditWorkoutView: View {
     /// Responsible for toggling the completion status of the workout and generating haptic feedback.
     func toggleCompletionStatus() {
         workout.completed.toggle()
+
+        workout.workoutExerciseSets.forEach {
+            $0.completed = true
+        }
+
         save()
 
         if workout.completed {

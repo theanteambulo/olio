@@ -87,6 +87,10 @@ extension Workout {
     /// - Parameter workout: The workout being completed or scheduled.
     /// - Returns: A LocalizedStringKey corresponding to the action taken on the workout (i.e. complete or schedule).
     func getConfirmationAlertMessage(workout: Workout) -> LocalizedStringKey {
+        if workout.workoutExerciseSets.filter({ !$0.completed }).count != 0 {
+            return Strings.workoutHasIncompleteSetsAlertMessage.localized
+        }
+
         if workout.completed {
             return Strings.workoutScheduledAlertMessage.localized
         } else {

@@ -57,6 +57,7 @@ struct WorkoutRowView: View {
 
                     upcomingWorkoutLabel
                 }
+                .foregroundColor(.secondary)
             }
             .padding(.vertical, 5)
             .accessibilityElement(children: .ignore)
