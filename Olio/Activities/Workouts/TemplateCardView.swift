@@ -106,7 +106,11 @@ struct TemplateCardView: View {
             }
 
             Button(Strings.deleteTemplateButton.localized, role: .destructive) {
-                showingDeleteWarningAlert = true
+                if template.workoutExercises.count != 0 {
+                    showingDeleteWarningAlert = true
+                } else {
+                    dataController.delete(template)
+                }
 
                 UINotificationFeedbackGenerator().notificationOccurred(.warning)
             }
