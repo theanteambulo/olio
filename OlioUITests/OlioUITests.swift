@@ -1764,12 +1764,12 @@ class OlioUITests: XCTestCase {
         app.navigationBars.buttons["Home"].tap()
 
         XCTAssertTrue(
-            app.scrollViews.buttons["New Template"].staticTexts["No exercises"].exists,
+            app.staticTexts["No exercises"].exists,
             "The template should contain no exercises."
         )
 
         XCTAssertTrue(
-            app.scrollViews.buttons["New Template"].staticTexts["No sets"].exists,
+            app.staticTexts["No sets"].exists,
             "The template should contain no sets."
         )
 
