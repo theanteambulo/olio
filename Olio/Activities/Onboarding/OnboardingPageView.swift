@@ -16,7 +16,7 @@ struct OnboardingPageView: View {
     static let communityTag: String? = "community"
 
     let title: LocalizedStringKey
-    let subtitle: LocalizedStringKey
+    @State var subtitle: LocalizedStringKey
     let imageName: String
     let imageColor: Color
     @State var buttonEnabled: Bool
@@ -66,10 +66,11 @@ struct OnboardingPageView: View {
             Button {
                 switch buttonType {
                 case .exercises:
+                    subtitle = Strings.exercisesDownloadedSubtitle.localized
+
                     withAnimation {
                         dataController.loadExerciseLibrary()
                         exercisesDownloaded = true
-                        selectedPage = "templates"
                     }
                 case .notifications:
                     withAnimation {

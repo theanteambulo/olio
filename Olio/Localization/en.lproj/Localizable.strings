@@ -28,7 +28,8 @@
 /* ONBOARDING */
 "olio" = "Welcome to Olio";
 "olioSubtitle" = "Plan workouts and track exercise performance over time.";
-"exercisesSubtitle" = "Start by adding exercises to your library, or download the Olio library.";
+"downloadExercisesSubtitle" = "Start by adding exercises to your library, or download the Olio library.";
+"exercisesDownloadedSubtitle" = "You'll be able to view your downloaded exercises in your exercise library.";
 "exercisesDownloaded" = "Exercises downloaded";
 "templatesSubtitle" = "Create template workouts containing your favourite exercises.";
 "notifications" = "Notifications";

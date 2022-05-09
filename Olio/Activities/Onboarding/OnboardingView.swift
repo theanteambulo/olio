@@ -32,7 +32,7 @@ struct OnboardingView: View {
 
             OnboardingPageView(
                 title: Strings.exercisesTab.localized,
-                subtitle: Strings.exercisesSubtitle.localized,
+                subtitle: Strings.downloadExercisesSubtitle.localized,
                 imageName: "books.vertical",
                 imageColor: .blue,
                 buttonEnabled: true,

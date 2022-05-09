@@ -42,7 +42,8 @@ enum Strings: LocalizedStringKey {
     // ONBOARDING
     case olio
     case olioSubtitle
-    case exercisesSubtitle
+    case exercisesDownloadedSubtitle
+    case downloadExercisesSubtitle
     case exercisesDownloaded
     case templatesSubtitle
     case notifications
