@@ -81,6 +81,7 @@ enum Strings: LocalizedStringKey {
     case editWorkoutNavigationTitle
     case editTemplateNavigationTitle
     case workoutName
+    case templateName
     case completedSectionHeader
     case scheduledSectionHeader
     case workoutDate

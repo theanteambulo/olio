@@ -336,7 +336,7 @@ struct EditWorkoutView: View {
 
     var body: some View {
         Form {
-            Section(header: Text(.workoutName)) {
+            Section(header: workout.template ? Text(.templateName) : Text(.workoutName)) {
                 TextField(Strings.workoutName.localized,
                           text: $name.onChange(update))
                 .focused($isWorkoutNameFocused)

@@ -73,6 +73,7 @@
 "editWorkoutNavigationTitle" = "Edit Workout";
 "editTemplateNavigationTitle" = "Edit Template";
 "workoutName" = "Workout Name";
+"templateName" = "Template Name";
 "completedSectionHeader" = "Completed";
 "scheduledSectionHeader" = "Scheduled";
 "workoutDate" = "Date";
