@@ -95,7 +95,8 @@ struct OnboardingView: View {
             )
             .tag(OnboardingPageView.communityTag)
         }
-        .tabViewStyle(PageTabViewStyle())
+        .tabViewStyle(.page)
+        .indexViewStyle(.page(backgroundDisplayMode: .always))
     }
 }
 
