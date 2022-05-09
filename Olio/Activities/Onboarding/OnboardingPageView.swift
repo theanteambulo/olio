@@ -19,7 +19,7 @@ struct OnboardingPageView: View {
     let subtitle: LocalizedStringKey
     let imageName: String
     let imageColor: Color
-    let buttonEnabled: Bool
+    @State var buttonEnabled: Bool
     let buttonType: ButtonType?
     let dismissEnabled: Bool
     @Binding var showingOnboardingJourney: Bool
@@ -78,6 +78,8 @@ struct OnboardingPageView: View {
                 default:
                     showingSignInWithAppleSheet = true
                 }
+
+                buttonEnabled = false
             } label: {
                 if notificationsEnabled {
                     Text(.notificationsEnabled)
