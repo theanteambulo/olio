@@ -21,6 +21,7 @@
 		23480AA1278ADF380041FDE8 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23480AA0278ADF380041FDE8 /* HomeView.swift */; };
 		23480AA3278AE0270041FDE8 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23480AA2278AE0270041FDE8 /* HomeViewModel.swift */; };
 		235F239A28006443008BACFF /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 235F239928006443008BACFF /* Icons.xcassets */; };
+		236E2F73282CDF2700C37E91 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 236E2F75282CDF2700C37E91 /* Localizable.stringsdict */; };
 		236E4A2727523A780012C4B2 /* AddExerciseToWorkoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236E4A2627523A780012C4B2 /* AddExerciseToWorkoutView.swift */; };
 		2375DA982758F6F100B2874B /* ExerciseHistoryRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2375DA972758F6F100B2874B /* ExerciseHistoryRowView.swift */; };
 		2377D16127F3428C000292B4 /* WorkoutExerciseCategoriesLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2377D16027F3428C000292B4 /* WorkoutExerciseCategoriesLabelView.swift */; };
@@ -62,7 +63,6 @@
 		23AE318B278C9D81004A2EB6 /* BundleDecodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AE318A278C9D81004A2EB6 /* BundleDecodableExtension.swift */; };
 		23AE318D278CAC90004A2EB6 /* OlioExercise.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AE318C278CAC90004A2EB6 /* OlioExercise.swift */; };
 		23AE7E822758AAB9007D24DB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 23AE7E842758AAB9007D24DB /* Localizable.strings */; };
-		23AE7E882758AB0D007D24DB /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = 23AE7E872758AB0D007D24DB /* Localizable.stringsdict */; };
 		23AE7E8C2758AB45007D24DB /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23AE7E8B2758AB45007D24DB /* Strings.swift */; };
 		23B20E32275A184700215A72 /* OlioTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20E31275A184700215A72 /* OlioTests.swift */; };
 		23B20F8B278F3291008E26CD /* SectionFooterErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B20F8A278F3291008E26CD /* SectionFooterErrorMessage.swift */; };
@@ -125,6 +125,7 @@
 		23480AA0278ADF380041FDE8 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		23480AA2278AE0270041FDE8 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		235F239928006443008BACFF /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
+		236E2F74282CDF2700C37E91 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		236E4A2627523A780012C4B2 /* AddExerciseToWorkoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExerciseToWorkoutView.swift; sourceTree = "<group>"; };
 		2375DA972758F6F100B2874B /* ExerciseHistoryRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseHistoryRowView.swift; sourceTree = "<group>"; };
 		2377D16027F3428C000292B4 /* WorkoutExerciseCategoriesLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutExerciseCategoriesLabelView.swift; sourceTree = "<group>"; };
@@ -169,7 +170,6 @@
 		23AE318A278C9D81004A2EB6 /* BundleDecodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleDecodableExtension.swift; sourceTree = "<group>"; };
 		23AE318C278CAC90004A2EB6 /* OlioExercise.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioExercise.swift; sourceTree = "<group>"; };
 		23AE7E832758AAB9007D24DB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
-		23AE7E872758AB0D007D24DB /* Localizable.stringsdict */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; path = Localizable.stringsdict; sourceTree = "<group>"; };
 		23AE7E8B2758AB45007D24DB /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
 		23B20E2F275A184700215A72 /* OlioTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = OlioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		23B20E31275A184700215A72 /* OlioTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OlioTests.swift; sourceTree = "<group>"; };
@@ -257,6 +257,17 @@
 			path = Workouts;
 			sourceTree = "<group>";
 		};
+		236E2F76282CDFEA00C37E91 /* EntityExtensions */ = {
+			isa = PBXGroup;
+			children = (
+				230E70F2274D62DD007F6232 /* WorkoutExtension.swift */,
+				230E70F0274D62C6007F6232 /* ExerciseExtension.swift */,
+				2321AF14274EC3E30023F099 /* ExerciseSetExtension.swift */,
+				23C25F3327931CFF006CEF85 /* PlacementExtension.swift */,
+			);
+			path = EntityExtensions;
+			sourceTree = "<group>";
+		};
 		237E95B6275BAA4700937AAF /* OlioPerformanceTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -317,10 +328,6 @@
 		23AB0640274B7CF300BCBD28 /* Olio */ = {
 			isa = PBXGroup;
 			children = (
-				23D55F1E274CD83F002B0105 /* Activities */,
-				23D55F23274CD8B5002B0105 /* Localization */,
-				23D55F22274CD8A6002B0105 /* Extensions */,
-				23D55F1D274CD7F1002B0105 /* Configuration */,
 				23AB0641274B7CF300BCBD28 /* OlioApp.swift */,
 				2324267327E4F4D9001CD524 /* AppDelegate.swift */,
 				2324267527E4F4E6001CD524 /* SceneDelegate.swift */,
@@ -328,6 +335,10 @@
 				23AB0654274B87A600BCBD28 /* DataController.swift */,
 				23AB0645274B7CF400BCBD28 /* Assets.xcassets */,
 				235F239928006443008BACFF /* Icons.xcassets */,
+				23D55F1E274CD83F002B0105 /* Activities */,
+				23D55F23274CD8B5002B0105 /* Localization */,
+				23D55F22274CD8A6002B0105 /* Extensions */,
+				23D55F1D274CD7F1002B0105 /* Configuration */,
 				23AB0647274B7CF400BCBD28 /* Preview Content */,
 			);
 			path = Olio;
@@ -412,10 +423,7 @@
 		23D55F22274CD8A6002B0105 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				230E70F2274D62DD007F6232 /* WorkoutExtension.swift */,
-				230E70F0274D62C6007F6232 /* ExerciseExtension.swift */,
-				2321AF14274EC3E30023F099 /* ExerciseSetExtension.swift */,
-				23C25F3327931CFF006CEF85 /* PlacementExtension.swift */,
+				236E2F76282CDFEA00C37E91 /* EntityExtensions */,
 				23C97E31274E548A005611A3 /* BindingExtension.swift */,
 				23AA142227502E3A00AC637D /* ColorExtension.swift */,
 				23A368B52750C248000725E9 /* SequenceExtension.swift */,
@@ -434,7 +442,7 @@
 			children = (
 				23AE7E8B2758AB45007D24DB /* Strings.swift */,
 				23AE7E842758AAB9007D24DB /* Localizable.strings */,
-				23AE7E872758AB0D007D24DB /* Localizable.stringsdict */,
+				236E2F75282CDF2700C37E91 /* Localizable.stringsdict */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -587,7 +595,7 @@
 			files = (
 				23AE3189278C9CF3004A2EB6 /* Exercises.json in Resources */,
 				23AB0649274B7CF400BCBD28 /* Preview Assets.xcassets in Resources */,
-				23AE7E882758AB0D007D24DB /* Localizable.stringsdict in Resources */,
+				236E2F73282CDF2700C37E91 /* Localizable.stringsdict in Resources */,
 				23AE7E822758AAB9007D24DB /* Localizable.strings in Resources */,
 				235F239A28006443008BACFF /* Icons.xcassets in Resources */,
 				23AB0646274B7CF400BCBD28 /* Assets.xcassets in Resources */,
@@ -741,6 +749,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		236E2F75282CDF2700C37E91 /* Localizable.stringsdict */ = {
+			isa = PBXVariantGroup;
+			children = (
+				236E2F74282CDF2700C37E91 /* en */,
+			);
+			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
 		23AE7E842758AAB9007D24DB /* Localizable.strings */ = {
 			isa = PBXVariantGroup;
 			children = (

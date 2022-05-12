@@ -252,13 +252,12 @@ class DataController: ObservableObject {
         newWorkout.date = date
         newWorkout.createdDate = Date.now
         newWorkout.completed = false
+        newWorkout.template = isTemplate
 
         if isTemplate {
             newWorkout.name = "New Template (\(workout.workoutName))"
-            newWorkout.template = true
         } else {
             newWorkout.name = "\(workout.workoutName)"
-            newWorkout.template = false
         }
 
         for exerciseSet in workout.workoutExerciseSets.sorted(by: \ExerciseSet.exerciseSetCreationDate) {
@@ -338,6 +337,9 @@ class DataController: ObservableObject {
 
         let exerciseSetsFetchRequest: NSFetchRequest<NSFetchRequestResult> = ExerciseSet.fetchRequest()
         delete(exerciseSetsFetchRequest)
+
+        let placementsFetchRequest: NSFetchRequest<NSFetchRequestResult> = Placement.fetchRequest()
+        delete(placementsFetchRequest)
     }
 
     /// Counts the number of objects in the Core Data context for a given FetchRequest, without actually having to
